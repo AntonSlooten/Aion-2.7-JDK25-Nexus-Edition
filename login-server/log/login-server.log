@@ -1,0 +1,70 @@
+2026-06-05 22:01:11.093 [INFO ] [main] com.aionemu.loginserver.LoginServer - ============================================================
+2026-06-05 22:01:11.097 [INFO ] [main] com.aionemu.loginserver.LoginServer -                  NEXUS CONNECT LOGIN SERVER
+2026-06-05 22:01:11.097 [INFO ] [main] com.aionemu.loginserver.LoginServer -                    Aion 2.7 Java 25 Edition
+2026-06-05 22:01:11.098 [INFO ] [main] com.aionemu.loginserver.LoginServer - ============================================================
+2026-06-05 22:01:11.191 [INFO ] [main] org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor
+2026-06-05 22:01:11.228 [INFO ] [main] org.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2026-06-05 22:01:11.235 [INFO ] [main] org.quartz.core.QuartzScheduler - Quartz Scheduler v2.5.2 created.
+2026-06-05 22:01:11.237 [INFO ] [main] org.quartz.simpl.RAMJobStore - RAMJobStore initialized.
+2026-06-05 22:01:11.238 [INFO ] [main] org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.5.2) 'QuartzScheduler' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 1 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2026-06-05 22:01:11.240 [INFO ] [main] org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'QuartzScheduler' initialized from an externally provided properties instance.
+2026-06-05 22:01:11.240 [INFO ] [main] org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.5.2
+2026-06-05 22:01:11.241 [INFO ] [main] org.quartz.core.QuartzScheduler - Scheduler QuartzScheduler_$_NON_CLUSTERED started.
+2026-06-05 22:01:11.244 [INFO ] [main] com.aionemu.loginserver.LoginServer - Loading configuration...
+2026-06-05 22:01:11.246 [INFO ] [Thread-0] com.aionemu.loginserver.ServerCommandProcessor - Server command processor thread started
+2026-06-05 22:01:11.268 [INFO ] [main] com.aionemu.loginserver.configs.Config - Loading: ./config/network/network.properties
+2026-06-05 22:01:11.290 [INFO ] [main] com.aionemu.loginserver.configs.Config - Loading: ./config/network/svstats.properties
+2026-06-05 22:01:11.292 [INFO ] [main] com.aionemu.loginserver.configs.Config - Loading: ./config/network/commons.properties
+2026-06-05 22:01:11.293 [INFO ] [main] com.aionemu.loginserver.configs.Config - Loading: ./config/network/database.properties
+2026-06-05 22:01:11.305 [INFO ] [main] com.aionemu.loginserver.LoginServer - Initializing database...
+2026-06-05 22:01:11.356 [INFO ] [main] com.zaxxer.hikari.HikariDataSource - AionHikariPool - Starting...
+2026-06-05 22:01:11.372 [WARN ] [main] com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2026-06-05 22:01:12.224 [INFO ] [main] com.zaxxer.hikari.HikariDataSource - AionHikariPool - Start completed.
+2026-06-05 22:01:12.278 [INFO ] [main] com.aionemu.commons.database.DatabaseFactory - Successfully connected to database: MySQL 5.7 | pool minIdle=4 maxPoolSize=10
+2026-06-05 22:01:12.280 [INFO ] [main] com.aionemu.loginserver.LoginServer - Loading DAO implementations...
+2026-06-05 22:01:14.553 [INFO ] [main] com.aionemu.commons.database.dao.DAOManager - Loaded 9 DAO implementations.
+2026-06-05 22:01:14.555 [INFO ] [main] com.aionemu.loginserver.LoginServer - Starting deadlock detector...
+2026-06-05 22:01:14.571 [INFO ] [main] com.aionemu.loginserver.LoginServer - Initializing thread pool...
+2026-06-05 22:01:14.582 [INFO ] [main] com.aionemu.loginserver.utils.ThreadPoolManager - ThreadPoolManager: Initialized with 18 scheduler, 8 instant, virtual long running executor.
+2026-06-05 22:01:14.585 [INFO ] [main] com.aionemu.loginserver.LoginServer - Initializing key generator...
+2026-06-05 22:01:14.588 [INFO ] [main] com.aionemu.loginserver.network.ncrypt.KeyGen - Initializing Key Generator...
+2026-06-05 22:01:15.058 [INFO ] [main] com.aionemu.loginserver.LoginServer - Loading game server table...
+2026-06-05 22:01:15.113 [INFO ] [main] com.aionemu.loginserver.GameServerTable - GameServerTable loaded 1 registered GameServers.
+2026-06-05 22:01:15.114 [INFO ] [main] com.aionemu.loginserver.LoginServer - Starting ban controllers...
+2026-06-05 22:01:15.125 [INFO ] [main] c.a.loginserver.controller.BannedIpController - BannedIpController loaded 0 IP bans.
+2026-06-05 22:01:15.135 [INFO ] [main] com.aionemu.loginserver.LoginServer - Connecting network services...
+2026-06-05 22:01:15.172 [INFO ] [main] com.aionemu.commons.network.NioServer - Server listening on IP: 142.91.103.230 Port 9016 for Gs Connections
+2026-06-05 22:01:15.181 [INFO ] [main] com.aionemu.commons.network.NioServer - Server listening on IP: 142.91.103.230 Port 2106 for Aion Connections
+2026-06-05 22:01:15.184 [INFO ] [main] com.aionemu.loginserver.LoginServer - Initializing player transfer service...
+2026-06-05 22:01:15.196 [INFO ] [main] c.a.loginserver.service.PlayerTransferService - PlayerTransferService will be initialized in 10 sec.
+2026-06-05 22:01:15.199 [INFO ] [main] com.aionemu.loginserver.LoginServer - Initializing task manager...
+2026-06-05 22:01:15.220 [INFO ] [main] c.a.loginserver.taskmanager.TaskFromDBManager - Loaded 0 task from the database
+2026-06-05 22:01:15.228 [INFO ] [main] PREMIUM_CTRL - PremiumController is ready for requests.
+2026-06-05 22:01:15.232 [INFO ] [main] com.aionemu.loginserver.LoginServer - System Information
+2026-06-05 22:01:15.233 [INFO ] [main] com.aionemu.loginserver.LoginServer - ------------------------------------------------------------
+2026-06-05 22:01:15.235 [INFO ] [main] com.aionemu.loginserver.LoginServer - Java Version : 25.0.2
+2026-06-05 22:01:15.239 [INFO ] [main] com.aionemu.loginserver.LoginServer - Java Vendor  : Oracle Corporation
+2026-06-05 22:01:15.244 [INFO ] [main] com.aionemu.loginserver.LoginServer - OS Name      : Windows Server 2016
+2026-06-05 22:01:15.246 [INFO ] [main] com.aionemu.loginserver.LoginServer - OS Version   : 10.0
+2026-06-05 22:01:15.248 [INFO ] [main] com.aionemu.loginserver.LoginServer - OS Arch      : amd64
+2026-06-05 22:01:15.254 [INFO ] [main] com.aionemu.loginserver.LoginServer - Processors   : 6
+2026-06-05 22:01:15.256 [INFO ] [main] com.aionemu.loginserver.LoginServer - Max Memory   : 512 MB
+2026-06-05 22:01:15.257 [INFO ] [main] com.aionemu.loginserver.LoginServer - Total Memory : 256 MB
+2026-06-05 22:01:15.259 [INFO ] [main] com.aionemu.loginserver.LoginServer - Free Memory  : 234 MB
+2026-06-05 22:01:15.264 [INFO ] [main] com.aionemu.loginserver.LoginServer - ------------------------------------------------------------
+2026-06-05 22:01:15.266 [INFO ] [main] com.aionemu.loginserver.LoginServer - ============================================================
+2026-06-05 22:01:15.268 [INFO ] [main] com.aionemu.loginserver.LoginServer - NEXUS CONNECT LOGIN SERVER STARTED SUCCESSFULLY
+2026-06-05 22:01:15.270 [INFO ] [main] com.aionemu.loginserver.LoginServer - Boot Time: 4520 ms
+2026-06-05 22:01:15.271 [INFO ] [main] com.aionemu.loginserver.LoginServer - ============================================================
+2026-06-05 22:01:25.206 [INFO ] [LoginServer-Scheduler-2] c.a.loginserver.service.PlayerTransferService - PlayerTransfer perform task init. 0 new tasks.
+2026-06-05 22:01:50.185 [INFO ] [AcceptReadWrite Dispatcher] c.a.loginserver.network.gameserver.GsConnection - Gameserver connection attemp from: 142.91.103.230
+2026-06-05 22:01:50.205 [INFO ] [LoginServer-Instant-1] c.a.l.n.gameserver.clientpackets.CM_GS_AUTH - Gameserver #1 is now online.
+2026-06-05 22:01:55.206 [INFO ] [LoginServer-Scheduler-11] com.aionemu.loginserver.PingPongThread - PingPong for GameServer #1 has started.
+2026-06-05 22:03:04.811 [INFO ] [PacketThreadPool-1] c.a.loginserver.network.gameserver.GsConnection - GameServer [ID:1] 142.91.103.230 disconnected

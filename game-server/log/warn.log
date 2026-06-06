@@ -1,0 +1,24 @@
+2026-06-05 22:19:59.328 [WARN ] [main] com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
+2026-06-05 22:20:27.780 [WARN ] [main] com.aionemu.gameserver.world.zone.ZoneService - Can't instantiate zone handler CORE_400010000
+java.lang.reflect.InvocationTargetException: null
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:74)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:483)
+	at com.aionemu.gameserver.world.zone.ZoneService.getNewZoneHandler(ZoneService.java:76)
+	at com.aionemu.gameserver.world.zone.ZoneService.getZoneInstancesByWorldId(ZoneService.java:178)
+	at com.aionemu.gameserver.world.WorldMapInstance.<init>(WorldMapInstance.java:122)
+	at com.aionemu.gameserver.world.WorldMap3DInstance.<init>(WorldMap3DInstance.java:32)
+	at com.aionemu.gameserver.world.WorldMapInstanceFactory.createWorldMapInstance(WorldMapInstanceFactory.java:35)
+	at com.aionemu.gameserver.world.WorldMap.<init>(WorldMap.java:57)
+	at com.aionemu.gameserver.world.World.<init>(World.java:95)
+	at com.aionemu.gameserver.world.World$SingletonHolder.<clinit>(World.java:482)
+	at com.aionemu.gameserver.world.World.getInstance(World.java:101)
+	at com.aionemu.gameserver.GameServer.loadCoreWorld(GameServer.java:277)
+	at com.aionemu.gameserver.GameServer.main(GameServer.java:135)
+Caused by: java.nio.BufferUnderflowException: null
+	at java.base/java.nio.ByteBuffer.get(ByteBuffer.java:836)
+	at java.base/java.nio.ByteBuffer.get(ByteBuffer.java:865)
+	at com.aionemu.gameserver.geoEngine.GeoWorldLoader.loadMeshs(GeoWorldLoader.java:66)
+	at zone.AbyssCore.<init>(AbyssCore.java:52)
+	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+	... 13 common frames omitted
