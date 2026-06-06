@@ -1,7 +1,7 @@
 <p align="center">
   <img src="NexusConnect.jpeg" alt="Nexus Connect Logo" width="600">
 </p>
-## Aion 2.7 Emulator - Nexus Connect Edition
+## Aion Emulator 2.7 - Nexus Connect Edition
 
 This project is for people who are looking for a rock-solid, old-school emulator for Aion 2.7. It is based on the classic Aion Lightning 2.7 foundation but has been completely revitalized by team **Nexus Connect**.
 
