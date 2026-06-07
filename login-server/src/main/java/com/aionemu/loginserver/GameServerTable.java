@@ -108,10 +108,10 @@ public class GameServerTable {
 		 */
 		if (!gsi.getPassword().equals(password) || !NetworkUtils.checkIPMatching(gsi.getIp(), gsConnection.getIP())) {
 			
-			log.info(gsi.getPassword() + " "+password);
-			log.info(gsConnection + " wrong ip or password!");
-			return GsAuthResponse.NOT_AUTHED;
-		}
+		if (!gsi.getPassword().equals(password) || !NetworkUtils.checkIPMatching(gsi.getIp(), gsConnection.getIP())) {
+  		  log.warn(gsConnection + " wrong ip or password for game server #" + requestedId);
+  		  return GsAuthResponse.NOT_AUTHED;
+	}
 
 		gsi.setDefaultAddress(defaultAddress);
 		gsi.setIpRanges(ipRanges);
