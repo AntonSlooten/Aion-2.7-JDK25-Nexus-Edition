@@ -1,1 +1,0 @@
-2026-06-05 22:01:11.372 [WARN ] [main] com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
