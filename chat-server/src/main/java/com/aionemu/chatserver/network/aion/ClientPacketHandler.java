@@ -26,7 +26,7 @@ import com.aionemu.chatserver.network.netty.handler.ClientChannelHandler;
 import com.aionemu.chatserver.network.netty.handler.ClientChannelHandler.State;
 
 /**
- * @author ATracer
+ * @author ATracer NexusConnect
  */
 public class ClientPacketHandler extends AbstractPacketHandler {
 	/**
@@ -36,7 +36,7 @@ public class ClientPacketHandler extends AbstractPacketHandler {
 	 * @param channelHandler
 	 * @return AbstractClientPacket
 	 */
-	public static AbstractClientPacket handle(ChannelBuffer buf, ClientChannelHandler channelHandler) {
+public static AbstractClientPacket handle(ChannelBuffer buf, ClientChannelHandler channelHandler) {
 		byte opCode = buf.readByte();
 		State state = channelHandler.getState();
 		AbstractClientPacket clientPacket = null;
@@ -49,6 +49,7 @@ public class ClientPacketHandler extends AbstractPacketHandler {
 				break;
 			default:
 				// unknownPacket(opCode, state.toString());
+				break; 
 			}
 			break;
 		case AUTHED:
@@ -61,6 +62,7 @@ public class ClientPacketHandler extends AbstractPacketHandler {
 				break;
 			default:
 				// unknownPacket(opCode, state.toString());
+				break; 
 			}
 			break;
 		}

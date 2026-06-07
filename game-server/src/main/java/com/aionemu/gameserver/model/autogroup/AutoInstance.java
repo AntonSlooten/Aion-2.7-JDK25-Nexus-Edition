@@ -16,9 +16,7 @@
  */
 package com.aionemu.gameserver.model.autogroup;
 
-import static org.hamcrest.Matchers.*;
-import static ch.lambdaj.Lambda.*;
-
+import java.util.stream.Collectors;
 import com.aionemu.gameserver.configs.main.PvPConfig;
 import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.Race;
@@ -33,6 +31,7 @@ import javolution.util.FastList;
 /**
  *
  * @author xTz
+ * @Modernized Nexus Connect
  */
 public class AutoInstance {
 
@@ -89,13 +88,17 @@ public class AutoInstance {
 	}
 
 	private List<Player> getPlayersInsideByRace(Race race) {
-		return select(playersInside, having(on(Player.class).getRace(), equalTo(race)));
+		return playersInside.stream()
+				.filter(p -> p.getRace().equals(race))
+				.collect(Collectors.toList());
 	}
 
 	private List<Player> getPlayersByRace(Race race) {
-		return select(players, having(on(Player.class).getRace(), equalTo(race)));
+		return players.stream()
+				.filter(p -> p.getRace().equals(race))
+				.collect(Collectors.toList());
 	}
-
+	
 	public FastList<Player> getPlayersInside() {
 		return playersInside;
 	}
@@ -114,6 +117,9 @@ public class AutoInstance {
 			case SPIRIT_MASTER:
 			case CHANTER:
 				dmgPlayers++;
+				break;
+			default:
+				
 				break;
 			}
 		}
@@ -138,6 +144,10 @@ public class AutoInstance {
 				if (player.getPlayerClass() == PlayerClass.TEMPLAR) {
 					return false;
 				}
+				break;
+				
+			default:
+				
 				break;
 			}
 		}
@@ -175,6 +185,9 @@ public class AutoInstance {
 		case CLERIC:
 		case TEMPLAR:
 			return canEnterSpecialPlayer(player);
+		default:
+			
+			break;
 		}
 		return false;
 	}

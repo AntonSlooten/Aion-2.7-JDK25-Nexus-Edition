@@ -16,7 +16,6 @@
  */
 package com.aionemu.gameserver.model.instance.instancereward;
 
-import static ch.lambdaj.Lambda.*;
 import com.aionemu.commons.utils.Rnd;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.instance.instanceposition.ChaosInstancePosition;
@@ -38,6 +37,7 @@ import javolution.util.FastList;
 /**
  *
  * @author xTz
+ * @Modernized Nexus Connect
  */
 public class PvPArenaReward extends InstanceReward<PvPArenaPlayerReward> {
 
@@ -148,14 +148,9 @@ public class PvPArenaReward extends InstanceReward<PvPArenaPlayerReward> {
 	}
 
 	public List<PvPArenaPlayerReward> sortPoints() {
-		return sort(getInstanceRewards(), on(PvPArenaPlayerReward.class).getScorePoints(), new Comparator<Integer>() {
-
-			@Override
-			public int compare(Integer o1, Integer o2) {
-				return o2 != null ? o2.compareTo(o1) : -o1.compareTo(o2);
-			}
-
-		});
+		List<PvPArenaPlayerReward> sorted = new ArrayList<>(getInstanceRewards());
+		sorted.sort(Comparator.comparingInt(PvPArenaPlayerReward::getScorePoints).reversed());
+		return sorted;
 	}
 
 	public int getRank(int points) {
@@ -169,17 +164,21 @@ public class PvPArenaReward extends InstanceReward<PvPArenaPlayerReward> {
 	}
 
 	public boolean hasCapPoints() {
-		if (isSoloArena()
-				&& (maxFrom(getInstanceRewards()).getPoints() - minFrom(getInstanceRewards()).getPoints() >= 1500)) {
+		if (getInstanceRewards().isEmpty()) return false;
+		
+		int maxPoints = getInstanceRewards().stream().mapToInt(PvPArenaPlayerReward::getPoints).max().orElse(0);
+		int minPoints = getInstanceRewards().stream().mapToInt(PvPArenaPlayerReward::getPoints).min().orElse(0);
+
+		if (isSoloArena() && (maxPoints - minPoints >= 1500)) {
 			return true;
 		}
-		return maxFrom(getInstanceRewards()).getPoints() >= capPoints;
+		return maxPoints >= capPoints;
 	}
 
 	public int getTotalPoints() {
-		return sum(getInstanceRewards(), on(PvPArenaPlayerReward.class).getScorePoints());
+		return getInstanceRewards().stream().mapToInt(PvPArenaPlayerReward::getScorePoints).sum();
 	}
-
+	
 	public boolean canRewarded() {
 		return mapId == 300350000 || mapId == 300360000 || mapId == 300550000 || mapId == 300450000;
 	}

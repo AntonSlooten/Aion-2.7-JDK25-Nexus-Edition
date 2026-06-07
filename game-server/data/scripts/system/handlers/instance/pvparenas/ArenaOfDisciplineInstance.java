@@ -20,8 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static ch.lambdaj.Lambda.on;
-import static ch.lambdaj.Lambda.sort;
+import java.util.Comparator;
 
 import com.aionemu.gameserver.configs.network.NetworkConfig;
 import com.aionemu.gameserver.instance.handlers.InstanceID;
@@ -127,7 +126,7 @@ public class ArenaOfDisciplineInstance extends DisciplineTrainingGroundsInstance
 
 		for (Player p : instance.getPlayersInside()) {
 			List<Item> items = p.getInventory().getItemsByItemId(itemId);
-			items = sort(items, on(Item.class).getExpireTime());
+			items.sort(Comparator.comparing(Item::getExpireTime));
 			for (Item item : items) {
 				ticketRemoved.put(p.getObjectId(), 1);
 				p.getInventory().decreaseItemCount(item, 1);

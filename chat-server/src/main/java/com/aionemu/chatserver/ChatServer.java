@@ -30,10 +30,20 @@ public final class ChatServer {
 			printSystemInfo();
 
 			long bootTime = System.currentTimeMillis() - startTime;
-			log.info("============================================================");
-			log.info("NEXUS CONNECT CHAT SERVER STARTED SUCCESSFULLY");
-			log.info("Boot Time: {} ms", bootTime);
-			log.info("============================================================");
+            log.info("============================================================");
+            log.info("[✓] NEXUS CONNECT LOGIN SERVER IS ONLINE AND READY TO PLAY! ");
+			log.info("[✓] Boot Time: {} ms", bootTime);
+            log.info("=======================================================================");
+            log.info("  _   _                           ____                            _    ");
+            log.info(" | \\ | | _____  ___   _ ___      / ___|___  _ __  _ __   ___  ___| |_  ");
+            log.info(" |  \\| |/ _ \\ \\/ / | | / __|    | |   / _ \\| '_ \\| '_ \\ / _ \\/ __| __| ");
+            log.info(" | |\\  |  __/>  <| |_| \\__ \\    | |__| (_) | | | | | | |  __/ (__| |_  ");
+            log.info(" |_| \\_|\\___/_/\\_\\\\__,_|___/     \\____\\___/|_| |_|_| |_|\\___|\\___|\\__| ");
+            log.info("                                                                       ");
+            log.info("                 Aion 2.7 - Java 25 Edition                            ");
+            log.info("           [ Modernized and Modified by Nexus Connect  ]                   ");
+            log.info("                    [ weplaynexus.com  ]                                ");
+            log.info("=======================================================================");
 		} catch (Throwable t) {
 			log.error("Failed to start Chat Server.", t);
 			System.exit(1);
@@ -41,9 +51,17 @@ public final class ChatServer {
 	}
 
 	private static void printHeader() {
-		log.info("============================================================");
-		log.info("                 NEXUS CONNECT CHAT SERVER");
-		log.info("============================================================");
+            log.info("=======================================================================");
+            log.info("  _   _                           ____                            _    ");
+            log.info(" | \\ | | _____  ___   _ ___      / ___|___  _ __  _ __   ___  ___| |_  ");
+            log.info(" |  \\| |/ _ \\ \\/ / | | / __|    | |   / _ \\| '_ \\| '_ \\ / _ \\/ __| __| ");
+            log.info(" | |\\  |  __/>  <| |_| \\__ \\    | |__| (_) | | | | | | |  __/ (__| |_  ");
+            log.info(" |_| \\_|\\___/_/\\_\\\\__,_|___/     \\____\\___/|_| |_|_| |_|\\___|\\___|\\__| ");
+            log.info("                                                                       ");
+            log.info("                 Aion 2.7 - Java 25 Edition                            ");
+            log.info("           [ Modernized and Modified by Nexus Connect  ]                   ");
+            log.info("                    [ weplaynexus.com  ]                                ");
+            log.info("=======================================================================");
 	}
 
 	private static void printSystemInfo() {

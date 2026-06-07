@@ -1,333 +1,158 @@
-2026-06-05 22:19:58.868 [INFO ] [main] com.aionemu.gameserver.GameServer - ============================================================
-2026-06-05 22:19:58.873 [INFO ] [main] com.aionemu.gameserver.GameServer -                   NEXUS CONNECT GAME SERVER
-2026-06-05 22:19:58.873 [INFO ] [main] com.aionemu.gameserver.GameServer -                    Aion 2.7 Java 25 Edition
-2026-06-05 22:19:58.873 [INFO ] [main] com.aionemu.gameserver.GameServer - ============================================================
-2026-06-05 22:19:58.997 [INFO ] [main] com.aionemu.gameserver.GameServer - JavaAgent callback support is configured.
-2026-06-05 22:19:59.072 [INFO ] [main] org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor
-2026-06-05 22:19:59.094 [INFO ] [main] org.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
-2026-06-05 22:19:59.096 [INFO ] [main] org.quartz.core.QuartzScheduler - Quartz Scheduler v2.5.2 created.
-2026-06-05 22:19:59.098 [INFO ] [main] org.quartz.simpl.RAMJobStore - RAMJobStore initialized.
-2026-06-05 22:19:59.099 [INFO ] [main] org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.5.2) 'QuartzScheduler' with instanceId 'NON_CLUSTERED'
-  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
-  NOT STARTED.
-  Currently in standby mode.
-  Number of jobs executed: 0
-  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 1 threads.
-  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
-
-2026-06-05 22:19:59.099 [INFO ] [main] org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'QuartzScheduler' initialized from an externally provided properties instance.
-2026-06-05 22:19:59.100 [INFO ] [main] org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.5.2
-2026-06-05 22:19:59.100 [INFO ] [main] org.quartz.core.QuartzScheduler - Scheduler QuartzScheduler_$_NON_CLUSTERED started.
-2026-06-05 22:19:59.100 [INFO ] [main] com.aionemu.gameserver.GameServer - Loading configuration...
-2026-06-05 22:19:59.101 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: mygs.properties
-2026-06-05 22:19:59.102 [INFO ] [main] com.aionemu.gameserver.configs.Config - No override properties found
-2026-06-05 22:19:59.149 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/administration/admin.properties
-2026-06-05 22:19:59.151 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/administration/developer.properties
-2026-06-05 22:19:59.167 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/ai.properties
-2026-06-05 22:19:59.169 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/commons.properties
-2026-06-05 22:19:59.170 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/cache.properties
-2026-06-05 22:19:59.172 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/craft.properties
-2026-06-05 22:19:59.191 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/custom.properties
-2026-06-05 22:19:59.193 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/dredgion.properties
-2026-06-05 22:19:59.195 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/drop.properties
-2026-06-05 22:19:59.197 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/enchants.properties
-2026-06-05 22:19:59.199 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/falldamage.properties
-2026-06-05 22:19:59.205 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/gameserver.properties
-2026-06-05 22:19:59.208 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/geodata.properties
-2026-06-05 22:19:59.210 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/group.properties
-2026-06-05 22:19:59.212 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/html.properties
-2026-06-05 22:19:59.216 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/ingameshop.properties
-2026-06-05 22:19:59.221 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/legion.properties
-2026-06-05 22:19:59.223 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/logging.properties
-2026-06-05 22:19:59.227 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/membership.properties
-2026-06-05 22:19:59.228 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/periodicsave.properties
-2026-06-05 22:19:59.230 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/prices.properties
-2026-06-05 22:19:59.232 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/ranking.properties
-2026-06-05 22:19:59.238 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/rates.properties
-2026-06-05 22:19:59.238 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/shutdown.properties
-2026-06-05 22:19:59.241 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/siege.properties
-2026-06-05 22:19:59.242 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/thread.properties
-2026-06-05 22:19:59.244 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/world.properties
-2026-06-05 22:19:59.246 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/playertransfer.properties
-2026-06-05 22:19:59.248 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/weddings.properties
-2026-06-05 22:19:59.249 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/punishment.properties
-2026-06-05 22:19:59.250 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/PvP.properties
-2026-06-05 22:19:59.252 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/main/events.properties
-2026-06-05 22:19:59.256 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/network/database.properties
-2026-06-05 22:19:59.260 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/network/network.properties
-2026-06-05 22:19:59.272 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/custom/customDrop.properties
-2026-06-05 22:19:59.275 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/custom/recursiveAdd.properties
-2026-06-05 22:19:59.276 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/custom/customfun.properties
-2026-06-05 22:19:59.278 [INFO ] [main] com.aionemu.gameserver.configs.Config - Loading: ./config/custom/webshop.properties
-2026-06-05 22:19:59.316 [INFO ] [main] com.zaxxer.hikari.HikariDataSource - AionHikariPool - Starting...
-2026-06-05 22:19:59.328 [WARN ] [main] com.zaxxer.hikari.util.DriverDataSource - Registered driver with driverClassName=com.mysql.jdbc.Driver was not found, trying direct instantiation.
-2026-06-05 22:20:00.097 [INFO ] [main] com.zaxxer.hikari.HikariDataSource - AionHikariPool - Start completed.
-2026-06-05 22:20:00.121 [INFO ] [main] com.aionemu.commons.database.DatabaseFactory - Successfully connected to database: MySQL 5.7 | pool minIdle=4 maxPoolSize=10
-2026-06-05 22:20:04.247 [INFO ] [main] com.aionemu.commons.database.dao.DAOManager - Loaded 44 DAO implementations.
-2026-06-05 22:20:04.267 [INFO ] [main] com.aionemu.gameserver.utils.ThreadPoolManager - ThreadPoolManager: Initialized with 18 scheduler, 8 instant and virtual-thread long running executor.
-2026-06-05 22:20:12.532 [INFO ] [main] c.a.gameserver.services.MotionLoggingService - MotionLoggingService started.
-2026-06-05 22:20:26.895 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded world maps data: 93 maps
-2026-06-05 22:20:26.901 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded player exp table: 56 levels
-2026-06-05 22:20:26.905 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 464 player stat templates
-2026-06-05 22:20:26.907 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 341 summon stat templates
-2026-06-05 22:20:26.909 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 1 item cleanup entries
-2026-06-05 22:20:26.911 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 55578 item templates
-2026-06-05 22:20:26.913 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 4533 item group templates
-2026-06-05 22:20:26.916 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 29734 npc templates
-2026-06-05 22:20:26.917 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 2788 npc shout templates
-2026-06-05 22:20:26.918 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 132 pet templates
-2026-06-05 22:20:26.920 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 4 initial player templates
-2026-06-05 22:20:26.921 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 977 trade lists
-2026-06-05 22:20:26.924 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 210 npc teleporter templates
-2026-06-05 22:20:26.927 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 197 teleport locations
-2026-06-05 22:20:26.928 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 6993 skill templates
-2026-06-05 22:20:26.929 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 98 motion times
-2026-06-05 22:20:26.933 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 7363 skill learn entries
-2026-06-05 22:20:26.935 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 7 cube expand entries
-2026-06-05 22:20:26.938 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 60 warehouse expand entries
-2026-06-05 22:20:26.942 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 85 bind point entries
-2026-06-05 22:20:26.944 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 4599 quest data entries
-2026-06-05 22:20:26.945 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 451 gatherable entries
-2026-06-05 22:20:26.947 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 234 title entries
-2026-06-05 22:20:26.948 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 4176 walker routes
-2026-06-05 22:20:26.953 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 1180 zone entries
-2026-06-05 22:20:26.954 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 1693 goodslist entries
-2026-06-05 22:20:26.956 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 332 tribe relation entries
-2026-06-05 22:20:26.957 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 7281 recipe entries
-2026-06-05 22:20:26.959 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 192 portal entries
-2026-06-05 22:20:26.960 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 158 chest locations
-2026-06-05 22:20:26.963 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 44 static door locations
-2026-06-05 22:20:26.965 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 196 item set entries
-2026-06-05 22:20:26.967 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 11 npc factions
-2026-06-05 22:20:26.969 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 9813 npc skill list entries
-2026-06-05 22:20:26.969 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 19 pet skill list entries
-2026-06-05 22:20:26.971 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 54 siege location entries
-2026-06-05 22:20:26.972 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 74 fly ring entries
-2026-06-05 22:20:26.976 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 9 shield entries
-2026-06-05 22:20:26.977 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 132 pet entries
-2026-06-05 22:20:26.978 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 95 guide entries
-2026-06-05 22:20:26.980 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 8 road entries
-2026-06-05 22:20:26.981 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 53 instance cooltime entries
-2026-06-05 22:20:26.983 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 1270 decomposable items entries
-2026-06-05 22:20:26.985 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 33 ai templates
-2026-06-05 22:20:26.987 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 222 flypath templates
-2026-06-05 22:20:26.989 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 7 windstream entries
-2026-06-05 22:20:26.990 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 20 assembled npcs entries
-2026-06-05 22:20:26.992 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 366 cosmetic items entries
-2026-06-05 22:20:26.993 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 20808 npc drop entries
-2026-06-05 22:20:26.995 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 22 auto group entries
-2026-06-05 22:20:26.997 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 68 spawn maps entries
-2026-06-05 22:20:26.998 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 0 active events
-2026-06-05 22:20:26.999 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - Loaded 4 Pvp Zone Positions
-2026-06-05 22:20:27.024 [INFO ] [main] com.aionemu.gameserver.dataholders.DataManager - ##### [Static Data loaded in: 22 seconds] #####
-2026-06-05 22:20:27.096 [INFO ] [main] com.aionemu.gameserver.utils.idfactory.IDFactory - IDFactory: 31 id's used.
-2026-06-05 22:20:27.102 [INFO ] [main] com.aionemu.gameserver.world.zone.ZoneService - Zone engine load started
-2026-06-05 22:20:27.623 [INFO ] [main] com.aionemu.gameserver.world.zone.ZoneService - Loaded 5 zone handlers.
-2026-06-05 22:20:27.780 [WARN ] [main] com.aionemu.gameserver.world.zone.ZoneService - Can't instantiate zone handler CORE_400010000
-java.lang.reflect.InvocationTargetException: null
-	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:74)
-	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:499)
-	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:483)
-	at com.aionemu.gameserver.world.zone.ZoneService.getNewZoneHandler(ZoneService.java:76)
-	at com.aionemu.gameserver.world.zone.ZoneService.getZoneInstancesByWorldId(ZoneService.java:178)
-	at com.aionemu.gameserver.world.WorldMapInstance.<init>(WorldMapInstance.java:122)
-	at com.aionemu.gameserver.world.WorldMap3DInstance.<init>(WorldMap3DInstance.java:32)
-	at com.aionemu.gameserver.world.WorldMapInstanceFactory.createWorldMapInstance(WorldMapInstanceFactory.java:35)
-	at com.aionemu.gameserver.world.WorldMap.<init>(WorldMap.java:57)
-	at com.aionemu.gameserver.world.World.<init>(World.java:95)
-	at com.aionemu.gameserver.world.World$SingletonHolder.<clinit>(World.java:482)
-	at com.aionemu.gameserver.world.World.getInstance(World.java:101)
-	at com.aionemu.gameserver.GameServer.loadCoreWorld(GameServer.java:277)
-	at com.aionemu.gameserver.GameServer.main(GameServer.java:135)
-Caused by: java.nio.BufferUnderflowException: null
-	at java.base/java.nio.ByteBuffer.get(ByteBuffer.java:836)
-	at java.base/java.nio.ByteBuffer.get(ByteBuffer.java:865)
-	at com.aionemu.gameserver.geoEngine.GeoWorldLoader.loadMeshs(GeoWorldLoader.java:66)
-	at zone.AbyssCore.<init>(AbyssCore.java:52)
-	at java.base/jdk.internal.reflect.DirectConstructorHandleAccessor.newInstance(DirectConstructorHandleAccessor.java:62)
+2026-06-06 18:03:47.876 [INFO ] [main] com.aionemu.gameserver.GameServer - ============================================================
+2026-06-06 18:03:47.878 [INFO ] [main] com.aionemu.gameserver.GameServer -                   NEXUS CONNECT GAME SERVER
+2026-06-06 18:03:47.878 [INFO ] [main] com.aionemu.gameserver.GameServer -                    Aion 2.7 Java 25 Edition
+2026-06-06 18:03:47.880 [INFO ] [main] com.aionemu.gameserver.GameServer - ============================================================
+2026-06-06 18:03:47.882 [ERROR] [main] c.a.c.c.enhancer.CallbackClassFileTransformer - Can't transform class com/aionemu/gameserver/utils/ThreadUncaughtExceptionHandler
+java.lang.Error: Can't transform class com/aionemu/gameserver/utils/ThreadUncaughtExceptionHandler
+	at com.aionemu.commons.callbacks.enhancer.CallbackClassFileTransformer.transform(CallbackClassFileTransformer.java:62) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at java.instrument/java.lang.instrument.ClassFileTransformer.transform(ClassFileTransformer.java:257) ~[na:na]
+	at java.instrument/sun.instrument.TransformerManager.transform(TransformerManager.java:188) ~[na:na]
+	at java.instrument/sun.instrument.InstrumentationImpl.transform(InstrumentationImpl.java:594) ~[na:na]
+	at java.base/java.lang.ClassLoader.defineClass1(Native Method) ~[na:na]
+	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:962) ~[na:na]
+	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:144) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:776) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:691) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:620) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:578) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	at com.aionemu.gameserver.GameServer.initUtilityServicesAndConfig(GameServer.java:243) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.gameserver.GameServer.main(GameServer.java:133) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+Caused by: java.io.IOException: invalid constant type: 18
+	at javassist.bytecode.ConstPool.readOne(ConstPool.java:1113) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ConstPool.read(ConstPool.java:1056) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ConstPool.<init>(ConstPool.java:150) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ClassFile.read(ClassFile.java:765) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ClassFile.<init>(ClassFile.java:109) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.CtClassType.<init>(CtClassType.java:95) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.ClassPool.makeClass(ClassPool.java:718) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.ClassPool.makeClass(ClassPool.java:696) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.commons.callbacks.enhancer.GlobalCallbackEnhancer.transformClass(GlobalCallbackEnhancer.java:45) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.commons.callbacks.enhancer.CallbackClassFileTransformer.transform(CallbackClassFileTransformer.java:59) ~[game-server-1.0.0-SNAPSHOT.jar:na]
 	... 13 common frames omitted
-2026-06-05 22:20:28.101 [INFO ] [main] com.aionemu.gameserver.world.World - World: 93 worlds map created.
-2026-06-05 22:20:28.144 [INFO ] [main] com.aionemu.gameserver.world.geo.GeoService - Configured Geo type: NO_GEO
-2026-06-05 22:20:28.150 [INFO ] [main] com.aionemu.gameserver.questEngine.QuestEngine - Initializing QuestEngine
-2026-06-05 22:20:33.440 [INFO ] [main] com.aionemu.gameserver.questEngine.QuestEngine - Loaded 3431 quest handlers.
-2026-06-05 22:20:33.450 [INFO ] [main] com.aionemu.gameserver.instance.InstanceEngine - Instance engine load started
-2026-06-05 22:20:34.801 [INFO ] [main] com.aionemu.gameserver.instance.InstanceEngine - Loaded 34 instance handlers.
-2026-06-05 22:20:34.806 [INFO ] [main] com.aionemu.gameserver.ai2.AI2Engine - AI2 engine load started
-2026-06-05 22:20:36.383 [INFO ] [main] com.aionemu.gameserver.ai2.AI2Engine - Loaded 139 ai handlers.
-2026-06-05 22:20:36.392 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Initializing sieges...
-2026-06-05 22:20:36.633 [INFO ] [main] c.a.gameserver.services.LimitedItemTradeService - Scheduled Limited Items based on cron expression size: 77
-2026-06-05 22:20:36.872 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 110010000 [1] : 321
-2026-06-05 22:20:36.875 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 110020000 [1] : 26
-2026-06-05 22:20:36.879 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 110070000 [1] : 36
-2026-06-05 22:20:36.915 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 120010000 [1] : 355
-2026-06-05 22:20:36.916 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 120020000 [1] : 26
-2026-06-05 22:20:36.924 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 120080000 [1] : 36
-2026-06-05 22:20:36.968 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 210010000 [1] : 1266
-2026-06-05 22:20:37.104 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 210020000 [1] : 6409
-2026-06-05 22:20:37.160 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 210030000 [1] : 2747
-2026-06-05 22:20:37.369 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 210040000 [1] : 8264
-2026-06-05 22:20:37.497 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 210050000 [1] : 8249
-2026-06-05 22:20:37.629 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 210060000 [1] : 7671
-2026-06-05 22:20:37.655 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 220010000 [1] : 1474
-2026-06-05 22:20:37.809 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 220020000 [1] : 7563
-2026-06-05 22:20:37.872 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 220030000 [1] : 3269
-2026-06-05 22:20:38.009 [INFO ] [GameServerScheduler-13] c.a.g.taskmanager.AbstractPeriodicTaskManager - PacketBroadcaster: Initialized.
-2026-06-05 22:20:38.140 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 220040000 [1] : 8381
-2026-06-05 22:20:38.352 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 220050000 [1] : 8679
-2026-06-05 22:20:38.650 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 220070000 [1] : 7895
-2026-06-05 22:20:38.651 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 300010000 [1] : 0
-2026-06-05 22:20:38.653 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 300020000 [1] : 0
-2026-06-05 22:20:38.656 [INFO ] [main] c.a.g.spawnengine.StaticDoorSpawnManager - Spawned static doors: 300240000 [1] : 17
-2026-06-05 22:20:38.657 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 300240000 [1] : 0
-2026-06-05 22:20:38.659 [INFO ] [main] c.a.g.spawnengine.StaticDoorSpawnManager - Spawned static doors: 300260000 [1] : 1
-2026-06-05 22:20:38.660 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 300260000 [1] : 0
-2026-06-05 22:20:38.663 [INFO ] [main] c.a.g.spawnengine.StaticDoorSpawnManager - Spawned static doors: 300270000 [1] : 11
-2026-06-05 22:20:38.664 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 300270000 [1] : 0
-2026-06-05 22:20:38.666 [INFO ] [main] c.a.g.spawnengine.StaticDoorSpawnManager - Spawned static doors: 300280000 [1] : 10
-2026-06-05 22:20:38.668 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 300280000 [1] : 0
-2026-06-05 22:20:38.669 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 300290000 [1] : 0
-2026-06-05 22:20:38.671 [INFO ] [main] c.a.g.spawnengine.StaticDoorSpawnManager - Spawned static doors: 300310000 [1] : 17
-2026-06-05 22:20:38.674 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 300310000 [1] : 0
-2026-06-05 22:20:38.676 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 320060000 [1] : 0
-2026-06-05 22:20:38.677 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 330010010 [1] : 0
-2026-06-05 22:20:38.912 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 400010000 [1] : 9722
-2026-06-05 22:20:38.913 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 510010000 [1] : 0
-2026-06-05 22:20:38.916 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 520010000 [1] : 0
-2026-06-05 22:20:38.938 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 600010000 [1] : 418
-2026-06-05 22:20:38.939 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 900020000 [1] : 0
-2026-06-05 22:20:38.942 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 900030000 [1] : 0
-2026-06-05 22:20:38.943 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 900100000 [1] : 0
-2026-06-05 22:20:38.945 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 900110000 [1] : 0
-2026-06-05 22:20:38.947 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 900120000 [1] : 0
-2026-06-05 22:20:38.951 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 900130000 [1] : 0
-2026-06-05 22:20:38.953 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 900140000 [1] : 0
-2026-06-05 22:20:38.954 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Spawned 990010110 [1] : 0
-2026-06-05 22:20:38.974 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Loaded 60637 npc spawns
-2026-06-05 22:20:38.975 [INFO ] [main] com.aionemu.gameserver.spawnengine.SpawnEngine - Loaded 16166 gatherable spawns
-2026-06-05 22:20:38.979 [INFO ] [GameServerScheduler-18] c.a.gameserver.spawnengine.RiftSpawnManager - Rift Manager
-2026-06-05 22:20:38.981 [INFO ] [GameServerScheduler-18] c.a.gameserver.spawnengine.RiftSpawnManager - Spawning 0 rifts for the map : ELTNEN
-2026-06-05 22:20:38.982 [INFO ] [GameServerScheduler-18] c.a.gameserver.spawnengine.RiftSpawnManager - Spawning 2 rifts for the map : HEIRON
-2026-06-05 22:20:38.983 [INFO ] [main] c.a.gameserver.spawnengine.DayTimeSpawnEngine - DayTimeSpawnEngine: new day time is MORNING
-2026-06-05 22:20:38.983 [INFO ] [GameServerScheduler-18] c.a.gameserver.spawnengine.RiftSpawnManager - Spawning rift : HEIRON_AM
-2026-06-05 22:20:38.987 [INFO ] [main] c.a.gameserver.spawnengine.DayTimeSpawnEngine - DayTimeSpawnEngine: spawned 70
-2026-06-05 22:20:38.989 [INFO ] [main] c.a.gameserver.spawnengine.DayTimeSpawnEngine - DayTimeSpawnEngine: despawned 0
-2026-06-05 22:20:38.990 [INFO ] [GameServerScheduler-18] c.a.gameserver.spawnengine.RiftSpawnManager - Spawning rift : HEIRON_GM
-2026-06-05 22:20:38.993 [INFO ] [GameServerScheduler-18] c.a.gameserver.spawnengine.RiftSpawnManager - Spawning 0 rifts for the map : MORHEIM
-2026-06-05 22:20:38.996 [INFO ] [GameServerScheduler-18] c.a.gameserver.spawnengine.RiftSpawnManager - Spawning 1 rifts for the map : BELUSLAN
-2026-06-05 22:20:38.996 [INFO ] [GameServerScheduler-18] c.a.gameserver.spawnengine.RiftSpawnManager - Spawning rift : BELUSLAN_AM
-2026-06-05 22:20:39.120 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Scheduled siege of fortressID 2011 based on cron expression: 0 0 21 ? * SUN
-2026-06-05 22:20:39.121 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Scheduled siege of fortressID 2021 based on cron expression: 0 0 21 ? * SUN
-2026-06-05 22:20:39.124 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Scheduled siege of fortressID 3011 based on cron expression: 0 0 21 ? * SUN
-2026-06-05 22:20:39.126 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Scheduled siege of fortressID 3021 based on cron expression: 0 0 21 ? * SUN
-2026-06-05 22:20:39.127 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Scheduled siege of fortressID 1131 based on cron expression: 0 0 21 ? * MON
-2026-06-05 22:20:39.127 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Scheduled siege of fortressID 1132 based on cron expression: 0 0 21 ? * THU
-2026-06-05 22:20:39.129 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Scheduled siege of fortressID 1141 based on cron expression: 0 0 21 ? * MON
-2026-06-05 22:20:39.132 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Scheduled siege of fortressID 1141 based on cron expression: 0 0 21 ? * THU
-2026-06-05 22:20:39.133 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Scheduled siege of fortressID 1011 based on cron expression: 0 0 21 ? * FRI
-2026-06-05 22:20:39.135 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Scheduled siege of fortressID 1211 based on cron expression: 0 0 21 ? * THU
-2026-06-05 22:20:39.137 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Scheduled siege of fortressID 1221 based on cron expression: 0 0 21 ? * TUE
-2026-06-05 22:20:39.138 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Scheduled siege of fortressID 1231 based on cron expression: 0 0 21 ? * TUE
-2026-06-05 22:20:39.140 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Scheduled siege of fortressID 1241 based on cron expression: 0 0 21 ? * TUE
-2026-06-05 22:20:39.145 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Scheduled siege of fortressID 1251 based on cron expression: 0 0 21 ? * MON
-2026-06-05 22:20:39.147 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Artifact #1011 siege was not started, it belongs to fortress
-2026-06-05 22:20:39.148 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1012
-2026-06-05 22:20:39.154 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1013
-2026-06-05 22:20:39.155 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1014
-2026-06-05 22:20:39.156 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1015
-2026-06-05 22:20:39.158 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1016
-2026-06-05 22:20:39.160 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1017
-2026-06-05 22:20:39.161 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1018
-2026-06-05 22:20:39.163 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1019
-2026-06-05 22:20:39.165 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1020
-2026-06-05 22:20:39.167 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Artifact #1131 siege was not started, it belongs to fortress
-2026-06-05 22:20:39.169 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Artifact #1132 siege was not started, it belongs to fortress
-2026-06-05 22:20:39.170 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1133
-2026-06-05 22:20:39.172 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1134
-2026-06-05 22:20:39.174 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1135
-2026-06-05 22:20:39.176 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Artifact #1141 siege was not started, it belongs to fortress
-2026-06-05 22:20:39.177 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1142
-2026-06-05 22:20:39.179 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1143
-2026-06-05 22:20:39.180 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1144
-2026-06-05 22:20:39.182 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1145
-2026-06-05 22:20:39.183 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1146
-2026-06-05 22:20:39.185 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Artifact #1211 siege was not started, it belongs to fortress
-2026-06-05 22:20:39.186 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1212
-2026-06-05 22:20:39.188 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1213
-2026-06-05 22:20:39.189 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1214
-2026-06-05 22:20:39.190 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1215
-2026-06-05 22:20:39.192 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Artifact #1221 siege was not started, it belongs to fortress
-2026-06-05 22:20:39.193 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1222
-2026-06-05 22:20:39.195 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1223
-2026-06-05 22:20:39.198 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1224
-2026-06-05 22:20:39.200 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Artifact #1231 siege was not started, it belongs to fortress
-2026-06-05 22:20:39.202 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1232
-2026-06-05 22:20:39.203 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1233
-2026-06-05 22:20:39.205 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Artifact #1241 siege was not started, it belongs to fortress
-2026-06-05 22:20:39.207 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1242
-2026-06-05 22:20:39.209 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1243
-2026-06-05 22:20:39.211 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Artifact #1251 siege was not started, it belongs to fortress
-2026-06-05 22:20:39.212 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1252
-2026-06-05 22:20:39.214 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1253
-2026-06-05 22:20:39.216 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #1254
-2026-06-05 22:20:39.217 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Artifact #2011 siege was not started, it belongs to fortress
-2026-06-05 22:20:39.220 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #2012
-2026-06-05 22:20:39.221 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #2013
-2026-06-05 22:20:39.223 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Artifact #2021 siege was not started, it belongs to fortress
-2026-06-05 22:20:39.224 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #2022
-2026-06-05 22:20:39.226 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #2023
-2026-06-05 22:20:39.227 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Artifact #3011 siege was not started, it belongs to fortress
-2026-06-05 22:20:39.231 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #3012
-2026-06-05 22:20:39.233 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #3013
-2026-06-05 22:20:39.234 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Artifact #3021 siege was not started, it belongs to fortress
-2026-06-05 22:20:39.236 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #3022
-2026-06-05 22:20:39.237 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Starting siege of artifact #3023
-2026-06-05 22:20:39.252 [INFO ] [main] com.aionemu.gameserver.services.SiegeService - Broadcasting Siege Location status based on expression: 0 0 * ? * *
-2026-06-05 22:20:39.255 [INFO ] [main] com.aionemu.gameserver.services.GameTimeService - GameTimeService started. Update interval:180000
-2026-06-05 22:20:39.262 [INFO ] [main] c.a.gameserver.services.AnnouncementService - Loaded 0 announcements
-2026-06-05 22:20:39.264 [INFO ] [main] com.aionemu.gameserver.services.DebugService - DebugService started. Analyze iterval: 1800000
-2026-06-05 22:20:39.268 [INFO ] [main] EXCHANGE_LOG - Loading broker...
-2026-06-05 22:20:39.273 [INFO ] [main] EXCHANGE_LOG - Broker loaded with 0 broker items, 0 settled items.
-2026-06-05 22:20:39.274 [INFO ] [main] c.a.g.taskmanager.AbstractPeriodicTaskManager - BrokerPeriodicTaskManager: Initialized.
-2026-06-05 22:20:39.278 [INFO ] [main] c.a.g.taskmanager.AbstractPeriodicTaskManager - ExchangePeriodicTaskManager: Initialized.
-2026-06-05 22:20:39.281 [INFO ] [main] com.aionemu.gameserver.services.PetitionService - Loading PetitionService ...
-2026-06-05 22:20:39.283 [INFO ] [main] com.aionemu.gameserver.services.PetitionService - Successfully loaded 0 database petitions
-2026-06-05 22:20:39.310 [INFO ] [main] com.aionemu.gameserver.cache.HTMLCache - Cache[HTML]: Caching started... OK.
-2026-06-05 22:20:39.310 [INFO ] [main] com.aionemu.gameserver.cache.HTMLCache - Cache[HTML]: Using cache file... OK.
-2026-06-05 22:20:39.326 [INFO ] [main] com.aionemu.gameserver.cache.HTMLCache - Cache[HTML]: 8.652 kilobytes on 7 file(s) loaded.
-2026-06-05 22:20:39.327 [INFO ] [main] com.aionemu.gameserver.cache.HTMLCache - Cache[HTML]: Compaction skipped!
-2026-06-05 22:20:39.333 [INFO ] [main] c.a.g.services.abyss.AbyssRankUpdateService - AbyssRankUpdateService: executing rank update
-2026-06-05 22:20:39.340 [INFO ] [main] c.a.gameserver.services.abyss.AbyssRankingCache - Updating abyss ranking cache
-2026-06-05 22:20:39.363 [INFO ] [main] c.a.g.services.abyss.AbyssRankUpdateService - AbyssRankUpdateService: execution time: 0
-2026-06-05 22:20:39.364 [INFO ] [main] c.a.g.services.abyss.AbyssRankUpdateService - Starting ranking update task based on cron expression: 0 0 0 * * ?
-2026-06-05 22:20:39.373 [INFO ] [main] c.a.gameserver.taskmanager.TaskManagerFromDB - Loaded 0 task from the database
-2026-06-05 22:20:39.381 [INFO ] [main] c.a.g.services.instance.DredgionService2 - Scheduled Dredgion: based on cron expression: 0 0 18,22 ? * * Duration: 120 in minutes
-2026-06-05 22:20:39.387 [INFO ] [main] c.a.g.services.transfers.PlayerTransferService - PlayerTransferService loaded. With 0 restricted skills.
-2026-06-05 22:20:39.392 [INFO ] [main] com.aionemu.gameserver.utils.AEVersions - Commons Revision: Unknown Revision
-2026-06-05 22:20:39.393 [INFO ] [main] com.aionemu.gameserver.utils.AEVersions - Commons Build Date: [ Unknown Date ]
-2026-06-05 22:20:39.394 [INFO ] [main] com.aionemu.gameserver.utils.AEVersions - GS Revision: Unknown Revision
-2026-06-05 22:20:39.395 [INFO ] [main] com.aionemu.gameserver.utils.AEVersions - GS Branch: Unknown Branch
-2026-06-05 22:20:39.397 [INFO ] [main] com.aionemu.gameserver.utils.AEVersions - GS Branch Commit Date: Unknown CommitTime
-2026-06-05 22:20:39.398 [INFO ] [main] com.aionemu.gameserver.utils.AEVersions - GS Build Date: [ Unknown Date ]
-2026-06-05 22:20:39.400 [INFO ] [main] com.aionemu.gameserver.utils.AEVersions - ..................................................
-2026-06-05 22:20:39.401 [INFO ] [main] com.aionemu.gameserver.utils.AEVersions - ..................................................
-2026-06-05 22:20:39.402 [INFO ] [main] com.aionemu.gameserver.GameServer - System Information
-2026-06-05 22:20:39.404 [INFO ] [main] com.aionemu.gameserver.GameServer - ------------------------------------------------------------
-2026-06-05 22:20:39.406 [INFO ] [main] com.aionemu.gameserver.GameServer - Java Version : 25.0.2
-2026-06-05 22:20:39.407 [INFO ] [main] com.aionemu.gameserver.GameServer - Java Vendor  : Oracle Corporation
-2026-06-05 22:20:39.409 [INFO ] [main] com.aionemu.gameserver.GameServer - OS Name      : Windows Server 2016
-2026-06-05 22:20:39.411 [INFO ] [main] com.aionemu.gameserver.GameServer - OS Version   : 10.0
-2026-06-05 22:20:39.412 [INFO ] [main] com.aionemu.gameserver.GameServer - OS Arch      : amd64
-2026-06-05 22:20:39.415 [INFO ] [main] com.aionemu.gameserver.GameServer - Processors   : 6
-2026-06-05 22:20:39.417 [INFO ] [main] com.aionemu.gameserver.GameServer - Max Memory   : 4096 MB
-2026-06-05 22:20:39.419 [INFO ] [main] com.aionemu.gameserver.GameServer - Total Memory : 2048 MB
-2026-06-05 22:20:39.420 [INFO ] [main] com.aionemu.gameserver.GameServer - Free Memory  : 443 MB
-2026-06-05 22:20:39.422 [INFO ] [main] com.aionemu.gameserver.GameServer - ------------------------------------------------------------
-2026-06-05 22:20:39.519 [INFO ] [main] com.aionemu.gameserver.GameServer - RecursiveAdd service disabled.
-2026-06-05 22:20:39.519 [INFO ] [main] com.aionemu.gameserver.GameServer - WebShop service disabled.
-2026-06-05 22:20:39.520 [INFO ] [main] com.aionemu.gameserver.GameServer - ============================================================
-2026-06-05 22:20:39.522 [INFO ] [main] com.aionemu.gameserver.GameServer - NEXUS CONNECT GAME SERVER STARTED SUCCESSFULLY
-2026-06-05 22:20:39.523 [INFO ] [main] com.aionemu.gameserver.GameServer - Boot Time: 40988 ms
-2026-06-05 22:20:39.524 [INFO ] [main] com.aionemu.gameserver.GameServer - ============================================================
-2026-06-05 22:20:39.567 [INFO ] [main] com.aionemu.commons.network.NioServer - Server listening on IP: 142.91.103.230 Port 7777 for Game Connections
-2026-06-05 22:20:39.571 [INFO ] [main] c.a.gameserver.network.loginserver.LoginServer - Connecting to LoginServer: /142.91.103.230:9016
-2026-06-05 22:20:40.575 [INFO ] [main] c.a.gameserver.network.loginserver.LoginServer - Cant connect to LoginServer: Connection refused: connect
+2026-06-06 18:03:47.884 [ERROR] [main] c.a.c.c.enhancer.CallbackClassFileTransformer - Can't transform class com/aionemu/gameserver/utils/ThreadUncaughtExceptionHandler
+java.lang.Error: Can't transform class com/aionemu/gameserver/utils/ThreadUncaughtExceptionHandler
+	at com.aionemu.commons.callbacks.enhancer.CallbackClassFileTransformer.transform(CallbackClassFileTransformer.java:62) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at java.instrument/java.lang.instrument.ClassFileTransformer.transform(ClassFileTransformer.java:257) ~[na:na]
+	at java.instrument/sun.instrument.TransformerManager.transform(TransformerManager.java:188) ~[na:na]
+	at java.instrument/sun.instrument.InstrumentationImpl.transform(InstrumentationImpl.java:594) ~[na:na]
+	at java.base/java.lang.ClassLoader.defineClass1(Native Method) ~[na:na]
+	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:962) ~[na:na]
+	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:144) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:776) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:691) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:620) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:578) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	at com.aionemu.gameserver.GameServer.initUtilityServicesAndConfig(GameServer.java:243) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.gameserver.GameServer.main(GameServer.java:133) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+Caused by: java.io.IOException: invalid constant type: 18
+	at javassist.bytecode.ConstPool.readOne(ConstPool.java:1113) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ConstPool.read(ConstPool.java:1056) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ConstPool.<init>(ConstPool.java:150) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ClassFile.read(ClassFile.java:765) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ClassFile.<init>(ClassFile.java:109) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.CtClassType.<init>(CtClassType.java:95) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.ClassPool.makeClass(ClassPool.java:718) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.ClassPool.makeClass(ClassPool.java:696) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.commons.callbacks.enhancer.ObjectCallbackEnhancer.transformClass(ObjectCallbackEnhancer.java:63) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.commons.callbacks.enhancer.CallbackClassFileTransformer.transform(CallbackClassFileTransformer.java:59) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	... 13 common frames omitted
+2026-06-06 18:03:47.958 [ERROR] [main] c.a.c.c.enhancer.CallbackClassFileTransformer - Can't transform class com/aionemu/gameserver/utils/javaagent/JavaAgentUtils
+java.lang.Error: Can't transform class com/aionemu/gameserver/utils/javaagent/JavaAgentUtils
+	at com.aionemu.commons.callbacks.enhancer.CallbackClassFileTransformer.transform(CallbackClassFileTransformer.java:62) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at java.instrument/java.lang.instrument.ClassFileTransformer.transform(ClassFileTransformer.java:257) ~[na:na]
+	at java.instrument/sun.instrument.TransformerManager.transform(TransformerManager.java:188) ~[na:na]
+	at java.instrument/sun.instrument.InstrumentationImpl.transform(InstrumentationImpl.java:594) ~[na:na]
+	at java.base/java.lang.ClassLoader.defineClass1(Native Method) ~[na:na]
+	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:962) ~[na:na]
+	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:144) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:776) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:691) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:620) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:578) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	at com.aionemu.gameserver.GameServer.initUtilityServicesAndConfig(GameServer.java:245) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.gameserver.GameServer.main(GameServer.java:133) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+Caused by: java.lang.RuntimeException: java.io.IOException: invalid constant type: 18
+	at javassist.CtClassType.getClassFile2(CtClassType.java:204) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.CtClassType.subtypeOf(CtClassType.java:304) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.MemberResolver.compareSignature(MemberResolver.java:248) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.MemberResolver.lookupMethod(MemberResolver.java:120) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.MemberResolver.lookupMethod(MemberResolver.java:97) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.TypeChecker.atMethodCallCore(TypeChecker.java:711) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.TypeChecker.atCallExpr(TypeChecker.java:688) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.JvstTypeChecker.atCallExpr(JvstTypeChecker.java:157) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.ast.CallExpr.accept(CallExpr.java:46) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.TypeChecker.atVariableAssign(TypeChecker.java:249) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.TypeChecker.atAssignExpr(TypeChecker.java:218) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.ast.AssignExpr.accept(AssignExpr.java:39) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.CodeGen.doTypeCheck(CodeGen.java:242) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.CodeGen.atStmnt(CodeGen.java:330) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.ast.Stmnt.accept(Stmnt.java:50) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.CodeGen.atStmnt(CodeGen.java:351) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.ast.Stmnt.accept(Stmnt.java:50) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.Javac.compileStmnt(Javac.java:569) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.CtBehavior.insertBefore(CtBehavior.java:706) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.CtBehavior.insertBefore(CtBehavior.java:686) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.commons.callbacks.enhancer.GlobalCallbackEnhancer.enhanceMethod(GlobalCallbackEnhancer.java:99) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.commons.callbacks.enhancer.GlobalCallbackEnhancer.transformClass(GlobalCallbackEnhancer.java:61) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.commons.callbacks.enhancer.CallbackClassFileTransformer.transform(CallbackClassFileTransformer.java:59) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	... 13 common frames omitted
+Caused by: java.io.IOException: invalid constant type: 18
+	at javassist.bytecode.ConstPool.readOne(ConstPool.java:1113) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ConstPool.read(ConstPool.java:1056) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ConstPool.<init>(ConstPool.java:150) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ClassFile.read(ClassFile.java:765) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ClassFile.<init>(ClassFile.java:109) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.CtClassType.getClassFile2(CtClassType.java:191) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	... 35 common frames omitted
+2026-06-06 18:03:47.990 [ERROR] [main] c.a.c.c.enhancer.CallbackClassFileTransformer - Can't transform class com/aionemu/gameserver/utils/javaagent/JavaAgentUtils
+java.lang.Error: Can't transform class com/aionemu/gameserver/utils/javaagent/JavaAgentUtils
+	at com.aionemu.commons.callbacks.enhancer.CallbackClassFileTransformer.transform(CallbackClassFileTransformer.java:62) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at java.instrument/java.lang.instrument.ClassFileTransformer.transform(ClassFileTransformer.java:257) ~[na:na]
+	at java.instrument/sun.instrument.TransformerManager.transform(TransformerManager.java:188) ~[na:na]
+	at java.instrument/sun.instrument.InstrumentationImpl.transform(InstrumentationImpl.java:594) ~[na:na]
+	at java.base/java.lang.ClassLoader.defineClass1(Native Method) ~[na:na]
+	at java.base/java.lang.ClassLoader.defineClass(ClassLoader.java:962) ~[na:na]
+	at java.base/java.security.SecureClassLoader.defineClass(SecureClassLoader.java:144) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.defineClass(BuiltinClassLoader.java:776) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.findClassOnClassPathOrNull(BuiltinClassLoader.java:691) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClassOrNull(BuiltinClassLoader.java:620) ~[na:na]
+	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:578) ~[na:na]
+	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:490) ~[na:na]
+	at com.aionemu.gameserver.GameServer.initUtilityServicesAndConfig(GameServer.java:245) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.gameserver.GameServer.main(GameServer.java:133) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+Caused by: java.lang.RuntimeException: java.io.IOException: invalid constant type: 18
+	at javassist.CtClassType.getClassFile2(CtClassType.java:204) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.MemberResolver.lookupMethod(MemberResolver.java:111) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.MemberResolver.lookupMethod(MemberResolver.java:97) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.TypeChecker.atMethodCallCore(TypeChecker.java:711) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.TypeChecker.atCallExpr(TypeChecker.java:688) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.JvstTypeChecker.atCallExpr(JvstTypeChecker.java:157) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.ast.CallExpr.accept(CallExpr.java:46) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.CodeGen.doTypeCheck(CodeGen.java:242) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.CodeGen.compileExpr(CodeGen.java:229) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.compiler.Javac.compileExpr(Javac.java:608) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.CtField$PtreeInitializer.compileExpr(CtField.java:913) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.CtField$CodeInitializer0.compile(CtField.java:836) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.CtClassType.makeFieldInitializer(CtClassType.java:1598) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.CtClassType.modifyConstructors(CtClassType.java:1550) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.CtClassType.toBytecode(CtClassType.java:1416) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.CtClass.toBytecode(CtClass.java:1292) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.commons.callbacks.enhancer.ObjectCallbackEnhancer.transformClass(ObjectCallbackEnhancer.java:91) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.commons.callbacks.enhancer.CallbackClassFileTransformer.transform(CallbackClassFileTransformer.java:59) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	... 13 common frames omitted
+Caused by: java.io.IOException: invalid constant type: 18
+	at javassist.bytecode.ConstPool.readOne(ConstPool.java:1113) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ConstPool.read(ConstPool.java:1056) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ConstPool.<init>(ConstPool.java:150) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ClassFile.read(ClassFile.java:765) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.bytecode.ClassFile.<init>(ClassFile.java:109) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at javassist.CtClassType.getClassFile2(CtClassType.java:191) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	... 30 common frames omitted
+2026-06-06 18:03:47.992 [ERROR] [main] com.aionemu.gameserver.GameServer - Failed to start Nexus Connect Game Server.
+java.lang.Error: Please configure -javaagent jvm option.
+	at com.aionemu.gameserver.utils.javaagent.JavaAgentUtils.isConfigured(JavaAgentUtils.java:18) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.gameserver.GameServer.initUtilityServicesAndConfig(GameServer.java:245) ~[game-server-1.0.0-SNAPSHOT.jar:na]
+	at com.aionemu.gameserver.GameServer.main(GameServer.java:133) ~[game-server-1.0.0-SNAPSHOT.jar:na]

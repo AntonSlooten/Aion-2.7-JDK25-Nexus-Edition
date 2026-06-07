@@ -1,11 +1,6 @@
 package com.aionemu.gameserver.command.admin;
 
-import static ch.lambdaj.Lambda.extractIterator;
-import static ch.lambdaj.Lambda.filter;
-import static ch.lambdaj.Lambda.flatten;
-import static ch.lambdaj.Lambda.having;
-import static ch.lambdaj.Lambda.on;
-import static org.hamcrest.Matchers.equalTo;
+import java.util.stream.Collectors;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,6 +21,7 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 /**
  * @author KID
  * @modified Rolandas
+ * @Modernized Nexus Connect
  */
 public class CmdSpawnUpdate extends BaseCommand {
 
@@ -219,10 +215,7 @@ public class CmdSpawnUpdate extends BaseCommand {
 			}
 
 			if (params[2].equalsIgnoreCase("w") && npc != null) {
-				String walkerId = null;
-				if (params.length == 4) {
-					walkerId = params[3].toUpperCase();
-				}
+				final String walkerId = (params.length == 4) ? params[3].toUpperCase() : null;
 				if (walkerId != null) {
 					WalkerTemplate template = DataManager.WALKER_DATA.getWalkerTemplate(walkerId);
 					if (template == null) {
@@ -230,10 +223,13 @@ public class CmdSpawnUpdate extends BaseCommand {
 						return;
 					}
 					List<SpawnGroup2> allSpawns = DataManager.SPAWNS_DATA2.getSpawnsByWorldId(npc.getWorldId());
-					List<SpawnTemplate> allSpots = flatten(
-							extractIterator(allSpawns, on(SpawnGroup2.class).getSpawnTemplates()));
-					List<SpawnTemplate> sameIds = filter(
-							having(on(SpawnTemplate.class).getWalkerId(), equalTo(walkerId)), allSpots);
+					List<SpawnTemplate> allSpots = allSpawns.stream()
+							.flatMap(group -> group.getSpawnTemplates().stream())
+							.collect(Collectors.toList());
+					List<SpawnTemplate> sameIds = allSpots.stream()
+							.filter(spot -> walkerId.equals(spot.getWalkerId()))
+							.collect(Collectors.toList());
+							
 					if (sameIds.size() >= template.getPool()) {
 						PacketSendUtility.sendMessage(admin, "Can not assign, walker pool reached the limit.");
 						return;
@@ -255,5 +251,10 @@ public class CmdSpawnUpdate extends BaseCommand {
 				}
 			}
 		}
+	}
+
+	private SpawnTemplate on(Class<SpawnTemplate> class1) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

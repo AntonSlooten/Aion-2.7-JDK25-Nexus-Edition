@@ -1,0 +1,5 @@
+commons/target/
+chat-server/target/
+game-server/cache/
+game-server/target/
+login-server/target/

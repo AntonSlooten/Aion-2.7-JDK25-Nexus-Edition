@@ -16,7 +16,7 @@
  */
 package ai;
 
-import static ch.lambdaj.Lambda.maxFrom;
+
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -77,8 +77,8 @@ public class ChestAI2 extends ActionItemNpcAI2 {
 			} else
 				players.add(player);
 
-			DropRegistrationService.getInstance().registerDrop(getOwner(), player, maxFrom(players).getLevel(),
-					players);
+int maxLevel = players.stream().mapToInt(Player::getLevel).max().orElse(player.getLevel());
+			DropRegistrationService.getInstance().registerDrop(getOwner(), player, maxLevel, players);
 			AI2Actions.dieSilently(this, player);
 			DropService.getInstance().requestDropList(player, getObjectId());
 		} else {

@@ -22,7 +22,8 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static ch.lambdaj.Lambda.*;
+import java.util.Comparator;
+import java.util.Arrays;
 
 import com.aionemu.gameserver.ai2.AI2Logger;
 import com.aionemu.gameserver.ai2.AIState;
@@ -49,7 +50,9 @@ public class WalkerGroup {
 	private int groupStep;
 
 	public WalkerGroup(List<ClusteredNpc> members) {
-		this.members = sort(members, on(ClusteredNpc.class).getWalkerIndex());
+		
+		members.sort(Comparator.comparingInt(ClusteredNpc::getWalkerIndex));
+		this.members = members;
 		memberSteps = new int[members.size()];
 		walkerXpos = members.get(0).getX();
 		walkerYpos = members.get(0).getY();
@@ -59,7 +62,11 @@ public class WalkerGroup {
 	public void form() {
 		if (getWalkType() == WalkerGroupType.SQUARE) {
 			int[] rows = members.get(0).getWalkTemplate().getRows();
-			if (sum(ArrayUtils.toObject(rows), on(Integer.class)) != members.size()) {
+			
+			
+			int sumOfRows = Arrays.stream(rows).sum();
+			
+			if (sumOfRows != members.size()) {
 				log.warn("Invalid row sizes for walk cluster " + members.get(0).getWalkTemplate().getRouteId());
 			}
 			if (rows.length == 1) {

@@ -25,8 +25,8 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static ch.lambdaj.Lambda.*;
-import ch.lambdaj.group.Group;
+import java.util.stream.Collectors;
+import java.util.Comparator;
 
 import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.model.gameobjects.Npc;
@@ -41,7 +41,8 @@ import com.aionemu.gameserver.model.templates.walker.WalkerTemplate;
  *
  * @author vlog
  * @based on Imaginary's imagination
- * @modified Rolandas
+ * @modified Rolandas 
+ * @ModernationCode NexusConnect
  */
 public class WalkerFormator {
 
@@ -74,17 +75,18 @@ public class WalkerFormator {
 
 	public void organizeAndSpawn() {
 		for (List<ClusteredNpc> candidates : groupedSpawnObjects.values()) {
-			Group<ClusteredNpc> bySize = group(candidates, by(on(ClusteredNpc.class).getPositionHash()));
-			Set<String> keys = bySize.keySet();
-			int maxSize = 0;
-			List<ClusteredNpc> npcs = null;
-			for (String key : keys) {
-				if (bySize.find(key).size() > maxSize) {
-					npcs = bySize.find(key);
-					maxSize = npcs.size();
-				}
-			}
-			if (maxSize == 1) {
+			
+			Map<Integer, List<ClusteredNpc>> bySize = candidates.stream()
+					.collect(Collectors.groupingBy(ClusteredNpc::getPositionHash));
+
+			
+			List<ClusteredNpc> npcs = bySize.values().stream()
+					.max(Comparator.comparingInt(List::size))
+					.orElse(new ArrayList<>());
+
+			int maxSize = npcs.size();
+
+			if (maxSize <= 1) {
 				for (ClusteredNpc snpc : candidates) {
 					snpc.spawn(snpc.getNpc().getZ());
 				}
