@@ -8,7 +8,7 @@
 
 loop() {
   while true; do
-    java -Xms1024m -Xmx2560m -XX:+UseNUMA -XX:+UseCompactObjectHeaders $@ -cp "libs/*" com.aionemu.gameserver.GameServer
+    java -Xms1024m -Xmx2560m -javaagent:libs/game-server-1.0.0-SNAPSHOT.jar -XX:+UseNUMA -XX:+UseCompactObjectHeaders $@ -cp "libs/*" com.aionemu.gameserver.GameServer
     err=$?
     case $err in
       0) # regular shutdown
