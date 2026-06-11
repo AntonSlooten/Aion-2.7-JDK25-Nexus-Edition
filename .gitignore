@@ -6,3 +6,8 @@ game-server/log/
 game-server/target/
 login-server/log/
 login-server/target/
+.vscode/java-formatter.xml
+.gitignore
+.vscode/settings.json
+.vscode/launch.json
+chat-server/.classpath
