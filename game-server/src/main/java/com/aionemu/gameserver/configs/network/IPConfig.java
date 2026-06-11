@@ -48,6 +48,10 @@ public class IPConfig {
 	 */
 	private static final String CONFIG_FILE = "./config/network/ipconfig.xml";
 	/**
+	 * Check if we have some override values
+	 */
+	private static final String OVERRIDE_CONFIG_FILE = "./config/network/myipconfig.xml";
+	/**
 	 * List of all ip ranges
 	 */
 	private static final List<IPRange> ranges = new ArrayList<>();
@@ -61,29 +65,19 @@ public class IPConfig {
 	 */
 	public static void load() {
 		try {
-			SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
-			parser.parse(new File(CONFIG_FILE), new DefaultHandler() {
+			ranges.clear();
+			File override = new File(OVERRIDE_CONFIG_FILE);
+			File config_file = new File(CONFIG_FILE);
+			if (override.exists()) {
+				log.info("Loading IP config override: {}", override.getPath());
+				parseConfig(override);
+			}
+			else 
+			{
+				log.info("Loading IP config: {}", config_file.getPath());
+				parseConfig(config_file);
+			}
 
-				@Override
-				public void startElement(String uri, String localName, String qName, Attributes attributes)
-						throws SAXException {
-
-					if (qName.equals("ipconfig")) {
-						try {
-							defaultAddress = InetAddress.getByName(attributes.getValue("default")).getAddress();
-						} catch (UnknownHostException e) {
-							throw new RuntimeException(
-									"Failed to resolve DSN for address: " + attributes.getValue("default"), e);
-						}
-					} else if (qName.equals("iprange")) {
-						String min = attributes.getValue("min");
-						String max = attributes.getValue("max");
-						String address = attributes.getValue("address");
-						IPRange ipRange = new IPRange(min, max, address);
-						ranges.add(ipRange);
-					}
-				}
-			});
 		} catch (Exception e) {
 			log.error("Critical error while parsing ipConfig", e);
 			throw new Error("Can't load ipConfig", e);
@@ -107,4 +101,34 @@ public class IPConfig {
 	public static byte[] getDefaultAddress() {
 		return defaultAddress;
 	}
+
+	/**
+	 * Helper for parsing an XML file
+	 */
+	private static void parseConfig(File file) throws Exception {
+    SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+
+    parser.parse(file, new DefaultHandler() {
+
+        @Override
+        public void startElement(String uri, String localName, String qName, Attributes attributes)
+                throws SAXException {
+
+            if (qName.equals("ipconfig")) {
+                try {
+                    defaultAddress = InetAddress.getByName(attributes.getValue("default")).getAddress();
+                } catch (UnknownHostException e) {
+                    throw new RuntimeException(
+                            "Failed to resolve DNS for address: " + attributes.getValue("default"), e);
+                }
+            } else if (qName.equals("iprange")) {
+                String min = attributes.getValue("min");
+                String max = attributes.getValue("max");
+                String address = attributes.getValue("address");
+
+                ranges.add(new IPRange(min, max, address));
+            }
+        }
+    });
+}
 }

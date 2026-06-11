@@ -4,98 +4,63 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>com.aionemu</groupId>
-        <artifactId>aion-server</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
+    <groupId>com.aionemu</groupId>
+    <artifactId>aion-server</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
 
-    <artifactId>game-server</artifactId>
-    
-    <build>
-	    <plugins>
-	        <plugin>
-	            <groupId>org.apache.maven.plugins</groupId>
-	            <artifactId>maven-shade-plugin</artifactId>
-	            <version>3.6.0</version>
-	            <executions>
-	                <execution>
-	                    <phase>package</phase>
-	                    <goals>
-	                        <goal>shade</goal>
-	                    </goals>
-	                    <configuration>
-	                        <createDependencyReducedPom>false</createDependencyReducedPom>
-	                        <shadedArtifactAttached>false</shadedArtifactAttached>
-	                        <filters>
-							    <filter>
-							        <artifact>*:*</artifact>
-							        <excludes>
-							            <exclude>META-INF/MANIFEST.MF</exclude>
-							            <exclude>LICENSE</exclude>
-							            <exclude>LICENSE.txt</exclude>
-							            <exclude>META-INF/LICENSE*</exclude>
-							            <exclude>META-INF/NOTICE*</exclude>
-							            <exclude>META-INF/*.SF</exclude>
-							            <exclude>META-INF/*.DSA</exclude>
-							            <exclude>META-INF/*.RSA</exclude>
-							            <exclude>module-info.class</exclude>
-							        </excludes>
-							    </filter>
-							</filters>
-	                        <transformers>
-	                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-	                                <mainClass>com.aionemu.gameserver.GameServer</mainClass>
-	                                <manifestEntries>
-	                                    <Premain-Class>com.aionemu.gameserver.utils.javaagent.JavaAgent</Premain-Class>
-	                                    <Can-Redefine-Classes>true</Can-Redefine-Classes>
-	                                    <Can-Retransform-Classes>true</Can-Retransform-Classes>
-	                                </manifestEntries>
-	                            </transformer>
-	                        </transformers>
-	                    </configuration>
-	                </execution>
-	            </executions>
-	        </plugin>
-	    </plugins>
-	</build>
+    <packaging>pom</packaging>
 
+    <modules>
+        <module>commons</module>
+        <module>login-server</module>
+        <module>game-server</module>
+        <module>chat-server</module>
+    </modules>
+
+    <properties>
+		<!-- Java -->
+        <maven.compiler.release>25</maven.compiler.release>
+
+        <!-- Logging / libs (from your grep) -->
+        <javassist.version>3.30.2-GA</javassist.version>
+        <guava.version>33.0.0-jre</guava.version>
+        <commons-io.version>2.15.1</commons-io.version>
+        <commons-lang3.version>3.14.0</commons-lang3.version>
+        <mysql.version>8.0.33</mysql.version>
+        <hikaricp.version>5.1.0</hikaricp.version>
+        <quartz.version>2.3.2</quartz.version>
+
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+	<dependencyManagement>
     <dependencies>
+
+        <!-- Logging -->
         <dependency>
-            <groupId>com.aionemu</groupId>
-            <artifactId>commons</artifactId>
-            <version>${project.version}</version>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>2.0.12</version>
         </dependency>
-        
+
         <dependency>
-		    <groupId>net.sf.trove4j</groupId>
-		    <artifactId>trove4j</artifactId>
-		    <version>3.0.3</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>joda-time</groupId>
-		    <artifactId>joda-time</artifactId>
-		    <version>2.12.7</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>com.googlecode.lambdaj</groupId>
-		    <artifactId>lambdaj</artifactId>
-		    <version>2.3.3</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>com.google.code.findbugs</groupId>
-		    <artifactId>jsr305</artifactId>
-		    <version>1.3.9</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>javolution</groupId>
-		    <artifactId>javolution</artifactId>
-		    <version>5.5.1</version>
-		</dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.4.14</version>
+        </dependency>
+
     </dependencies>
+	</dependencyManagement>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<configuration>
+					<release>25</release>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>
