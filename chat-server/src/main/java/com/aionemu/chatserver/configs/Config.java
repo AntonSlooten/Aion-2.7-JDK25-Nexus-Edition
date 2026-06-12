@@ -28,7 +28,16 @@ public final class Config {
 
 	public static void load() {
 		try {
+			Properties myProps = null;
+			try {
+				log.info("Loading: mycs.properties");
+				myProps = PropertiesUtils.load("./config/mycs.properties");
+			} catch (Exception e) {
+				log.info("No override properties found");
+			}
+			
 			Properties[] properties = PropertiesUtils.loadAllFromDirectory("./config");
+			PropertiesUtils.overrideProperties(properties, myProps);
 			ConfigurableProcessor.process(Config.class, properties);
 			log.info("Chat Server configuration loaded.");
 			log.info("Client Address    : {}", CHAT_ADDRESS);

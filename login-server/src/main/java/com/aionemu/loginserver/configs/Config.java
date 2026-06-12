@@ -147,9 +147,18 @@ public class Config {
 	{
 		try
 		{
+			Properties myProps = null;
+			try {
+				log.info("Loading: myls.properties");
+				myProps = PropertiesUtils.load("./config/myls.properties");
+			} catch (Exception e) {
+				log.info("No override properties found");
+			}
+
 			String network = "./config/network";
 			Properties[] props = PropertiesUtils.loadAllFromDirectory(network);
-
+			
+			PropertiesUtils.overrideProperties(props, myProps);
 			log.info("Loading: " + network + "/network.properties");
 			ConfigurableProcessor.process(Config.class, props);
 			
