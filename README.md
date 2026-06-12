@@ -13,46 +13,12 @@ If you played on the classic old-school servers and think you can build an even 
 
 ---
 
-## 🚀 Migration & Update Changelog
 
-Here is a detailed breakdown of the development work carried out by **Nexus Connect** to bring this classic emulator into the modern era:
+🚀 Here is a detailed breakdown of the development work carried out by **Nexus Connect** to bring this classic emulator into the modern era:
 
 ### Aion 2.7 Java 6 → Java 25 Migration
 * **Version:** Java 25 Production Build
 * **Status:** Stable / Production Ready
-
-#### PHASE 1 - Maven & Java 25 Migration
-*  Migrated Java 6 → Java 25
-*  Converted Ant project → Maven Multi-Module
-*  Created Parent POM structure
-*  Commons module migrated
-*  Chat Server migrated
-*  Login Server migrated
-*  Game Server migrated
-*  Full project build successful
-
-#### PHASE 2 - Dependency Modernization
-*  Upgraded Apache Commons Lang
-*  Upgraded Google Guava
-*  Upgraded Quartz Scheduler
-*  Removed legacy JLine
-*  Dependency cleanup and compatibility fixes
-
-#### PHASE 3 - Performance Modernization
-*  HikariCP integration & tuning
-*  Modern ExecutorService implementation
-*  **Java 25 Virtual Threads integration** (Massive concurrency improvement!)
-*  ThreadPool modernization
-*  Concurrent Collections cleanup
-*  Scheduler improvements
-*  Shared collection synchronization improvements
-
-#### PHASE 4 - Java 25 Cleanup
-*  Implicit cast warnings fixed
-*  Redundant cast warnings fixed
-*  Switch fall-through warnings fixed
-*  Deprecated API cleanup
-*  Java 25 compiler compatibility improvements
 
 ### 📦 Build Status
 * **Commons:** Build OK / Running OK
@@ -107,7 +73,7 @@ We welcome your help to make this classic emulator even better! If you deploy th
 For more information, project inquiries, or support, feel free to join our official community or contact us directly on Discord:
 * 🌐 **Official Website:** [weplaynexus.com](https://weplaynexus.com)
 * 💬 **Discord Server:** [Join Nexus Connect Discord](https://discord.gg/HAYber3VYZ)
-* 👤 **Direct Discord Contacts:** `zyvelle44_81620` & `nexusconnect`
+* 👤 **Direct Discord Contacts:** `nexusconnect`
 
 ---
 
@@ -115,10 +81,12 @@ For more information, project inquiries, or support, feel free to join our offic
 
 ### The Modernization Team
 * **Nexus Connect** - *Current main maintainers, upgraded source code to JDK 25, and optimized core performance for the WePlayNexus gaming portal.*
-  * Contact: Discord (`zyvelle44_81620` / `nexusconnect`) | Server: [Discord Link](https://discord.gg/HAYber3VYZ)
+  * Contact: Discord ( nexusconnect) | Server: [Discord Link](https://discord.gg/HAYber3VYZ)
 
 ### Original Legacy Contributors (Before GitHub Transition)
 * **Aion Lightning** - *Initial release*
+* **Aion Emu** - *Initial release*
+* **Falke** - *Hard work to make it unique*
 * **Ferosia** - *First commits and patches*
 * **Metos** - *Hard work to make it working*
 * **Crysis** - *Hard work to make Metos working*
