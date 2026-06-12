@@ -24,12 +24,16 @@ import javax.xml.bind.annotation.XmlType;
 import com.aionemu.gameserver.model.templates.rewards.BonusType;
 
 /**
+ * @author Rolandas
+ *
+ */
+
+/**
  * <p>
  * Java class for QuestBonuses complex type.
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
- *
+ * The following schema fragment specifies the expected content contained within this class.
+ * 
  * <pre>
  * &lt;complexType name="QuestBonuses">
  *   &lt;complexContent>
@@ -55,7 +59,7 @@ public class QuestBonuses {
 
 	/**
 	 * Gets the value of the type property.
-	 *
+	 * 
 	 * @return possible object is {@link BonusType }
 	 */
 	public BonusType getType() {
@@ -64,7 +68,7 @@ public class QuestBonuses {
 
 	/**
 	 * Gets the value of the level property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getLevel() {
@@ -73,7 +77,7 @@ public class QuestBonuses {
 
 	/**
 	 * Gets the value of the skill property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getSkill() {

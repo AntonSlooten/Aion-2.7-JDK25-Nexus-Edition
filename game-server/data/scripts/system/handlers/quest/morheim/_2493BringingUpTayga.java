@@ -58,31 +58,35 @@ public class _2493BringingUpTayga extends QuestHandler {
 			if (targetId == 204325) { // Ipoderr
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			if (targetId == 204435) { // Purra?
 				if (dialog == QuestDialog.START_DIALOG) {
 					if (var == 0) {
 						return sendQuestDialog(env, 1011);
 					}
-				} else if (dialog == QuestDialog.SET_REWARD) {
+				}
+				else if (dialog == QuestDialog.SET_REWARD) {
 					final Npc npc = (Npc) env.getVisibleObject();
 					npc.getAi2().onCreatureEvent(AIEventType.FOLLOW_ME, player);
-					player.getController().addTask(TaskId.QUEST_FOLLOW,
-							QuestTasks.newFollowingToTargetCheckTask(env, 204325));
+					player.getController().addTask(TaskId.QUEST_FOLLOW, QuestTasks.newFollowingToTargetCheckTask(env, 204325));
 					changeQuestStep(env, 0, 0, true); // reward
 					return closeDialogWindow(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204325) { // Ipoderr
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

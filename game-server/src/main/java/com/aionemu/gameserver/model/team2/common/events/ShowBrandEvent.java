@@ -27,7 +27,7 @@ import com.google.common.base.Predicate;
  * @author ATracer
  */
 public class ShowBrandEvent<T extends TemporaryPlayerTeam<? extends TeamMember<Player>>> extends AlwaysTrueTeamEvent
-		implements Predicate<Player> {
+	implements Predicate<Player> {
 
 	private final T team;
 	private final int targetObjId;

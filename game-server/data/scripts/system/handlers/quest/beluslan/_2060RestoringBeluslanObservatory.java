@@ -39,8 +39,7 @@ import com.aionemu.gameserver.world.zone.ZoneName;
  * Talk with Gwendolin (204785).<br>
  * Talk with Hisui (278003).<br>
  * Talk with Glati (278088) (182204318).<br>
- * Go to Leibo Island (400010001), gather Aether, and bring it (182204319) to
- * Gwendolin.<br>
+ * Go to Leibo Island (400010001), gather Aether, and bring it (182204319) to Gwendolin.<br>
  * Destroy Field Suppressors around the Observatory (700290) (3).<br>
  * Repair the Aetheric Field Maintaining Device (700293).<br>
  * Report to Hod.<br>
@@ -90,87 +89,91 @@ public class _2060RestoringBeluslanObservatory extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204701: { // Hod
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 204701: { // Hod
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
 					}
+					break;
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
+				case 204785: { // Gwendolin
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+							else if (var == 4) {
+								if (QuestService.collectItemCheck(env, false)) {
+									return sendQuestDialog(env, 2375);
+								}
+								else {
+									giveQuestItem(env, 182204318, 1); // give another bottle
+									return sendQuestDialog(env, 2461);
+								}
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+						case STEP_TO_5: {
+							return defaultCloseDialog(env, 4, 5, 0, 0, 182204319, 1); // 5
+						}
+						case FINISH_DIALOG: {
+							if (var == 4) {
+								return sendQuestSelectionDialog(env);
+							}
+						}
+					}
+					break;
 				}
+				case 278003: { // Hisui
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 2) {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case STEP_TO_3: {
+							return defaultCloseDialog(env, 2, 3); // 3
+						}
+					}
+					break;
 				}
-				break;
-			}
-			case 204785: { // Gwendolin
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					} else if (var == 4) {
-						if (QuestService.collectItemCheck(env, false)) {
-							return sendQuestDialog(env, 2375);
-						} else {
-							giveQuestItem(env, 182204318, 1); // give another bottle
-							return sendQuestDialog(env, 2461);
+				case 278088: { // Glati
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 3) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case STEP_TO_4: {
+							return defaultCloseDialog(env, 3, 4, 182204318, 1, 0, 0); // 4
+						}
+					}
+					break;
+				}
+				case 700293: { // Aetheric Field Maintaining Device
+					if (dialog == QuestDialog.USE_OBJECT) {
+						if (var == 8) {
+							PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(0, 254));
+							return useQuestObject(env, 8, 8, true, 0); // reward
 						}
 					}
 				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				case STEP_TO_5: {
-					return defaultCloseDialog(env, 4, 5, 0, 0, 182204319, 1); // 5
-				}
-				case FINISH_DIALOG: {
-					if (var == 4) {
-						return sendQuestSelectionDialog(env);
-					}
-				}
-				}
-				break;
 			}
-			case 278003: { // Hisui
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 2) {
-						return sendQuestDialog(env, 1693);
-					}
-				}
-				case STEP_TO_3: {
-					return defaultCloseDialog(env, 2, 3); // 3
-				}
-				}
-				break;
-			}
-			case 278088: { // Glati
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 3) {
-						return sendQuestDialog(env, 2034);
-					}
-				}
-				case STEP_TO_4: {
-					return defaultCloseDialog(env, 3, 4, 182204318, 1, 0, 0); // 4
-				}
-				}
-				break;
-			}
-			case 700293: { // Aetheric Field Maintaining Device
-				if (dialog == QuestDialog.USE_OBJECT) {
-					if (var == 8) {
-						PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(0, 254));
-						return useQuestObject(env, 8, 8, true, 0); // reward
-					}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204701) { // Hod
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
@@ -186,9 +189,7 @@ public class _2060RestoringBeluslanObservatory extends QuestHandler {
 			int var = qs.getQuestVarById(0);
 			if (var == 4) {
 				if (player.isInsideZone(ZoneName.AB1_ITEMUSEAREA_Q2060)) {
-					return HandlerResult.fromBoolean(useQuestItem(env, item, 4, 4, false, 182204319, 1, 0)); // 4 +
-																												// aether
-																												// bottle
+					return HandlerResult.fromBoolean(useQuestItem(env, item, 4, 4, false, 182204319, 1, 0)); // 4 + aether bottle
 				}
 			}
 		}
@@ -204,14 +205,12 @@ public class _2060RestoringBeluslanObservatory extends QuestHandler {
 			int var = qs.getQuestVars().getQuestVars();
 			if (target instanceof Npc) {
 				Npc npc = (Npc) target;
-				if (npc.getNpcId() == 700290 && var >= 5 && var < 8) {
+				if(npc.getNpcId() == 700290 && var >= 5 && var < 8) {
 					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
+		            updateQuestStatus(env);
 					List<Npc> mobs = new ArrayList<Npc>();
-					mobs.add((Npc) QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 213913,
-							npc.getX() - 2, npc.getY() - 2, npc.getZ(), npc.getHeading()));
-					mobs.add((Npc) QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 213913,
-							npc.getX() + 2, npc.getY(), npc.getZ(), npc.getHeading()));
+					mobs.add((Npc) QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 213913, npc.getX() - 2, npc.getY() - 2, npc.getZ(), npc.getHeading()));
+					mobs.add((Npc) QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 213913, npc.getX() + 2, npc.getY(), npc.getZ(), npc.getHeading()));
 					for (Npc mob : mobs) {
 						mob.getAggroList().addDamage(player, 1000);
 					}

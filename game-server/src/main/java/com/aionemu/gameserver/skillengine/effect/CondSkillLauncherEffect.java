@@ -40,9 +40,8 @@ public class CondSkillLauncherEffect extends EffectTemplate {
 	protected int skillId;
 	@XmlAttribute
 	protected HealType type;
-
-	// TODO what if you fall? effect is not applied? what if you use skill that
-	// consume hp?
+	
+	//TODO what if you fall? effect is not applied? what if you use skill that consume hp?
 
 	@Override
 	public void applyEffect(Effect effect) {
@@ -63,11 +62,10 @@ public class CondSkillLauncherEffect extends EffectTemplate {
 			@Override
 			public void attack(Creature creature) {
 				if (!effect.getEffected().getEffectController().hasAbnormalEffect(skillId)) {
-					if (effect.getEffected().getLifeStats()
-							.getCurrentHp() <= ((effect.getEffected().getLifeStats().getMaxHp() * value) / 100)) {
+					if (effect.getEffected().getLifeStats().getCurrentHp() <= ((effect.getEffected().getLifeStats().getMaxHp() * value) / 100)) {
 						SkillTemplate template = DataManager.SKILL_DATA.getSkillTemplate(skillId);
 						Effect e = new Effect(effect.getEffector(), effect.getEffected(), template, template.getLvl(),
-								template.getEffectsDuration());
+							template.getEffectsDuration());
 						e.initialize();
 						e.applyEffect();
 					}

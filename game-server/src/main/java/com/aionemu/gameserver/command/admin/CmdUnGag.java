@@ -13,8 +13,9 @@ import com.aionemu.gameserver.world.World;
  * @author Watson
  */
 public class CmdUnGag extends BaseCommand {
+	
+	
 
-	@Override
 	public void execute(Player admin, String... params) {
 		if (params == null || params.length < 2) {
 			showHelp(admin);
@@ -31,10 +32,10 @@ public class CmdUnGag extends BaseCommand {
 
 		player.setGagged(false);
 		Future<?> task = player.getController().getTask(TaskId.GAG);
-		if (task != null) {
+		if (task != null)
 			player.getController().cancelTask(TaskId.GAG);
-		}
 		PacketSendUtility.sendMessage(player, "You have been ungagged");
 		PacketSendUtility.sendMessage(admin, "Player " + name + " ungagged");
 	}
 }
+

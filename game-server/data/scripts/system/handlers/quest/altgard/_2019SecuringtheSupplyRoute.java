@@ -58,34 +58,35 @@ public class _2019SecuringtheSupplyRoute extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798033:
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 4)
-						return sendQuestDialog(env, 1352);
-					break;
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1); // 1
-				case STEP_TO_2:
-					return defaultCloseDialog(env, 4, 5, 182203024, 1, 0, 0); // 5
-				}
-			case 203673:
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 5)
-						return sendQuestDialog(env, 1693);
-				case SELECT_REWARD:
-					if (var == 5) {
-						removeQuestItem(env, 182203024, 1);
-						changeQuestStep(env, 5, 5, true); // true
-						return sendQuestDialog(env, 5);
+				case 798033:
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+							else if (var == 4)
+								return sendQuestDialog(env, 1352);
+							break;
+						case STEP_TO_1:
+							return defaultCloseDialog(env, 0, 1); // 1
+						case STEP_TO_2:
+							return defaultCloseDialog(env, 4, 5, 182203024, 1, 0, 0); // 5
 					}
-				}
+				case 203673:
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 5)
+								return sendQuestDialog(env, 1693);
+						case SELECT_REWARD:
+							if (var == 5) {
+								removeQuestItem(env, 182203024, 1);
+								changeQuestStep(env, 5, 5, true); // true
+								return sendQuestDialog(env, 5);
+							}
+					}
 
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203673)
 				return sendQuestEndDialog(env);
 		}
@@ -105,13 +106,13 @@ public class _2019SecuringtheSupplyRoute extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 
 		switch (targetId) {
-		case 210492:
-		case 210493:
-			if (var >= 1 && var < 4) {
-				qs.setQuestVarById(0, var + 1);
-				updateQuestStatus(env);
-				return true;
-			}
+			case 210492:
+			case 210493:
+				if (var >= 1 && var < 4) {
+					qs.setQuestVarById(0, var + 1);
+					updateQuestStatus(env);
+					return true;
+				}
 		}
 		return false;
 	}

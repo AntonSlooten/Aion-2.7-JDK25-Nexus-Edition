@@ -57,27 +57,30 @@ public class _4015TheMissingLaborers extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 730107: {
-				if (qs.getQuestVarById(0) == 0 && env.getDialog() == QuestDialog.USE_OBJECT) {
-					return useQuestObject(env, 0, 1, false, false); // 1
+				case 730107: {
+					if (qs.getQuestVarById(0) == 0 && env.getDialog() == QuestDialog.USE_OBJECT) {
+						return useQuestObject(env, 0, 1, false, false); // 1
+					}
+				}
+				case 205130: {
+					if (qs.getQuestVarById(0) == 1) {
+						if (env.getDialog() == QuestDialog.START_DIALOG)
+							return sendQuestDialog(env, 2375);
+						else if (env.getDialogId() == 1009) {
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return sendQuestEndDialog(env);
+						}
+						else
+							return sendQuestEndDialog(env);
+					}
 				}
 			}
-			case 205130: {
-				if (qs.getQuestVarById(0) == 1) {
-					if (env.getDialog() == QuestDialog.START_DIALOG)
-						return sendQuestDialog(env, 2375);
-					else if (env.getDialogId() == 1009) {
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestEndDialog(env);
-					} else
-						return sendQuestEndDialog(env);
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 205130)
 				return sendQuestEndDialog(env);
 		}

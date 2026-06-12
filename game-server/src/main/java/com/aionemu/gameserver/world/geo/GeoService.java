@@ -39,18 +39,18 @@ public class GeoService {
 	 */
 	public void initializeGeo() {
 		switch (getConfiguredGeoType()) {
-		case GEO_MESHES:
-			geoData = new RealGeoData();
-			break;
-		case NO_GEO:
-			geoData = new DummyGeoData();
-			break;
+			case GEO_MESHES:
+				geoData = new RealGeoData();
+				break;
+			case NO_GEO:
+				geoData = new DummyGeoData();
+				break;
 		}
 		log.info("Configured Geo type: " + getConfiguredGeoType());
 		geoData.loadGeoMaps();
 	}
 
-	public void setDoorState(int worldId, int instanceId, String name, boolean state) {
+	public void setDoorState(int worldId, int instanceId, String name, boolean state){
 		if (GeoDataConfig.GEO_ENABLE) {
 			geoData.getMap(worldId).setDoorState(instanceId, name, state);
 		}
@@ -72,8 +72,7 @@ public class GeoService {
 	 * @return
 	 */
 	public float getZ(VisibleObject object) {
-		return geoData.getMap(object.getWorldId()).getZ(object.getX(), object.getY(), object.getZ(),
-				object.getInstanceId());
+		return geoData.getMap(object.getWorldId()).getZ(object.getX(), object.getY(), object.getZ(), object.getInstanceId());
 	}
 
 	/**
@@ -88,7 +87,8 @@ public class GeoService {
 		float newZ = geoData.getMap(worldId).getZ(x, y, z, instanceId);
 		if (!GeoDataConfig.GEO_ENABLE) {
 			newZ += defaultUp;
-		} else {
+		}
+		else {
 			newZ += 0.5f;
 		}
 		return newZ;
@@ -110,32 +110,26 @@ public class GeoService {
 	 * @return
 	 */
 	public boolean canSee(VisibleObject object, VisibleObject target) {
-		if (!GeoDataConfig.CANSEE_ENABLE) {
+		if(!GeoDataConfig.CANSEE_ENABLE){
 			return true;
 		}
-		float limit = (float) (MathUtil.getDistance(object, target)
-				- target.getObjectTemplate().getBoundRadius().getCollision());
-		if (limit <= 0) {
+		float limit = (float) (MathUtil.getDistance(object, target)- target.getObjectTemplate().getBoundRadius().getCollision());
+		if (limit <= 0)
 			return true;
-		}
-		return geoData.getMap(object.getWorldId()).canSee(object.getX(), object.getY(),
-				object.getZ() + object.getObjectTemplate().getBoundRadius().getUpper() / 2, target.getX(),
-				target.getY(), target.getZ() + target.getObjectTemplate().getBoundRadius().getUpper() / 2, limit,
-				object.getInstanceId());
+		return geoData.getMap(object.getWorldId()).canSee(object.getX(), object.getY(), object.getZ()+object.getObjectTemplate().getBoundRadius().getUpper()/2, target.getX(),
+			target.getY(), target.getZ()+target.getObjectTemplate().getBoundRadius().getUpper()/2, limit, object.getInstanceId());
 	}
-
-	public boolean canSee(int worldId, float x, float y, float z, float x1, float y1, float z1, float limit,
-			int instanceId) {
+	
+	public boolean canSee(int worldId, float x, float y, float z, float x1, float y1, float z1, float limit, int instanceId){
 		return geoData.getMap(worldId).canSee(x, y, z, x1, y1, z1, limit, instanceId);
 	}
-
 	public boolean isGeoOn() {
 		return GeoDataConfig.GEO_ENABLE;
 	}
-
+	
 	public Vector3f getClosestCollision(Creature object, float x, float y, float z, boolean changeDirction) {
-		return geoData.getMap(object.getWorldId()).getClosestCollision(object.getX(), object.getY(), object.getZ(), x,
-				y, z, changeDirction, object.isInFlyingState(), object.getInstanceId());
+		return geoData.getMap(object.getWorldId())
+			.getClosestCollision(object.getX(), object.getY(), object.getZ(), x, y, z, changeDirction, object.isInFlyingState(), object.getInstanceId());
 	}
 
 	public GeoType getConfiguredGeoType() {

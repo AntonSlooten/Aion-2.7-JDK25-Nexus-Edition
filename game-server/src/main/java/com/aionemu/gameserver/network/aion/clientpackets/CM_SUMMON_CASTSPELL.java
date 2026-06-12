@@ -63,29 +63,30 @@ public class CM_SUMMON_CASTSPELL extends AionClientPacket {
 
 		Summon summon = player.getSummon();
 		if (summon == null) {
-			log.warn("summon castspell without active summon on " + player.getName() + ".");
+			log.warn("summon castspell without active summon on "+player.getName()+".");
 			return;
 		}
-		if (summon.getObjectId() != summonObjId) {
-			log.warn("summon castspell from a different summon instance on " + player.getName() + ".");
+		if(summon.getObjectId() != summonObjId) {
+			log.warn("summon castspell from a different summon instance on "+player.getName()+".");
 			return;
 		}
-
+		
 		Creature target = null;
-		if (targetObjId != summon.getObjectId()) {
-			VisibleObject obj = summon.getKnownList().getObject(targetObjId);
-			if (obj instanceof Creature) {
-				target = (Creature) obj;
-			}
-		} else {
+		if(targetObjId != summon.getObjectId()) {
+		  VisibleObject obj = summon.getKnownList().getObject(targetObjId);
+		  if(obj instanceof Creature) {
+		  	target = (Creature)obj;
+		  }
+		}
+		else {
 			target = summon;
 		}
-
-		if (target != null) {
+			
+		if(target != null) {
 			player.setNextSummonSkillUse(currentTime + 1100);
 			summon.getController().useSkill(skillId, target);
-		} else {
-			log.warn("summon castspell on a wrong target on " + player.getName());
 		}
+		else
+			log.warn("summon castspell on a wrong target on "+player.getName());
 	}
 }

@@ -53,69 +53,71 @@ public class _11077AWeaponOfWorth extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 798926) {
 				switch (dialog) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 1011);
-				default: {
-					if (!giveQuestItem(env, 182214016, 1))
-						updateQuestStatus(env);
-					return sendQuestStartDialog(env);
-				}
-				}
-			}
-		} else if (qs.getStatus() == QuestStatus.START) {
-			switch (targetId) {
-			case 799028: // Brontes
-			{
-				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1353);
-				}
-				case SELECT_ACTION_1353: {
-					return sendQuestDialog(env, 1353);
-				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1);
-				}
-				}
-			}
-			case 798918: // Pilipides
-			{
-				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1693);
-				}
-				case SELECT_ACTION_1694: {
-					return sendQuestDialog(env, 1694);
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2);
-				}
-				}
-			}
-			case 798903: // Drenia
-			{
-				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2375);
-				}
-				case SELECT_REWARD: {
-					return defaultCloseDialog(env, 2, 3, true, true);
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
-			if (targetId == 798903) // Drenia
-			{
-				switch (env.getDialogId()) {
-				case 1009: {
-					return sendQuestDialog(env, 5);
-				}
-				default:
-					return sendQuestEndDialog(env);
+					case START_DIALOG:
+						return sendQuestDialog(env, 1011);
+					default: {
+						if (!giveQuestItem(env, 182214016, 1))
+							updateQuestStatus(env);
+						return sendQuestStartDialog(env);
+					}
 				}
 			}
 		}
+		else if (qs.getStatus() == QuestStatus.START) {
+			switch (targetId) {
+				case 799028: // Brontes
+				{
+					switch (dialog) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 1353);
+						}
+						case SELECT_ACTION_1353:{
+							return sendQuestDialog(env, 1353);
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1);
+						}
+					}
+				}
+				case 798918: // Pilipides
+				{
+					switch (dialog) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 1693);
+						}
+						case SELECT_ACTION_1694: {
+							return sendQuestDialog(env, 1694);
+						}
+						case STEP_TO_2:{
+							return defaultCloseDialog(env, 1, 2);
+						}
+					}
+				}
+				case 798903: // Drenia
+				{
+					switch (dialog) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 2375);
+						}
+						case SELECT_REWARD: {
+							return defaultCloseDialog(env, 2, 3, true, true);
+						}
+					}
+				}
+			}
+		}
+			else if (qs.getStatus() == QuestStatus.REWARD) {
+				if (targetId == 798903) // Drenia
+				{
+					switch (env.getDialogId()) {
+						case 1009: {
+							return sendQuestDialog(env, 5);
+						}
+						default:
+							return sendQuestEndDialog(env);
+					}
+				}
+			}
 		return false;
 	}
 }

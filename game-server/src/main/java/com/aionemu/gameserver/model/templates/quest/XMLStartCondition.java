@@ -33,7 +33,7 @@ import com.aionemu.gameserver.questEngine.model.QuestStatus;
 
 /**
  * Checks quest start conditions, listed in quest_data.xml
- *
+ * 
  * @author antness
  * @reworked vlog
  */
@@ -63,8 +63,7 @@ public class XMLStartCondition {
 				int questId = fqc.getQuestId();
 				int reward = fqc.getReward();
 				QuestState qs = qsl.getQuestState(questId);
-				if (qs == null || qs.getStatus() != QuestStatus.COMPLETE
-						|| !checkReward(questId, reward, qs.getReward())) {
+				if (qs == null || qs.getStatus() != QuestStatus.COMPLETE || !checkReward(questId, reward, qs.getReward())) {
 					return false;
 				}
 				QuestTemplate template = DataManager.QUEST_DATA.getQuestById(questId);
@@ -83,9 +82,8 @@ public class XMLStartCondition {
 		if (unfinished != null && unfinished.size() > 0) {
 			for (Integer questId : unfinished) {
 				QuestState qs = qsl.getQuestState(questId);
-				if (qs != null && qs.getStatus() == QuestStatus.COMPLETE) {
+				if (qs != null && qs.getStatus() == QuestStatus.COMPLETE)
 					return false;
-				}
 			}
 		}
 		return true;
@@ -96,10 +94,9 @@ public class XMLStartCondition {
 		if (noacquired != null && noacquired.size() > 0) {
 			for (Integer questId : noacquired) {
 				QuestState qs = qsl.getQuestState(questId);
-				if (qs != null && (qs.getStatus() == QuestStatus.START || qs.getStatus() == QuestStatus.REWARD
-						|| qs.getStatus() == QuestStatus.COMPLETE)) {
+				if (qs != null
+					&& (qs.getStatus() == QuestStatus.START || qs.getStatus() == QuestStatus.REWARD || qs.getStatus() == QuestStatus.COMPLETE))
 					return false;
-				}
 			}
 		}
 		return true;
@@ -110,9 +107,8 @@ public class XMLStartCondition {
 		if (acquired != null && acquired.size() > 0) {
 			for (Integer questId : acquired) {
 				QuestState qs = qsl.getQuestState(questId);
-				if (qs == null || qs.getStatus() == QuestStatus.NONE || qs.getStatus() == QuestStatus.LOCKED) {
+				if (qs == null || qs.getStatus() == QuestStatus.NONE || qs.getStatus() == QuestStatus.LOCKED)
 					return false;
-				}
 			}
 		}
 		return true;
@@ -133,7 +129,7 @@ public class XMLStartCondition {
 	public boolean check(Player player) {
 		QuestStateList qsl = player.getQuestStateList();
 		return checkFinishedQuests(qsl) && checkUnfinishedQuests(qsl) && checkAcquiredQuests(qsl)
-				&& checkNoAcquiredQuests(qsl) && checkEquippedItems(player);
+			&& checkNoAcquiredQuests(qsl) && checkEquippedItems(player);
 	}
 
 	private boolean checkReward(int questId, int neededReward, int currentReward) {

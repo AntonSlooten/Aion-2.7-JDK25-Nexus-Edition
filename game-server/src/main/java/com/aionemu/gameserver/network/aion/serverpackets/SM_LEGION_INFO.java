@@ -33,7 +33,7 @@ public class SM_LEGION_INFO extends AionServerPacket {
 
 	/**
 	 * This constructor will handle legion info
-	 *
+	 * 
 	 * @param legion
 	 */
 	public SM_LEGION_INFO(Legion legion) {
@@ -62,9 +62,8 @@ public class SM_LEGION_INFO extends AionServerPacket {
 			writeS(announcementList.get(unixTime));
 			writeD((int) (unixTime.getTime() / 1000));
 			i++;
-			if (i >= 7) {
+			if (i >= 7)
 				break;
-			}
 		}
 
 		writeH(0x00);

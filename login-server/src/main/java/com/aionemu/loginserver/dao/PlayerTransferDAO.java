@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
  */
 package com.aionemu.loginserver.dao;
 
-import java.util.List;
+import javolution.util.FastList;
 
 import com.aionemu.commons.database.dao.DAO;
 import com.aionemu.loginserver.service.ptransfer.PlayerTransferTask;
@@ -25,7 +25,7 @@ import com.aionemu.loginserver.service.ptransfer.PlayerTransferTask;
  * @author KID
  */
 public abstract class PlayerTransferDAO implements DAO {
-	public abstract List<PlayerTransferTask> getNew();
+	public abstract FastList<PlayerTransferTask> getNew();
 	
 	public abstract boolean update(PlayerTransferTask task);
 

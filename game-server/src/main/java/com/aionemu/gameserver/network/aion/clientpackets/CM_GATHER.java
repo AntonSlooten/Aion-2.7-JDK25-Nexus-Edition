@@ -36,21 +36,18 @@ public class CM_GATHER extends AionClientPacket {
 	@Override
 	protected void readImpl() {
 		int action = readD();
-		if (action == 0) {
+		if (action == 0)
 			isStartGather = true;
-		}
 	}
 
 	@Override
 	protected void runImpl() {
 		Player player = getConnection().getActivePlayer();
 		VisibleObject target = player.getTarget();
-		if (target != null && target.getPosition().isSpawned() && target instanceof Gatherable) {
-			if (isStartGather) {
+		if (target != null && target.getPosition().isSpawned() && target instanceof Gatherable)
+			if (isStartGather)
 				((Gatherable) target).getController().onStartUse(player);
-			} else {
+			else
 				((Gatherable) target).getController().finishGathering(player);
-			}
-		}
 	}
 }

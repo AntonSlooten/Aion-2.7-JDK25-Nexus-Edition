@@ -56,6 +56,9 @@ public class Spawn {
 	@XmlAttribute(name = "npc_id", required = true)
 	private int npcId;
 
+	@XmlElement(name = "temporary_spawn")
+	private TemporarySpawn temporaySpawn;
+
 	@XmlElement(name = "spot")
 	private List<SpawnSpotTemplate> spawnTemplates;
 
@@ -72,27 +75,21 @@ public class Spawn {
 	}
 
 	void beforeMarshal(Marshaller marshaller) {
-		if (spawnTime == SpawnTime.ALL) {
+		if (spawnTime == SpawnTime.ALL)
 			spawnTime = null;
-		}
-		if (pool == 0) {
+		if (pool == 0)
 			pool = null;
-		}
-		if (!isCustom) {
+		if (isCustom == false)
 			isCustom = null;
-		}
 	}
 
 	void afterMarshal(Marshaller marshaller) {
-		if (isCustom == null) {
+		if (isCustom == null)
 			isCustom = false;
-		}
-		if (spawnTime == null) {
+		if (spawnTime == null)
 			spawnTime = SpawnTime.ALL;
-		}
-		if (pool == null) {
+		if (pool == null)
 			pool = 0;
-		}
 	}
 
 	public int getNpcId() {
@@ -107,6 +104,10 @@ public class Spawn {
 		return spawnTime;
 	}
 
+	public TemporarySpawn getTemporarySpawn() {
+		return temporaySpawn;
+	}
+
 	public int getRespawnTime() {
 		return respawnTime;
 	}
@@ -116,9 +117,8 @@ public class Spawn {
 	}
 
 	public List<SpawnSpotTemplate> getSpawnSpotTemplates() {
-		if (spawnTemplates == null) {
-			spawnTemplates = new ArrayList<>();
-		}
+		if (spawnTemplates == null)
+			spawnTemplates = new ArrayList<SpawnSpotTemplate>();
 		return spawnTemplates;
 	}
 

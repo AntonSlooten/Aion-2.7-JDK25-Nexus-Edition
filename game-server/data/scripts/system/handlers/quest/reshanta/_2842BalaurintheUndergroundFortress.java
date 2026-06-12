@@ -66,10 +66,12 @@ public class _2842BalaurintheUndergroundFortress extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 266568)
 				return true;
-		} else if (qs.getStatus() == QuestStatus.REWARD && targetId == 266568) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD && targetId == 266568) {
 			qs.setQuestVarById(0, 0);
 			updateQuestStatus(env);
 			return sendQuestEndDialog(env);
@@ -92,7 +94,8 @@ public class _2842BalaurintheUndergroundFortress extends QuestHandler {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					updateQuestStatus(env);
 					return true;
-				} else if (qs.getQuestVarById(0) == 38 || qs.getQuestVarById(0) > 38) {
+				}
+				else if (qs.getQuestVarById(0) == 38 || qs.getQuestVarById(0) > 38) {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);

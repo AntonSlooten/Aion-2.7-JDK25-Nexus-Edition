@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  *
  *  aion-lightning is free software: you can redistribute it and/or modify

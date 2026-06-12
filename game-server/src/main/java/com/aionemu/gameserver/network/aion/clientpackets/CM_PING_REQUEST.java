@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.com>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -22,14 +22,14 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_PING_RESPONSE;
 
 /**
  * This packet is sent when player write /ping
- *
+ * 
  * @author dragoon112
  */
 public class CM_PING_REQUEST extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_PING_REQUEST </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_PING_REQUEST(int opcode, State state, State... restStates) {

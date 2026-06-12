@@ -61,22 +61,24 @@ public class _11049TalocsHeartFullofSoul extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798909: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(182206747);
-					if (itemCount1 > 2) {
-						removeQuestItem(env, 182206747, 3);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 2375);
-					} else
-						return sendQuestDialog(env, 2716);
-				}
+				case 798909: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182206747);
+							if (itemCount1 > 2) {
+								removeQuestItem(env, 182206747, 3);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 2375);
+							}
+							else
+								return sendQuestDialog(env, 2716);
+						}
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798909) {
 				if (env.getDialogId() == 34)
 					return sendQuestDialog(env, 5);

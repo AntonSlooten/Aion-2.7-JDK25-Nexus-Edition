@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -16,12 +16,13 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * In this packet Server is sending response for CM_RESTORE_CHARACTER.
- *
+ * 
  * @author -Nemesiss-
  */
 public class SM_RESTORE_CHARACTER extends AionServerPacket {

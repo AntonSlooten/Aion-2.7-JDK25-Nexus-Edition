@@ -37,51 +37,52 @@ import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.world.knownlist.Visitor;
 
 /**
- * This class is responsible for NPCs spawn management. Current implementation
- * is temporal and will be replaced in the future.
- *
+ * This class is responsible for NPCs spawn management. Current implementation is temporal and will be replaced in the
+ * future.
+ * 
  * @author Luno modified by ATracer, Source, Wakizashi, xTz, nrg
  */
+@SuppressWarnings("deprecation")
 public class SpawnEngine {
 
 	private static Logger log = LoggerFactory.getLogger(SpawnEngine.class);
 
 	/**
-	 * Creates VisibleObject instance and spawns it using given
-	 * {@link SpawnTemplate} instance.
-	 *
+	 * Creates VisibleObject instance and spawns it using given {@link SpawnTemplate} instance.
+	 * 
 	 * @param spawn
 	 * @return created and spawned VisibleObject
 	 */
 	public static VisibleObject spawnObject(SpawnTemplate spawn, int instanceIndex) {
 		final VisibleObject visObj = getSpawnedObject(spawn, instanceIndex);
-		if (spawn.isEventSpawn()) {
+		if (spawn.isEventSpawn())
 			spawn.getEventTemplate().addSpawnedObject(visObj);
-		}
-
+		
 		if (visObj != null) {
 			ThreadPoolManager.getInstance().schedule(new Runnable() { // to do remove
 
-				@Override
-				public void run() {
-					visObj.setIsNewSpawn(false);
-				}
+					@Override
+					public void run() {
+						visObj.setIsNewSpawn(false);
+					}
 
-			}, 1000);
+				}, 1000);
 		}
+
+		spawn.setVisibleObject(visObj);
+
 		return visObj;
 	}
 
 	private static VisibleObject getSpawnedObject(SpawnTemplate spawn, int instanceIndex) {
 		int objectId = spawn.getNpcId();
 
-		if (objectId > 400000 && objectId < 499999) {
-			return VisibleObjectSpawner.spawnGatherable(spawn, instanceIndex);
-		} else if (spawn instanceof SiegeSpawnTemplate) {
-			return VisibleObjectSpawner.spawnSiegeNpc((SiegeSpawnTemplate) spawn, instanceIndex);
-		} else {
-			return VisibleObjectSpawner.spawnNpc(spawn, instanceIndex);
-		}
+		if (objectId > 400000 && objectId < 499999)
+				return VisibleObjectSpawner.spawnGatherable(spawn, instanceIndex);
+		else if (spawn instanceof SiegeSpawnTemplate)
+				return VisibleObjectSpawner.spawnSiegeNpc((SiegeSpawnTemplate) spawn, instanceIndex);
+		else
+				return VisibleObjectSpawner.spawnNpc(spawn, instanceIndex);
 	}
 
 	/**
@@ -96,18 +97,17 @@ public class SpawnEngine {
 	static SpawnTemplate createSpawnTemplate(int worldId, int npcId, float x, float y, float z, byte heading) {
 		return new SpawnTemplate(new SpawnGroup2(worldId, npcId), x, y, z, heading, 0, null, 0, 0);
 	}
-
+	
 	/**
-	 * Should be used when you need to add a siegespawn through code and not from
-	 * static_data spawns (e.g. CustomBalaurAssault)
+	 * Should be used when you need to add a siegespawn through code and not from static_data spawns (e.g. CustomBalaurAssault)
 	 */
 	public static SiegeSpawnTemplate addNewSiegeSpawn(int worldId, int npcId, float x, float y, float z, byte heading) {
 		return new SiegeSpawnTemplate(new SpawnGroup2(worldId, npcId), x, y, z, heading, 0, null, 0, 0);
 	}
-
+	
 	/**
-	 * Should be used when you need to add a siegespawn through code and not from
-	 * static_data spawns (e.g. CustomBalaurAssault)
+	 * Should be used when you need to add a siegespawn through code and not
+	 * from static_data spawns (e.g. CustomBalaurAssault)
 	 */
 	public static SiegeSpawnTemplate addNewSiegeSpawn(int worldId, int npcId, int siegeId, SiegeRace race,
 			SiegeModType mod, float x, float y, float z, byte heading) {
@@ -120,9 +120,9 @@ public class SpawnEngine {
 	}
 
 	/**
-	 * Should be used when need to define whether spawn will be deleted after death
-	 * Using this method spawns will not be saved with //save_spawn command
-	 *
+	 * Should be used when need to define whether spawn will be deleted after death Using this method spawns will not be
+	 * saved with //save_spawn command
+	 * 
 	 * @param worldId
 	 * @param npcId
 	 * @param x
@@ -134,7 +134,7 @@ public class SpawnEngine {
 	 * @return SpawnTemplate
 	 */
 	public static SpawnTemplate addNewSpawn(int worldId, int npcId, float x, float y, float z, byte heading,
-			int respawnTime) {
+		int respawnTime) {
 		SpawnTemplate spawnTemplate = createSpawnTemplate(worldId, npcId, x, y, z, heading);
 		spawnTemplate.setRespawnTime(respawnTime);
 		return spawnTemplate;
@@ -142,7 +142,7 @@ public class SpawnEngine {
 
 	/**
 	 * Create non-permanent spawn template with no respawn
-	 *
+	 * 
 	 * @param worldId
 	 * @param npcId
 	 * @param x
@@ -157,11 +157,11 @@ public class SpawnEngine {
 
 	static void bringIntoWorld(VisibleObject visibleObject, SpawnTemplate spawn, int instanceIndex) {
 		bringIntoWorld(visibleObject, spawn.getWorldId(), instanceIndex, spawn.getX(), spawn.getY(), spawn.getZ(),
-				spawn.getHeading());
+			spawn.getHeading());
 	}
 
 	public static void bringIntoWorld(VisibleObject visibleObject, int worldId, int instanceIndex, float x, float y,
-			float z, byte h) {
+		float z, byte h) {
 		World world = World.getInstance();
 		world.storeObject(visibleObject);
 		world.setPosition(visibleObject, worldId, instanceIndex, x, y, z, h);
@@ -182,7 +182,7 @@ public class SpawnEngine {
 			}
 			spawnBasedOnTemplate(worldMapTemplate);
 		}
-		// TODO! DataManager.SPAWNS_DATA2.clearTemplates();
+		//TODO! DataManager.SPAWNS_DATA2.clearTemplates();
 		printWorldSpawnStats();
 	}
 
@@ -213,33 +213,38 @@ public class SpawnEngine {
 	 * @param worldId
 	 * @param instanceId
 	 */
-	@SuppressWarnings("fallthrough")
 	public static void spawnInstance(int worldId, int instanceId) {
 		List<SpawnGroup2> worldSpawns = DataManager.SPAWNS_DATA2.getSpawnsByWorldId(worldId);
 
 		int spawnedCounter = 0;
 		if (worldSpawns != null) {
 			for (SpawnGroup2 spawn : worldSpawns) {
-				if (spawn.isPartialDaySpawn()) {
+				if (spawn.isTemporarySpawn()) {
+					TemporarySpawnEngine.addSpawnGroup(spawn);
+				}
+				else if (spawn.isPartialDaySpawn()) {
 					DayTimeSpawnEngine.addSpawnGroup(spawn);
-				} else {
+				}
+				else {
 					if (spawn.getHandlerType() != null) {
 						switch (spawn.getHandlerType()) {
-						case RIFT:
-							RiftSpawnManager.addRiftSpawnTemplate(spawn);
-							break;
-						case STATIC:
-							StaticObjectSpawnManager.spawnTemplate(spawn, instanceId);
-						default:
-							break;
+							case RIFT:
+								RiftSpawnManager.addRiftSpawnTemplate(spawn);
+								break;
+							case STATIC:
+								StaticObjectSpawnManager.spawnTemplate(spawn, instanceId);
+							default:
+								break;
 						}
-					} else if (spawn.hasPool()) {
+					}
+					else if (spawn.hasPool()) {
 						for (int i = 0; i < spawn.getPool(); i++) {
 							SpawnTemplate template = spawn.getRndTemplate();
 							spawnObject(template, instanceId);
 							spawnedCounter++;
 						}
-					} else {
+					}
+					else {
 						for (SpawnTemplate template : spawn.getSpawnTemplates()) {
 							spawnObject(template, instanceId);
 							spawnedCounter++;
@@ -269,7 +274,8 @@ public class SpawnEngine {
 		public void visit(VisibleObject object) {
 			if (object instanceof Npc) {
 				npcCount++;
-			} else if (object instanceof Gatherable) {
+			}
+			else if (object instanceof Gatherable) {
 				gatherableCount++;
 			}
 		}

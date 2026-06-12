@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-engine <aion-engine.com>
  *
  *  aion-engine is free software: you can redistribute it and/or modify
@@ -65,7 +65,8 @@ public class _11001KindMeira extends QuestHandler {
 						return sendQuestStartDialog(env);
 					else
 						return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -75,72 +76,76 @@ public class _11001KindMeira extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798918: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1352);
+				case 798918: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 1352);
+						}
+						case STEP_TO_1: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
+					default:
+						break;
+					}
 				}
-				case STEP_TO_1: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
+				case 798946: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 1693);
+						}
+						case STEP_TO_2: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
+					default:
+						break;
+					}
 				}
+				case 798943: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 2034);
+						}
+						case STEP_TO_3: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
+					default:
+						break;
+					}
+				}
+				case 798945: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 2375);
+						}
+						case SELECT_REWARD: {
+							qs.setQuestVar(4);
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return sendQuestEndDialog(env);
+						}
+						default:
+							return sendQuestEndDialog(env);
+					}
 				}
 			}
-			case 798946: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1693);
-				}
-				case STEP_TO_2: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				}
-			}
-			case 798943: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2034);
-				}
-				case STEP_TO_3: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				}
-			}
-			case 798945: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2375);
-				}
-				case SELECT_REWARD: {
-					qs.setQuestVar(4);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return sendQuestEndDialog(env);
-				}
-				default:
-					return sendQuestEndDialog(env);
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798945) {
 				switch (env.getDialog()) {
-				case SELECT_REWARD: {
-					return sendQuestDialog(env, 5);
-				}
-				default:
-					return sendQuestEndDialog(env);
+					case SELECT_REWARD: {
+						return sendQuestDialog(env, 5);
+					}
+					default:
+						return sendQuestEndDialog(env);
 				}
 			}
 		}

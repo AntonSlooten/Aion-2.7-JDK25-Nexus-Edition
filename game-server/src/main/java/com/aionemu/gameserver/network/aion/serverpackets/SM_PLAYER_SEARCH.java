@@ -29,7 +29,7 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
 /**
  * Sent to fill the search panel of a players social window<br />
  * I.E.: In response to a <tt>CM_PLAYER_SEARCH</tt>
- *
+ * 
  * @author Ben
  */
 public class SM_PLAYER_SEARCH extends AionServerPacket {
@@ -41,13 +41,14 @@ public class SM_PLAYER_SEARCH extends AionServerPacket {
 
 	/**
 	 * Constructs a new packet that will send these players
-	 *
-	 * @param players List of players to show
-	 * @param region  of search - should be passed as parameter to prevent null in
-	 *                player.getActiveRegion()
+	 * 
+	 * @param players
+	 *          List of players to show
+	 * @param region
+	 *          of search - should be passed as parameter to prevent null in player.getActiveRegion()
 	 */
 	public SM_PLAYER_SEARCH(List<Player> players, int region) {
-		this.players = new ArrayList<>(players);
+		this.players = new ArrayList<Player>(players);
 		this.region = region;
 	}
 
@@ -60,7 +61,7 @@ public class SM_PLAYER_SEARCH extends AionServerPacket {
 		for (Player player : players) {
 			if (player.getActiveRegion() == null) {
 				log.warn("CHECKPOINT: null active region for " + player.getObjectId() + "-" + player.getX() + "-"
-						+ player.getY() + "-" + player.getZ());
+					+ player.getY() + "-" + player.getZ());
 			}
 			writeD(player.getActiveRegion() == null ? region : player.getActiveRegion().getMapId());
 			writeF(player.getPosition().getX());

@@ -10,8 +10,9 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
  * @author Sarynth, (edited by Pan)
  */
 public class CmdNeutral extends BaseCommand {
+	
 
-	@Override
+
 	public void execute(Player admin, String... params) {
 		if (params.length != 1) {
 			showHelp(admin);
@@ -25,20 +26,22 @@ public class CmdNeutral extends BaseCommand {
 		if (params[0].equalsIgnoreCase("all")) {
 			admin.setAdminNeutral(3);
 			admin.setAdminEnmity(0);
-		} else if (params[0].equalsIgnoreCase("players")) {
+		}
+		else if (params[0].equalsIgnoreCase("players")) {
 			admin.setAdminNeutral(2);
-			if (enemyType > 1) {
+			if (enemyType > 1)
 				admin.setAdminEnmity(0);
-			}
-		} else if (params[0].equalsIgnoreCase("npcs")) {
+		}
+		else if (params[0].equalsIgnoreCase("npcs")) {
 			admin.setAdminNeutral(1);
-			if (enemyType == 1 || enemyType == 3) {
+			if (enemyType == 1 || enemyType == 3)
 				admin.setAdminEnmity(0);
-			}
-		} else if (params[0].equalsIgnoreCase("cancel")) {
+		}
+		else if (params[0].equalsIgnoreCase("cancel")) {
 			admin.setAdminNeutral(0);
 			output = "You appear regular to both Players and Npcs.";
-		} else {
+		}
+		else {
 			showHelp(admin);
 			return;
 		}

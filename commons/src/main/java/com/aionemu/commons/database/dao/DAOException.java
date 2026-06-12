@@ -18,7 +18,7 @@ package com.aionemu.commons.database.dao;
 
 /**
  * Generic DAO exception class
- *
+ * 
  * @author SoulKeeper
  */
 public class DAOException extends RuntimeException {

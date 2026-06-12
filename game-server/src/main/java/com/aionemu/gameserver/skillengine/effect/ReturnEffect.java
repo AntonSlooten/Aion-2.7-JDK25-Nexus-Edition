@@ -38,8 +38,7 @@ public class ReturnEffect extends EffectTemplate {
 
 	@Override
 	public void calculate(Effect effect) {
-		if (effect.getEffected().isSpawned()) {
+		if (effect.getEffected().isSpawned())
 			effect.addSucessEffect(this);
-		}
 	}
 }

@@ -37,7 +37,7 @@ public class Materials {
 	 */
 	public List<Material> getMaterial() {
 		if (material == null) {
-			material = new ArrayList<>();
+			material = new ArrayList<Material>();
 		}
 		return this.material;
 	}

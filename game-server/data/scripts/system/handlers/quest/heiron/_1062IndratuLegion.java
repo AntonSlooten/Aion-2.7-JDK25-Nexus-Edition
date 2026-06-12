@@ -87,57 +87,57 @@ public class _1062IndratuLegion extends QuestHandler {
 					return sendQuestEndDialog(env);
 			}
 			return false;
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 204500) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-			case STEP_TO_1:
-				if (var == 0) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+				case STEP_TO_1:
+					if (var == 0) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
 			}
-		} else if (targetId == 204600) {
+		}
+		else if (targetId == 204600) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-			case STEP_TO_2:
-				if (var == 1) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-					player.setState(CreatureState.FLIGHT_TELEPORT);
-					player.unsetState(CreatureState.ACTIVE);
-					player.setFlightTeleportId(54001);
-					PacketSendUtility.sendPacket(player,
-							new SM_EMOTION(player, EmotionType.START_FLYTELEPORT, 54001, 0));
-					return true;
-				}
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+				case STEP_TO_2:
+					if (var == 1) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+						player.setState(CreatureState.FLIGHT_TELEPORT);
+						player.unsetState(CreatureState.ACTIVE);
+						player.setFlightTeleportId(54001);
+						PacketSendUtility.sendPacket(player, new SM_EMOTION(player, EmotionType.START_FLYTELEPORT, 54001, 0));
+						return true;
+					}
 			}
-		} else if (targetId == 204610) {
+		}
+		else if (targetId == 204610) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 2)
-					return sendQuestDialog(env, 1693);
-			case SELECT_ACTION_1694:
-				playQuestMovie(env, 195);
-				break;
-			case STEP_TO_3:
-				if (var == 2) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
+				case START_DIALOG:
+					if (var == 2)
+						return sendQuestDialog(env, 1693);
+				case SELECT_ACTION_1694:
+					playQuestMovie(env, 195);
+					break;
+				case STEP_TO_3:
+					if (var == 2) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
 			}
 		}
 		return false;
@@ -164,8 +164,8 @@ public class _1062IndratuLegion extends QuestHandler {
 			updateQuestStatus(env);
 			if (spawn_Drafala == null || !spawn_Drafala.isSpawned()) {
 				final Npc npc = (Npc) env.getVisibleObject();
-				spawn_Drafala = QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 212588,
-						npc.getX(), npc.getY(), npc.getZ(), npc.getHeading());
+				spawn_Drafala = QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 212588, npc.getX(), npc.getY(),
+					npc.getZ(), npc.getHeading());
 			}
 			return true;
 		}

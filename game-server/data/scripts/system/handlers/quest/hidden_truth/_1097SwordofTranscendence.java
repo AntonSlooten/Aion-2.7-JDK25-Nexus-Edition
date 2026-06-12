@@ -59,65 +59,70 @@ public class _1097SwordofTranscendence extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 790001: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-				case STEP_TO_1:
-					if (var == 0) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-				}
-			}
-				break;
-			case 798316: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_2:
-					if (var == 1) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-				}
-			}
-				break;
-			case 279034: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 2)
-						return sendQuestDialog(env, 1693);
-				case STEP_TO_3:
-					if (var == 2) {
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-				case CHECK_COLLECTED_ITEMS:
-					if (var == 2) {
-						if (QuestService.collectItemCheck(env, true)) {
-							if (!giveQuestItem(env, 182206058, 1))
+				case 790001: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+						case STEP_TO_1:
+							if (var == 0) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 								return true;
-							qs.setStatus(QuestStatus.REWARD);
-							updateQuestStatus(env);
-							return sendQuestDialog(env, 10000);
-						} else
-							return sendQuestDialog(env, 10001);
+							}
+					default:
+						break;
 					}
 				}
+					break;
+				case 798316: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 1)
+								return sendQuestDialog(env, 1352);
+						case STEP_TO_2:
+							if (var == 1) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
+					default:
+						break;
+					}
+				}
+					break;
+				case 279034: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 2)
+								return sendQuestDialog(env, 1693);
+						case STEP_TO_3:
+							if (var == 2) {
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
+						case CHECK_COLLECTED_ITEMS:
+							if (var == 2) {
+								if (QuestService.collectItemCheck(env, true)) {
+									if (!giveQuestItem(env, 182206058, 1))
+										return true;
+									qs.setStatus(QuestStatus.REWARD);
+									updateQuestStatus(env);
+									return sendQuestDialog(env, 10000);
+								}
+								else
+									return sendQuestDialog(env, 10001);
+							}
+					default:
+						break;
+					}
+				}
+					break;
 			}
-				break;
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 790001) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT)
 					return sendQuestDialog(env, 10002);

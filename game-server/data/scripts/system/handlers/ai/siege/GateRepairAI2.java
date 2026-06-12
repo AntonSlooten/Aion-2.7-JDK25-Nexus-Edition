@@ -51,8 +51,7 @@ public class GateRepairAI2 extends NpcAI2 {
 
 				};
 				if (player.getResponseRequester().putRequest(160016, repairstone))
-					PacketSendUtility.sendPacket(player,
-							new SM_QUESTION_WINDOW(160016, player.getObjectId(), new DescriptionId(2 * 716568 + 1)));
+					PacketSendUtility.sendPacket(player, new SM_QUESTION_WINDOW(160016, player.getObjectId(), new DescriptionId(2 * 716568 + 1)));
 			}
 
 			@Override

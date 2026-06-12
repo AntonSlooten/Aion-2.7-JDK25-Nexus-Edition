@@ -65,12 +65,13 @@ public class _2500OrdersFromNerita extends QuestHandler {
 				return sendQuestDialog(env, 5);
 			}
 			return false;
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (env.getDialogId() == 18) {
 				int[] ids = { 2051, 2052, 2053, 2054, 2055, 2056, 2057, 2058, 2059, 2060, 2061 };
 				for (int id : ids) {
 					QuestEngine.getInstance().onEnterZoneMissionEnd(
-							new QuestEnv(env.getVisibleObject(), env.getPlayer(), id, env.getDialogId()));
+						new QuestEnv(env.getVisibleObject(), env.getPlayer(), id, env.getDialogId()));
 				}
 			}
 			return sendQuestEndDialog(env);

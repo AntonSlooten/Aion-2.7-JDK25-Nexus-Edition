@@ -7,7 +7,7 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public class CmdCometome extends BaseCommand {
 
-	@Override
+	
 	public void execute(Player player, String... params) {
 
 		Player partner = player.findPartner();
@@ -20,13 +20,12 @@ public class CmdCometome extends BaseCommand {
 			return;
 		}
 		if (partner.getWorldId() == 510010000 || partner.getWorldId() == 520010000) {
-			PacketSendUtility.sendMessage(player,
-					"You can't teleported " + partner.getName() + ", your partner is on prison.");
+			PacketSendUtility.sendMessage(player, "You can't teleported " + partner.getName() +", your partner is on prison.");
 			return;
 		}
 
 		TeleportService.teleportTo(partner, player.getWorldId(), player.getInstanceId(), player.getX(), player.getY(),
-				player.getZ(), player.getHeading(), 3000, true);
+			player.getZ(), player.getHeading(), 3000, true);
 		PacketSendUtility.sendMessage(player, partner.getName() + " teleported to you.");
 	}
 }

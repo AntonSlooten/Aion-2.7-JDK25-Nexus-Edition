@@ -38,35 +38,33 @@ public class SM_ABNORMAL_EFFECT extends AionServerPacket {
 		this.abnormals = abnormals;
 		this.effectedId = effected.getObjectId();
 		this.filtered = effects;
-
-		if (effected instanceof Player) {
+		
+		if (effected instanceof Player)
 			effectType = 2;
-		}
 	}
 
 	@Override
-	@SuppressWarnings("fallthrough")
 	protected void writeImpl(AionConnection con) {
 		writeD(effectedId);
-		writeC(effectType); // unk
+		writeC(effectType); //unk
 		writeD(0); // unk
 		writeD(abnormals); // unk
 		writeD(0); // unk
 		writeH(filtered.size()); // effects size
 
 		for (Effect effect : filtered) {
-			switch (effectType) {
-			case 2:
-				writeD(effectedId);
-			case 1:
-				writeH(effect.getSkillId());
-				writeC(effect.getSkillLevel());
-				writeC(effect.getTargetSlot());
-				writeD(effect.getRemainingTime());
-				break;
-			default:
-				writeH(effect.getSkillId());
-				writeC(effect.getSkillLevel());
+			switch(effectType) {
+				case 2:
+					writeD(effectedId);
+				case 1:
+					writeH(effect.getSkillId());
+					writeC(effect.getSkillLevel());
+					writeC(effect.getTargetSlot());
+					writeD(effect.getRemainingTime());
+					break;
+				default:
+					writeH(effect.getSkillId());
+					writeC(effect.getSkillLevel());
 			}
 		}
 	}

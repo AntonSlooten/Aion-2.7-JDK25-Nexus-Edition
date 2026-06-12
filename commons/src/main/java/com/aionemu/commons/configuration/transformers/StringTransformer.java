@@ -23,7 +23,7 @@ import com.aionemu.commons.configuration.TransformationException;
 
 /**
  * This class is here just for writing less "ifs" in the code. Does nothing
- *
+ * 
  * @author SoulKeeper
  */
 public class StringTransformer implements PropertyTransformer<String> {
@@ -35,11 +35,14 @@ public class StringTransformer implements PropertyTransformer<String> {
 
 	/**
 	 * Just returns value object
-	 *
-	 * @param value value that will be transformed
-	 * @param field value will be assigned to this field
+	 * 
+	 * @param value
+	 *          value that will be transformed
+	 * @param field
+	 *          value will be assigned to this field
 	 * @return return value object
-	 * @throws TransformationException never thrown
+	 * @throws TransformationException
+	 *           never thrown
 	 */
 	@Override
 	public String transform(String value, Field field) throws TransformationException {

@@ -7,12 +7,12 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /*syntax //addskill <skillId> <skillLevel>*/
 
+
 /**
  * @author Phantom
  */
 public class CmdAddSkill extends BaseCommand {
 
-	@Override
 	public void execute(Player admin, String... params) {
 		if (params.length != 2) {
 			showHelp(admin);
@@ -27,7 +27,8 @@ public class CmdAddSkill extends BaseCommand {
 		try {
 			skillId = Integer.parseInt(params[0]);
 			skillLevel = Integer.parseInt(params[1]);
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			PacketSendUtility.sendMessage(admin, "Parameters need to be an integer.");
 			return;
 		}
@@ -39,5 +40,7 @@ public class CmdAddSkill extends BaseCommand {
 			PacketSendUtility.sendMessage(targetpl, "You have acquire a new skill");
 		}
 	}
-
+	
 }
+
+

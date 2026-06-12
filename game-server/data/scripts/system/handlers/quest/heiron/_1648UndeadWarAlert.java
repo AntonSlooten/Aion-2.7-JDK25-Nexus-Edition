@@ -44,7 +44,8 @@ public class _1648UndeadWarAlert extends QuestHandler {
 			if (targetId == 204545) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -54,39 +55,40 @@ public class _1648UndeadWarAlert extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204612: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 0) {
-						return sendQuestDialog(env, 1352);
+				case 204612: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 0) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_1: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+							return true;
+						}
 					}
 				}
-				case STEP_TO_1: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-					return true;
-				}
-				}
-			}
-			case 204500: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 1) {
-						return sendQuestDialog(env, 1693);
+				case 204500: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 1) {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case STEP_TO_2: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+							return true;
+						}
 					}
 				}
-				case STEP_TO_2: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-					return true;
-				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204590) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

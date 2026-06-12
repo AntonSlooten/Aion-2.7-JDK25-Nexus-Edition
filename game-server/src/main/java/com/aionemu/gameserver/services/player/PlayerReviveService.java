@@ -40,7 +40,7 @@ import com.aionemu.gameserver.world.WorldPosition;
  * @author Jego, xTz
  */
 public class PlayerReviveService {
-
+ 
 	public static final void duelRevive(Player player) {
 		revive(player, 30, 30, false);
 		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.RESURRECT), true);
@@ -57,27 +57,23 @@ public class PlayerReviveService {
 		player.setTelEffect(2);
 		boolean isFlyingBeforeDeath = player.getIsFlyingBeforeDeath();
 		revive(player, 10, 10, true);
-
-		if (isFlyingBeforeDeath) {
+		
+		if (isFlyingBeforeDeath)
 			player.setState(CreatureState.FLYING);
-		}
-
+		
 		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.RESURRECT), true);
 		PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_REBIRTH_MASSAGE_ME);
-
+		
 		player.getGameStats().updateStatsAndSpeedVisually();
-
-		if (player.isInPrison()) {
+		
+		if (player.isInPrison())
 			TeleportService.teleportToPrison(player);
-		}
 
-		if (player.isInResPostState()) {
-			TeleportService.teleportTo(player, player.getWorldId(), player.getInstanceId(), player.getResPosX(),
-					player.getResPosY(), player.getResPosZ(), 0, true);
-		}
+		if (player.isInResPostState())
+			TeleportService.teleportTo(player, player.getWorldId(), player.getInstanceId(), player.getResPosX(), player.getResPosY(), player.getResPosZ(), 0, true);
 		player.unsetResPosState();
-
-		// if player was flying before res, start flying
+		
+		//if player was flying before res, start flying
 		if (isFlyingBeforeDeath) {
 			player.getFlyController().startFly();
 		}
@@ -94,55 +90,50 @@ public class PlayerReviveService {
 		}
 		boolean soulSickness = true;
 		int rebirthResurrectPercent = player.getRebirthResurrectPercent();
-		if (player.getAccessLevel() >= AdminConfig.ADMIN_AUTO_RES) {
+		if(player.getAccessLevel() >= AdminConfig.ADMIN_AUTO_RES) {
 			rebirthResurrectPercent = 100;
 			soulSickness = false;
 		}
-
-		else if (player.getEventTeamId() != -1 && com.aionemu.gameserver.eventengine.Event.instance.disableSoulSick()) {
+		
+		else if(player.getEventTeamId() != -1 && com.aionemu.gameserver.eventengine.Event.instance.disableSoulSick())
 			soulSickness = false;
-		}
-
+		
 		boolean isFlyingBeforeDeath = player.getIsFlyingBeforeDeath();
 		revive(player, rebirthResurrectPercent, rebirthResurrectPercent, soulSickness);
-
-		if (isFlyingBeforeDeath) {
+		
+		if (isFlyingBeforeDeath)
 			player.setState(CreatureState.FLYING);
-		}
 		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.RESURRECT), true);
 		PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_REBIRTH_MASSAGE_ME);
-
+	
 		player.getGameStats().updateStatsAndSpeedVisually();
-
-		if (player.isInPrison()) {
+		
+		if (player.isInPrison())
 			TeleportService.teleportToPrison(player);
-		}
 		player.unsetResPosState();
-
-		// if player was flying before res, start flying
+		
+		//if player was flying before res, start flying
 		if (isFlyingBeforeDeath) {
 			player.getFlyController().startFly();
 		}
 	}
-
+	
 	public static final void bindRevive(Player player) {
 		player.setTelEffect(4);
 		revive(player, 25, 25, true);
 		PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_REBIRTH_MASSAGE_ME);
 		// TODO: It is not always necessary.
 		// sendPacket(new SM_QUEST_LIST(activePlayer));
-		player.getGameStats().updateStatsAndSpeedVisually();
+		player.getGameStats().updateStatsAndSpeedVisually();		
 		PacketSendUtility.sendPacket(player, new SM_PLAYER_INFO(player, false));
-		PacketSendUtility.sendPacket(player,
-				new SM_MOTION(player.getObjectId(), player.getMotions().getActiveMotions()));
-		if (player.isInPrison()) {
+		PacketSendUtility.sendPacket(player, new SM_MOTION(player.getObjectId(), player.getMotions().getActiveMotions()));
+		if (player.isInPrison())
 			TeleportService.teleportToPrison(player);
-		} else if (player.getEventTeamId() != -1) {
+		else if(player.getEventTeamId() != -1)
 			com.aionemu.gameserver.eventengine.Event.instance.teleportPlayer(player);
-		} else {
+		else
 			TeleportService.moveToBindLocation(player, true);
-		}
-		player.unsetResPosState();
+		player.unsetResPosState(); 
 	}
 
 	public static final void kiskRevive(Player player) {
@@ -151,18 +142,16 @@ public class PlayerReviveService {
 			return;
 		}
 		player.setTelEffect(2);
-		if (player.isInPrison()) {
+		if (player.isInPrison())
 			TeleportService.teleportToPrison(player);
-		} else if (kisk.isActive()) {
+		else if (kisk.isActive()) {
 			WorldPosition bind = kisk.getPosition();
 			kisk.resurrectionUsed(player);
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_REBIRTH_MASSAGE_ME);
 			revive(player, 25, 25, false);
 			player.getGameStats().updateStatsAndSpeedVisually();
-			// PacketSendUtility.sendPacket(player, new SM_PLAYER_INFO(player, false)); //
-			// send by TeleportService
-			// PacketSendUtility.sendPacket(player, new SM_MOTION(player.getObjectId(),
-			// player.getMotions().getActiveMotions())); // send by TeleportService
+			//PacketSendUtility.sendPacket(player, new SM_PLAYER_INFO(player, false)); // send by TeleportService
+			//PacketSendUtility.sendPacket(player, new SM_MOTION(player.getObjectId(), player.getMotions().getActiveMotions())); // send by TeleportService
 			player.unsetResPosState();
 			TeleportService.moveToKiskLocation(player, bind);
 		}
@@ -183,35 +172,34 @@ public class PlayerReviveService {
 		PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_REBIRTH_MASSAGE_ME);
 		player.getGameStats().updateStatsAndSpeedVisually();
 		PacketSendUtility.sendPacket(player, new SM_PLAYER_INFO(player, false));
-		PacketSendUtility.sendPacket(player,
-				new SM_MOTION(player.getObjectId(), player.getMotions().getActiveMotions()));
-		if (map.isInstanceType() && (player.getInstanceStartPosX() != 0 && player.getInstanceStartPosY() != 0
-				&& player.getInstanceStartPosZ() != 0)) {
+		PacketSendUtility.sendPacket(player, new SM_MOTION(player.getObjectId(), player.getMotions().getActiveMotions()));
+		if (map.isInstanceType()
+			&& (player.getInstanceStartPosX() != 0 && player.getInstanceStartPosY() != 0 && player.getInstanceStartPosZ() != 0)) {
 			TeleportService.teleportTo(player, player.getWorldId(), player.getInstanceStartPosX(),
-					player.getInstanceStartPosY(), player.getInstanceStartPosZ(), 0);
-		} else {
+				player.getInstanceStartPosY(), player.getInstanceStartPosZ(), 0);
+		}
+		else {
 			bindRevive(player);
 		}
 		player.unsetResPosState();
-
+               
 	}
-
+	
 	public static final void revive(Player player, int hpPercent, int mpPercent, boolean setSoulsickness) {
 		player.setPlayerResActivate(false);
 		player.getLifeStats().setCurrentHpPercent(hpPercent);
 		player.getLifeStats().setCurrentMpPercent(mpPercent);
-		if (player.getCommonData().getDp() > 0) {
+		if (player.getCommonData().getDp() > 0)
 			player.getCommonData().setDp(0);
-		}
 		player.getLifeStats().triggerRestoreOnRevive();
 		if (setSoulsickness) {
 			player.getController().updateSoulSickness();
 		}
 		player.getAggroList().clear();
 		player.getController().onBeforeSpawn();
-		// unset isflyingbeforedeath
+		//unset isflyingbeforedeath
 		player.setIsFlyingBeforeDeath(false);
-		if (player.isInGroup2()) {
+		if(player.isInGroup2()){
 			TeamMoveUpdater.getInstance().startTask(player);
 		}
 	}
@@ -225,34 +213,31 @@ public class PlayerReviveService {
 
 		// Add Cooldown and use item
 		int useDelay = item.getItemTemplate().getDelayTime();
-		player.addItemCoolDown(item.getItemTemplate().getDelayId(), System.currentTimeMillis() + useDelay,
-				useDelay / 1000);
+		player.addItemCoolDown(item.getItemTemplate().getDelayId(), System.currentTimeMillis() + useDelay, useDelay / 1000);
 		player.getController().cancelUseItem();
 		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), item.getObjectId(),
-				item.getItemTemplate().getTemplateId()), true);
+			item.getItemTemplate().getTemplateId()), true);
 		if (!player.getInventory().decreaseByObjectId(item.getObjectId(), 1)) {
 			cancelRes(player);
 			return;
 		}
-		boolean isFlyingBeforeDeath = player.getIsFlyingBeforeDeath();
+		boolean isFlyingBeforeDeath = player.getIsFlyingBeforeDeath();		
 		// Tombstone Self-Rez retail verified 15%
 		revive(player, 15, 15, true);
-
-		if (isFlyingBeforeDeath) {
+		
+		if (isFlyingBeforeDeath)
 			player.setState(CreatureState.FLYING);
-		}
 
 		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.RESURRECT), true);
 		PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_REBIRTH_MASSAGE_ME);
-
+		
 		player.getGameStats().updateStatsAndSpeedVisually();
-
-		if (player.isInPrison()) {
+		
+		if (player.isInPrison())
 			TeleportService.teleportToPrison(player);
-		}
 		player.unsetResPosState();
-
-		// if player was flying before res, start flying
+		
+		//if player was flying before res, start flying
 		if (isFlyingBeforeDeath) {
 			player.getFlyController().startFly();
 		}
@@ -262,5 +247,5 @@ public class PlayerReviveService {
 		AuditLogger.info(player, "Possible selfres hack.");
 		player.getController().sendDie();
 	}
-
+        
 }

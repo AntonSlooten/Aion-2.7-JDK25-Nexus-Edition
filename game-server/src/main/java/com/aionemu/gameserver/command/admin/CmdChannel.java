@@ -12,7 +12,7 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
  */
 public class CmdChannel extends BaseCommand {
 
-	@Override
+	
 	public void execute(Player player, String... params) {
 		Class<?> classToMofify = CustomConfig.class;
 		Field someField;
@@ -21,13 +21,15 @@ public class CmdChannel extends BaseCommand {
 			if (params[1].equalsIgnoreCase("on") && !CustomConfig.FACTION_CMD_CHANNEL) {
 				someField.set(null, Boolean.valueOf(true));
 				PacketSendUtility.sendMessage(player, "The command .faction is ON.");
-			} else if (params[1].equalsIgnoreCase("off") && CustomConfig.FACTION_CMD_CHANNEL) {
+			}
+			else if (params[1].equalsIgnoreCase("off") && CustomConfig.FACTION_CMD_CHANNEL) {
 				someField.set(null, Boolean.valueOf(false));
 				PacketSendUtility.sendMessage(player, "The command .faction is OFF.");
-			} else {
-				showHelp(player);
 			}
-		} catch (Exception e) {
+			else
+				showHelp(player);
+		}
+		catch (Exception e) {
 			showHelp(player);
 			return;
 		}

@@ -72,151 +72,167 @@ public class _1055EternalRest extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204629) // Tessia
 				return sendQuestEndDialog(env);
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 204629) { // Tessia
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-				else if (var == 2)
-					return sendQuestDialog(env, 1693);
-			case STEP_TO_1:
-				if (var == 0) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			case STEP_TO_2:
-				if (var == 1) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
-			}
-		} else if (targetId == 204625) { // Kacias
-			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-				else if (var == 2)
-					return sendQuestDialog(env, 1693);
-				else if (var == 4)
-					return sendQuestDialog(env, 2375);
-			case CHECK_COLLECTED_ITEMS:
-				if (QuestService.collectItemCheck(env, true)) {
-					if (!giveQuestItem(env, 182201613, 1))
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+					else if (var == 2)
+						return sendQuestDialog(env, 1693);
+				case STEP_TO_1:
+					if (var == 0) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 						return true;
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					return sendQuestDialog(env, 10000);
-				} else
-					return sendQuestDialog(env, 10001);
-			case STEP_TO_2:
-				if (var == 1) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			case SET_REWARD:
-				if (var == 4) {
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
-			}
-		} else if (targetId == 204628) { // Kalkas
-			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 2)
-					return sendQuestDialog(env, 1694);
-			case STEP_TO_3:
-				if (var == 2 && player.getInventory().getItemCountByItemId(182201609) == 0) {
-					if (!giveQuestItem(env, 182201609, 1))
-						return true;
-					Npc npc = (Npc) player.getTarget();
-					if (npc == null || npc.getObjectId() != env.getVisibleObject().getObjectId()) {
-						return false;
 					}
-					npc.getController().onDie(player);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return closeDialogWindow(env);
-				} else
-					return closeDialogWindow(env);
-			}
-		} else if (targetId == 204627) { // Mempion
-			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 2)
-					return sendQuestDialog(env, 1781);
-			case STEP_TO_3:
-				if (var == 2 && player.getInventory().getItemCountByItemId(182201610) == 0) {
-					if (!giveQuestItem(env, 182201610, 1))
+				case STEP_TO_2:
+					if (var == 1) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 						return true;
-					Npc npc = (Npc) player.getTarget();
-					if (npc == null || npc.getObjectId() != env.getVisibleObject().getObjectId()) {
-						return false;
 					}
-					npc.getController().onDie(player);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return closeDialogWindow(env);
-				} else
-					return closeDialogWindow(env);
+					return false;
+			default:
+				break;
 			}
-		} else if (targetId == 204626) { // Spina
+		}
+		else if (targetId == 204625) { // Kacias
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 2)
-					return sendQuestDialog(env, 1864);
-			case STEP_TO_3:
-				if (var == 2 && player.getInventory().getItemCountByItemId(182201611) == 0) {
-					if (!giveQuestItem(env, 182201611, 1))
-						return true;
-					Npc npc = (Npc) player.getTarget();
-					if (npc == null || npc.getObjectId() != env.getVisibleObject().getObjectId()) {
-						return false;
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+					else if (var == 2)
+						return sendQuestDialog(env, 1693);
+					else if (var == 4)
+						return sendQuestDialog(env, 2375);
+				case CHECK_COLLECTED_ITEMS:
+					if (QuestService.collectItemCheck(env, true)) {
+						if (!giveQuestItem(env, 182201613, 1))
+							return true;
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						return sendQuestDialog(env, 10000);
 					}
-					npc.getController().onDie(player);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return closeDialogWindow(env);
-				} else
-					return closeDialogWindow(env);
+					else
+						return sendQuestDialog(env, 10001);
+				case STEP_TO_2:
+					if (var == 1) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+				case SET_REWARD:
+					if (var == 4) {
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
+			default:
+				break;
 			}
-		} else if (targetId == 204622) { // Ladon
+		}
+		else if (targetId == 204628) { // Kalkas
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 2)
-					return sendQuestDialog(env, 1949);
-			case STEP_TO_3:
-				if (var == 2 && player.getInventory().getItemCountByItemId(182201612) == 0) {
-					if (!giveQuestItem(env, 182201612, 1))
-						return true;
-					Npc npc = (Npc) player.getTarget();
-					if (npc == null || npc.getObjectId() != env.getVisibleObject().getObjectId()) {
-						return false;
+				case START_DIALOG:
+					if (var == 2)
+						return sendQuestDialog(env, 1694);
+				case STEP_TO_3:
+					if (var == 2 && player.getInventory().getItemCountByItemId(182201609) == 0) {
+						if (!giveQuestItem(env, 182201609, 1))
+							return true;
+						Npc npc = (Npc) player.getTarget();
+						if (npc == null || npc.getObjectId() != env.getVisibleObject().getObjectId()) {
+							return false;
+						}
+						npc.getController().onDie(player);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return closeDialogWindow(env);
 					}
-					npc.getController().onDie(player);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return closeDialogWindow(env);
-				} else
-					return closeDialogWindow(env);
+					else
+						return closeDialogWindow(env);
+			default:
+				break;
 			}
-		} else if (targetId == 700270) { // Empty Stone Coffin / Cercueil de pierre vide
+		}
+		else if (targetId == 204627) { // Mempion
+			switch (env.getDialog()) {
+				case START_DIALOG:
+					if (var == 2)
+						return sendQuestDialog(env, 1781);
+				case STEP_TO_3:
+					if (var == 2 && player.getInventory().getItemCountByItemId(182201610) == 0) {
+						if (!giveQuestItem(env, 182201610, 1))
+							return true;
+						Npc npc = (Npc) player.getTarget();
+						if (npc == null || npc.getObjectId() != env.getVisibleObject().getObjectId()) {
+							return false;
+						}
+						npc.getController().onDie(player);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return closeDialogWindow(env);
+					}
+					else
+						return closeDialogWindow(env);
+			default:
+				break;
+			}
+		}
+		else if (targetId == 204626) { // Spina
+			switch (env.getDialog()) {
+				case START_DIALOG:
+					if (var == 2)
+						return sendQuestDialog(env, 1864);
+				case STEP_TO_3:
+					if (var == 2 && player.getInventory().getItemCountByItemId(182201611) == 0) {
+						if (!giveQuestItem(env, 182201611, 1))
+							return true;
+						Npc npc = (Npc) player.getTarget();
+						if (npc == null || npc.getObjectId() != env.getVisibleObject().getObjectId()) {
+							return false;
+						}
+						npc.getController().onDie(player);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return closeDialogWindow(env);
+					}
+					else
+						return closeDialogWindow(env);
+			default:
+				break;
+			}
+		}
+		else if (targetId == 204622) { // Ladon
+			switch (env.getDialog()) {
+				case START_DIALOG:
+					if (var == 2)
+						return sendQuestDialog(env, 1949);
+				case STEP_TO_3:
+					if (var == 2 && player.getInventory().getItemCountByItemId(182201612) == 0) {
+						if (!giveQuestItem(env, 182201612, 1))
+							return true;
+						Npc npc = (Npc) player.getTarget();
+						if (npc == null || npc.getObjectId() != env.getVisibleObject().getObjectId()) {
+							return false;
+						}
+						npc.getController().onDie(player);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return closeDialogWindow(env);
+					}
+					else
+						return closeDialogWindow(env);
+			default:
+				break;
+			}
+		}
+		else if (targetId == 700270) { // Empty Stone Coffin / Cercueil de pierre vide
 			if (env.getDialog() == QuestDialog.USE_OBJECT) {
 				return useQuestObject(env, 3, 4, false, 0, 0, 1, 182201613, 1); // 4
 			}

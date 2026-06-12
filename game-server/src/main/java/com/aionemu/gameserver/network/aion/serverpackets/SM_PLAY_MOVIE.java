@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
@@ -31,10 +32,10 @@ public class SM_PLAY_MOVIE extends AionServerPacket {
 
 	public SM_PLAY_MOVIE(int type, int movieId) {
 		this.type = type;
-		this.movieId = movieId;
+		this.movieId = movieId;	
 	}
 
-	public SM_PLAY_MOVIE(int type, int id, int movieId, boolean unskippable) {
+	public SM_PLAY_MOVIE(int type, int id, int movieId, boolean unskippable ) {
 		this.type = type;
 		this.movieId = movieId;
 		this.id = id;

@@ -52,7 +52,8 @@ public class Config {
 			try {
 				log.info("Loading: mygs.properties");
 				myProps = PropertiesUtils.load("./config/mygs.properties");
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				log.info("No override properties found");
 			}
 
@@ -65,7 +66,7 @@ public class Config {
 
 			ConfigurableProcessor.process(AdminConfig.class, adminProps);
 			log.info("Loading: " + administration + "/admin.properties");
-
+			
 			ConfigurableProcessor.process(DeveloperConfig.class, adminProps);
 			log.info("Loading: " + administration + "/developer.properties");
 
@@ -84,7 +85,7 @@ public class Config {
 
 			ConfigurableProcessor.process(CacheConfig.class, mainProps);
 			log.info("Loading: " + main + "/cache.properties");
-
+			
 			ConfigurableProcessor.process(CraftConfig.class, mainProps);
 			log.info("Loading: " + main + "/craft.properties");
 
@@ -159,15 +160,15 @@ public class Config {
 
 			ConfigurableProcessor.process(PunishmentConfig.class, mainProps);
 			log.info("Loading: " + main + "/punishment.properties");
-
+			
 			ConfigurableProcessor.process(PvPConfig.class, mainProps);
 			log.info("Loading: " + main + "/PvP.properties");
-
+			
 			ConfigurableProcessor.process(EventsConfig.class, mainProps);
 			log.info("Loading: " + main + "/events.properties");
-
-			// ConfigurableProcessor.process(GlobalityConfig.class, mainProps);
-			// log.info("Loading: " + main + "/globality.properties");
+                        
+                       // ConfigurableProcessor.process(GlobalityConfig.class, mainProps);
+			//log.info("Loading: " + main + "/globality.properties");
 
 			// Network
 			Util.printSection("Network");
@@ -180,16 +181,17 @@ public class Config {
 			ConfigurableProcessor.process(DatabaseConfig.class, networkProps);
 			log.info("Loading: " + network + "/network.properties");
 			ConfigurableProcessor.process(NetworkConfig.class, networkProps);
-
+			
+			
 			Util.printSection("Custom");
 			String custom = "./config/custom";
-
+			
 			Properties[] customProps = PropertiesUtils.loadAllFromDirectory(custom);
 			PropertiesUtils.overrideProperties(customProps, myProps);
-
+			
 			log.info("Loading: " + custom + "/customDrop.properties");
 			ConfigurableProcessor.process(CustomDrop.class, customProps);
-
+			
 			log.info("Loading: " + custom + "/recursiveAdd.properties");
 			ConfigurableProcessor.process(RecursiveAddConf.class, customProps);
 			log.info("Loading: " + custom + "/customfun.properties");
@@ -197,7 +199,8 @@ public class Config {
 			log.info("Loading: " + custom + "/webshop.properties");
 			ConfigurableProcessor.process(WebShopConf.class, customProps);
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Can't load gameserver configuration: ", e);
 			throw new Error("Can't load gameserver configuration: ", e);
 		}

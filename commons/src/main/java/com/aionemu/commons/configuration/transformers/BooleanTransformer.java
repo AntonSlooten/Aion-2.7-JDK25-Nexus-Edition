@@ -26,7 +26,7 @@ import com.aionemu.commons.configuration.TransformationException;
  * <p/>
  * Boolean can be represented by "true/false" (case doen't matter) or "1/0". In other cases
  * {@link com.aionemu.commons.configuration.TransformationException} is thrown
- *
+ * 
  * @author SoulKeeper
  */
 public class BooleanTransformer implements PropertyTransformer<Boolean> {
@@ -38,11 +38,14 @@ public class BooleanTransformer implements PropertyTransformer<Boolean> {
 
 	/**
 	 * Transforms string to boolean.
-	 *
-	 * @param value value that will be transformed
-	 * @param field value will be assigned to this field
+	 * 
+	 * @param value
+	 *          value that will be transformed
+	 * @param field
+	 *          value will be assigned to this field
 	 * @return Boolean object that represents transformed value
-	 * @throws TransformationException if something goes wrong
+	 * @throws TransformationException
+	 *           if something goes wrong
 	 */
 	@Override
 	public Boolean transform(String value, Field field) throws TransformationException {
@@ -51,9 +54,11 @@ public class BooleanTransformer implements PropertyTransformer<Boolean> {
 		// is not "true" ignoring case
 		if ("true".equalsIgnoreCase(value) || "1".equals(value)) {
 			return true;
-		} else if ("false".equalsIgnoreCase(value) || "0".equals(value)) {
+		}
+		else if ("false".equalsIgnoreCase(value) || "0".equals(value)) {
 			return false;
-		} else {
+		}
+		else {
 			throw new TransformationException("Invalid boolean string: " + value);
 		}
 	}

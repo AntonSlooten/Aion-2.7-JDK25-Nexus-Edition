@@ -60,7 +60,7 @@ public class PazuzuAI2 extends AggressiveNpcAI2 {
 		wormLocationsByte.add((byte) 30);
 		wormLocationsByte.add((byte) 42);
 	}
-
+	
 	@Override
 	protected void handleDied() {
 		super.handleDied();
@@ -74,9 +74,9 @@ public class PazuzuAI2 extends AggressiveNpcAI2 {
 		cancelTask();
 		super.handleDespawned();
 	}
-
-	private void schedulTask() {
-		int time = Rnd.get(0, 10) - 5 + ADD_SPAWN_TIME;
+	
+	private void schedulTask(){
+		int time = Rnd.get(0,10) - 5 + ADD_SPAWN_TIME;
 		task = ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
 			public void run() {
@@ -88,7 +88,7 @@ public class PazuzuAI2 extends AggressiveNpcAI2 {
 	private void startTask() {
 		SkillEngine.getInstance().getSkill(getOwner(), 19145, 55, getOwner()).useSkill();
 		SkillEngine.getInstance().getSkill(getOwner(), 19291, 55, getOwner()).useSkill();
-
+		
 		schedulTask();
 
 		// Get all posiible spawn
@@ -96,16 +96,16 @@ public class PazuzuAI2 extends AggressiveNpcAI2 {
 		List<Byte> pointsByte = new ArrayList<Byte>();
 		points.addAll(wormLocations);
 		pointsByte.addAll(wormLocationsByte);
-
+		
 		// Get number of worm
 		int count = 2;
-		if (getLifeStats().getHpPercentage() < 70) {
+		if(getLifeStats().getHpPercentage() < 70){
 			count = 3;
 		}
-		if (getLifeStats().getHpPercentage() < 40) {
+		if(getLifeStats().getHpPercentage() < 40){
 			count = 4;
 		}
-		for (int i = 0; i < count; i++) {
+		for(int i = 0; i < count; i++) {
 			if (points.isEmpty()) {
 				return;
 			}
@@ -128,5 +128,5 @@ public class PazuzuAI2 extends AggressiveNpcAI2 {
 			}
 		}
 	}
-
+	
 }

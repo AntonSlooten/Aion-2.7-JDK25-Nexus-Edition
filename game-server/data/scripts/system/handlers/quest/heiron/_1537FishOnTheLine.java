@@ -58,28 +58,29 @@ public class _1537FishOnTheLine extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 730189: {
-				if (env.getDialog() == QuestDialog.USE_OBJECT) {
-					return useQuestObject(env, 0, 1, false, 0); // 1
+				case 730189: {
+					if (env.getDialog() == QuestDialog.USE_OBJECT) {
+						return useQuestObject(env, 0, 1, false, 0); // 1
+					}
+					break;
 				}
-				break;
-			}
-			case 730190: {
-				if (env.getDialog() == QuestDialog.USE_OBJECT) {
-					return useQuestObject(env, 1, 2, false, 0); // 2
+				case 730190: {
+					if (env.getDialog() == QuestDialog.USE_OBJECT) {
+						return useQuestObject(env, 1, 2, false, 0); // 2
+					}
+					break;
 				}
-				break;
-			}
-			case 730191: {
-				if (qs.getQuestVarById(0) == 2 && env.getDialog() == QuestDialog.USE_OBJECT) {
-					qs.setQuestVarById(0, 3);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return true;
+				case 730191: {
+					if (qs.getQuestVarById(0) == 2 && env.getDialog() == QuestDialog.USE_OBJECT) {
+						qs.setQuestVarById(0, 3);
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						return true;
+					}
 				}
-			}
 			}
 		}
 

@@ -35,7 +35,7 @@ import com.aionemu.gameserver.services.QuestService;
  * @author vlog
  */
 public class KillSpawned extends QuestHandler {
-
+	
 	private final int questId;
 	private final int startNpc;
 	private final int startNpc2;
@@ -44,27 +44,30 @@ public class KillSpawned extends QuestHandler {
 	private final FastMap<Integer, SpawnedMonster> spawnedMonsters;
 	private TIntArrayList spawnerObjects;
 
-	public KillSpawned(int questId, int startNpc, int startNpc2, int endNpc, int endNpc2,
-			FastMap<Integer, SpawnedMonster> spawnedMonsters) {
+	public KillSpawned(int questId, int startNpc, int startNpc2, int endNpc, int endNpc2, FastMap<Integer, SpawnedMonster> spawnedMonsters) {
 		super(questId);
 		this.questId = questId;
 		this.startNpc = startNpc;
 		if (startNpc2 != 0) {
 			this.startNpc2 = startNpc2;
-		} else {
+		}
+		else {
 			this.startNpc2 = this.startNpc;
 		}
 		if (endNpc != 0) {
 			this.endNpc = endNpc;
-		} else {
+		}
+		else {
 			this.endNpc = startNpc;
 		}
 		if (endNpc2 != 0) {
 			this.endNpc2 = endNpc2;
-		} else {
+		}
+		else {
 			if (startNpc2 != 0) {
 				this.endNpc2 = startNpc2;
-			} else {
+			}
+			else {
 				this.endNpc2 = this.endNpc;
 			}
 		}
@@ -108,28 +111,29 @@ public class KillSpawned extends QuestHandler {
 			if (startNpc == 0 || targetId == startNpc || targetId == startNpc2) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (spawnerObjects.contains(targetId)) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					int monsterId = 0;
 					for (SpawnedMonster m : spawnedMonsters.values()) {
-						if (m.getSpawnerObject() == targetId) {
+						if(m.getSpawnerObject() == targetId) {
 							monsterId = m.getNpcId();
 							break;
 						}
 					}
-					SpawnSearchResult searchResult = DataManager.SPAWNS_DATA2.getFirstSpawnByNpcId(player.getWorldId(),
-							targetId);
-					QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), monsterId,
-							searchResult.getSpot().getX(), searchResult.getSpot().getY(), searchResult.getSpot().getZ(),
-							searchResult.getSpot().getHeading());
+					SpawnSearchResult searchResult = DataManager.SPAWNS_DATA2.getFirstSpawnByNpcId(player.getWorldId(), targetId);
+					QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), monsterId, searchResult.getSpot().getX(), searchResult.getSpot().getY(),
+						searchResult.getSpot().getZ(), searchResult.getSpot().getHeading());
 					return true;
 				}
-			} else {
+			}
+			else {
 				for (Monster mi : spawnedMonsters.values()) {
 					if (mi.getEndVar() > qs.getQuestVarById(mi.getVar())) {
 						return false;
@@ -138,14 +142,16 @@ public class KillSpawned extends QuestHandler {
 				if (targetId == endNpc || targetId == endNpc2) {
 					if (env.getDialog() == QuestDialog.START_DIALOG) {
 						return sendQuestDialog(env, 10002);
-					} else if (env.getDialog() == QuestDialog.SELECT_REWARD) {
+					}
+					else if (env.getDialog() == QuestDialog.SELECT_REWARD) {
 						qs.setStatus(QuestStatus.REWARD);
 						updateQuestStatus(env);
 						return sendQuestDialog(env, 5);
 					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == endNpc || targetId == endNpc2) {
 				return sendQuestEndDialog(env);
 			}
@@ -153,6 +159,7 @@ public class KillSpawned extends QuestHandler {
 		return false;
 	}
 
+	
 	@Override
 	public boolean onKillEvent(QuestEnv env) {
 		Player player = env.getPlayer();
@@ -160,30 +167,42 @@ public class KillSpawned extends QuestHandler {
 		if (qs != null && qs.getStatus() == QuestStatus.START) {
 			SpawnedMonster m = spawnedMonsters.get(env.getTargetId());
 			if (m != null) {
-				if (qs.getQuestVarById(m.getVar()) < m.getEndVar()) {
-					qs.setQuestVarById(m.getVar(), qs.getQuestVarById(m.getVar()) + 1);
-					// if is the last kill
-					if (qs.getQuestVarById(m.getVar()) == m.getEndVar()) {
-						qs.setStatus(QuestStatus.REWARD);
-					}
-					updateQuestStatus(env);
+				if (qs.getQuestVarById(m.getVar()) < m.getEndVar()){
+                    qs.setQuestVarById(m.getVar(), qs.getQuestVarById(m.getVar()) + 1);
+                    //if is the last kill
+                    if(qs.getQuestVarById(m.getVar()) == m.getEndVar())
+                        qs.setStatus(QuestStatus.REWARD);
+                	updateQuestStatus(env);
 				}
 			}
 		}
 		return false;
 	}
-
+	
 	/*
-	 * @Override public boolean onKillEvent(QuestEnv env) { Player player =
-	 * env.getPlayer(); QuestState qs =
-	 * player.getQuestStateList().getQuestState(questId); if (qs != null &&
-	 * qs.getStatus() == QuestStatus.START) { for (SpawnedMonster m :
-	 * spawnedMonsters.values()) { if (m.getNpcIds().contains(env.getTargetId())) {
-	 * if (qs.getQuestVarById(m.getVar()) < m.getEndVar()) {
-	 * qs.setQuestVarById(m.getVar(), qs.getQuestVarById(m.getVar()) + 1); for
-	 * (Monster mi : spawnedMonsters.values()) { if (qs.getQuestVarById(mi.getVar())
-	 * < mi.getEndVar()) { updateQuestStatus(env); return true; } }
-	 * qs.setStatus(QuestStatus.REWARD); updateQuestStatus(env); return true; } } }
-	 * } return false; }
-	 */
+	@Override
+    public boolean onKillEvent(QuestEnv env) {
+        Player player = env.getPlayer();
+        QuestState qs = player.getQuestStateList().getQuestState(questId);
+        if (qs != null && qs.getStatus() == QuestStatus.START) {
+            for (SpawnedMonster m : spawnedMonsters.values()) {
+                if (m.getNpcIds().contains(env.getTargetId())) {
+                    if (qs.getQuestVarById(m.getVar()) < m.getEndVar()) {
+                        qs.setQuestVarById(m.getVar(), qs.getQuestVarById(m.getVar()) + 1);
+                         for (Monster mi : spawnedMonsters.values()) {
+                            if (qs.getQuestVarById(mi.getVar()) < mi.getEndVar()) {
+                                updateQuestStatus(env);
+                                return true;
+                            }
+                        }
+                        qs.setStatus(QuestStatus.REWARD);
+                        updateQuestStatus(env);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+    */
 }

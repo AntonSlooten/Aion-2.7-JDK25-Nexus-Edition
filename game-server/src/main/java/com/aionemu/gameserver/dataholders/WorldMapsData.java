@@ -30,9 +30,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.aionemu.gameserver.model.templates.world.WorldMapTemplate;
 
 /**
- * Object of this class is containing <tt>WorldMapTemplate</tt> objects for all
- * world maps. World maps are defined in data/static_data/world_maps.xml file.
- *
+ * Object of this class is containing <tt>WorldMapTemplate</tt> objects for all world maps. World maps are defined in
+ * data/static_data/world_maps.xml file.
+ * 
  * @author Luno
  */
 @XmlRootElement(name = "world_maps")
@@ -42,7 +42,7 @@ public class WorldMapsData implements Iterable<WorldMapTemplate> {
 	@XmlElement(name = "map")
 	private List<WorldMapTemplate> worldMaps;
 
-	private TIntObjectHashMap<WorldMapTemplate> worldIdMap = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<WorldMapTemplate> worldIdMap = new TIntObjectHashMap<WorldMapTemplate>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (WorldMapTemplate map : worldMaps) {
@@ -60,7 +60,7 @@ public class WorldMapsData implements Iterable<WorldMapTemplate> {
 
 	/**
 	 * Returns the count of maps.
-	 *
+	 * 
 	 * @return worldMaps.size()
 	 */
 	public int size() {

@@ -38,13 +38,12 @@ public class AIData {
 
 	@XmlElement(name = "ai", type = Ai.class)
 	private List<Ai> templates;
-	private FastMap<Integer, AITemplate> aiTemplate = new FastMap<>();
+	private FastMap<Integer, AITemplate> aiTemplate = new FastMap<Integer, AITemplate>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		aiTemplate.clear();
-		for (Ai template : templates) {
+		for (Ai template : templates)
 			aiTemplate.put(template.getNpcId(), new AITemplate(template));
-		}
 	}
 
 	public int size() {

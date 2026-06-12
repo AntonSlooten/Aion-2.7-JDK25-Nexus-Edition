@@ -59,39 +59,42 @@ public class _2107ReturntoSender extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		if (targetId == 0) {
 			switch (env.getDialog()) {
-			case ACCEPT_QUEST:
-				QuestService.startQuest(env);
-				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
-				return true;
-			case REFUSE_QUEST:
-				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
-				return true;
+				case ACCEPT_QUEST:
+					QuestService.startQuest(env);
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
+					return true;
+				case REFUSE_QUEST:
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
+					return true;
 			}
-		} else if (targetId == 203516) {
+		}
+		else if (targetId == 203516) {
 			if (qs != null && qs.getStatus() == QuestStatus.START && qs.getQuestVarById(0) == 0) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 1352);
 				else if (env.getDialog() == QuestDialog.STEP_TO_1) {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (targetId == 203512) {
+		}
+		else if (targetId == 203512) {
 			if (qs != null) {
 				if (env.getDialog() == QuestDialog.START_DIALOG && qs.getStatus() == QuestStatus.START)
 					return sendQuestDialog(env, 2375);
 				else if (env.getDialogId() == 1009 && qs.getStatus() != QuestStatus.COMPLETE
-						&& qs.getStatus() != QuestStatus.NONE) {
+					&& qs.getStatus() != QuestStatus.NONE) {
 					qs.setQuestVar(2);
 					qs.setStatus(QuestStatus.REWARD);
 					removeQuestItem(env, 182203107, 1);
 					updateQuestStatus(env);
 					return sendQuestEndDialog(env);
-				} else
+				}
+				else
 					return sendQuestEndDialog(env);
 			}
 		}
@@ -108,7 +111,7 @@ public class _2107ReturntoSender extends QuestHandler {
 		if (id != 182203107)
 			return HandlerResult.UNKNOWN;
 		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 20, 1, 0), true);
+			new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 20, 1, 0), true);
 		if (qs == null || qs.getStatus() == QuestStatus.NONE)
 			sendQuestDialog(env, 4);
 		return HandlerResult.SUCCESS;

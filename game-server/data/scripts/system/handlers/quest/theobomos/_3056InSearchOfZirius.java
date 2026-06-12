@@ -59,16 +59,16 @@ public class _3056InSearchOfZirius extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 730147) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 4762);
-				}
-				case STEP_TO_1: {
-					QuestService.startQuest(env);
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
-					return true;
-				}
-				default:
-					return sendQuestStartDialog(env);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 4762);
+					}
+					case STEP_TO_1: {
+						QuestService.startQuest(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
+						return true;
+					}
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
@@ -78,24 +78,24 @@ public class _3056InSearchOfZirius extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798213: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 0) {
-						return sendQuestDialog(env, 1011);
+				case 798213: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_2: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
 					}
 				}
-				case STEP_TO_2: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798213) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

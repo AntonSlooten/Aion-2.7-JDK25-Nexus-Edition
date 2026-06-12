@@ -28,9 +28,11 @@ import com.aionemu.gameserver.model.stats.container.StatEnum;
 import com.aionemu.gameserver.services.MotionLoggingService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
-public class CmdMotion extends BaseCommand implements StatOwner {
 
-	@Override
+public class CmdMotion extends BaseCommand implements StatOwner {
+	
+
+
 	public void execute(Player admin, String... params) {
 		if (params.length == 1) {
 			showHelp(admin);
@@ -38,44 +40,50 @@ public class CmdMotion extends BaseCommand implements StatOwner {
 		}
 		if (params[1].equalsIgnoreCase("help")) {
 			showHelp(admin);
-		} else if (params[1].equalsIgnoreCase("start")) {
+		}	
+		else if (params[1].equalsIgnoreCase("start")) {
 			MotionLoggingService.getInstance().start();
 			PacketSendUtility.sendMessage(admin, "MotionLogginService was started!\nData loaded from DB.");
-		} else if (params[1].equalsIgnoreCase("analyze")) {
+		}	
+		else if (params[1].equalsIgnoreCase("analyze")) {
 			MotionLoggingService.getInstance().createAnalyzeFiles();
 			PacketSendUtility.sendMessage(admin, "Created testing files!");
-		} else if (params[1].equalsIgnoreCase("createxml")) {
+		}	
+		else if (params[1].equalsIgnoreCase("createxml")) {
 			MotionLoggingService.getInstance().createFinalFile();
 			PacketSendUtility.sendMessage(admin, "Created new_motion_times.xml in data/static_data/skills!");
-		} else if (params[1].equalsIgnoreCase("savetosql")) {
+		}
+		else if (params[1].equalsIgnoreCase("savetosql")) {
 			MotionLoggingService.getInstance().saveToSql();
 			PacketSendUtility.sendMessage(admin, "MotionLog data saved to sql!");
-		} else if (params[1].equalsIgnoreCase("advanced")) {
+		}
+		else if (params[1].equalsIgnoreCase("advanced")) {
 			MotionLoggingService.getInstance().setAdvancedLog((!MotionLoggingService.getInstance().getAdvancedLog()));
-			PacketSendUtility.sendMessage(admin,
-					"AdvancedLog set to: " + MotionLoggingService.getInstance().getAdvancedLog());
-		} else if (params[1].equalsIgnoreCase("as")) {
+			PacketSendUtility.sendMessage(admin, "AdvancedLog set to: "+MotionLoggingService.getInstance().getAdvancedLog());
+		} 
+		else if (params[1].equalsIgnoreCase("as")) {
 			int parameter = 10000;
 			if (params.length == 3) {
 				try {
 					parameter = ParseInteger(params[2]);
-				} catch (NumberFormatException e) {
+				}
+				catch (NumberFormatException e) {
 					PacketSendUtility.sendMessage(admin, "Parameter should number");
 					return;
 				}
 			}
 			this.addAttackSpeed(admin, -parameter);
 			PacketSendUtility.sendMessage(admin, "Attack Speed updated");
-		} else {
-			showHelp(admin);
 		}
+		else
+			showHelp(admin);
 	}
-
+	
 	private void addAttackSpeed(Player player, int i) {
 		if (i == 0) {
 			player.getGameStats().endEffect(this);
-		} else {
-			List<IStatFunction> modifiers = new ArrayList<>();
+		}	else {
+			List<IStatFunction> modifiers = new ArrayList<IStatFunction>();
 			modifiers.add(new StatAddFunction(StatEnum.ATTACK_SPEED, i, true));
 			player.getGameStats().endEffect(this);
 			player.getGameStats().addEffect(this, modifiers);

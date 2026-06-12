@@ -51,11 +51,11 @@ public class _2630TheDutifulSpy extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (env.getTargetId() == 204777) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1, true, false);
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1352);
+					case STEP_TO_1:
+						return defaultCloseDialog(env, 0, 1, true, false);
 				}
 			}
 		}

@@ -45,13 +45,15 @@ public class ReportTo extends QuestHandler {
 		this.startNpc = startNpc;
 		if (startNpc2 != 0) {
 			this.startNpc2 = startNpc2;
-		} else {
+		}
+		else {
 			this.startNpc2 = this.startNpc;
 		}
 		this.endNpc = endNpc;
 		if (endNpc2 != 0) {
 			this.endNpc2 = endNpc2;
-		} else {
+		}
+		else {
 			this.endNpc2 = this.endNpc;
 		}
 		this.questId = questId;
@@ -84,49 +86,55 @@ public class ReportTo extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE || qs.canRepeat()) {
 			if (startNpc == 0 || targetId == startNpc || targetId == startNpc2) {
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				case ACCEPT_QUEST: {
-					if (itemId != 0) {
-						if (giveQuestItem(env, itemId, 1)) {
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					case ACCEPT_QUEST: {
+						if (itemId != 0) {
+							if (giveQuestItem(env, itemId, 1)) {
+								return sendQuestStartDialog(env);
+							}
+							return false;
+						}
+						else {
 							return sendQuestStartDialog(env);
 						}
-						return false;
-					} else {
+					}
+					default: {
 						return sendQuestStartDialog(env);
 					}
 				}
-				default: {
-					return sendQuestStartDialog(env);
-				}
-				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == startNpc || targetId == startNpc2) {
 				if (dialog == QuestDialog.FINISH_DIALOG) {
 					return sendQuestSelectionDialog(env);
 				}
-			} else if (targetId == endNpc || targetId == endNpc2) {
+			}
+			else if (targetId == endNpc || targetId == endNpc2) {
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2375);
-				}
-				case SELECT_REWARD: {
-					if (itemId != 0) {
-						if (player.getInventory().getItemCountByItemId(itemId) < 1) {
-							return sendQuestSelectionDialog(env);
-						}
+					case START_DIALOG: {
+						return sendQuestDialog(env, 2375);
 					}
-					removeQuestItem(env, itemId, 1);
-					qs.setQuestVar(1);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return sendQuestEndDialog(env);
-				}
+					case SELECT_REWARD: {
+						if (itemId != 0) {
+							if (player.getInventory().getItemCountByItemId(itemId) < 1) {
+								return sendQuestSelectionDialog(env);
+							}
+						}
+						removeQuestItem(env, itemId, 1);
+						qs.setQuestVar(1);
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						return sendQuestEndDialog(env);
+					}
+				default:
+					break;
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == endNpc || targetId == endNpc2) {
 				return sendQuestEndDialog(env);
 			}

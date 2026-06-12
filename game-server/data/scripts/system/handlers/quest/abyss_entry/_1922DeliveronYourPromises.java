@@ -29,8 +29,7 @@ import com.aionemu.gameserver.world.WorldMapInstance;
 /**
  * @author Hellboy, aion4Free
  * @modified Gigi
- * @reworked vlog On 2.5 the quest has dialogs only for one choice (underground
- *           arena)
+ * @reworked vlog On 2.5 the quest has dialogs only for one choice (underground arena)
  */
 public class _1922DeliveronYourPromises extends QuestHandler {
 
@@ -72,107 +71,109 @@ public class _1922DeliveronYourPromises extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203830: { // Fuchsia
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
-					} else if (var == 4) {
-						return sendQuestSelectionDialog(env);
+				case 203830: { // Fuchsia
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+							else if (var == 4) {
+								return sendQuestSelectionDialog(env);
+							}
+						}
+						case STEP_TO_12: {
+							choice = 1;
+							return defaultCloseDialog(env, 0, 4); // 4
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
+						// case STEP_TO_11:
+						// return defaultCloseDialog(env, 0, 1); // 1
+						// case STEP_TO_13:
+						// return defaultCloseDialog(env, 0, 9); // 9
+						// case CHECK_COLLECTED_ITEMS:
+						// return sendQuestDialog(env, 2375);
+						// case SELECT_ACTION_1013:
+						// qs.setQuestVar(0);
+						// updateQuestStatus(env);
+						// return sendQuestDialog(env, 1013);
 					}
+					break;
 				}
-				case STEP_TO_12: {
-					choice = 1;
-					return defaultCloseDialog(env, 0, 4); // 4
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				// case STEP_TO_11:
-				// return defaultCloseDialog(env, 0, 1); // 1
-				// case STEP_TO_13:
-				// return defaultCloseDialog(env, 0, 9); // 9
-				// case CHECK_COLLECTED_ITEMS:
-				// return sendQuestDialog(env, 2375);
-				// case SELECT_ACTION_1013:
-				// qs.setQuestVar(0);
-				// updateQuestStatus(env);
-				// return sendQuestDialog(env, 1013);
-				}
-				break;
-			}
-			case 203901: { // Telemachus
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					// if (var == 1)
-					// return sendQuestDialog(env, 1352);
-					// else if (var == 2)
-					// return sendQuestDialog(env, 3398);
-					if (var == 7) {
-						return sendQuestDialog(env, 3739);
+				case 203901: { // Telemachus
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							// if (var == 1)
+							// return sendQuestDialog(env, 1352);
+							// else if (var == 2)
+							// return sendQuestDialog(env, 3398);
+							if (var == 7) {
+								return sendQuestDialog(env, 3739);
+							}
+							// else if (var == 9) {
+							// if (QuestService.collectItemCheck(env, true)) {
+							// qs.setStatus(QuestStatus.REWARD);
+							// updateQuestStatus(env);
+							// return sendQuestDialog(env, 7);
+							// }
+							// else
+							// return sendQuestDialog(env, 4080);
+							// }
+						}
+						// case STEP_TO_2:
+						// return defaultCloseDialog(env, 1, 2); // 2
+						case SELECT_REWARD:
+							// if (var == 2) {
+							// qs.setStatus(QuestStatus.REWARD);
+							// updateQuestStatus(env);
+							// return sendQuestDialog(env, 5);
+							// }
+							if (var == 7) {
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 6);
+							}
 					}
-					// else if (var == 9) {
-					// if (QuestService.collectItemCheck(env, true)) {
-					// qs.setStatus(QuestStatus.REWARD);
-					// updateQuestStatus(env);
-					// return sendQuestDialog(env, 7);
-					// }
-					// else
-					// return sendQuestDialog(env, 4080);
-					// }
+					break;
 				}
-				// case STEP_TO_2:
-				// return defaultCloseDialog(env, 1, 2); // 2
-				case SELECT_REWARD:
-					// if (var == 2) {
-					// qs.setStatus(QuestStatus.REWARD);
-					// updateQuestStatus(env);
-					// return sendQuestDialog(env, 5);
-					// }
-					if (var == 7) {
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 6);
+				case 203764: { // Epeios
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (var == 4) {
+								return sendQuestDialog(env, 1693);
+							}
+							else if (qs.getQuestVarById(4) == 10) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case STEP_TO_3: {
+							WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(310080000);
+							InstanceService.registerPlayerWithInstance(newInstance, player);
+							TeleportService.teleportTo(player, 310080000, newInstance.getInstanceId(), 276, 293, 163, 3000, true);
+							changeQuestStep(env, 4, 5, false); // 5
+							return closeDialogWindow(env);
+						}
+						case STEP_TO_4: {
+							qs.setQuestVar(7);
+							updateQuestStatus(env);
+							return defaultCloseDialog(env, 7, 7); // 7
+						}
 					}
+					break;
 				}
-				break;
+				// case 700264: {
+				// switch (env.getDialog()) {
+				// case USE_OBJECT:
+				// if (var == 9) {
+				// return true; // loot
+				// }
+				// }
+				// }
+				// break;
 			}
-			case 203764: { // Epeios
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (var == 4) {
-						return sendQuestDialog(env, 1693);
-					} else if (qs.getQuestVarById(4) == 10) {
-						return sendQuestDialog(env, 2034);
-					}
-				}
-				case STEP_TO_3: {
-					WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(310080000);
-					InstanceService.registerPlayerWithInstance(newInstance, player);
-					TeleportService.teleportTo(player, 310080000, newInstance.getInstanceId(), 276, 293, 163, 3000,
-							true);
-					changeQuestStep(env, 4, 5, false); // 5
-					return closeDialogWindow(env);
-				}
-				case STEP_TO_4: {
-					qs.setQuestVar(7);
-					updateQuestStatus(env);
-					return defaultCloseDialog(env, 7, 7); // 7
-				}
-				}
-				break;
-			}
-			// case 700264: {
-			// switch (env.getDialog()) {
-			// case USE_OBJECT:
-			// if (var == 9) {
-			// return true; // loot
-			// }
-			// }
-			// }
-			// break;
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203901) { // Telemachus
 				return sendQuestEndDialog(env, choice);
 			}
@@ -191,7 +192,8 @@ public class _1922DeliveronYourPromises extends QuestHandler {
 				int[] mobs = { 213580, 213581, 213582 };
 				if (var4 < 9) {
 					return defaultOnKillEvent(env, mobs, 0, 9, 4); // 4: 1 - 9
-				} else if (var4 == 9) {
+				}
+				else if (var4 == 9) {
 					defaultOnKillEvent(env, mobs, 9, 10, 4); // 4: 10
 					QuestService.questTimerEnd(env);
 					TeleportService.teleportTo(player, 110010000, 1466.036f, 1337.2749f, 566.41583f, 86);
@@ -244,8 +246,7 @@ public class _1922DeliveronYourPromises extends QuestHandler {
 		// else if (var == 9) {
 		// QuestService.questTimerEnd(env);
 		// // movie
-		// TeleportService.teleportTo(player, 110010000, 1466.036f, 1337.2749f,
-		// 566.41583f, 86);
+		// TeleportService.teleportTo(player, 110010000, 1466.036f, 1337.2749f, 566.41583f, 86);
 		// qs.setQuestVarById(4, 10);
 		// updateQuestStatus(env);
 		// }
@@ -283,7 +284,8 @@ public class _1922DeliveronYourPromises extends QuestHandler {
 					qs.setQuestVar(4);
 					updateQuestStatus(env);
 					return true;
-				} else {
+				}
+				else {
 					QuestService.questTimerStart(env, 240);
 					return true;
 				}

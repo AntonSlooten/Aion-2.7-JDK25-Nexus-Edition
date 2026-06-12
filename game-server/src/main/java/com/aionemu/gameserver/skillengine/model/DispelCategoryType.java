@@ -20,6 +20,16 @@ package com.aionemu.gameserver.skillengine.model;
  * @author kecimis
  *
  */
-public enum DispelCategoryType {
-	NONE, ALL, BUFF, DEBUFF_MENTAL, DEBUFF_PHYSICAL, EXTRA, NEVER, NPC_BUFF, NPC_DEBUFF_PHYSICAL, STUN
+public enum DispelCategoryType
+{
+	NONE,
+	ALL,
+	BUFF,
+	DEBUFF_MENTAL,
+	DEBUFF_PHYSICAL,
+	EXTRA,
+	NEVER,
+	NPC_BUFF,
+	NPC_DEBUFF_PHYSICAL,
+	STUN
 }

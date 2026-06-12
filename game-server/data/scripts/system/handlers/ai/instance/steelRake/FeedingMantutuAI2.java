@@ -47,7 +47,8 @@ public class FeedingMantutuAI2 extends ActionItemNpcAI2 {
 	protected void handleDialogStart(Player player) {
 		if (frstPlayer == null) {
 			frstPlayer = player;
-		} else {
+		}
+		else {
 			frstPlayer.getController().cancelActionItemNpc();
 			player.getController().cancelActionItemNpc();
 			frstPlayer = null;
@@ -57,16 +58,15 @@ public class FeedingMantutuAI2 extends ActionItemNpcAI2 {
 
 		player.getActionItemNpc().setCondition(6, 7, 10000);
 		getKnownList().doOnAllPlayers(new Visitor<Player>() {
-			@Override
-			public void visit(Player player) {
-				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1111303));
-			}
-		});
+				@Override
+				public void visit(Player player) {
+					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1111303));
+				}
+			});
 		super.handleUseItemStart(player);
 	}
 
 	@Override
-	@SuppressWarnings("fallthrough")
 	protected void handleUseItemFinish(Player player) {
 		if (frstPlayer != null) {
 			getKnownList().doOnAllPlayers(new Visitor<Player>() {
@@ -82,11 +82,11 @@ public class FeedingMantutuAI2 extends ActionItemNpcAI2 {
 			return;
 		}
 		switch (getNpcId()) {
-		case 700527:
-			boss.getEffectController().removeEffect(18180);
-		case 700528:
-			boss.getEffectController().removeEffect(18181);
-			break;
+			case 700527:
+				boss.getEffectController().removeEffect(18180);
+			case 700528:
+				boss.getEffectController().removeEffect(18181);
+				break;
 		}
 		AI2Actions.deleteOwner(this);
 	}

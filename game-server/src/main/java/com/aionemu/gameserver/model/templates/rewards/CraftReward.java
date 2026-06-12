@@ -19,12 +19,16 @@ package com.aionemu.gameserver.model.templates.rewards;
 import javax.xml.bind.annotation.*;
 
 /**
+ * @author Rolandas
+ *
+ */
+
+/**
  * <p>
  * Java class for CraftReward complex type.
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
- *
+ * The following schema fragment specifies the expected content contained within this class.
+ * 
  * <pre>
  * &lt;complexType name="CraftReward">
  *   &lt;complexContent>
@@ -47,7 +51,7 @@ public abstract class CraftReward extends IdReward {
 
 	/**
 	 * Gets the value of the skill property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getSkill() {

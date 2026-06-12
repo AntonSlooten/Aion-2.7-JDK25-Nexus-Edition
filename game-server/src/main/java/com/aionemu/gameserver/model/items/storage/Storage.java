@@ -38,9 +38,8 @@ public abstract class Storage implements IStorage {
 	public Storage(StorageType storageType, boolean withDeletedItems) {
 		itemStorage = new ItemStorage(storageType.getLimit());
 		this.storageType = storageType;
-		if (withDeletedItems) {
-			this.deletedItems = new ConcurrentLinkedQueue<>();
-		}
+		if (withDeletedItems)
+			this.deletedItems = new ConcurrentLinkedQueue<Item>();
 	}
 
 	@Override
@@ -66,7 +65,8 @@ public abstract class Storage implements IStorage {
 		if (amount > 0) {
 			if (kinahItem == null) {
 				add(ItemFactory.newItem(ItemId.KINAH.value(), amount), actor);
-			} else {
+			}
+			else {
 				increaseItemCount(kinahItem, amount, updateType, actor);
 			}
 		}
@@ -74,7 +74,7 @@ public abstract class Storage implements IStorage {
 
 	/**
 	 * Decrease kinah by {@code amount} but check first that its enough in storage
-	 *
+	 * 
 	 * @return true if decrease was successful
 	 */
 	boolean tryDecreaseKinah(long amount, Player actor) {
@@ -123,7 +123,8 @@ public abstract class Storage implements IStorage {
 		long leftCount = item.decreaseItemCount(count);
 		if (item.getItemCount() <= 0 && !item.getItemTemplate().isKinah()) {
 			delete(item, ItemDeleteType.fromUpdateType(updateType), actor);
-		} else {
+		}
+		else {
 			ItemPacketService.sendItemPacket(actor, storageType, item, updateType);
 		}
 		setPersistentState(PersistentState.UPDATE_REQUIRED);
@@ -131,26 +132,25 @@ public abstract class Storage implements IStorage {
 	}
 
 	/**
-	 * This method should be called only for new items added to inventory (loading
-	 * from DB) If item is equiped - will be put to equipment if item is unequiped -
-	 * will be put to default bag for now Kinah is stored separately as it will be
+	 * This method should be called only for new items added to inventory (loading from DB) If item is equiped - will be
+	 * put to equipment if item is unequiped - will be put to default bag for now Kinah is stored separately as it will be
 	 * used frequently
-	 *
+	 * 
 	 * @param item
 	 */
 	@Override
 	public void onLoadHandler(Item item) {
-		if (item.getItemTemplate().isKinah()) {
+		if (item.getItemTemplate().isKinah())
 			kinahItem = item;
-		} else {
+		else
 			itemStorage.putItem(item);
-		}
 	}
 
 	Item add(Item item, Player actor) {
 		if (item.getItemTemplate().isKinah()) {
 			this.kinahItem = item;
-		} else if (!itemStorage.putItem(item)) {
+		}
+		else if (!itemStorage.putItem(item)) {
 			return null;
 		}
 		item.setItemLocation(storageType.getId());
@@ -161,7 +161,7 @@ public abstract class Storage implements IStorage {
 		return item;
 	}
 
-	// a bit misleading name - but looks like its used only for equipment
+	//a bit misleading name - but looks like its used only for equipment
 	Item put(Item item, Player actor) {
 		if (!itemStorage.putItem(item)) {
 			return null;
@@ -196,7 +196,7 @@ public abstract class Storage implements IStorage {
 			deletedItems.add(item);
 			setPersistentState(PersistentState.UPDATE_REQUIRED);
 			ItemPacketService.sendItemDeletePacket(actor, StorageType.getStorageTypeById(item.getItemLocation()), item,
-					deleteType);
+				deleteType);
 			return item;
 		}
 		return null;
@@ -204,9 +204,8 @@ public abstract class Storage implements IStorage {
 
 	boolean decreaseByItemId(int itemId, long count, Player actor) {
 		FastList<Item> items = itemStorage.getItemsById(itemId);
-		if (items.size() == 0) {
+		if (items.size() == 0)
 			return false;
-		}
 
 		for (Item item : items) {
 			if (count == 0) {
@@ -225,9 +224,8 @@ public abstract class Storage implements IStorage {
 
 	boolean decreaseByObjectId(int itemObjId, long count, ItemUpdateType updateType, Player actor) {
 		Item item = itemStorage.getItemByObjId(itemObjId);
-		if (item == null || item.getItemCount() < count) {
+		if (item == null || item.getItemCount() < count)
 			return false;
-		}
 
 		return decreaseItemCount(item, count, updateType, actor) == 0;
 	}
@@ -236,7 +234,7 @@ public abstract class Storage implements IStorage {
 	public Item getFirstItemByItemId(int itemId) {
 		return this.itemStorage.getFirstItemById(itemId);
 	}
-
+	
 	public int countItemsById(int itemId) {
 		return this.itemStorage.countItemsById(itemId);
 	}
@@ -273,14 +271,12 @@ public abstract class Storage implements IStorage {
 	@Override
 	public long getItemCountByItemId(int itemId) {
 		FastList<Item> temp = this.itemStorage.getItemsById(itemId);
-		if (temp.size() == 0) {
+		if (temp.size() == 0)
 			return 0;
-		}
 
 		long cnt = 0;
-		for (Item item : temp) {
+		for (Item item : temp)
 			cnt += item.getItemCount();
-		}
 
 		return cnt;
 	}

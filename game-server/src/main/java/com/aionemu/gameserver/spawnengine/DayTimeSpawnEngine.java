@@ -16,11 +16,12 @@
  */
 package com.aionemu.gameserver.spawnengine;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,13 +39,14 @@ import com.aionemu.gameserver.world.World;
 /**
  * @author ATracer
  */
+@Deprecated
 public class DayTimeSpawnEngine {
 
 	private static final Logger log = LoggerFactory.getLogger(DayTimeSpawnEngine.class);
 
-	private static final List<SpawnGroup2> dayTimeSpawns = new CopyOnWriteArrayList<>();
+	private static final List<SpawnGroup2> dayTimeSpawns = new ArrayList<SpawnGroup2>();
 
-	private static final Set<Integer> spawnedObjectIds = ConcurrentHashMap.newKeySet();
+	private static final Set<Integer> spawnedObjectIds = new HashSet<Integer>();
 
 	/**
 	 * Spawn all objects using current day time
@@ -62,18 +64,22 @@ public class DayTimeSpawnEngine {
 
 	private static void onDayTimeChange(final DayTime dayTime, boolean switchThread) {
 		log.info("DayTimeSpawnEngine: new day time is " + dayTime);
-
-		Runnable dayChangeSpawnTask = () -> {
-			int despawnedCounter = 0;
-			for (Integer objectId : spawnedObjectIds) {
+		
+		Runnable dayChangeSpawnTask = new Runnable() {
+			@Override
+			public void run() {
+				int despawnedCounter = 0;
+				Iterator<Integer> iterator = spawnedObjectIds.iterator();
+				while (iterator.hasNext()) {
+					Integer objectId = iterator.next();
 					VisibleObject object = World.getInstance().findVisibleObject(objectId);
 					if (object == null || !object.isSpawned()) {
 						continue;
 					}
 					SpawnTemplate template = object.getSpawn();
 					SpawnTime spawnTime = template.getSpawnTime();
-				if (!spawnTime.isAllowedDuring(dayTime)) {
-					spawnedObjectIds.remove(objectId);
+					if (!spawnTime.isAllowedDuring(dayTime)) {
+						iterator.remove();
 						if (object instanceof Npc) {
 							Npc npc = (Npc) object;
 							if (!npc.getLifeStats().isAlreadyDead() && template.hasPool()) {
@@ -90,10 +96,9 @@ public class DayTimeSpawnEngine {
 					SpawnTime spawnTime = spawn.getSpawnTime();
 
 					Collection<Integer> instances = World.getInstance().getWorldMap(spawn.getWorldId())
-							.getAvailableInstanceIds();
+						.getAvailableInstanceIds();
 
-					if (spawnTime.isAllowedDuring(dayTime)
-							&& (spawnTime.isNeedUpdate(dayTime) || spawnedObjectIds.isEmpty())) {
+					if (spawnTime.isAllowedDuring(dayTime) && (spawnTime.isNeedUpdate(dayTime) || spawnedObjectIds.isEmpty())) {
 						for (Integer instanceId : instances) {
 							if (spawn.hasPool()) {
 								for (int pool = 0; pool < spawn.getPool(); pool++) {
@@ -102,11 +107,12 @@ public class DayTimeSpawnEngine {
 									spawnedObjectIds.add(spawnObject.getObjectId());
 									spawnedCounter++;
 								}
-							} else {
-								for (SpawnTemplate template : spawn.getSpawnTemplates()) {
+							}
+							else {
+								for(SpawnTemplate template : spawn.getSpawnTemplates()) {
 									VisibleObject spawnObject = SpawnEngine.spawnObject(template, instanceId);
-									spawnedObjectIds.add(spawnObject.getObjectId());
-									spawnedCounter++;
+								spawnedObjectIds.add(spawnObject.getObjectId());
+								spawnedCounter++;
 								}
 							}
 						}
@@ -114,13 +120,13 @@ public class DayTimeSpawnEngine {
 				}
 				log.info("DayTimeSpawnEngine: spawned " + spawnedCounter);
 				log.info("DayTimeSpawnEngine: despawned " + despawnedCounter);
+			}
 		};
 
-		if (switchThread) {
+		if(switchThread)
 			ThreadPoolManager.getInstance().execute(dayChangeSpawnTask);
-		} else {
+		else
 			dayChangeSpawnTask.run();
-		}
 	}
 
 	public static void addSpawnedObject(VisibleObject object) {

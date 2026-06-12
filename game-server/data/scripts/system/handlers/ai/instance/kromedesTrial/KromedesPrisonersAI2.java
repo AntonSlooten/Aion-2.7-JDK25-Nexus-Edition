@@ -33,7 +33,8 @@ public class KromedesPrisonersAI2 extends NpcAI2 {
 	public boolean onDialogSelect(final Player player, int dialogId, int questId) {
 		if (dialogId == 10000) {
 			AI2Actions.deleteOwner(this);
-		} else if (dialogId == 1012)
+		}
+		else if (dialogId == 1012)
 			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 1012));
 		return true;
 	}

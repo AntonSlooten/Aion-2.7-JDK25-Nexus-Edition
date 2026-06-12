@@ -52,15 +52,12 @@ public class ShieldObserver extends ActionObserver {
 		boolean passedThrough = false;
 		boolean isGM = false;
 
-		if (SiegeService.getInstance().getFortress(shield.getId()).isUnderShield()) {
-			if (!(creature.getZ() < shield.getZ() && oldPosition.getZ() < shield.getZ())) {
+		if (SiegeService.getInstance().getFortress(shield.getId()).isUnderShield())
+			if (!(creature.getZ() < shield.getZ() && oldPosition.getZ() < shield.getZ()))
 				if (MathUtil.isInSphere(shield, (float) oldPosition.getX(), (float) oldPosition.getY(),
-						(float) oldPosition.getZ(), shield.getTemplate().getRadius()) != MathUtil.isIn3dRange(shield,
-								creature, shield.getTemplate().getRadius())) {
+						(float) oldPosition.getZ(), shield.getTemplate().getRadius()) != MathUtil.isIn3dRange(shield, creature,
+						shield.getTemplate().getRadius()))
 					passedThrough = true;
-				}
-			}
-		}
 
 		if (passedThrough) {
 			if (creature instanceof Player) {
@@ -69,12 +66,10 @@ public class ShieldObserver extends ActionObserver {
 			}
 
 			if (!isGM) {
-				if (!(creature.getLifeStats().isAlreadyDead())) {
+				if (!(creature.getLifeStats().isAlreadyDead()))
 					creature.getController().die();
-				}
-				if (creature instanceof Player) {
+				if (creature instanceof Player)
 					((Player) creature).getFlyController().endFly();
-				}
 				creature.getObserveController().removeObserver(this);
 			}
 		}

@@ -50,7 +50,7 @@ public class CM_PRIVATE_STORE extends AionClientPacket {
 		 */
 		activePlayer = getConnection().getActivePlayer();
 
-		if (activePlayer.isInPrison()) {
+		if(activePlayer.isInPrison()) {
 			PacketSendUtility.sendMessage(activePlayer, "You can't open Private Shop in prison!");
 			return;
 		}
@@ -73,15 +73,13 @@ public class CM_PRIVATE_STORE extends AionClientPacket {
 			int count = readH();
 			long price = readD();
 			Item item = activePlayer.getInventory().getItemByObjId(itemObjId);
-			if ((price < 0 || item == null || item.getItemId() != itemId || item.getItemCount() < count)
-					&& !cancelStore) {
+			if ((price < 0 || item == null || item.getItemId() != itemId || item.getItemCount() < count) && !cancelStore) {
 				PacketSendUtility.sendMessage(activePlayer, "Invalid item.");
 				cancelStore = true;
 			}
 
 			if (!item.isTradeable(activePlayer)) {
-				PacketSendUtility.sendPacket(activePlayer,
-						new SM_SYSTEM_MESSAGE(1300344, new DescriptionId(item.getNameID())));
+				PacketSendUtility.sendPacket(activePlayer, new SM_SYSTEM_MESSAGE(1300344, new DescriptionId(item.getNameID())));
 				cancelStore = true;
 			}
 
@@ -93,7 +91,8 @@ public class CM_PRIVATE_STORE extends AionClientPacket {
 	protected void runImpl() {
 		if (!cancelStore && itemCount > 0) {
 			PrivateStoreService.addItems(activePlayer, tradePSItems);
-		} else {
+		}
+		else {
 			PrivateStoreService.closePrivateStore(activePlayer);
 		}
 	}

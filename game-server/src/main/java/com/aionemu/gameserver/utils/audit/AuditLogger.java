@@ -17,46 +17,47 @@ import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.google.common.base.Preconditions;
 
+
 public class AuditLogger {
 
 	private static final Logger log = LoggerFactory.getLogger(AuditLogger.class);
-
-	public static void auditCmd(Player admin, VisibleObject obj, String cmd) {
+	
+	public static void auditCmd (Player admin, VisibleObject obj, String cmd) {
 		int playerId = 0;
 		String target = "";
 		if (obj != null) {
 			if (obj instanceof Player) {
-				playerId = ((Player) obj).getCommonData().getPlayerObjId();
-				target = "[Target (Player): " + ((Player) obj).getCommonData().getName() + "]";
-			} else if (obj instanceof Npc) {
-				target = "[Target (Npc):" + ((Npc) obj).getName() + "(" + ((Npc) obj).getNpcId() + ")]";
-			} else if (obj instanceof Creature) {
-				target = "[Target (Creature): " + obj.getName() + "]";
+				playerId = ((Player)obj).getCommonData().getPlayerObjId();
+				target = "[Target (Player): " +  ((Player)obj).getCommonData().getName() + "]";
 			}
+			else if (obj instanceof Npc)
+				target = "[Target (Npc):" + ((Npc)obj).getName() + "(" + ((Npc)obj).getNpcId() + ")]";
+			else if (obj instanceof Creature)
+				target = "[Target (Creature): " + ((Creature)obj).getName() + "]";
 		}
-
-		String text = "[By: " + admin.getCommonData().getName() + "(" + admin.getAcountName() + ")]" + target
-				+ "[Command: " + cmd + "]";
+		
+		String text = "[By: " + admin.getCommonData().getName() + "(" + admin.getAcountName() + ")]" + target + "[Command: " + cmd + "]";
 
 		Connection con = null;
 		try {
-			con = DatabaseFactory.getConnection();
-			PreparedStatement stmt = con.prepareStatement(
-					"INSERT INTO audit (id_account, id_admin, id_player, type, text) VALUES (?, ?, ?, ?, ?);");
-			stmt.setInt(1, admin.getPlayerAccount().getId());
-			stmt.setInt(2, admin.getCommonData().getPlayerObjId());
-			stmt.setInt(3, playerId);
-			stmt.setString(4, "cmd");
-			stmt.setString(5, text);
-
-			stmt.execute();
-
-			stmt.close();
-		} catch (SQLException e) {
-			log.error("Audit Log Fail", e);
-		} finally {
-			DatabaseFactory.close(con);
-		}
+	    	con = DatabaseFactory.getConnection();
+	        PreparedStatement stmt = con.prepareStatement("INSERT INTO audit (id_account, id_admin, id_player, type, text) VALUES (?, ?, ?, ?, ?);");
+	        stmt.setInt(1, admin.getPlayerAccount().getId());
+	        stmt.setInt(2, admin.getCommonData().getPlayerObjId());
+	        stmt.setInt(3, playerId);
+	        stmt.setString(4, "cmd");
+	        stmt.setString(5, text);
+	        
+	        stmt.execute();
+	        	
+	        stmt.close();
+	    }
+	    catch (SQLException e) { 
+	    	log.error("Audit Log Fail", e);
+	    }
+	    finally {
+	    	DatabaseFactory.close(con);
+	    }
 	}
 
 	public static final void info(Player player, String message) {
@@ -70,11 +71,10 @@ public class AuditLogger {
 	}
 
 	public static final void info(String playerName, int objectId, String message) {
-		message += " Player name: " + playerName + " objectId: " + objectId;
-		log.info(message);
+			message += " Player name: " + playerName + " objectId: " + objectId;
+			log.info(message);
 
-		if (CustomConfig.GM_AUDIT_MESSAGE_BROADCAST) {
-			GMService.getInstance().broadcastMessage(message, 0);
-		}
+			if (CustomConfig.GM_AUDIT_MESSAGE_BROADCAST)
+				GMService.getInstance().broadcastMessage(message, 0);
 	}
 }

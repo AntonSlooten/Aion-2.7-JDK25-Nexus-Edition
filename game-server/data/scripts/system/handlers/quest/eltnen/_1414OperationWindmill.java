@@ -59,25 +59,27 @@ public class _1414OperationWindmill extends QuestHandler {
 						return sendQuestStartDialog(env);
 					else
 						return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 
-		} else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
 			return sendQuestEndDialog(env);
 		}
 
 		else if (qs != null && qs.getStatus() == QuestStatus.START && qs.getQuestVarById(0) == 0) {
 			switch (targetId) {
-			case 700175: { // Old Gear
-				if (qs.getQuestVarById(0) == 0 && env.getDialog() == QuestDialog.USE_OBJECT) {
-					qs.setQuestVar(1);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					removeQuestItem(env, 182201349, 1);
-					return true;
+				case 700175: { // Old Gear
+					if (qs.getQuestVarById(0) == 0 && env.getDialog() == QuestDialog.USE_OBJECT) {
+						qs.setQuestVar(1);
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						removeQuestItem(env, 182201349, 1);
+						return true;
+					}
 				}
-			}
 			}
 		}
 		return false;

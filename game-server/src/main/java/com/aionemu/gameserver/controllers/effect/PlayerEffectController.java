@@ -43,9 +43,8 @@ public class PlayerEffectController extends EffectController {
 
 	@Override
 	public void addEffect(Effect effect) {
-		if (checkDuelCondition(effect)) {
+		if (checkDuelCondition(effect))
 			return;
-		}
 
 		super.addEffect(effect);
 		updatePlayerIconsAndGroup(effect);
@@ -73,21 +72,21 @@ public class PlayerEffectController extends EffectController {
 			}
 		}
 	}
-
+	
 	@Override
 	public void updatePlayerEffectIcons() {
 		getOwner().addPacketBroadcastMask(BroadcastMode.UPDATE_PLAYER_EFFECT_ICONS);
 	}
-
+	
 	@Override
 	public void updatePlayerEffectIconsImpl() {
 		Collection<Effect> effects = getAbnormalEffectsToShow();
-		PacketSendUtility.sendPacket(getOwner(), new SM_ABNORMAL_STATE(effects, abnormals));
+		PacketSendUtility.sendPacket((Player) getOwner(), new SM_ABNORMAL_STATE(effects, abnormals));
 	}
 
 	/**
 	 * Effect of DEBUFF should not be added if duel ended (friendly unit)
-	 *
+	 * 
 	 * @param effect
 	 * @return
 	 */
@@ -111,32 +110,28 @@ public class PlayerEffectController extends EffectController {
 	public void addSavedEffect(int skillId, int skillLvl, int remainingTime, long endTime) {
 		SkillTemplate template = DataManager.SKILL_DATA.getSkillTemplate(skillId);
 		int duration = template.getEffectsDuration();
-		if (template.getTargetSlot() == SkillTargetSlot.SPEC2) {
+		if (template.getTargetSlot() == SkillTargetSlot.SPEC2)
 			duration = duration + getOwner().getCommonData().getDeathCount() * duration / 2;
-		}
 
-		if (remainingTime <= 0) {
+		if (remainingTime <= 0)
 			return;
-		}
 		if (CustomConfig.ABYSSXFORM_LOGOUT
-				&& ((skillId >= 11885 && skillId <= 11894) || (skillId >= 11907 && skillId <= 11916))) {
-
-			if (System.currentTimeMillis() >= endTime) {
+			&& ((skillId >= 11885 && skillId <= 11894)
+			|| (skillId >= 11907 && skillId <= 11916))) {
+			
+			if (System.currentTimeMillis() >= endTime)
 				return;
-			} else {
-				remainingTime = (int) (endTime - System.currentTimeMillis());
-			}
-		}
-
+			else
+				remainingTime = (int)(endTime - System.currentTimeMillis());
+		} 
+		
 		Effect effect = new Effect(getOwner(), getOwner(), template, skillLvl, remainingTime);
 		abnormalEffectMap.put(effect.getStack(), effect);
 		effect.addAllEffectToSucess();
 		effect.startEffect(true);
 
-		if (effect.getSkillTemplate().getTargetSlot() != SkillTargetSlot.NOSHOW) {
-			PacketSendUtility.sendPacket(getOwner(),
-					new SM_ABNORMAL_STATE(Collections.singletonList(effect), abnormals));
-		}
+		if (effect.getSkillTemplate().getTargetSlot() != SkillTargetSlot.NOSHOW)
+			PacketSendUtility.sendPacket(getOwner(), new SM_ABNORMAL_STATE(Collections.singletonList(effect), abnormals));
 
 	}
 

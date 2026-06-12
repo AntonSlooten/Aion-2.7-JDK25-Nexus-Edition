@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -57,7 +57,7 @@ import java.util.List;
 
 /**
  * World map instance object.
- *
+ * 
  * @author -Nemesiss-
  */
 public abstract class WorldMapInstance {
@@ -77,7 +77,7 @@ public abstract class WorldMapInstance {
 	/**
 	 * Map of active regions.
 	 */
-	protected final TIntObjectHashMap<MapRegion> regions = new TIntObjectHashMap<>();
+	protected final TIntObjectHashMap<MapRegion> regions = new TIntObjectHashMap<MapRegion>();
 
 	/**
 	 * All objects spawned in this world map instance
@@ -88,7 +88,7 @@ public abstract class WorldMapInstance {
 	 * All players spawned in this world map instance
 	 */
 	private final FastMap<Integer, Player> worldMapPlayers = new FastMap<Integer, Player>().shared();
-	private final ArrayList<Integer> worldMapHistoryPlayers = new ArrayList<>();
+	private final ArrayList<Integer> worldMapHistoryPlayers = new ArrayList<Integer>();
 	private final Set<Integer> registeredObjects = Collections.newSetFromMap(new FastMap<Integer, Boolean>().shared());
 
 	private PlayerGroup registeredGroup = null;
@@ -100,20 +100,20 @@ public abstract class WorldMapInstance {
 	 */
 	private int instanceId;
 
-	private final FastList<Integer> questIds = new FastList<>();
+	private final FastList<Integer> questIds = new FastList<Integer>();
 
 	private InstanceHandler instanceHandler;
-
-	private Map<ZoneName, ZoneInstance> zones = new HashMap<>();
+	
+	private Map<ZoneName, ZoneInstance> zones = new HashMap<ZoneName, ZoneInstance>();
 
 	private Integer soloPlayer;
 	private Player soloPlayerp;
-
+	
 	private PlayerAlliance registredAlliance;
 
 	/**
 	 * Constructor.
-	 *
+	 * 
 	 * @param parent
 	 */
 	public WorldMapInstance(WorldMap parent, int instanceId) {
@@ -125,7 +125,7 @@ public abstract class WorldMapInstance {
 
 	/**
 	 * Return World map id.
-	 *
+	 * 
 	 * @return world map id
 	 */
 	public Integer getMapId() {
@@ -134,21 +134,20 @@ public abstract class WorldMapInstance {
 
 	/**
 	 * Returns WorldMap witch is parent of this instance
-	 *
+	 * 
 	 * @return parent
 	 */
 	public WorldMap getParent() {
 		return parent;
 	}
-
+	
 	public WorldMapTemplate getTemplate() {
 		return parent.getTemplate();
 	}
 
 	/**
-	 * Returns MapRegion that contains coordinates of VisibleObject. If the region
-	 * doesn't exist, it's created.
-	 *
+	 * Returns MapRegion that contains coordinates of VisibleObject. If the region doesn't exist, it's created.
+	 * 
 	 * @param object
 	 * @return a MapRegion
 	 */
@@ -157,9 +156,8 @@ public abstract class WorldMapInstance {
 	}
 
 	/**
-	 * Returns MapRegion that contains given x,y coordinates. If the region doesn't
-	 * exist, it's created.
-	 *
+	 * Returns MapRegion that contains given x,y coordinates. If the region doesn't exist, it's created.
+	 * 
 	 * @param x
 	 * @param y
 	 * @return a MapRegion
@@ -168,17 +166,17 @@ public abstract class WorldMapInstance {
 
 	/**
 	 * Create new MapRegion and add link to neighbours.
-	 *
+	 * 
 	 * @param regionId
 	 * @return newly created map region
 	 */
 	protected abstract MapRegion createMapRegion(int regionId);
-
+	
 	protected abstract void initMapRegions();
 
 	/**
 	 * Returs {@link World} instance to which belongs this WorldMapInstance
-	 *
+	 * 
 	 * @return World
 	 */
 	public World getWorld() {
@@ -191,29 +189,26 @@ public abstract class WorldMapInstance {
 	public void addObject(VisibleObject object) {
 		if (worldMapObjects.put(object.getObjectId(), object) != null) {
 			throw new DuplicateAionObjectException("Object with templateId "
-					+ String.valueOf(object.getObjectTemplate().getTemplateId()) + " already spawned in the instance "
-					+ String.valueOf(this.getMapId()) + " " + String.valueOf(this.getInstanceId()));
+				+ String.valueOf(object.getObjectTemplate().getTemplateId()) + " already spawned in the instance "
+				+ String.valueOf(this.getMapId()) + " " + String.valueOf(this.getInstanceId()));
 		}
 		if (object instanceof Npc) {
 			QuestNpc data = QuestEngine.getInstance().getQuestNpc(((Npc) object).getNpcId());
 			if (data != null) {
-				for (int id : data.getOnQuestStart()) {
-					if (!questIds.contains(id)) {
+				for (int id : data.getOnQuestStart())
+					if (!questIds.contains(id))
 						questIds.add(id);
-					}
-				}
 			}
 		}
-		if (object instanceof Player) {
-			Player pl = ((Player) object);
-			if (this.getParent().isPossibleFly()) {
+		if (object instanceof Player){
+			Player pl = ((Player)object);
+			if (this.getParent().isPossibleFly())
 				pl.setInsideZoneType(ZoneType.FLY);
-			}
 			worldMapPlayers.put(object.getObjectId(), pl);
-
-			// CustomRank
-			if (CustomFun.CUSTOM_RANK_ENABLED) {
-				if (!worldMapHistoryPlayers.contains(pl.getObjectId())) {
+			
+			//CustomRank
+			if(CustomFun.CUSTOM_RANK_ENABLED){
+				if(!worldMapHistoryPlayers.contains(pl.getObjectId())){
 					pl.getCustomPlayerRank().checkLvUp();
 					worldMapHistoryPlayers.add(pl.getObjectId());
 				}
@@ -226,17 +221,16 @@ public abstract class WorldMapInstance {
 	 */
 	public void removeObject(AionObject object) {
 		worldMapObjects.remove(object.getObjectId());
-		if (object instanceof Player) {
-			if (this.getParent().isPossibleFly()) {
-				((Player) object).unsetInsideZoneType(ZoneType.FLY);
-			}
+		if (object instanceof Player){
+			if (this.getParent().isPossibleFly())
+				((Player)object).unsetInsideZoneType(ZoneType.FLY);
 			worldMapPlayers.remove(object.getObjectId());
 		}
 	}
 
 	/**
 	 * @param npcId
-	 *
+	 * 
 	 * @return npc
 	 */
 	public Npc getNpc(int npcId) {
@@ -253,7 +247,7 @@ public abstract class WorldMapInstance {
 	}
 
 	public List<Player> getPlayersInside() {
-		List<Player> playersInside = new ArrayList<>();
+		List<Player> playersInside = new ArrayList<Player>();
 		Iterator<Player> players = playerIterator();
 		while (players.hasNext()) {
 			playersInside.add(players.next());
@@ -263,11 +257,11 @@ public abstract class WorldMapInstance {
 
 	/**
 	 * @param npcId
-	 *
+	 * 
 	 * @return List<npc>
 	 */
 	public List<Npc> getNpcs(int npcId) {
-		List<Npc> npcs = new ArrayList<>();
+		List<Npc> npcs = new ArrayList<Npc>();
 		for (Iterator<VisibleObject> iter = objectIterator(); iter.hasNext();) {
 			VisibleObject obj = iter.next();
 			if (obj instanceof Npc) {
@@ -281,11 +275,11 @@ public abstract class WorldMapInstance {
 	}
 
 	/**
-	 *
+	 * 
 	 * @return List<npc>
 	 */
 	public List<Npc> getNpcs() {
-		List<Npc> npcs = new ArrayList<>();
+		List<Npc> npcs = new ArrayList<Npc>();
 		for (Iterator<VisibleObject> iter = objectIterator(); iter.hasNext();) {
 			VisibleObject obj = iter.next();
 			if (obj instanceof Npc) {
@@ -297,11 +291,11 @@ public abstract class WorldMapInstance {
 
 	/**
 	 * @param npcId
-	 *
+	 * 
 	 * @return List<npc>
 	 */
-	public Map<Integer, StaticDoor> getDoors() {
-		Map<Integer, StaticDoor> doors = new HashMap<>();
+	public Map<Integer,StaticDoor> getDoors() {
+		Map<Integer,StaticDoor> doors = new HashMap<Integer,StaticDoor>();
 		for (Iterator<VisibleObject> iter = objectIterator(); iter.hasNext();) {
 			VisibleObject obj = iter.next();
 			if (obj instanceof StaticDoor) {
@@ -321,7 +315,7 @@ public abstract class WorldMapInstance {
 
 	/**
 	 * Check player is in instance
-	 *
+	 * 
 	 * @param objId
 	 * @return
 	 */
@@ -380,7 +374,8 @@ public abstract class WorldMapInstance {
 	}
 
 	/**
-	 * @param emptyInstanceTask the emptyInstanceTask to set
+	 * @param emptyInstanceTask
+	 *          the emptyInstanceTask to set
 	 */
 	public void setEmptyInstanceTask(Future<?> emptyInstanceTask) {
 		this.emptyInstanceTask = emptyInstanceTask;
@@ -411,7 +406,7 @@ public abstract class WorldMapInstance {
 	public final void setInstanceHandler(InstanceHandler instanceHandler) {
 		this.instanceHandler = instanceHandler;
 	}
-
+	
 	public Player getPlayer(Integer object) {
 		for (Player player : worldMapPlayers.values()) {
 			if (object == player.getObjectId()) {
@@ -426,33 +421,32 @@ public abstract class WorldMapInstance {
 	 */
 	public void doOnAllPlayers(Visitor<Player> visitor) {
 		try {
-			for (Player player : worldMapPlayers.values()) {
+			for (Player player : worldMapPlayers.values())
 				if (player != null) {
 					visitor.visit(player);
 				}
-			}
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			log.error("Exception when running visitor on all players" + ex);
 		}
 	}
-
+	
 	protected ZoneInstance[] filterZones(int mapId, int regionId, float startX, float startY, float minZ, float maxZ) {
 		if (zones.isEmpty()) {
 			log.debug("No zones for map " + mapId);
 			return new ZoneInstance[0];
 		}
 
-		List<ZoneInstance> regionZones = new ArrayList<>();
+		List<ZoneInstance> regionZones = new ArrayList<ZoneInstance>();
 		RegionZone regionZone = new RegionZone(startX, startY, minZ, maxZ);
 
 		for (ZoneInstance zoneInstance : zones.values()) {
-			if (zoneInstance.getAreaTemplate().intersectsRectangle(regionZone)) {
+			if (zoneInstance.getAreaTemplate().intersectsRectangle(regionZone))
 				regionZones.add(zoneInstance);
-			}
 		}
 		return regionZones.toArray(new ZoneInstance[regionZones.size()]);
 	}
-
+	
 	/**
 	 * @param player
 	 * @param zoneName
@@ -460,9 +454,8 @@ public abstract class WorldMapInstance {
 	 */
 	public boolean isInsideZone(VisibleObject object, ZoneName zoneName) {
 		ZoneInstance zoneTemplate = zones.get(zoneName);
-		if (zoneTemplate == null) {
+		if (zoneTemplate == null)
 			return false;
-		}
 		return isInsideZone(object.getPosition(), zoneName);
 	}
 
@@ -476,7 +469,7 @@ public abstract class WorldMapInstance {
 		return mapRegion.isInsideZone(zoneName, pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	public void setSoloPlayerObj(Player player) {
+	public void  setSoloPlayerObj(Player player) {
 		soloPlayer = player.getObjectId();
 		soloPlayerp = player;
 	}
@@ -484,7 +477,6 @@ public abstract class WorldMapInstance {
 	public Integer getSoloPlayerObj() {
 		return soloPlayer;
 	}
-
 	public Player getSoloPlayer() {
 		return soloPlayerp;
 	}

@@ -31,7 +31,7 @@ public class IGItem {
 	private String description;
 
 	public IGItem(int objectId, int itemId, int itemCount, int itemPrice, int category, int list, int salesRanking,
-			String description) {
+		String description) {
 		this.objectId = objectId;
 		this.itemId = itemId;
 		this.itemCount = itemCount;

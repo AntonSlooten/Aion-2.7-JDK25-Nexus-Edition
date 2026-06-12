@@ -23,7 +23,7 @@ import com.aionemu.gameserver.utils.audit.AuditLogger;
 
 /**
  * Received when a player reports another player with /ReportAutoHunting
- *
+ * 
  * @author Jego
  */
 public class CM_REPORT_PLAYER extends AionClientPacket {
@@ -32,7 +32,7 @@ public class CM_REPORT_PLAYER extends AionClientPacket {
 
 	/**
 	 * A player gets reported.
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_REPORT_PLAYER(int opcode, State state, State... restStates) {

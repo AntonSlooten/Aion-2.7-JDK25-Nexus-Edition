@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -36,13 +36,13 @@ public final class PlayerSkillList implements SkillList<Player> {
 	private final List<PlayerSkillEntry> deletedSkills;
 
 	public PlayerSkillList() {
-		this.skills = new HashMap<>();
-		this.deletedSkills = new ArrayList<>();
+		this.skills = new HashMap<Integer, PlayerSkillEntry>();
+		this.deletedSkills = new ArrayList<PlayerSkillEntry>();
 	}
 
 	public PlayerSkillList(Map<Integer, PlayerSkillEntry> skills) {
 		this.skills = skills;
-		this.deletedSkills = new ArrayList<>();
+		this.deletedSkills = new ArrayList<PlayerSkillEntry>();
 	}
 
 	/**
@@ -67,7 +67,7 @@ public final class PlayerSkillList implements SkillList<Player> {
 
 	/**
 	 * Add temporary skill which will not be saved in db
-	 *
+	 * 
 	 * @param player
 	 * @param skillId
 	 * @param skillLevel
@@ -94,13 +94,13 @@ public final class PlayerSkillList implements SkillList<Player> {
 				return false;
 			}
 			existingSkill.setSkillLvl(skillLevel);
-		} else {
+		}
+		else {
 			skills.put(skillId, new PlayerSkillEntry(skillId, false, skillLevel, state));
 			isNew = true;
 		}
-		if (player.isSpawned()) {
+		if (player.isSpawned())
 			sendMessage(player, skillId, isNew);
-		}
 		return true;
 	}
 
@@ -110,57 +110,42 @@ public final class PlayerSkillList implements SkillList<Player> {
 	 * @param xpReward
 	 * @return
 	 */
-	@SuppressWarnings("fallthrough")
 	public boolean addSkillXp(Player player, int skillId, int xpReward, int objSkillPoints) {
 		PlayerSkillEntry skillEntry = getSkillEntry(skillId);
 		int maxDiff = 40;
-		int skillLvlDiff = skillEntry.getSkillLevel() - objSkillPoints;
-
-		if (maxDiff < skillLvlDiff) {
+		int SkillLvlDiff = skillEntry.getSkillLevel() - objSkillPoints;
+		if (maxDiff < SkillLvlDiff) {
 			return false;
 		}
-
 		switch (skillEntry.getSkillId()) {
-		case 30001:
-			if (skillEntry.getSkillLevel() == 49) {
-				return false;
-			}
-
-		case 30002:
-		case 30003:
-			if (skillEntry.getSkillLevel() == 449) {
-				break;
-			}
-
-		case 40001:
-		case 40002:
-		case 40003:
-		case 40004:
-		case 40007:
-		case 40008:
-			switch (skillEntry.getSkillLevel()) {
-			case 99:
-			case 199:
-			case 299:
-			case 399:
-			case 449:
-			case 499:
-			case 549:
-				return false;
-			}
-			player.getRecipeList().autoLearnRecipe(player, skillId, skillEntry.getSkillLevel());
-			break;
-
-		default:
-			break;
+			case 30001:
+				if (skillEntry.getSkillLevel() == 49)
+					return false;
+			case 30002:
+			case 30003:
+				if (skillEntry.getSkillLevel() == 449)
+					break;
+			case 40001:
+			case 40002:
+			case 40003:
+			case 40004:
+			case 40007:
+			case 40008:
+				switch (skillEntry.getSkillLevel()) {
+					case 99:
+					case 199:
+					case 299:
+					case 399:
+					case 449:
+					case 499:
+					case 549:
+						return false;
+				}
+				player.getRecipeList().autoLearnRecipe(player, skillId, skillEntry.getSkillLevel());
 		}
-
 		boolean updateSkill = skillEntry.addSkillXp(xpReward);
-
-		if (updateSkill) {
+		if (updateSkill)
 			sendMessage(player, skillId, false);
-		}
-
 		return true;
 	}
 
@@ -196,30 +181,30 @@ public final class PlayerSkillList implements SkillList<Player> {
 	 */
 	private void sendMessage(Player player, int skillId, boolean isNew) {
 		switch (skillId) {
-		case 30001:
-		case 30002:
-			PacketSendUtility.sendPacket(player,
-					new SM_SKILL_LIST(player.getSkillList().getSkillEntry(skillId), 1330005, false));
-			break;
-		case 30003:
-			PacketSendUtility.sendPacket(player,
-					new SM_SKILL_LIST(player.getSkillList().getSkillEntry(skillId), 1330005, false));
-			break;
-		case 40001:
-		case 40002:
-		case 40003:
-		case 40004:
-		case 40005:
-		case 40006:
-		case 40007:
-		case 40008:
-		case 40009:
-			PacketSendUtility.sendPacket(player,
-					new SM_SKILL_LIST(player.getSkillList().getSkillEntry(skillId), 1330061, false));
-			break;
-		default:
-			PacketSendUtility.sendPacket(player,
-					new SM_SKILL_LIST(player.getSkillList().getSkillEntry(skillId), 1300050, isNew));
+			case 30001:
+			case 30002:
+				PacketSendUtility.sendPacket(player, new SM_SKILL_LIST(player.getSkillList().getSkillEntry(skillId), 1330005,
+					false));
+				break;
+			case 30003:
+				PacketSendUtility.sendPacket(player, new SM_SKILL_LIST(player.getSkillList().getSkillEntry(skillId), 1330005,
+					false));
+				break;
+			case 40001:
+			case 40002:
+			case 40003:
+			case 40004:
+			case 40005:
+			case 40006:
+			case 40007:
+			case 40008:
+			case 40009:
+				PacketSendUtility.sendPacket(player, new SM_SKILL_LIST(player.getSkillList().getSkillEntry(skillId), 1330061,
+					false));
+				break;
+			default:
+				PacketSendUtility.sendPacket(player, new SM_SKILL_LIST(player.getSkillList().getSkillEntry(skillId), 1300050,
+					isNew));
 		}
 	}
 }

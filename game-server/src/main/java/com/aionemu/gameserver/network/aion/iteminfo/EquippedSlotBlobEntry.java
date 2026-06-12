@@ -22,20 +22,21 @@ import com.aionemu.gameserver.model.gameobjects.Item;
 import com.aionemu.gameserver.network.aion.iteminfo.ItemInfoBlob.ItemBlobType;
 
 /**
- * This block is sent for all items that can be equipped. If item is equipped.
- * This block says to which slot it's equipped. If not, then it says 0.
- *
+ * This block is sent for all items that can be equipped. If item is equipped. This block says to which slot it's
+ * equipped. If not, then it says 0.
+ * 
  * @author -Nemesiss-
  *
  */
-public class EquippedSlotBlobEntry extends ItemBlobEntry {
+public class EquippedSlotBlobEntry extends ItemBlobEntry{
 
 	EquippedSlotBlobEntry() {
 		super(ItemBlobType.EQUIPPED_SLOT);
 	}
 
 	@Override
-	public void writeThisBlob(ByteBuffer buf) {
+	public
+	void writeThisBlob(ByteBuffer buf) {
 		Item item = parent.item;
 
 		writeD(buf, item.isEquipped() ? item.getEquipmentSlot() : 0x00);

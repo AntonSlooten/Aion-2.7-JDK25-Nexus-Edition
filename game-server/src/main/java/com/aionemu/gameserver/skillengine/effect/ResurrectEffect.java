@@ -31,23 +31,21 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ResurrectEffect")
 public class ResurrectEffect extends EffectTemplate {
-
+	
 	@Override
 	public void applyEffect(Effect effect) {
 		Player effectedPlayer = (Player) effect.getEffected();
 		effectedPlayer.setPlayerResActivate(true);
-
-		if (effect.getSkillId() == 1051) {
+		
+		if(effect.getSkillId() == 1051)
 			effectedPlayer.setResWithHalfSoulTime(true);
-		}
-
+		
 		PacketSendUtility.sendPacket(effectedPlayer, new SM_RESURRECT(effect.getEffector(), effect.getSkillId()));
 	}
 
 	@Override
 	public void calculate(Effect effect) {
-		if (effect.getEffected() instanceof Player && effect.getEffected().getLifeStats().isAlreadyDead()) {
+		if (effect.getEffected() instanceof Player && effect.getEffected().getLifeStats().isAlreadyDead())
 			super.calculate(effect, null, null);
-		}
 	}
 }

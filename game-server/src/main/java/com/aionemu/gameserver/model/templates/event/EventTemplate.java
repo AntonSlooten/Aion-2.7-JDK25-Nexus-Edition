@@ -59,7 +59,7 @@ import com.aionemu.gameserver.world.knownlist.Visitor;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "EventTemplate", propOrder = { "quests", "spawns", "inventoryDrop", "surveys" })
 public class EventTemplate {
-
+	
 	private static Logger log = LoggerFactory.getLogger(EventTemplate.class);
 
 	@XmlElement(name = "quests", required = false)
@@ -70,7 +70,7 @@ public class EventTemplate {
 
 	@XmlElement(name = "inventory_drop", required = false)
 	protected InventoryDrop inventoryDrop;
-
+	
 	@XmlList
 	@XmlElement(name = "surveys", required = false)
 	protected List<String> surveys;
@@ -85,8 +85,8 @@ public class EventTemplate {
 	@XmlAttribute(name = "end", required = true)
 	@XmlSchemaType(name = "dateTime")
 	protected XMLGregorianCalendar endDate;
-
-	@XmlAttribute(name = "theme", required = false)
+	
+	@XmlAttribute(name="theme", required = false)
 	private String theme;
 
 	@XmlTransient
@@ -108,16 +108,14 @@ public class EventTemplate {
 	}
 
 	public List<Integer> getStartableQuests() {
-		if (quests == null) {
-			return new ArrayList<>();
-		}
+		if (quests == null)
+			return new ArrayList<Integer>();
 		return quests.getStartableQuests();
 	}
 
 	public List<Integer> getMaintainableQuests() {
-		if (quests == null) {
-			return new ArrayList<>();
-		}
+		if (quests == null)
+			return new ArrayList<Integer>();
 		return quests.getMaintainQuests();
 	}
 
@@ -141,39 +139,33 @@ public class EventTemplate {
 	}
 
 	public void Start() {
-		if (isStarted) {
+		if (isStarted)
 			return;
-		}
 
 		if (spawns != null && spawns.size() > 0) {
-			if (spawnedObjects == null) {
-				spawnedObjects = new ArrayList<>();
-			}
+			if (spawnedObjects == null)
+				spawnedObjects = new ArrayList<VisibleObject>();
 			for (SpawnMap map : spawns.getTemplates()) {
 				DataManager.SPAWNS_DATA2.addNewSpawnMap(map);
-				Collection<Integer> instanceIds = World.getInstance().getWorldMap(map.getMapId())
-						.getAvailableInstanceIds();
+				Collection<Integer> instanceIds = World.getInstance().getWorldMap(map.getMapId()).getAvailableInstanceIds();
 				for (Integer instanceId : instanceIds) {
 					int spawnCount = 0;
 					for (Spawn spawn : map.getSpawns()) {
 						spawn.setEventTemplate(this);
-						if (spawn.getPool() > spawn.getSpawnSpotTemplates().size()) {
+						if (spawn.getPool() > spawn.getSpawnSpotTemplates().size())
 							Collections.shuffle(spawn.getSpawnSpotTemplates());
-						}
 						int pool = 0;
 						for (SpawnSpotTemplate spot : spawn.getSpawnSpotTemplates()) {
-							if ((++pool) > spawn.getPool()) {
+							if ((++pool) > spawn.getPool())
 								break;
-							}
-							SpawnTemplate t = SpawnEngine.addNewSpawn(map.getMapId(), spawn.getNpcId(), spot.getX(),
-									spot.getY(), spot.getZ(), spot.getHeading(), spawn.getRespawnTime());
+							SpawnTemplate t = SpawnEngine.addNewSpawn(map.getMapId(), spawn.getNpcId(), spot.getX(), spot.getY(),
+								spot.getZ(), spot.getHeading(), spawn.getRespawnTime());
 							t.setEventTemplate(this);
 							SpawnEngine.spawnObject(t, instanceId);
 							spawnCount++;
 						}
 					}
-					log.info("Spawned event objects in " + map.getMapId() + " [" + instanceId + "] : " + spawnCount
-							+ " (" + this.getName() + ")");
+					log.info("Spawned event objects in " + map.getMapId() + " [" + instanceId + "] : " + spawnCount + " (" + this.getName() + ")");
 				}
 			}
 			DataManager.SPAWNS_DATA2.afterUnmarshal(null, null);
@@ -189,21 +181,19 @@ public class EventTemplate {
 
 						@Override
 						public void visit(Player player) {
-							if (player.getCommonData().getLevel() >= inventoryDrop.getStartLevel()) {
+							if (player.getCommonData().getLevel() >= inventoryDrop.getStartLevel())
 								EventService.getInstance().dropItemToInventory(player, inventoryDrop.getDropItem());
-							}
 						}
 					});
 				}
 			}, inventoryDrop.getInterval() * 60000, inventoryDrop.getInterval() * 60000);
 		}
-
+		
 		if (surveys != null) {
 			for (String survey : surveys) {
 				GuideTemplate template = DataManager.GUIDE_HTML_DATA.getTemplateByTitle(survey);
-				if (template != null) {
+				if (template != null)
 					template.setActivated(true);
-				}
 			}
 		}
 
@@ -211,15 +201,13 @@ public class EventTemplate {
 	}
 
 	public void Stop() {
-		if (!isStarted) {
+		if (!isStarted)
 			return;
-		}
 
 		if (spawnedObjects != null) {
 			for (VisibleObject o : spawnedObjects) {
-				if (o.isSpawned()) {
+				if (o.isSpawned())
 					o.getController().delete();
-				}
 			}
 			DataManager.SPAWNS_DATA2.removeEventSpawnObjects(spawnedObjects);
 			log.info("Despawned " + spawnedObjects.size() + " event objects (" + this.getName() + ")");
@@ -231,13 +219,12 @@ public class EventTemplate {
 			invDropTask.cancel(false);
 			invDropTask = null;
 		}
-
+		
 		if (surveys != null) {
 			for (String survey : surveys) {
 				GuideTemplate template = DataManager.GUIDE_HTML_DATA.getTemplateByTitle(survey);
-				if (template != null) {
+				if (template != null)
 					template.setActivated(false);
-				}
 			}
 		}
 
@@ -245,9 +232,8 @@ public class EventTemplate {
 	}
 
 	public void addSpawnedObject(VisibleObject object) {
-		if (spawnedObjects == null) {
-			spawnedObjects = new ArrayList<>();
-		}
+		if (spawnedObjects == null)
+			spawnedObjects = new ArrayList<VisibleObject>();
 		spawnedObjects.add(object);
 	}
 
@@ -255,9 +241,8 @@ public class EventTemplate {
 	 * @return the theme name
 	 */
 	public String getTheme() {
-		if (theme != null) {
+		if (theme != null)
 			return theme.toLowerCase();
-		}
 		return theme;
 	}
 

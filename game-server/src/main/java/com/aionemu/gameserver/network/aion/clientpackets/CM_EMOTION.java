@@ -60,7 +60,7 @@ public class CM_EMOTION extends AionClientPacket {
 
 	/**
 	 * Constructs new client packet instance.
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_EMOTION(int opcode, State state, State... restStates) {
@@ -77,40 +77,40 @@ public class CM_EMOTION extends AionClientPacket {
 		emotionType = EmotionType.getEmotionTypeById(et);
 
 		switch (emotionType) {
-		case SELECT_TARGET:// select target
-		case JUMP: // jump
-		case SIT: // resting
-		case STAND: // end resting
-		case LAND_FLYTELEPORT: // fly teleport land
-		case FLY: // fly up
-		case LAND: // land
-		case DIE: // die
-		case END_DUEL: // duel end
-		case WALK: // walk on
-		case RUN: // walk off
-		case OPEN_DOOR: // open static doors
-		case CLOSE_DOOR: // close static doors
-		case POWERSHARD_ON: // powershard on
-		case POWERSHARD_OFF: // powershard off
-		case ATTACKMODE: // get equip weapon
-		case ATTACKMODE2: // get equip weapon
-		case NEUTRALMODE: // remove equip weapon
-		case NEUTRALMODE2: // remove equip weapon
-			break;
-		case EMOTE:
-			emotion = readH();
-			targetObjectId = readD();
-			break;
-		case CHAIR_SIT: // sit on chair
-		case CHAIR_UP: // stand on chair
-			x = readF();
-			y = readF();
-			z = readF();
-			heading = (byte) readC();
-			break;
-		default:
-			log.error("Unknown emotion type? 0x" + Integer.toHexString(et/* !!!!! */).toUpperCase());
-			break;
+			case SELECT_TARGET:// select target
+			case JUMP: // jump
+			case SIT: // resting
+			case STAND: // end resting
+			case LAND_FLYTELEPORT: // fly teleport land
+			case FLY: // fly up
+			case LAND: // land
+			case DIE: // die
+			case END_DUEL: // duel end
+			case WALK: // walk on
+			case RUN: // walk off
+			case OPEN_DOOR: // open static doors
+			case CLOSE_DOOR: // close static doors
+			case POWERSHARD_ON: // powershard on
+			case POWERSHARD_OFF: // powershard off
+			case ATTACKMODE: // get equip weapon
+			case ATTACKMODE2: // get equip weapon
+			case NEUTRALMODE: // remove equip weapon
+			case NEUTRALMODE2: // remove equip weapon
+				break;
+			case EMOTE:
+				emotion = readH();
+				targetObjectId = readD();
+				break;
+			case CHAIR_SIT: // sit on chair
+			case CHAIR_UP: // stand on chair
+				x = readF();
+				y = readF();
+				z = readF();
+				heading = (byte) readC();
+				break;
+			default:
+				log.error("Unknown emotion type? 0x" + Integer.toHexString(et/* !!!!! */).toUpperCase());
+				break;
 		}
 	}
 
@@ -121,93 +121,89 @@ public class CM_EMOTION extends AionClientPacket {
 	protected void runImpl() {
 		Player player = getConnection().getActivePlayer();
 
-		if (player.getState() == CreatureState.PRIVATE_SHOP.getId()
-				|| player.isAttackMode() && (emotionType == EmotionType.CHAIR_SIT || emotionType == EmotionType.JUMP)) {
+		if (player.getState() == CreatureState.PRIVATE_SHOP.getId() || player.isAttackMode()
+			&& (emotionType == EmotionType.CHAIR_SIT || emotionType == EmotionType.JUMP))
 			return;
-		}
 
 		player.getController().cancelUseItem();
 
 		switch (emotionType) {
-		case SELECT_TARGET:
-			return;
-		case SIT:
-			if (player.isInState(CreatureState.PRIVATE_SHOP)) {
+			case SELECT_TARGET:
 				return;
-			}
-			player.setState(CreatureState.RESTING);
-			break;
-		case STAND:
-			player.unsetState(CreatureState.RESTING);
-			break;
-		case CHAIR_SIT:
-			if (!player.isInState(CreatureState.WEAPON_EQUIPPED)) {
-				player.setState(CreatureState.CHAIR);
-			}
-			break;
-		case CHAIR_UP:
-			player.unsetState(CreatureState.CHAIR);
-			break;
-		case LAND_FLYTELEPORT:
-			player.getController().onFlyTeleportEnd();
-			break;
-		case FLY:
-			if (player.getAccessLevel() < AdminConfig.GM_FLIGHT_FREE) {
-				if (!player.isInsideZoneType(ZoneType.FLY)) {
-					PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_FLYING_FORBIDDEN_HERE);
+			case SIT:
+				if (player.isInState(CreatureState.PRIVATE_SHOP)){
 					return;
 				}
-			}
-			// If player is under NoFly Effect, show the retail message for it and return
-			if (player.isUnderNoFly()) {
-				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CANT_FLY_NOW_DUE_TO_NOFLY);
-				return;
-			}
-			player.getFlyController().startFly();
-			break;
-		case LAND:
-			player.getFlyController().endFly();
-			break;
-		case ATTACKMODE2:
-		case ATTACKMODE:
-			player.setAttackMode(true);
-			player.setState(CreatureState.WEAPON_EQUIPPED);
-			break;
-		case NEUTRALMODE2:
-		case NEUTRALMODE:
-			player.setAttackMode(false);
-			player.unsetState(CreatureState.WEAPON_EQUIPPED);
-			break;
-		case WALK:
-			// cannot toggle walk when you flying or gliding
-			if (player.getFlyState() > 0) {
-				return;
-			}
-			player.setState(CreatureState.WALKING);
-			break;
-		case RUN:
-			player.unsetState(CreatureState.WALKING);
-			break;
-		case OPEN_DOOR:
-		case CLOSE_DOOR:
-			break;
-		case POWERSHARD_ON:
-			if (!player.getEquipment().isPowerShardEquipped()) {
-				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_WEAPON_BOOST_NO_BOOSTER_EQUIPED);
-				return;
-			}
-			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_WEAPON_BOOST_BOOST_MODE_STARTED);
-			player.setState(CreatureState.POWERSHARD);
-			break;
-		case POWERSHARD_OFF:
-			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_WEAPON_BOOST_BOOST_MODE_ENDED);
-			player.unsetState(CreatureState.POWERSHARD);
-			break;
+				player.setState(CreatureState.RESTING);
+				break;
+			case STAND:
+				player.unsetState(CreatureState.RESTING);
+				break;
+			case CHAIR_SIT:
+				if (!player.isInState(CreatureState.WEAPON_EQUIPPED))
+					player.setState(CreatureState.CHAIR);
+				break;
+			case CHAIR_UP:
+				player.unsetState(CreatureState.CHAIR);
+				break;
+			case LAND_FLYTELEPORT:
+				player.getController().onFlyTeleportEnd();
+				break;
+			case FLY:
+				if (player.getAccessLevel() < AdminConfig.GM_FLIGHT_FREE) {
+					if (!player.isInsideZoneType(ZoneType.FLY)) {
+						PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_FLYING_FORBIDDEN_HERE);
+						return;
+					}
+				}
+				// If player is under NoFly Effect, show the retail message for it and return
+				if (player.isUnderNoFly()) {
+					PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CANT_FLY_NOW_DUE_TO_NOFLY);
+					return;
+				}
+				player.getFlyController().startFly();
+				break;
+			case LAND:
+				player.getFlyController().endFly();
+				break;
+			case ATTACKMODE2:
+			case ATTACKMODE:
+				player.setAttackMode(true);
+				player.setState(CreatureState.WEAPON_EQUIPPED);
+				break;
+			case NEUTRALMODE2:
+			case NEUTRALMODE:
+				player.setAttackMode(false);
+				player.unsetState(CreatureState.WEAPON_EQUIPPED);
+				break;
+			case WALK:
+				// cannot toggle walk when you flying or gliding
+				if (player.getFlyState() > 0)
+					return;
+				player.setState(CreatureState.WALKING);
+				break;
+			case RUN:
+				player.unsetState(CreatureState.WALKING);
+				break;
+			case OPEN_DOOR:
+			case CLOSE_DOOR:
+				break;
+			case POWERSHARD_ON:
+				if (!player.getEquipment().isPowerShardEquipped()) {
+					PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_WEAPON_BOOST_NO_BOOSTER_EQUIPED);
+					return;
+				}
+				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_WEAPON_BOOST_BOOST_MODE_STARTED);
+				player.setState(CreatureState.POWERSHARD);
+				break;
+			case POWERSHARD_OFF:
+				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_WEAPON_BOOST_BOOST_MODE_ENDED);
+				player.unsetState(CreatureState.POWERSHARD);
+				break;
 		}
 
 		if (player.getEmotions().canUse(emotion)) {
-			PacketSendUtility.broadcastPacket(player,
-					new SM_EMOTION(player, emotionType, emotion, x, y, z, heading, getTargetObjectId(player)), true);
+			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, emotionType, emotion, x, y, z, heading, getTargetObjectId(player)), true);
 		}
 	}
 

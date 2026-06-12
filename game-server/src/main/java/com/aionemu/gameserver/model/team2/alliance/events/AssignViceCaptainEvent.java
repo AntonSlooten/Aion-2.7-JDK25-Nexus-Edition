@@ -29,7 +29,9 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 public class AssignViceCaptainEvent extends AbstractTeamPlayerEvent<PlayerAlliance> {
 
 	public static enum AssignType {
-		PROMOTE, DEMOTE_CAPTAIN_TO_VICECAPTAIN, DEMOTE
+		PROMOTE,
+		DEMOTE_CAPTAIN_TO_VICECAPTAIN,
+		DEMOTE
 	}
 
 	private final AssignType assignType;
@@ -47,20 +49,19 @@ public class AssignViceCaptainEvent extends AbstractTeamPlayerEvent<PlayerAllian
 	@Override
 	public void handleEvent() {
 		switch (assignType) {
-		case DEMOTE:
-			team.getViceCaptainIds().remove(eventPlayer.getObjectId());
-			break;
-		case PROMOTE:
-			if (team.getViceCaptainIds().size() == 4) {
-				PacketSendUtility.sendPacket(team.getLeaderObject(),
-						SM_SYSTEM_MESSAGE.STR_FORCE_CANNOT_PROMOTE_MANAGER);
-				return;
-			}
-			team.getViceCaptainIds().add(eventPlayer.getObjectId());
-			break;
-		case DEMOTE_CAPTAIN_TO_VICECAPTAIN:
-			team.getViceCaptainIds().add(eventPlayer.getObjectId());
-			break;
+			case DEMOTE:
+				team.getViceCaptainIds().remove(eventPlayer.getObjectId());
+				break;
+			case PROMOTE:
+				if (team.getViceCaptainIds().size() == 4) {
+					PacketSendUtility.sendPacket(team.getLeaderObject(), SM_SYSTEM_MESSAGE.STR_FORCE_CANNOT_PROMOTE_MANAGER);
+					return;
+				}
+				team.getViceCaptainIds().add(eventPlayer.getObjectId());
+				break;
+			case DEMOTE_CAPTAIN_TO_VICECAPTAIN:
+				team.getViceCaptainIds().add(eventPlayer.getObjectId());
+				break;
 		}
 
 		team.applyOnMembers(this);
@@ -70,12 +71,12 @@ public class AssignViceCaptainEvent extends AbstractTeamPlayerEvent<PlayerAllian
 	public boolean apply(Player player) {
 		int messageId = 0;
 		switch (assignType) {
-		case PROMOTE:
-			messageId = SM_ALLIANCE_INFO.VICECAPTAIN_PROMOTE;
-			break;
-		case DEMOTE:
-			messageId = SM_ALLIANCE_INFO.VICECAPTAIN_DEMOTE;
-			break;
+			case PROMOTE:
+				messageId = SM_ALLIANCE_INFO.VICECAPTAIN_PROMOTE;
+				break;
+			case DEMOTE:
+				messageId = SM_ALLIANCE_INFO.VICECAPTAIN_DEMOTE;
+				break;
 		}
 		// TODO check whether same is sent to eventPlayer
 		PacketSendUtility.sendPacket(player, new SM_ALLIANCE_INFO(team, messageId, eventPlayer.getName()));

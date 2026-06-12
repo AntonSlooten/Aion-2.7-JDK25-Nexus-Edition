@@ -30,7 +30,7 @@ public class CM_BROKER_REGISTERED extends AionClientPacket {
 	private int npcId;
 
 	/**
-	 *
+	 * 
 	 */
 	public CM_BROKER_REGISTERED(int opcode, State state, State... restStates) {
 		super(opcode, state, restStates);

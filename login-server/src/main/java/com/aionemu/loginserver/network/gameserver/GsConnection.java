@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -23,7 +23,6 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.aionemu.commons.network.AConnection;
 import com.aionemu.commons.network.Dispatcher;
 import com.aionemu.loginserver.GameServerInfo;

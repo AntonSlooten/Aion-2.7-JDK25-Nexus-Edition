@@ -35,15 +35,14 @@ import com.aionemu.gameserver.world.World;
  */
 public class TemporaryTradeTimeTask extends AbstractPeriodicTaskManager {
 
-	private final FastMap<Item, Collection<Integer>> items = new FastMap<>();
-	private final FastMap<Integer, Item> itemById = new FastMap<>();
+	private final FastMap<Item, Collection<Integer>> items = new FastMap<Item, Collection<Integer>>();
+	private final FastMap<Integer, Item> itemById = new FastMap<Integer, Item>();
 
 	/**
 	 * @param period
 	 */
 	public TemporaryTradeTimeTask() {
 		super(1000);
-		registerStartupHook();
 	}
 
 	public static TemporaryTradeTimeTask getInstance() {
@@ -55,16 +54,16 @@ public class TemporaryTradeTimeTask extends AbstractPeriodicTaskManager {
 		try {
 			items.put(item, players);
 			itemById.put(item.getObjectId(), item);
-		} finally {
+		}
+		finally {
 			writeUnlock();
 		}
 	}
 
 	public boolean canTrade(Item item, int playerObjectId) {
 		Collection<Integer> players = items.get(item);
-		if (players == null) {
+		if (players == null)
 			return false;
-		}
 		return players.contains(playerObjectId);
 	}
 
@@ -72,7 +71,8 @@ public class TemporaryTradeTimeTask extends AbstractPeriodicTaskManager {
 		readLock();
 		try {
 			return items.containsKey(item);
-		} finally {
+		}
+		finally {
 			readUnlock();
 		}
 	}
@@ -81,7 +81,8 @@ public class TemporaryTradeTimeTask extends AbstractPeriodicTaskManager {
 		readLock();
 		try {
 			return itemById.get(objectId);
-		} finally {
+		}
+		finally {
 			readUnlock();
 		}
 	}
@@ -96,25 +97,23 @@ public class TemporaryTradeTimeTask extends AbstractPeriodicTaskManager {
 				if (time == 60) {
 					for (int playerId : entry.getValue()) {
 						Player player = World.getInstance().findPlayer(playerId);
-						if (player != null) {
-							PacketSendUtility.sendPacket(player,
-									SM_SYSTEM_MESSAGE.STR_MSG_END_OF_EXCHANGE_TIME(item.getNameID(), time));
-						}
+						if (player != null)
+							PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_END_OF_EXCHANGE_TIME(item.getNameID(), time));
 					}
-				} else if (time <= 0) {
+				}
+				else if (time <= 0) {
 					for (int playerId : entry.getValue()) {
 						Player player = World.getInstance().findPlayer(playerId);
-						if (player != null) {
-							PacketSendUtility.sendPacket(player,
-									SM_SYSTEM_MESSAGE.STR_MSG_EXCHANGE_TIME_OVER(item.getNameID()));
-						}
+						if (player != null)
+							PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_EXCHANGE_TIME_OVER(item.getNameID()));
 					}
 					item.setTemporaryExchangeTime(0);
 					items.remove(item);
 					itemById.remove(item.getObjectId());
 				}
 			}
-		} finally {
+		}
+		finally {
 			writeUnlock();
 		}
 	}

@@ -35,9 +35,8 @@ public class SurveyService {
 
 	public boolean isActive(Player player, int survId) {
 		boolean avail = this.activeItems.containsKey(survId);
-		if (avail) {
+		if (avail)
 			this.requestSurvey(player, survId);
-		}
 
 		return avail;
 	}
@@ -71,16 +70,14 @@ public class SurveyService {
 		if (DAOManager.getDAO(SurveyControllerDAO.class).useItem(item.uniqueId)) {
 			ItemTemplate template = DataManager.ITEM_DATA.getItemTemplate(item.itemId);
 			ItemService.addItem(player, item.itemId, item.count);
-			if (item.itemId == ItemId.KINAH.value()) { // You received %num0 Kinah as reward for the survey.
+			if (item.itemId == ItemId.KINAH.value()) // You received %num0 Kinah as reward for the survey.
 				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300945, item.count));
-			} else if (item.count == 1) { // You received %0 item as reward for the survey.
-				PacketSendUtility.sendPacket(player,
-						new SM_SYSTEM_MESSAGE(1300945, new DescriptionId(template.getNameId())));
-			} else { // You received %num1 %0 items as reward for the survey.
+			else if (item.count == 1) // You received %0 item as reward for the survey.
+				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300945, new DescriptionId(template.getNameId())));
+			else
 				// You received %num1 %0 items as reward for the survey.
 				PacketSendUtility.sendPacket(player,
-						new SM_SYSTEM_MESSAGE(1300946, item.count, new DescriptionId(template.getNameId())));
-			}
+					new SM_SYSTEM_MESSAGE(1300946, item.count, new DescriptionId(template.getNameId())));
 
 			template = null;
 			activeItems.remove(survId);
@@ -89,18 +86,16 @@ public class SurveyService {
 
 	public void taskUpdate() {
 		List<SurveyItem> newList = DAOManager.getDAO(SurveyControllerDAO.class).getAllNew();
-		if (newList.size() == 0) {
+		if (newList.size() == 0)
 			return;
-		}
 
 		List<Integer> players = FastList.newInstance();
 		int cnt = 0;
 		for (SurveyItem item : newList) {
 			activeItems.put(item.uniqueId, item);
 			cnt++;
-			if (!players.contains(item.ownerId)) {
+			if (!players.contains(item.ownerId))
 				players.add(item.ownerId);
-			}
 		}
 		log.info("[SurveyController] found new " + cnt + " items for " + players.size() + " players.");
 		for (int ownerId : players) {
@@ -113,9 +108,8 @@ public class SurveyService {
 
 	public void showAvailable(Player player) {
 		for (SurveyItem item : this.activeItems.values()) {
-			if (item.ownerId != player.getObjectId()) {
+			if (item.ownerId != player.getObjectId())
 				continue;
-			}
 
 			String context = htmlTemplate;
 			context = context.replace("%itemid%", item.itemId + "");

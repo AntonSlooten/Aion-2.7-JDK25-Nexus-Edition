@@ -27,7 +27,7 @@ import com.aionemu.gameserver.services.player.PlayerService;
 
 /**
  * Request to create
- *
+ * 
  * @author SoulKeeper
  */
 public class CM_MACRO_CREATE extends AionClientPacket {
@@ -49,7 +49,7 @@ public class CM_MACRO_CREATE extends AionClientPacket {
 
 	/**
 	 * Constructs new client packet instance.
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_MACRO_CREATE(int opcode, State state, State... restStates) {

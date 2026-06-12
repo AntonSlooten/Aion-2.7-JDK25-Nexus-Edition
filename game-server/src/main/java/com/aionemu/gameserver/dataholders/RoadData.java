@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  *
  *  aion-lightning is free software: you can redistribute it and/or modify
@@ -39,7 +39,7 @@ public class RoadData {
 
 	public int size() {
 		if (roadTemplates == null) {
-			roadTemplates = new ArrayList<>();
+			roadTemplates = new ArrayList<RoadTemplate>();
 			return 0;
 		}
 		return roadTemplates.size();
@@ -47,14 +47,14 @@ public class RoadData {
 
 	public List<RoadTemplate> getRoadTemplates() {
 		if (roadTemplates == null) {
-			return new ArrayList<>();
+			return new ArrayList<RoadTemplate>();
 		}
 		return roadTemplates;
 	}
 
 	public void addAll(Collection<RoadTemplate> templates) {
 		if (roadTemplates == null) {
-			roadTemplates = new ArrayList<>();
+			roadTemplates = new ArrayList<RoadTemplate>();
 		}
 		roadTemplates.addAll(templates);
 	}

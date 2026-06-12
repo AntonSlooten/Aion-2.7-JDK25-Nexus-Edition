@@ -16,63 +16,58 @@ import com.aionemu.gameserver.world.WorldMapInstance;
 */
 
 public class CmdTele extends BaseCommand {
-
-	public CmdTele() {
+	
+	public CmdTele () {
 		subCmds.put("add", new SubCmdTeleAdd());
 	}
 
-	@Override
 	public void execute(Player admin, String... params) {
 		if (params.length != 1) {
 			showHelp(admin);
-			return;
+			return ;
 		}
-
+		
 		CmdTeleTemplate myTeleport = CmdTeleService.getInstance().getTeleport(params[0]);
 		if (myTeleport == null) {
 			PacketSendUtility.sendMessage(admin, "Teleport introuvable.");
-			return;
+			return ;
 		}
-
+		
 		goTo(admin, myTeleport.getWorldId(), myTeleport.getX(), myTeleport.getY(), myTeleport.getZ());
 		PacketSendUtility.sendMessage(admin, "Vous venez d'etre teleporte a " + params[0]);
 	}
-
+	
 	private static void goTo(final Player admin, int worldId, float x, float y, float z) {
 		WorldMap destinationMap = World.getInstance().getWorldMap(worldId);
-		if (destinationMap.isInstanceType()) {
-			TeleportService.teleportTo(admin, worldId, getInstanceId(worldId, admin), x, y, z, 0, true);
-		} else {
+		if (destinationMap.isInstanceType())
+			TeleportService.teleportTo(admin, worldId, getInstanceId(worldId, admin), x, y, z, 0 ,true);
+		else
 			TeleportService.teleportTo(admin, worldId, x, y, z, 0, true);
-		}
 	}
-
+	
 	private static int getInstanceId(int worldId, Player admin) {
-		if (admin.getWorldId() == worldId) {
+		if (admin.getWorldId() == worldId)	{
 			WorldMapInstance registeredInstance = InstanceService.getRegisteredInstance(worldId, admin.getObjectId());
-			if (registeredInstance != null) {
+			if (registeredInstance != null)
 				return registeredInstance.getInstanceId();
-			}
 		}
 		WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(worldId);
 		InstanceService.registerPlayerWithInstance(newInstance, admin);
 		return newInstance.getInstanceId();
 	}
-
+	
 	public class SubCmdTeleAdd extends BaseCommand {
-		@Override
 		public void execute(Player admin, String... params) {
 			if (params.length != 1) {
 				showHelp(admin);
-				return;
+				return ;
 			}
-
-			if (CmdTeleService.getInstance().addTeleTemplate(params[0], admin.getPosition())) {
+				
+			if (CmdTeleService.getInstance().addTeleTemplate(params[0], admin.getPosition()))
 				PacketSendUtility.sendMessage(admin, "Teleport cree.");
-			} else {
+			else
 				PacketSendUtility.sendMessage(admin, "Erreur de creation de teleport.");
-			}
-
+			
 		}
 	}
 

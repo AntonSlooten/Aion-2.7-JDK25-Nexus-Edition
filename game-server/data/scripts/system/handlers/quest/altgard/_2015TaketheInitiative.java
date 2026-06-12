@@ -58,25 +58,26 @@ public class _2015TaketheInitiative extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203631:
-				switch (env.getDialog()) {
-				case USE_OBJECT:
-					if (qs.getQuestVarById(1) >= 1 && qs.getQuestVarById(2) >= 5 && qs.getQuestVarById(3) >= 5) {
-						qs.setQuestVarById(0, var + 1);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 1352);
+				case 203631:
+					switch (env.getDialog()) {
+						case USE_OBJECT:
+							if (qs.getQuestVarById(1) >= 1 && qs.getQuestVarById(2) >= 5 && qs.getQuestVarById(3) >= 5) {
+								qs.setQuestVarById(0, var + 1);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 1352);
+							}
+							break;
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+							break;
+						case STEP_TO_1:
+							return defaultCloseDialog(env, 0, 1); // 1
 					}
-					break;
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					break;
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203631) {
 				return sendQuestEndDialog(env);
 			}
@@ -96,26 +97,26 @@ public class _2015TaketheInitiative extends QuestHandler {
 		if (env.getVisibleObject() instanceof Npc)
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		switch (targetId) {
-		case 210510:
-			var = qs.getQuestVarById(1);
-			if (var == 0) {
-				qs.setQuestVarById(1, 1);
-				updateQuestStatus(env);
-			}
-			break;
-		case 210504:
-			var = qs.getQuestVarById(2);
-			if (var < 5) {
-				qs.setQuestVarById(2, var + 1);
-				updateQuestStatus(env);
-			}
-			break;
-		case 210506:
-			var = qs.getQuestVarById(3);
-			if (var < 5) {
-				qs.setQuestVarById(3, var + 1);
-				updateQuestStatus(env);
-			}
+			case 210510:
+				var = qs.getQuestVarById(1);
+				if (var == 0) {
+					qs.setQuestVarById(1, 1);
+					updateQuestStatus(env);
+				}
+				break;
+			case 210504:
+				var = qs.getQuestVarById(2);
+				if (var < 5) {
+					qs.setQuestVarById(2, var + 1);
+					updateQuestStatus(env);
+				}
+				break;
+			case 210506:
+				var = qs.getQuestVarById(3);
+				if (var < 5) {
+					qs.setQuestVarById(3, var + 1);
+					updateQuestStatus(env);
+				}
 		}
 		return false;
 	}

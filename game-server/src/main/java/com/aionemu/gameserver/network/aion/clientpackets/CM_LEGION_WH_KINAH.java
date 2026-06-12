@@ -51,35 +51,33 @@ public class CM_LEGION_WH_KINAH extends AionClientPacket {
 	protected void runImpl() {
 		log.info("[runImpl]ADD/RMV KINAH WH");
 		Player activePlayer = getConnection().getActivePlayer();
-
+		
 		Legion legion = activePlayer.getLegion();
 		if (legion != null) {
 			switch (operation) {
-			case 0:
-				if (activePlayer.getStorage(StorageType.LEGION_WAREHOUSE.getId()).tryDecreaseKinah(amount)) {
-					LegionService.getInstance().addHistory(legion, activePlayer.getName(),
-							LegionHistoryType.KINAH_WITHDRAW, Long.toString(amount));
-					activePlayer.getInventory().increaseKinah(amount);
-				} else {
-					log.warn("NO KINAH (WH) FOUND TO LEGION WH KINAH");
-				}
-				break;
-			case 1:
-				if (activePlayer.getInventory().tryDecreaseKinah(amount)) {
-					activePlayer.getStorage(StorageType.LEGION_WAREHOUSE.getId()).increaseKinah(amount);
-					LegionService.getInstance().addHistory(legion, activePlayer.getName(),
-							LegionHistoryType.KINAH_DEPOSIT, Long.toString(amount));
-				} else {
-					log.warn("NO KINAH (Player) FOUND TO LEGION WH KINAH");
-				}
-				break;
-			default:
-				log.warn("NO operation FOUND TO LEGION WH KINAH");
-				break;
+				case 0:
+					if (activePlayer.getStorage(StorageType.LEGION_WAREHOUSE.getId()).tryDecreaseKinah(amount)) {
+						LegionService.getInstance().addHistory(legion, activePlayer.getName(), LegionHistoryType.KINAH_WITHDRAW, Long.toString(amount));
+						activePlayer.getInventory().increaseKinah(amount);
+					}
+					else
+						log.warn("NO KINAH (WH) FOUND TO LEGION WH KINAH");
+					break;
+				case 1:
+					if (activePlayer.getInventory().tryDecreaseKinah(amount)) {
+						activePlayer.getStorage(StorageType.LEGION_WAREHOUSE.getId()).increaseKinah(amount);
+						LegionService.getInstance().addHistory(legion, activePlayer.getName(), LegionHistoryType.KINAH_DEPOSIT, Long.toString(amount));
+					}
+					else
+						log.warn("NO KINAH (Player) FOUND TO LEGION WH KINAH");
+					break;
+				default:
+					log.warn("NO operation FOUND TO LEGION WH KINAH");
+					break;
 			}
-		} else {
-			log.warn("NO LEGION FOUND TO LEGION WH KINAH");
 		}
+		else
+			log.warn("NO LEGION FOUND TO LEGION WH KINAH");
 	}
 
 }

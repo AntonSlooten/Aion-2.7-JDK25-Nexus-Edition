@@ -9,7 +9,6 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 //syntax .answer yes/no.
 
 public class CmdAnswer extends BaseCommand {
-	@Override
 	public void execute(Player player, String... params) {
 		Wedding wedding = WeddingService.getInstance().getWedding(player);
 
@@ -17,16 +16,15 @@ public class CmdAnswer extends BaseCommand {
 			showHelp(player);
 			return;
 		}
-
+		
 		if (player.getWorldId() == 510010000 || player.getWorldId() == 520010000) {
 			PacketSendUtility.sendMessage(player, "You can't use this command on prison.");
 			return;
 		}
 
-		if (wedding == null) {
+		if (wedding == null)
 			PacketSendUtility.sendMessage(player, "Wedding not started.");
-		}
-
+		
 		if (params[0].equalsIgnoreCase("yes")) {
 			PacketSendUtility.sendMessage(player, "You accept.");
 			WeddingService.getInstance().acceptWedding(player);

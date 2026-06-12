@@ -36,11 +36,11 @@ public class ThinkEventHandler {
 		if (npcAI.isLogging()) {
 			AI2Logger.info(npcAI, "think");
 		}
-		if (npcAI.isAlreadyDead()) {
+		if(npcAI.isAlreadyDead()){
 			AI2Logger.info(npcAI, "can't think in dead state");
 			return;
 		}
-		if (!npcAI.tryLockThink()) {
+		if(!npcAI.tryLockThink()){
 			AI2Logger.info(npcAI, "can't acquire lock");
 			return;
 		}
@@ -53,17 +53,18 @@ public class ThinkEventHandler {
 				AI2Logger.info(npcAI, "think state " + npcAI.getState());
 			}
 			switch (npcAI.getState()) {
-			case FIGHT:
-				thinkAttack(npcAI);
-				break;
-			case WALKING:
-				thinkWalking(npcAI);
-				break;
-			case IDLE:
-				thinkIdle(npcAI);
-				break;
+				case FIGHT:
+					thinkAttack(npcAI);
+					break;
+				case WALKING:
+					thinkWalking(npcAI);
+					break;
+				case IDLE:
+					thinkIdle(npcAI);
+					break;
 			}
-		} finally {
+		}
+		finally {
 			npcAI.unlockThink();
 		}
 	}
@@ -72,20 +73,20 @@ public class ThinkEventHandler {
 	 * @param npcAI
 	 */
 	private static void thinkInInactiveRegion(NpcAI2 npcAI) {
-		if (!npcAI.canThink()) {
+	    if (!npcAI.canThink()) {
 			return;
 		}
 		if (npcAI.isLogging()) {
 			AI2Logger.info(npcAI, "think in inactive region: " + npcAI.getState());
 		}
 		switch (npcAI.getState()) {
-		case FIGHT:
-			thinkAttack(npcAI);
-			break;
-		default:
-			if (!npcAI.getOwner().isAtSpawnLocation()) {
-				npcAI.onGeneralEvent(AIEventType.NOT_AT_HOME);
-			}
+			case FIGHT:
+				thinkAttack(npcAI);
+				break;
+			default:
+				if (!npcAI.getOwner().isAtSpawnLocation()) {
+					npcAI.onGeneralEvent(AIEventType.NOT_AT_HOME);
+				}
 		}
 
 	}
@@ -98,7 +99,8 @@ public class ThinkEventHandler {
 		Creature mostHated = npc.getAggroList().getMostHated();
 		if (mostHated != null && !mostHated.getLifeStats().isAlreadyDead()) {
 			npcAI.onCreatureEvent(AIEventType.TARGET_CHANGED, mostHated);
-		} else {
+		}
+		else {
 			npcAI.onGeneralEvent(AIEventType.ATTACK_FINISH);
 			npcAI.onGeneralEvent(npc.isAtSpawnLocation() ? AIEventType.BACK_HOME : AIEventType.NOT_AT_HOME);
 		}

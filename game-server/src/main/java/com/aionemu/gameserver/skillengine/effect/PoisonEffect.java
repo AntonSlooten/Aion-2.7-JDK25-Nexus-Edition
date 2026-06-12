@@ -44,7 +44,7 @@ public class PoisonEffect extends AbstractOverTimeEffect {
 	public void startEffect(Effect effect) {
 		super.startEffect(effect, AbnormalState.POISON);
 	}
-
+	
 	@Override
 	public void endEffect(Effect effect) {
 		super.endEffect(effect, AbnormalState.POISON);

@@ -34,7 +34,7 @@ public abstract class Action {
 
 	/**
 	 * Perform action specified in template
-	 *
+	 * 
 	 * @param env
 	 */
 	public abstract void act(Skill skill);

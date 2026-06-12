@@ -53,13 +53,14 @@ public class Properties {
 
 	@XmlAttribute(name = "target_maxcount")
 	protected int targetMaxCount;
-
+	
 	@XmlAttribute(name = "target_status")
 	private List<String> targetStatus;
-
+	
 	@XmlAttribute(name = "revision_distance")
 	protected int revisionDistance;
 
+	
 	/**
 	 * @param skill
 	 */
@@ -160,17 +161,18 @@ public class Properties {
 	public int getTargetMaxCount() {
 		return targetMaxCount;
 	}
-
+	
 	public List<String> getTargetStatus() {
 		return targetStatus;
 	}
-
+	
 	public int getRevisionDistance() {
 		return revisionDistance;
 	}
 
 	public enum CastState {
-		CAST_START(true), CAST_END(false);
+		CAST_START(true),
+		CAST_END(false);
 
 		private final boolean isCastStart;
 

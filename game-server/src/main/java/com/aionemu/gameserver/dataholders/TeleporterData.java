@@ -15,12 +15,10 @@ import com.aionemu.gameserver.model.templates.npc.NpcTemplate;
 import com.aionemu.gameserver.model.templates.teleport.TeleporterTemplate;
 
 /**
- * This is a container holding and serving all {@link NpcTemplate}
- * instances.<br>
- * Briefly: Every {@link Npc} instance represents some class of NPCs among which
- * each have the same id, name, items, statistics. Data for such NPC class is
- * defined in {@link NpcTemplate} and is uniquely identified by npc id.
- *
+ * This is a container holding and serving all {@link NpcTemplate} instances.<br>
+ * Briefly: Every {@link Npc} instance represents some class of NPCs among which each have the same id, name, items,
+ * statistics. Data for such NPC class is defined in {@link NpcTemplate} and is uniquely identified by npc id.
+ * 
  * @author orz
  */
 @XmlRootElement(name = "npc_teleporter")
@@ -31,7 +29,7 @@ public class TeleporterData {
 	private List<TeleporterTemplate> tlist;
 
 	/** A map containing all trade list templates */
-	private TIntObjectHashMap<TeleporterTemplate> npctlistData = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<TeleporterTemplate> npctlistData = new TIntObjectHashMap<TeleporterTemplate>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (TeleporterTemplate npc : tlist) {
@@ -45,8 +43,9 @@ public class TeleporterData {
 
 	/**
 	 * Returns an {@link NpcTemplate} object with given id.
-	 *
-	 * @param id id of NPC
+	 * 
+	 * @param id
+	 *          id of NPC
 	 * @return NpcTemplate object containing data about NPC with that id.
 	 */
 	public TeleporterTemplate getTeleporterTemplate(int id) {

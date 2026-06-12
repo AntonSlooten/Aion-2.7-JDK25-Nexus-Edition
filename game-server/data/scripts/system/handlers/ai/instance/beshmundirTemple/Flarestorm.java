@@ -17,7 +17,7 @@ import ai.AggressiveNpcAI2;
  *
  */
 @AIName("flarestorm")
-public class Flarestorm extends AggressiveNpcAI2 {
+public class Flarestorm extends AggressiveNpcAI2  {
 
 	private boolean figthStart = false;
 	private boolean wave1 = false;
@@ -31,7 +31,7 @@ public class Flarestorm extends AggressiveNpcAI2 {
 	protected void handleAttack(Creature creature) {
 		super.handleAttack(creature);
 		checkPercentage(getLifeStats().getHpPercentage());
-		if (!figthStart) {
+		if(!figthStart){
 			figthStart = true;
 			scheduleSkillTree(40);
 		}
@@ -50,38 +50,38 @@ public class Flarestorm extends AggressiveNpcAI2 {
 	}
 
 	private void checkPercentage(int hpPercentage) {
-		if (hpPercentage <= 75 && !wave1) {
+		if(hpPercentage <= 75 && !wave1){
 			wave1 = true;
 			spawnAdd(1);
 		}
-		if (hpPercentage <= 50 && !wave2) {
+		if(hpPercentage <= 50 && !wave2){
 			wave2 = true;
 			spawnAdd(2);
 		}
-		if (hpPercentage <= 25 && !wave3) {
+		if(hpPercentage <= 25 && !wave3){
 			wave3 = true;
 			spawnAdd(3);
 		}
 	}
 
 	private void spawnAdd(int i) {
-		if (i >= 1) {
+		if(i >= 1){
 			spawn(281646, 1532.06f, 1047.05f, 273.665f, (byte) 0);
 			spawn(281646, 1529.06f, 1050.05f, 273.665f, (byte) 0);
 			spawn(281646, 1504.06f, 1032.05f, 273.665f, (byte) 0);
 			spawn(281646, 1502.06f, 1038.05f, 272.665f, (byte) 0);
 		}
-		if (i >= 2) {
+		if(i >= 2){
 			spawn(281646, 1526.06f, 1048.05f, 273.665f, (byte) 0);
 			spawn(281646, 1498.06f, 139.05f, 272.665f, (byte) 0);
 		}
-		if (i >= 3) {
+		if(i >= 3){
 			spawn(281646, 1534.06f, 1051.05f, 272.665f, (byte) 0);
 			spawn(281646, 1496.06f, 1044.05f, 271.765f, (byte) 0);
 		}
 	}
 
-	private void doSkillTree(final int delay) {
+	private void doSkillTree(final int delay){
 		SkillEngine.getInstance().getSkill(getOwner(), 18909, 50, getTarget()).useSkill();
 		skillSuaire = ThreadPoolManager.getInstance().schedule(new Runnable() {
 
@@ -104,7 +104,7 @@ public class Flarestorm extends AggressiveNpcAI2 {
 
 	}
 
-	private void scheduleSkillTree(final int delay) {
+	private void scheduleSkillTree(final int delay){
 		skillTask = ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override

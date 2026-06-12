@@ -84,15 +84,15 @@ public class KiskAI2 extends NpcAI2 {
 				public void acceptRequest(Creature requester, Player responder) {
 					// Check again if it's full (If they waited to press OK)
 					if (!getOwner().canBind(responder)) {
-						PacketSendUtility.sendPacket(responder,
-								SM_SYSTEM_MESSAGE.STR_CANNOT_REGISTER_BINDSTONE_HAVE_NO_AUTHORITY);
+						PacketSendUtility.sendPacket(responder, SM_SYSTEM_MESSAGE.STR_CANNOT_REGISTER_BINDSTONE_HAVE_NO_AUTHORITY);
 						return;
 					}
 					KiskService.onBind(getOwner(), responder);
 				}
 			});
 
-		} else if (getOwner().getCurrentMemberCount() >= getOwner().getMaxMembers())
+		}
+		else if (getOwner().getCurrentMemberCount() >= getOwner().getMaxMembers())
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CANNOT_REGISTER_BINDSTONE_FULL);
 		else
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CANNOT_REGISTER_BINDSTONE_HAVE_NO_AUTHORITY);
@@ -101,14 +101,14 @@ public class KiskAI2 extends NpcAI2 {
 	@Override
 	protected AIAnswer pollInstance(AIQuestion question) {
 		switch (question) {
-		case SHOULD_DECAY:
-			return AIAnswers.NEGATIVE;
-		case SHOULD_RESPAWN:
-			return AIAnswers.NEGATIVE;
-		case SHOULD_REWARD:
-			return AIAnswers.NEGATIVE;
-		default:
-			return null;
+			case SHOULD_DECAY:
+				return AIAnswers.NEGATIVE;
+			case SHOULD_RESPAWN:
+				return AIAnswers.NEGATIVE;
+			case SHOULD_REWARD:
+				return AIAnswers.NEGATIVE;
+			default:
+				return null;
 		}
 	}
 

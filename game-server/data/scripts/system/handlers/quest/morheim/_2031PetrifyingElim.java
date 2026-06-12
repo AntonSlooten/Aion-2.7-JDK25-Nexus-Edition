@@ -64,14 +64,14 @@ public class _2031PetrifyingElim extends QuestHandler {
 		if (!player.isInsideZone(ZoneName.DF2_ITEMUSEAREA_Q2031))
 			return HandlerResult.UNKNOWN;
 
-		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0, 0), true);
+		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0,
+			0), true);
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
-				PacketSendUtility.broadcastPacket(player,
-						new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+				PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+					1, 0), true);
 				playQuestMovie(env, 72);
 				removeQuestItem(env, 182204001, 1);
 				qs.setStatus(QuestStatus.REWARD);
@@ -113,13 +113,14 @@ public class _2031PetrifyingElim extends QuestHandler {
 				else if (env.getDialog() == QuestDialog.STEP_TO_1) {
 					qs.setQuestVar(1);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (targetId == 730038) // Nabaru
+		}
+		else if (targetId == 730038) // Nabaru
 		{
 			if (qs.getStatus() == QuestStatus.START && qs.getQuestVarById(0) == 1) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
@@ -129,10 +130,10 @@ public class _2031PetrifyingElim extends QuestHandler {
 				else if (env.getDialog() == QuestDialog.STEP_TO_2) {
 					qs.setQuestVar(2);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 
@@ -143,12 +144,13 @@ public class _2031PetrifyingElim extends QuestHandler {
 					if (player.getInventory().getItemCountByItemId(182204001) > 0) {
 						qs.setQuestVar(3);
 						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 						return true;
-					} else
+					}
+					else
 						return sendQuestDialog(env, 10001);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 
@@ -158,12 +160,13 @@ public class _2031PetrifyingElim extends QuestHandler {
 				else if (env.getDialog() == QuestDialog.STEP_TO_4) {
 					qs.setQuestVar(4);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
-			} else if (qs.getStatus() == QuestStatus.REWARD)
+			}
+			else if (qs.getStatus() == QuestStatus.REWARD)
 				return sendQuestEndDialog(env);
 		}
 

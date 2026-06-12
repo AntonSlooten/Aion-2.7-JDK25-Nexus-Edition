@@ -31,7 +31,7 @@ public class CM_REVIVE extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_REVIVE </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_REVIVE(int opcode, State state, State... restStates) {
@@ -52,34 +52,33 @@ public class CM_REVIVE extends AionClientPacket {
 	@Override
 	protected void runImpl() {
 		Player activePlayer = getConnection().getActivePlayer();
-
-		if (!activePlayer.getLifeStats().isAlreadyDead()) {
+		
+		if(!activePlayer.getLifeStats().isAlreadyDead())
 			return;
-		}
 
 		ReviveType reviveType = ReviveType.getReviveTypeById(reviveId);
 
 		switch (reviveType) {
-		case BIND_REVIVE:
-			PlayerReviveService.bindRevive(activePlayer);
-			break;
-		case REBIRTH_REVIVE:
-			PlayerReviveService.rebirthRevive(activePlayer);
-			break;
-		case ITEM_SELF_REVIVE:
-			PlayerReviveService.itemSelfRevive(activePlayer);
-			break;
-		case SKILL_REVIVE:
-			PlayerReviveService.skillRevive(activePlayer);
-			break;
-		case KISK_REVIVE:
-			PlayerReviveService.kiskRevive(activePlayer);
-			break;
-		case INSTANCE_REVIVE:
-			PlayerReviveService.instanceRevive(activePlayer);
-			break;
-		default:
-			break;
+			case BIND_REVIVE:
+				PlayerReviveService.bindRevive(activePlayer);
+				break;
+			case REBIRTH_REVIVE:
+				PlayerReviveService.rebirthRevive(activePlayer);
+				break;
+			case ITEM_SELF_REVIVE:
+				PlayerReviveService.itemSelfRevive(activePlayer);
+				break;
+			case SKILL_REVIVE:
+				PlayerReviveService.skillRevive(activePlayer);
+				break;
+			case KISK_REVIVE:
+				PlayerReviveService.kiskRevive(activePlayer);
+				break;
+			case INSTANCE_REVIVE:
+				PlayerReviveService.instanceRevive(activePlayer);
+				break;
+			default:
+				break;
 		}
 
 	}

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -23,7 +23,6 @@ import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.aionemu.commons.utils.ExitCode;
 
 /**

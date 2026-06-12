@@ -68,42 +68,41 @@ public class _1163ArachnaAntidote extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203151: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1352);
+				case 203151: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 1352);
+						}
+						case STEP_TO_1: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
+						default: {
+							return sendQuestEndDialog(env);
+						}
+					}
 				}
-				case STEP_TO_1: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				default: {
-					return sendQuestEndDialog(env);
-				}
+				case 203155: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 2375);
+						}
+						case SELECT_REWARD: {
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
+						default: {
+							return sendQuestEndDialog(env);
+						}
+					}
 				}
 			}
-			case 203155: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2375);
-				}
-				case SELECT_REWARD: {
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				default: {
-					return sendQuestEndDialog(env);
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203155) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

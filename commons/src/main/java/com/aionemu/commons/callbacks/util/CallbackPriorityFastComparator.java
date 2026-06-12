@@ -1,18 +1,25 @@
 package com.aionemu.commons.callbacks.util;
 
-import java.util.Comparator;
-
 import com.aionemu.commons.callbacks.Callback;
+import javolution.util.FastComparator;
 
-/**
- * Java Collections comparator replacement for the old Javolution FastComparator.
- */
-public final class CallbackPriorityFastComparator implements Comparator<Callback<?>> {
+public class CallbackPriorityFastComparator extends FastComparator<Callback<?>>{
 
-    private static final CallbackPriorityComparator DELEGATE = new CallbackPriorityComparator();
+	private static final long serialVersionUID = 5346780764438744817L;
+	private final CallbackPriorityComparator cpc = new CallbackPriorityComparator();
 
-    @Override
-    public int compare(Callback<?> first, Callback<?> second) {
-        return DELEGATE.compare(first, second);
-    }
+	@Override
+	public int hashCodeOf(Callback<?> obj) {
+		return obj.hashCode();
+	}
+
+	@Override
+	public boolean areEqual(Callback<?> o1, Callback<?> o2) {
+		return cpc.compare(o1, o2) == 0;
+	}
+
+	@Override
+	public int compare(Callback<?> o1, Callback<?> o2) {
+		return cpc.compare(o1, o2);
+	}
 }

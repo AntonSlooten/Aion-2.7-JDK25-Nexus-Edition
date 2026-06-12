@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -23,14 +23,14 @@ import com.aionemu.gameserver.network.loginserver.LoginServer;
 
 /**
  * In this packets aion client is asking for fast reconnection to LoginServer.
- *
+ * 
  * @author -Nemesiss-
  */
 public class CM_RECONNECT_AUTH extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_RECONNECT_AUTH </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_RECONNECT_AUTH(int opcode, State state, State... restStates) {

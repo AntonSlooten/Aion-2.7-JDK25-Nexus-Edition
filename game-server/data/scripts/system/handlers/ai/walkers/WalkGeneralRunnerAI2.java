@@ -21,6 +21,7 @@ import com.aionemu.gameserver.model.gameobjects.state.CreatureState;
 
 import ai.GeneralNpcAI2;
 
+
 /**
  * @author Rolandas
  *

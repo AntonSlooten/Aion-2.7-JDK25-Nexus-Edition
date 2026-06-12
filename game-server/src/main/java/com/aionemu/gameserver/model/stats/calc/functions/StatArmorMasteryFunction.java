@@ -36,8 +36,7 @@ public class StatArmorMasteryFunction extends StatRateFunction {
 	@Override
 	public void apply(Stat2 stat) {
 		Player player = (Player) stat.getOwner();
-		if (player.getEquipment().isArmorEquipped(armorType)) {
+		if (player.getEquipment().isArmorEquipped(armorType))
 			super.apply(stat);
-		}
 	}
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -29,7 +29,7 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /**
  * In this packets aion client is asking if may quit.
- *
+ * 
  * @author -Nemesiss-
  */
 public class CM_QUIT extends AionClientPacket {
@@ -41,7 +41,7 @@ public class CM_QUIT extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_QUIT </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_QUIT(int opcode, State state, State... restStates) {
@@ -61,10 +61,9 @@ public class CM_QUIT extends AionClientPacket {
 		if (client.getState() == State.IN_GAME) {
 			player = client.getActivePlayer();
 			// TODO! check if may quit
-			if (!logout) {
+			if (!logout)
 				LoginServer.getInstance().aionClientDisconnected(client.getAccount().getId());
-			}
-			PacketSendUtility.broadcastPacket(player, new SM_DELETE(player, 2), 50);
+                        PacketSendUtility.broadcastPacket(player, new SM_DELETE(player, 2), 50);
 			PlayerLeaveWorldService.startLeaveWorld(player);
 			client.setActivePlayer(null);
 		}
@@ -73,10 +72,11 @@ public class CM_QUIT extends AionClientPacket {
 			if (player != null && player.isInEditMode()) {
 				sendPacket(new SM_QUIT_RESPONSE(true));
 				player.setEditMode(false);
-			} else {
-				sendPacket(new SM_QUIT_RESPONSE());
 			}
-		} else {
+			else
+				sendPacket(new SM_QUIT_RESPONSE());
+		}
+		else {
 			client.close(new SM_QUIT_RESPONSE(), false);
 		}
 	}

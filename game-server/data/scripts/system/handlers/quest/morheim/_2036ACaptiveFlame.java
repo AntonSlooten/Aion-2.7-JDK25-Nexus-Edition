@@ -71,63 +71,63 @@ public class _2036ACaptiveFlame extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204407: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 4)
-						return sendQuestDialog(env, 2375);
-				case STEP_TO_1:
-					if (var == 0) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-				case CHECK_COLLECTED_ITEMS:
-					if (var == 4) {
-						if (QuestService.collectItemCheck(env, true)) {
-							qs.setStatus(QuestStatus.REWARD);
-							updateQuestStatus(env);
-							return sendQuestDialog(env, 10000);
-						} else
-							return sendQuestDialog(env, 10001);
+				case 204407: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+							else if (var == 4)
+								return sendQuestDialog(env, 2375);
+						case STEP_TO_1:
+							if (var == 0) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
+						case CHECK_COLLECTED_ITEMS:
+							if (var == 4) {
+								if (QuestService.collectItemCheck(env, true)) {
+									qs.setStatus(QuestStatus.REWARD);
+									updateQuestStatus(env);
+									return sendQuestDialog(env, 10000);
+								}
+								else
+									return sendQuestDialog(env, 10001);
+							}
 					}
 				}
-			}
-				break;
-			case 204408: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case SELECT_ACTION_1353:
-					playQuestMovie(env, 79);
 					break;
-				case STEP_TO_2:
-					if (var == 1) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
+				case 204408: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 1)
+								return sendQuestDialog(env, 1352);
+						case SELECT_ACTION_1353:
+							playQuestMovie(env, 79);
+							break;
+						case STEP_TO_2:
+							if (var == 1) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
 					}
 				}
-			}
-				break;
-			case 700236:
-				switch (env.getDialog()) {
-				case USE_OBJECT:
-					if (player.getInventory().getItemCountByItemId(182204014) == 0) {
-						giveQuestItem(env, 182204014, 1);
-						return false;
+					break;
+				case 700236:
+					switch (env.getDialog()) {
+						case USE_OBJECT:
+							if (player.getInventory().getItemCountByItemId(182204014) == 0) {
+									giveQuestItem(env, 182204014, 1);
+								return false;
+							}
 					}
-				}
-				break;
+					break;
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204317) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT)
 					return sendQuestDialog(env, 10002);
@@ -153,12 +153,12 @@ public class _2036ACaptiveFlame extends QuestHandler {
 		if (qs.getStatus() != QuestStatus.START)
 			return false;
 		switch (targetId) {
-		case 212878:
-			if (var == 2) {
-				qs.setQuestVarById(0, var + 2);
-				updateQuestStatus(env);
-				return true;
-			}
+			case 212878:
+				if (var == 2) {
+					qs.setQuestVarById(0, var + 2);
+					updateQuestStatus(env);
+					return true;
+				}
 		}
 		return false;
 	}

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.com>.
  *
  *  aion-lightning is free software: you can redistribute it and/or modify
@@ -21,8 +21,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.gameserver.dao.TaskFromDBDAO;
@@ -44,7 +43,7 @@ public class TaskManagerFromDB {
 	private HashMap<String, TaskFromDBHandler> handlers;
 
 	public TaskManagerFromDB() {
-		this.handlers = new HashMap<>();
+		this.handlers = new HashMap<String, TaskFromDBHandler>();
 
 		tasksList = getDAO().getAllTasks();
 		log.info("Loaded " + tasksList.size() + " task" + (tasksList.size() > 1 ? "s" : "") + " from the database");
@@ -63,13 +62,12 @@ public class TaskManagerFromDB {
 
 	/**
 	 * Allow to register one task and check if already exists
-	 *
+	 * 
 	 * @param shutdownTask
 	 */
 	private void registerNewTask(TaskFromDBHandler task) {
-		if (handlers.get(task.getTaskName()) != null) {
+		if (handlers.get(task.getTaskName()) != null)
 			log.error("Can't override a task with name : " + task.getTaskName());
-		}
 
 		handlers.put(task.getTaskName(), task);
 	}
@@ -86,9 +84,11 @@ public class TaskManagerFromDB {
 				TaskFromDBHandler currentTask = null;
 
 				try {
+					
 					currentTask = tmpClass.getDeclaredConstructor().newInstance();
-				} catch (ReflectiveOperationException e) {
-					log.error("Failed to instantiate task {}", tmpClass.getName(), e);
+				}
+				catch (Exception e) {
+					log.error(e.getMessage(), e);
 				}
 
 				// Set informations for the task
@@ -102,18 +102,18 @@ public class TaskManagerFromDB {
 
 				if (task.getType().equals("FIXED_IN_TIME")) {
 					runFixedInTimeTask(currentTask, task);
-				} else {
-					log.error("Unknow task's type for " + task.getType());
 				}
-			} else {
-				log.error("Unknow task's name with ID : " + task.getName());
+				else
+					log.error("Unknow task's type for " + task.getType());
 			}
+			else
+				log.error("Unknow task's name with ID : " + task.getName());
 		}
 	}
 
 	/**
 	 * Run a fixed in the time (HH:MM:SS) task
-	 *
+	 * 
 	 * @param task
 	 */
 	private void runFixedInTimeTask(TaskFromDBHandler handler, TaskFromDB dbTask) {
@@ -129,16 +129,15 @@ public class TaskManagerFromDB {
 
 		long delay = calendar.getTimeInMillis() - System.currentTimeMillis();
 
-		if (delay < 0) {
+		if (delay < 0)
 			delay += 1 * 24 * 60 * 60 * 1000;
-		}
 
 		ThreadPoolManager.getInstance().scheduleAtFixedRate(handler, delay, 1 * 24 * 60 * 60 * 1000);
 	}
 
 	/**
 	 * Retuns {@link com.aionemu.gameserver.dao.TaskFromDBDAO} , just a shortcut
-	 *
+	 * 
 	 * @return {@link com.aionemu.gameserver.dao.TaskFromDBDAO}
 	 */
 	private static TaskFromDBDAO getDAO() {
@@ -147,7 +146,7 @@ public class TaskManagerFromDB {
 
 	/**
 	 * Get the instance
-	 *
+	 * 
 	 * @return
 	 */
 	public static final TaskManagerFromDB getInstance() {

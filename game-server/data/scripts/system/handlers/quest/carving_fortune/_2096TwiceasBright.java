@@ -59,30 +59,33 @@ public class _2096TwiceasBright extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204206: { // Cavalorn
-				if (dialog == QuestDialog.START_DIALOG && var == 0) {
-					return sendQuestDialog(env, 1011);
-				} else if (dialog == QuestDialog.STEP_TO_1) {
-					return defaultCloseDialog(env, 0, 1); // 1
+				case 204206: { // Cavalorn
+					if (dialog == QuestDialog.START_DIALOG && var == 0) {
+						return sendQuestDialog(env, 1011);
+					}
+					else if (dialog == QuestDialog.STEP_TO_1) {
+						return defaultCloseDialog(env, 0, 1); // 1
+					}
+					break;
 				}
-				break;
-			}
-			case 204207: { // Kasir
-				if (dialog == QuestDialog.START_DIALOG && var == 1) {
-					return sendQuestDialog(env, 1352);
-				} else if (dialog == QuestDialog.STEP_TO_2) {
-					return defaultCloseDialog(env, 1, 2); // 2
+				case 204207: { // Kasir
+					if (dialog == QuestDialog.START_DIALOG && var == 1) {
+						return sendQuestDialog(env, 1352);
+					}
+					else if (dialog == QuestDialog.STEP_TO_2) {
+						return defaultCloseDialog(env, 1, 2); // 2
+					}
+					break;
 				}
-				break;
-			}
-			case 203550: { // Munin
-				if (dialog == QuestDialog.START_DIALOG && var == 2) {
-					changeQuestStep(env, 2, 2, true); // reward
-					return sendQuestDialog(env, 1693);
+				case 203550: { // Munin
+					if (dialog == QuestDialog.START_DIALOG && var == 2) {
+						changeQuestStep(env, 2, 2, true); // reward
+						return sendQuestDialog(env, 1693);
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203550) { // Munin
 				return sendQuestEndDialog(env);
 			}

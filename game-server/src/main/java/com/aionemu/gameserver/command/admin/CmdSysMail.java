@@ -20,18 +20,23 @@ import com.aionemu.gameserver.world.World;
 			+ "If parameters (Kinah) = 0 not send Kinah\n" + "Recipient = Player name, @all, @elyos or @asmodians") */
 public class CmdSysMail extends BaseCommand {
 
+	
+
 	enum RecipientType {
 
-		ELYOS, ASMO, ALL, PLAYER;
+		ELYOS,
+		ASMO,
+		ALL,
+		PLAYER;
 
 		public boolean isAllowed(Race race) {
 			switch (this) {
-			case ELYOS:
-				return race == Race.ELYOS;
-			case ASMO:
-				return race == Race.ASMODIANS;
-			case ALL:
-				return race == Race.ELYOS || race == Race.ASMODIANS;
+				case ELYOS:
+					return race == Race.ELYOS;
+				case ASMO:
+					return race == Race.ASMODIANS;
+				case ALL:
+					return race == Race.ELYOS || race == Race.ASMODIANS;
 			}
 			return false;
 		}
@@ -47,17 +52,18 @@ public class CmdSysMail extends BaseCommand {
 		RecipientType recipientType = null;
 		String recipient = null;
 		if (params[0].startsWith("@")) {
-			if ("@all".startsWith(params[0])) {
+			if ("@all".startsWith(params[0]))
 				recipientType = RecipientType.ALL;
-			} else if ("@elyos".startsWith(params[0])) {
+			else if ("@elyos".startsWith(params[0]))
 				recipientType = RecipientType.ELYOS;
-			} else if ("@asmodians".startsWith(params[0])) {
+			else if ("@asmodians".startsWith(params[0]))
 				recipientType = RecipientType.ASMO;
-			} else {
+			else {
 				PacketSendUtility.sendMessage(admin, "Recipient must be Player name, @all, @elyos or @asmodians.");
 				return;
 			}
-		} else {
+		}
+		else {
 			recipientType = RecipientType.PLAYER;
 			recipient = Util.convertName(params[0]);
 		}
@@ -70,60 +76,58 @@ public class CmdSysMail extends BaseCommand {
 			count = Integer.parseInt(params[3]);
 			kinah = Integer.parseInt(params[4]);
 			express = Integer.parseInt(params[1]) >= 1;
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			PacketSendUtility.sendMessage(admin, "<Regular||Express> <Item|Count|Kinah> value must be an integer.");
 			return;
 		}
 
-		if (!check(admin, item, count, kinah, recipient, recipientType, express)) {
+		if (!check(admin, item, count, kinah, recipient, recipientType, express))
 			return;
-		}
 
-		if (item <= 0) {
+		if (item <= 0)
 			item = 0;
-		}
 
-		if (count <= 0) {
+		if (count <= 0)
 			count = -1;
-		}
 
-		if (recipientType == RecipientType.PLAYER) {
-			SystemMailService.getInstance().sendMail("Admin", recipient, "System Mail", " ", item, count, kinah,
-					express);
-		} else {
+		if (recipientType == RecipientType.PLAYER)
+			SystemMailService.getInstance().sendMail("Admin", recipient, "System Mail", " ", item, count, kinah, express);
+		else {
 			for (Player player : World.getInstance().getAllPlayers()) {
-				if (recipientType.isAllowed(player.getRace())) {
-					SystemMailService.getInstance().sendMail("Admin", player.getName(), "System Mail", " ", item, count,
-							kinah, express);
-				}
+				if (recipientType.isAllowed(player.getRace()))
+					SystemMailService.getInstance().sendMail("Admin", player.getName(), "System Mail", " ", item, count, kinah,
+						express);
 			}
 		}
 
 		if (item != 0) {
-			PacketSendUtility.sendMessage(admin,
-					"You send to " + recipientType + (recipientType == RecipientType.PLAYER ? " " + recipient : "")
-							+ "\n" + "[item:" + item + "] Count:" + count + " Kinah:" + kinah + "\n"
-							+ "Letter send successfully.");
-		} else if (kinah > 0) {
-			PacketSendUtility.sendMessage(admin,
-					"You send to " + recipientType + (recipientType == RecipientType.PLAYER ? " " + recipient : "")
-							+ "\n" + " Kinah:" + kinah + "\n" + "Letter send successfully.");
+			PacketSendUtility.sendMessage(admin, "You send to " + recipientType
+				+ (recipientType == RecipientType.PLAYER ? " " + recipient : "") + "\n" + "[item:" + item + "] Count:" + count
+				+ " Kinah:" + kinah + "\n" + "Letter send successfully.");
+		}
+		else if (kinah > 0) {
+			PacketSendUtility.sendMessage(admin, "You send to " + recipientType
+				+ (recipientType == RecipientType.PLAYER ? " " + recipient : "") + "\n" + " Kinah:" + kinah + "\n"
+				+ "Letter send successfully.");
 		}
 	}
 
 	private static boolean check(Player admin, int item, int count, int kinah, String recipient,
-			RecipientType recipientType, boolean express) {
+		RecipientType recipientType, boolean express) {
 		if (recipientType == null) {
-			PacketSendUtility.sendMessage(admin,
-					"Please insert Recipient Type.\n" + "Recipient = player, @all, @elyos or @asmodians");
+			PacketSendUtility.sendMessage(admin, "Please insert Recipient Type.\n"
+				+ "Recipient = player, @all, @elyos or @asmodians");
 			return false;
-		} else if (recipientType == RecipientType.PLAYER) {
-			if (!express) {
+		}
+		else if (recipientType == RecipientType.PLAYER) {
+			if (express == false) {
 				if (!DAOManager.getDAO(PlayerDAO.class).isNameUsed(recipient)) {
 					PacketSendUtility.sendMessage(admin, "Could not find a Recipient by that name.");
 					return false;
 				}
-			} else {
+			}
+			else {
 				Player p = null;
 				p = World.getInstance().findPlayer(recipient);
 				if (p == null) {
@@ -132,8 +136,7 @@ public class CmdSysMail extends BaseCommand {
 				}
 			}
 
-			PlayerCommonData recipientCommonData = DAOManager.getDAO(PlayerDAO.class)
-					.loadPlayerCommonDataByName(recipient);
+			PlayerCommonData recipientCommonData = DAOManager.getDAO(PlayerDAO.class).loadPlayerCommonDataByName(recipient);
 			if (recipientCommonData.getMailboxLetters() >= 100) {
 				PacketSendUtility.sendMessage(admin, recipient + "Players mail box is full");
 				return false;
@@ -174,5 +177,5 @@ public class CmdSysMail extends BaseCommand {
 		}
 		return true;
 	}
-
+	
 }

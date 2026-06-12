@@ -75,14 +75,15 @@ public class _3968PalentinesRequest extends QuestHandler {
 					if (giveQuestItem(env, 182206123, 1)) {
 						qs.setQuestVar(++var);
 						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					}
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (targetId == 204528) {
+		}
+		else if (targetId == 204528) {
 			if (qs.getStatus() == QuestStatus.START && var == 1) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 1693);
@@ -90,14 +91,15 @@ public class _3968PalentinesRequest extends QuestHandler {
 					if (giveQuestItem(env, 182206124, 1)) {
 						qs.setQuestVar(++var);
 						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					}
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (targetId == 203927) {
+		}
+		else if (targetId == 203927) {
 			if (qs.getStatus() == QuestStatus.START && var == 2) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 2034);
@@ -106,25 +108,27 @@ public class _3968PalentinesRequest extends QuestHandler {
 						qs.setQuestVar(++var);
 						qs.setStatus(QuestStatus.REWARD);
 						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					}
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (targetId == 798390) {
+		}
+		else if (targetId == 798390) {
 			if (env.getDialog() == QuestDialog.USE_OBJECT && qs.getStatus() == QuestStatus.REWARD)
 				return sendQuestDialog(env, 2375);
 			else if (env.getDialogId() == 1009 && qs.getStatus() != QuestStatus.COMPLETE
-					&& qs.getStatus() != QuestStatus.NONE) {
+				&& qs.getStatus() != QuestStatus.NONE) {
 				qs.setStatus(QuestStatus.REWARD);
 				updateQuestStatus(env);
 				removeQuestItem(env, 182206123, 1);
 				removeQuestItem(env, 182206124, 1);
 				removeQuestItem(env, 182206125, 1);
 				return sendQuestEndDialog(env);
-			} else
+			}
+			else
 				return sendQuestEndDialog(env);
 		}
 		return false;

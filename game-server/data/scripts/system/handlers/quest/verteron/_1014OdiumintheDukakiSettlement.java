@@ -81,73 +81,72 @@ public class _1014OdiumintheDukakiSettlement extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203098)
 				return sendQuestEndDialog(env);
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 203129) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-				else if (var == 10)
-					return sendQuestDialog(env, 1352);
-				else if (var == 14)
-					return sendQuestDialog(env, 1693);
-				return false;
-
-			case SELECT_ACTION_1013:
-				if (var == 0) {
-					playQuestMovie(env, 26);
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+					else if (var == 10)
+						return sendQuestDialog(env, 1352);
+					else if (var == 14)
+						return sendQuestDialog(env, 1693);
 					return false;
-				}
 
-			case STEP_TO_1:
-				if (var == 0) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
+				case SELECT_ACTION_1013:
+					if (var == 0) {
+						playQuestMovie(env, 26);
+						return false;
+					}
 
-			case STEP_TO_2:
-				if (var == 10) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
+				case STEP_TO_1:
+					if (var == 0) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
 
-			case STEP_TO_3:
-				if (var == 14) {
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
+				case STEP_TO_2:
+					if (var == 10) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
 
-				return false;
+				case STEP_TO_3:
+					if (var == 14) {
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+
+					return false;
 			}
-		} else if (targetId == 730020) {
+		}
+		else if (targetId == 730020) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-				return false;
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+					return false;
 
-			case STEP_TO_2:
-				if (var == 1) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
+				case STEP_TO_2:
+					if (var == 1) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
 			}
-		} else if (targetId == 700090) {
+		}
+		else if (targetId == 700090) {
 			if (var == 11 && env.getDialog() == QuestDialog.USE_OBJECT) {
 				if (player.getInventory().getItemCountByItemId(182200011) == 0) {
 					return false;
@@ -190,15 +189,15 @@ public class _1014OdiumintheDukakiSettlement extends QuestHandler {
 		if (!player.isInsideZone(ZoneName.ODIUM_REFINING_CAULDRON_210030000))
 			return HandlerResult.UNKNOWN;
 
-		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0, 0), true);
+		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0,
+			0), true);
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
 				playQuestMovie(env, 172);
-				PacketSendUtility.broadcastPacket(player,
-						new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+				PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+					1, 0), true);
 				removeQuestItem(env, 182200012, 1);
 				removeQuestItem(env, 182200011, 1);
 				qs.setQuestVarById(0, 14);

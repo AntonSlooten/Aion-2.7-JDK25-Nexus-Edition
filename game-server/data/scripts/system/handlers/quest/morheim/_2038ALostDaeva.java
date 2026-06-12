@@ -68,41 +68,43 @@ public class _2038ALostDaeva extends QuestHandler {
 		QuestDialog dialog = env.getDialog();
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204342: { // Mirka
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 204342: { // Mirka
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+							if (var == 4)
+								return sendQuestDialog(env, 2375);
+						}
+						case SELECT_ACTION_1012: {
+							if (var == 0) {
+								playQuestMovie(env, 82);
+								return sendQuestDialog(env, 1012);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+						case SET_REWARD: {
+							return defaultCloseDialog(env, 4, 4, true, false, 0, 0, 182204016, 1); // reward
+						}
 					}
-					if (var == 4)
-						return sendQuestDialog(env, 2375);
+					break;
 				}
-				case SELECT_ACTION_1012: {
-					if (var == 0) {
-						playQuestMovie(env, 82);
-						return sendQuestDialog(env, 1012);
+				case 700233: { // Pagimkin's Corpse
+					if (dialog == QuestDialog.USE_OBJECT && var == 1) {
+						return useQuestObject(env, 1, 2, false, 0); // 2
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				case SET_REWARD: {
-					return defaultCloseDialog(env, 4, 4, true, false, 0, 0, 182204016, 1); // reward
-				}
-				}
-				break;
 			}
-			case 700233: { // Pagimkin's Corpse
-				if (dialog == QuestDialog.USE_OBJECT && var == 1) {
-					return useQuestObject(env, 1, 2, false, 0); // 2
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204053) { // Kvasir
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

@@ -13,8 +13,9 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.ThreadPoolManager;
 
 public class CmdAssault extends BaseCommand {
+	
+	
 
-	@Override
 	public void execute(Player admin, String... params) {
 		if (params.length > 4 || params.length < 3) {
 			showHelp(admin);
@@ -26,10 +27,10 @@ public class CmdAssault extends BaseCommand {
 		try {
 			radius = Math.abs(Integer.parseInt(params[1]));
 			amount = Integer.parseInt(params[1]);
-			if (params.length == 4) {
+			if(params.length == 4)
 				despawnTime = Math.abs(Integer.parseInt(params[3]));
-			}
-		} catch (NumberFormatException e) {
+		}
+		catch(NumberFormatException e) {
 			PacketSendUtility.sendMessage(admin, "You should only input integers as radius, amount and despawn time.");
 			return;
 		}
@@ -39,39 +40,42 @@ public class CmdAssault extends BaseCommand {
 			return;
 		}
 
-		if (amount < 1 || amount > 100) {
+		if(amount < 1 || amount > 100) {
 			PacketSendUtility.sendMessage(admin, "Amount should be between 1-100.");
 			return;
 		}
 
-		if (despawnTime > 60 * 60) {
+		if( despawnTime > 60*60 ) {
 			PacketSendUtility.sendMessage(admin, "You can't have a despawn time longer than 1hr.");
 			return;
 		}
 
-		List<Integer> idList = new ArrayList<>();
-		if ((params[2]).equals("tier20")) {
+		List<Integer> idList = new ArrayList<Integer>();
+		if((params[2]).equals("tier20")) {
 			idList.add(210799);
 			idList.add(211961);
 			idList.add(213831);
 			idList.add(253739);
 			idList.add(210566);
 			idList.add(210745);
-		} else if (params[2].equals("tier30")) {
+		}
+		else if(params[2].equals("tier30")) {
 			idList.add(210997);
 			idList.add(213831);
 			idList.add(213547);
 			idList.add(253739);
 			idList.add(210942);
 			idList.add(212631);
-		} else if (params[2].equals("balaur4")) {
+		}
+		else if(params[2].equals("balaur4")) {
 			idList.add(210997);
 			idList.add(255704);
 			idList.add(211962);
 			idList.add(213240);
 			idList.add(214387);
 			idList.add(213547);
-		} else if (params[2].equals("balaur5")) {
+		}
+		else if(params[2].equals("balaur5")) {
 			idList.add(250187);
 			idList.add(250187);
 			idList.add(250187);
@@ -79,7 +83,8 @@ public class CmdAssault extends BaseCommand {
 			idList.add(250182);
 			idList.add(250182);
 			idList.add(250187);
-		} else if (params[2].equals("dredgion")) {
+		}
+		else if(params[2].equals("dredgion")) {
 			idList.add(258236);
 			idList.add(258238);
 			idList.add(258243);
@@ -90,26 +95,27 @@ public class CmdAssault extends BaseCommand {
 			idList.add(258242);
 			idList.add(250187);
 			idList.add(250182);
-		} else {
-			for (String npcId : params[2].split(",")) {
+		}
+		else
+		{
+			for(String npcId : params[2].split(",")) {
 				try {
 					idList.add(Integer.parseInt(npcId));
-				} catch (NumberFormatException e) {
+				}
+				catch(NumberFormatException e) {
 					PacketSendUtility.sendMessage(admin, "You should only input integers as NPC ids.");
 					return;
 				}
 			}
-			if (idList.size() == 0) {
+			if(idList.size() == 0)
 				return;
-			}
 		}
 
 		Creature target;
-		if (admin.getTarget() != null) {
+		if(admin.getTarget() != null)
 			target = (Creature) admin.getTarget();
-		} else {
-			target = admin;
-		}
+		else
+			target = (Creature) admin;
 
 		float x = target.getX();
 		float y = target.getY();
@@ -126,30 +132,30 @@ public class CmdAssault extends BaseCommand {
 		int spawnCount = 0;
 
 		VisibleObject visibleObject;
-		List<VisibleObject> despawnList = new ArrayList<>();// will hold the list of spawned mobs
+		List<VisibleObject> despawnList = new ArrayList<VisibleObject>();//will hold the list of spawned mobs
 
-		for (int i = 0; amount > i; i++) {
-			templateId = idList.get((int) (Math.random() * idList.size()));
-			x1 = (float) (Math.cos(interval * i) * radius);
-			y1 = (float) (Math.sin(interval * i) * radius);
-			spawn = SpawnEngine.addNewSpawn(worldId, templateId, x + x1, y + y1, z, heading, 0);
+		for( int i = 0; amount > i; i++) {
+			templateId = idList.get((int)(Math.random() * idList.size()));
+			x1 = (float)(Math.cos( interval * i ) * radius);
+			y1 = (float)(Math.sin( interval * i ) * radius);
+			spawn = SpawnEngine.addNewSpawn(worldId, templateId, x + x1 , y + y1, z, heading, 0);
 
-			if (spawn == null) {
+			if(spawn == null) {
 				PacketSendUtility.sendMessage(admin, "There is no npc: " + templateId);
 				return;
-			} else {
+			}
+			else {
 				visibleObject = SpawnEngine.spawnObject(spawn, 1);
 
-				if (despawnTime > 0) {
+				if(despawnTime > 0)
 					despawnList.add(visibleObject);
-				}
 
 				spawnCount++;
 			}
 		}
 
-		if (despawnTime > 0) {
-			PacketSendUtility.sendMessage(admin, "Despawn time active: " + despawnTime + "sec");
+		if( despawnTime > 0 ) {
+			PacketSendUtility.sendMessage(admin, "Despawn time active: " + despawnTime + "sec" );
 			despawnThem(admin, despawnList, despawnTime);
 		}
 
@@ -161,8 +167,8 @@ public class CmdAssault extends BaseCommand {
 			@Override
 			public void run() {
 				int despawnCount = 0;
-				for (VisibleObject visObj : despawnList) {
-					if (visObj != null && visObj.isSpawned()) {
+				for(VisibleObject visObj : despawnList)	{
+					if(visObj != null && visObj.isSpawned()) {
 						visObj.getController().onDelete();
 						despawnCount++;
 					}

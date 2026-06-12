@@ -22,9 +22,8 @@ import com.aionemu.gameserver.network.aion.AionConnection.State;
 import com.aionemu.gameserver.services.player.PlayerEnterWorldService;
 
 /**
- * In this packets aion client is asking if given char [by oid] may login into
- * game [ie start playing].
- *
+ * In this packets aion client is asking if given char [by oid] may login into game [ie start playing].
+ * 
  * @author -Nemesiss-, Avol
  */
 public class CM_ENTER_WORLD extends AionClientPacket {
@@ -36,7 +35,7 @@ public class CM_ENTER_WORLD extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_ENTER_WORLD </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_ENTER_WORLD(int opcode, State state, State... restStates) {

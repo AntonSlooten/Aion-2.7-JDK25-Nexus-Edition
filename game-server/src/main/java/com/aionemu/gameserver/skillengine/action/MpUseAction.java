@@ -45,14 +45,13 @@ public class MpUseAction extends Action {
 	@Override
 	public void act(Skill skill) {
 		Creature effector = skill.getEffector();
-		if (((Player) effector).isInvul() && ((Player) effector).isGM()) {
+		if(((Player) effector).isInvul() && ((Player) effector).isGM()) {
 			// No MP reducing only if effector is GM and is Invulnerable
 			return;
 		}
 		int valueWithDelta = value + delta * skill.getSkillLevel();
-		if (ratio) {
-			valueWithDelta = (skill.getEffector().getLifeStats().getMaxMp() * valueWithDelta) / 100;
-		}
+		if (ratio)
+			valueWithDelta = (int) ((skill.getEffector().getLifeStats().getMaxMp() * valueWithDelta) / 100);
 		int changeMpPercent = skill.getBoostSkillCost();
 		if (changeMpPercent != 0) {
 			// changeMpPercent is negative

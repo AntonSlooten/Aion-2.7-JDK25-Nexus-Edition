@@ -78,13 +78,13 @@ public class IsbariyaTheResolute extends AggressiveNpcAI2 {
 	}
 
 	private void checkPercentage(int hpPercentage) {
-		if (hpPercentage <= 100 && stage < 1) {
+		if(hpPercentage <= 100 && stage < 1){
 			stage = 1;
 			doSkillArtos(20);
 		}
 		if (hpPercentage <= 75 && stage < 2) {
 			stage = 2;
-			// NpcShoutsService.getInstance().sendMsg(getOwner(), 1400460);
+			//NpcShoutsService.getInstance().sendMsg(getOwner(), 1400460);
 			spawnSouls(25);
 		}
 		if (hpPercentage <= 50 && stage < 3) {
@@ -98,7 +98,7 @@ public class IsbariyaTheResolute extends AggressiveNpcAI2 {
 	}
 
 	// Skill ARTOS
-	private void scheduleSkillArtos(final int delay) {
+	private void scheduleSkillArtos(final int delay){
 		skillTaskArtos = ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
@@ -108,37 +108,37 @@ public class IsbariyaTheResolute extends AggressiveNpcAI2 {
 		}, (delay + Rnd.get(15) - 7) * 1000);
 	}
 
-	private void doSkillArtos(final int delay) {
-		if (getLifeStats().getHpPercentage() < 50) {
+	private void doSkillArtos(final int delay){
+		if(getLifeStats().getHpPercentage() < 50){
 			return;
 		}
 		SkillEngine.getInstance().getSkill(getOwner(), 18912 + Rnd.get(2), 55, getOwner()).useSkill();
-		scheduleSkillArtos(delay + difficulty);
+		scheduleSkillArtos(delay  + difficulty);
 	}
 
 	// SPAWN SOULS
-	private void spawnSouls(final int delay) {
-		if (getLifeStats().getHpPercentage() < 50) {
+	private void spawnSouls(final int delay){
+		if(getLifeStats().getHpPercentage() < 50){
 			return;
 		}
 		Player target = getTargetPlayer();
-		if (target != null) {
+		if(target != null){
 			SkillEngine.getInstance().getSkill(getOwner(), 18959, 50, target).useSkill();
 			List<Point3D> points = new ArrayList<Point3D>();
 			points.addAll(soulLocations);
 			int count = 8 - difficulty;
-			for (int i = 0; i < count; i++) {
+			for(int i = 0; i < count; i++) {
 				if (!points.isEmpty()) {
 					Point3D spawn = points.remove(Rnd.get(points.size()));
 					spawn(281645, spawn.getX(), spawn.getY(), spawn.getZ(), (byte) 18);
-				}
+				} 
 			}
 		}
 
 		scheduleSpawnSouls(delay);
 	}
 
-	private void scheduleSpawnSouls(final int delay) {
+	private void scheduleSpawnSouls(final int delay){
 		spawnSoulsTask = ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
@@ -152,10 +152,10 @@ public class IsbariyaTheResolute extends AggressiveNpcAI2 {
 		List<Player> players = getClosePlayer(50);
 		return !players.isEmpty() ? players.get(Rnd.get(players.size())) : null;
 	}
-
+	
 	// SPAWN ENERGY
-	private void spawnEnergy(final int delay) {
-		if (getLifeStats().getHpPercentage() < 25) {
+	private void spawnEnergy(final int delay){
+		if(getLifeStats().getHpPercentage() < 25){
 			return;
 		}
 		rndSpawn(281660, 7 - difficulty);
@@ -163,7 +163,7 @@ public class IsbariyaTheResolute extends AggressiveNpcAI2 {
 		scheduleSpawnEnergy(delay);
 	}
 
-	private void scheduleSpawnEnergy(final int delay) {
+	private void scheduleSpawnEnergy(final int delay){
 		spawnEnergyTask = ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
@@ -174,16 +174,16 @@ public class IsbariyaTheResolute extends AggressiveNpcAI2 {
 	}
 
 	// SPAWN SERVANT
-	private void spawnServant(final int delay) {
+	private void spawnServant(final int delay){
 		rndSpawn(281659, 1);
-		if (Rnd.get(difficulty) <= 0) {
+		if(Rnd.get(difficulty) <= 0){
 			AI2Actions.useSkill(this, 18993);
 		}
 
 		scheduleSpawnServant(delay);
 	}
 
-	private void scheduleSpawnServant(final int delay) {
+	private void scheduleSpawnServant(final int delay){
 		spawnServantTask = ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
@@ -192,7 +192,7 @@ public class IsbariyaTheResolute extends AggressiveNpcAI2 {
 			}
 		}, (delay + Rnd.get(-5, 5)) * 1000);
 	}
-
+	
 	// OTHER
 
 	private void rndSpawn(int npcId, int count) {
@@ -206,11 +206,11 @@ public class IsbariyaTheResolute extends AggressiveNpcAI2 {
 		float direction = Rnd.get(0, 199) / 100f;
 		float x1 = (float) (Math.cos(Math.PI * direction) * 5);
 		float y1 = (float) (Math.sin(Math.PI * direction) * 5);
-		return SpawnEngine.addNewSingleTimeSpawn(getPosition().getMapId(), npcId, getPosition().getX() + x1,
-				getPosition().getY() + y1, getPosition().getZ(), getPosition().getHeading());
+		return SpawnEngine.addNewSingleTimeSpawn(getPosition().getMapId(), npcId, getPosition().getX() + x1, getPosition().getY()
+				+ y1, getPosition().getZ(), getPosition().getHeading());
 	}
 
-	private void cancelTask() {
+	private void cancelTask(){
 		if (skillTaskArtos != null && !skillTaskArtos.isCancelled()) {
 			skillTaskArtos.cancel(true);
 		}

@@ -50,21 +50,21 @@ public class CM_SUMMON_COMMAND extends AionClientPacket {
 		Summon summon = activePlayer.getSummon();
 		if (summon != null) {
 			switch (mode) {
-			case 0:
-				VisibleObject obj = summon.getKnownList().getObject(targetObjId);
-				if (obj != null && obj instanceof Creature) {
-					summon.getController().attackMode();
-				}
-				break;
-			case 1:
-				summon.getController().guardMode();
-				break;
-			case 2:
-				summon.getController().restMode();
-				break;
-			case 3:
-				summon.getController().release(UnsummonType.COMMAND);
-				break;
+				case 0:
+					VisibleObject obj = summon.getKnownList().getObject(targetObjId);
+					if (obj != null && obj instanceof Creature) {
+						summon.getController().attackMode();
+					}
+					break;
+				case 1:
+					summon.getController().guardMode();
+					break;
+				case 2:
+					summon.getController().restMode();
+					break;
+				case 3:
+					summon.getController().release(UnsummonType.COMMAND);
+					break;
 
 			}
 		}

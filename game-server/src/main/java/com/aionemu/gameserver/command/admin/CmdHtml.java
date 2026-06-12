@@ -9,8 +9,7 @@ import com.aionemu.gameserver.services.HTMLService;
  * @author lord_rex
  */
 public class CmdHtml extends BaseCommand {
-
-	@Override
+	
 	public void execute(Player admin, String... params) {
 		if (params == null || params.length < 2) {
 			showHelp(admin);
@@ -18,11 +17,13 @@ public class CmdHtml extends BaseCommand {
 		}
 
 		if (params[1].equals("show")) {
-			if (params.length >= 3) {
+			if (params.length >= 3){
 				HTMLService.showHTML(admin, HTMLCache.getInstance().getHTML(params[2] + ".xhtml"));
-			} else {
+			}
+			else{
 				showHelp(admin);
 			}
 		}
 	}
 }
+

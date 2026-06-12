@@ -61,23 +61,24 @@ public class PlayerLeaveWorldService {
 	private static final Logger log = LoggerFactory.getLogger(PlayerLeaveWorldService.class);
 
 	/**
-	 * This method is called when player leaves the game, which includes just two
-	 * cases: either player goes back to char selection screen or it's leaving the
-	 * game [closing client].<br>
+	 * @param player
+	 * @param delay
+	 */
+
+	/**
+	 * This method is called when player leaves the game, which includes just two cases: either player goes back to char
+	 * selection screen or it's leaving the game [closing client].<br>
 	 * <br>
-	 * <b><font color='red'>NOTICE: </font> This method is called only from
-	 * {@link GameConnection} and {@link CM_QUIT} and must not be called from
-	 * anywhere else</b>
+	 * <b><font color='red'>NOTICE: </font> This method is called only from {@link GameConnection} and {@link CM_QUIT} and
+	 * must not be called from anywhere else</b>
 	 */
 	public static final void startLeaveWorld(Player player) {
 		log.info("Player logged out: " + player.getName() + " Account: "
-				+ (player.getClientConnection() != null ? player.getClientConnection().getAccount().getName()
-						: "disconnected"));
-
-		if (player.getEventTeamId() != -1) {
+			+ (player.getClientConnection() != null ? player.getClientConnection().getAccount().getName() : "disconnected"));
+		
+		if(player.getEventTeamId() != -1)
 			com.aionemu.gameserver.eventengine.Event.instance.removePlayer(player);
-		}
-
+		
 		player.setVar("dp", player.getCommonData().getDp(), true);
 		FindGroupService.getInstance().removeFindGroup(player.getRace(), 0x00, player.getObjectId());
 		FindGroupService.getInstance().removeFindGroup(player.getRace(), 0x04, player.getObjectId());
@@ -89,9 +90,8 @@ public class PlayerLeaveWorldService {
 		InstanceService.onLogOut(player);
 		GMService.getInstance().onPlayerLogedOut(player);
 
-		if (player.isLooting()) {
+		if(player.isLooting())
 			DropService.getInstance().closeDropList(player, player.getLootingNpcOid());
-		}
 
 		// Update prison timer
 		if (player.isInPrison()) {
@@ -112,40 +112,35 @@ public class PlayerLeaveWorldService {
 		player.getLifeStats().cancelAllTasks();
 
 		if (player.getLifeStats().isAlreadyDead()) {
-			if (player.isInInstance()) {
+			if (player.isInInstance())
 				PlayerReviveService.instanceRevive(player);
-			} else {
+			else
 				PlayerReviveService.bindRevive(player);
-			}
-		} /*
-			 * if (player.getLifeStats().isAlreadyDead() && !player.isInInstance())
-			 * TeleportService.moveToBindLocation(player, false);
-			 */
+		}/*
+		if (player.getLifeStats().isAlreadyDead() && !player.isInInstance())
+			TeleportService.moveToBindLocation(player, false);
+*/
 		else if (DuelService.getInstance().isDueling(player.getObjectId())) {
 			DuelService.getInstance().loseDuel(player);
 		}
-		/*
-		 * if (TvtService.getInstance().getTvtByLevel(player.getLevel()).getHolders().
-		 * getPlayer(player)) { TvtService.getInstance().unRegPlayer(player); }
-		 */
+            /*    if (TvtService.getInstance().getTvtByLevel(player.getLevel()).getHolders().getPlayer(player)) {
+                   TvtService.getInstance().unRegPlayer(player);
+                }*/
 
-		if (player.getSummon() != null) {
+		if (player.getSummon() != null)
 			player.getSummon().getController().release(UnsummonType.LOGOUT);
-		}
 
 		PetSpawnService.dismissPet(player, true);
 
-		if (player.getPostman() != null) {
+		if (player.getPostman() != null)
 			player.getPostman().getController().onDelete();
-		}
 		player.setPostman(null);
-
+                
 		PunishmentService.stopPrisonTask(player, true);
 		PunishmentService.stopGatherableTask(player, true);
 
-		if (player.isLegionMember()) {
+		if (player.isLegionMember())
 			LegionService.getInstance().onLogout(player);
-		}
 
 		PlayerGroupService.onPlayerLogout(player);
 		PlayerAllianceService.onPlayerLogout(player);
@@ -159,9 +154,8 @@ public class PlayerLeaveWorldService {
 
 		DAOManager.getDAO(PlayerDAO.class).onlinePlayer(player, false);
 
-		if (GSConfig.ENABLE_CHAT_SERVER) {
+		if (GSConfig.ENABLE_CHAT_SERVER)
 			ChatService.onPlayerLogout(player);
-		}
 
 		PlayerService.storePlayer(player);
 
@@ -177,13 +171,16 @@ public class PlayerLeaveWorldService {
 	 */
 	public static void tryLeaveWorld(Player player) {
 		player.getMoveController().abortMove();
-		if (player.getController().isInShutdownProgress()) {
+		if (player.getController().isInShutdownProgress())
 			PlayerLeaveWorldService.startLeaveWorld(player);
-		} else {
+
+		// prevent ctrl+alt+del / close window exploit
+		else {
 			int delay = 15;
 			PlayerLeaveWorldService.startLeaveWorldDelay(player, (delay * 1000));
 		}
 	}
+
 
 	public static final void startLeaveWorldDelay(final Player player, int delay) {
 		// force stop movement of player
@@ -198,4 +195,4 @@ public class PlayerLeaveWorldService {
 		}, delay);
 	}
 
-}
+	}

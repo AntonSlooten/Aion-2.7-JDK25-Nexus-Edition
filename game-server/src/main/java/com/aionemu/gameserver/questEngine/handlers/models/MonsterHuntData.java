@@ -35,7 +35,10 @@ import com.aionemu.gameserver.questEngine.handlers.template.MonsterHunt;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "MonsterHuntData", propOrder = { "monster" })
-@XmlSeeAlso({ KillSpawnedData.class, MentorMonsterHuntData.class })
+@XmlSeeAlso({
+    KillSpawnedData.class,
+    MentorMonsterHuntData.class
+})
 public class MonsterHuntData extends XMLQuest {
 
 	@XmlElement(name = "monster", required = true)
@@ -51,10 +54,9 @@ public class MonsterHuntData extends XMLQuest {
 
 	@Override
 	public void register(QuestEngine questEngine) {
-		FastMap<Integer, Monster> monsterNpcs = new FastMap<>();
-		for (Monster m : monster) {
+		FastMap<Integer, Monster> monsterNpcs = new FastMap<Integer, Monster>();
+		for (Monster m : monster)
 			monsterNpcs.put(m.getNpcId(), m);
-		}
 		MonsterHunt template = new MonsterHunt(id, startNpcId, startNpcId2, endNpcId, endNpcId2, monsterNpcs);
 		questEngine.addQuestHandler(template);
 	}

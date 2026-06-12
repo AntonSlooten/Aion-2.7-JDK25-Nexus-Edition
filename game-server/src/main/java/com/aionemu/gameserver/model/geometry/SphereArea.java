@@ -138,9 +138,8 @@ public class SphereArea implements Area {
 
 	@Override
 	public boolean intersectsRectangle(RectangleArea area) {
-		if (area.getDistance3D(x, y, z) <= r) {
+		if (area.getDistance3D(x, y, z) <= r)
 			return true;
-		}
 		return false;
 	}
 

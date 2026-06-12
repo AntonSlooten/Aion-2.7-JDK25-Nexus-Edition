@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -28,9 +28,10 @@ import com.aionemu.gameserver.model.team.legion.LegionEmblemType;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
+
 /**
  * This packet is displaying visible players.
- *
+ * 
  * @author -Nemesiss-, Avol, srx47 modified cura
  */
 public class SM_PLAYER_INFO extends AionServerPacket {
@@ -43,8 +44,9 @@ public class SM_PLAYER_INFO extends AionServerPacket {
 
 	/**
 	 * Constructs new <tt>SM_PLAYER_INFO </tt> packet
-	 *
-	 * @param player actual player.
+	 * 
+	 * @param player
+	 *          actual player.
 	 * @param enemy
 	 */
 	public SM_PLAYER_INFO(Player player, boolean enemy) {
@@ -65,11 +67,12 @@ public class SM_PLAYER_INFO extends AionServerPacket {
 		final int raceId;
 		if (player.getAdminNeutral() > 1 || activePlayer.getAdminNeutral() > 1) {
 			raceId = activePlayer.getRace().getRaceId();
-		} else if (activePlayer.isEnemy(player)) {
-			raceId = (activePlayer.getRace().getRaceId() == 0 ? 1 : 0);
-		} else {
-			raceId = player.getRace().getRaceId();
 		}
+		else if (activePlayer.isEnemy(player)) {
+			raceId = (activePlayer.getRace().getRaceId() == 0 ? 1 : 0);
+		}
+		else
+			raceId = player.getRace().getRaceId();
 
 		final int genderId = pcd.getGender().getGenderId();
 		final PlayerAppearance playerAppearance = player.getPlayerAppearance();
@@ -83,8 +86,7 @@ public class SM_PLAYER_INFO extends AionServerPacket {
 		 */
 		writeD(pcd.getTemplateId());
 		/**
-		 * Transformed state - send transformed model id Regular state - send player
-		 * model id (from common data)
+		 * Transformed state - send transformed model id Regular state - send player model id (from common data)
 		 */
 		writeD(player.getTransformedModelId() == 0 ? pcd.getTemplateId() : player.getTransformedModelId());
 
@@ -103,11 +105,12 @@ public class SM_PLAYER_INFO extends AionServerPacket {
 		writeC(player.getHeading());
 		writeS(player.getFullName());
 		writeH(pcd.getTitleId());
-		writeH(player.getCommonData().isHaveMentorFlag() ? 1 : 0);
-
+		writeH(player.getCommonData().isHaveMentorFlag()? 1:0);
+		
 		writeH(player.getCastingSkillId());
 
-		if (player.isLegionMember()) {
+		if (player.isLegionMember())
+		{
 			writeD(player.getLegion().getLegionId());
 			writeC(player.getLegion().getLegionEmblem().getEmblemId());
 			writeC(player.getLegion().getLegionEmblem().getEmblemType().getValue());
@@ -116,7 +119,9 @@ public class SM_PLAYER_INFO extends AionServerPacket {
 			writeC(player.getLegion().getLegionEmblem().getColor_g());
 			writeC(player.getLegion().getLegionEmblem().getColor_b());
 			writeS(player.getLegion().getLegionName());
-		} else {
+		}
+		else
+		{
 			writeQ(0);
 			writeD(0);
 		}
@@ -129,7 +134,7 @@ public class SM_PLAYER_INFO extends AionServerPacket {
 		List<Item> items = player.getEquipment().getEquippedItemsWithoutStigma();
 		short mask = 0;
 		for (Item item : items) {
-			mask |= (short) item.getEquipmentSlot();
+			mask |= item.getEquipmentSlot();
 		}
 
 		writeH(mask);
@@ -154,9 +159,9 @@ public class SM_PLAYER_INFO extends AionServerPacket {
 		writeC(playerAppearance.getTattoo());
 		writeC(playerAppearance.getFaceContour());
 		writeC(playerAppearance.getExpression());
-
+		
 		writeC(5);// always 5 o0
-
+		
 		writeC(playerAppearance.getJawLine());
 		writeC(playerAppearance.getForehead());
 
@@ -210,7 +215,7 @@ public class SM_PLAYER_INFO extends AionServerPacket {
 		writeC(playerAppearance.getShoulders());
 		writeC(playerAppearance.getFaceShape());
 		writeC(0x00); // always 0
-
+		
 		writeC(playerAppearance.getVoice());
 
 		writeF(playerAppearance.getHeight());
@@ -221,7 +226,8 @@ public class SM_PLAYER_INFO extends AionServerPacket {
 		Stat2 attackSpeed = player.getGameStats().getAttackSpeed();
 		writeH(attackSpeed.getBase());
 		writeH(attackSpeed.getCurrent());
-		writeC(player.getTelEffect()); // This Spawn Effect!
+        writeC(player.getTelEffect()); // This Spawn Effect!                
+		
 
 		writeS(player.hasStore() ? player.getStore().getStoreMessage() : "");// private store message
 
@@ -253,10 +259,9 @@ public class SM_PLAYER_INFO extends AionServerPacket {
 		writeD(player.getTarget() == null ? 0 : player.getTarget().getObjectId());
 		writeC(0); // suspect id
 		writeD(0);
-		if (player.isMentor()) {
+		if (player.isMentor())
 			writeC(1);
-		} else {
+		else
 			writeC(0);
-		}
 	}
 }

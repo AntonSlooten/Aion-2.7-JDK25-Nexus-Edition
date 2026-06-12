@@ -29,8 +29,7 @@ import com.aionemu.gameserver.services.teleport.TeleportService;
  * Meet Kvasir (204053) and choose your mission.<br>
  * -- Choice 2 --<br>
  * Talk with Aegir (204301).<br>
- * Get the Golden Helmet of Urgasch (182207037) (Statue of Urgasch, 700268) and
- * take it to Aegir.<br>
+ * Get the Golden Helmet of Urgasch (182207037) (Statue of Urgasch, 700268) and take it to Aegir.<br>
  * -- Choice 1 --<br>
  * Talk with Aegir.<br>
  * Defeat the fierce creatures of Morheim:<br>
@@ -48,8 +47,8 @@ import com.aionemu.gameserver.services.teleport.TeleportService;
  * 
  * @author Hellboy aion4Free
  * @modified Gigi
- * @reworked vlog Please don't touch commented code. There is no more dialog to
- *           choose a mission. But maybe there will be one.
+ * @reworked vlog Please don't touch commented code. There is no more dialog to choose a mission. But maybe there will
+ *           be one.
  */
 public class _2947FollowingThrough extends QuestHandler {
 
@@ -88,113 +87,116 @@ public class _2947FollowingThrough extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204053: { // Kvasir
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
-					} else if (var == 4) {
-						return sendQuestDialog(env, 1019);
+				case 204053: { // Kvasir
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+							else if (var == 4) {
+								return sendQuestDialog(env, 1019);
+							}
+							// else if (var == 1 || var == 4 || var == 9) {
+							// return sendQuestDialog(env, 2375); // to have a possibility to change the choice
+							// }
+						}
+						// case STEP_TO_11: {
+						// choice = 0;
+						// return defaultCloseDialog(env, 0, 1); // 1
+						// }
+						case STEP_TO_12: {
+							choice = 1;
+							if (var == 0) {
+								return defaultCloseDialog(env, 0, 4); // 4
+							}
+							else if (var == 4) {
+								return defaultCloseDialog(env, 4, 4);
+							}
+						}
+						// case STEP_TO_13: {
+						// choice = 2;
+						// return defaultCloseDialog(env, 0, 9); // 9
+						// }
+						case FINISH_DIALOG: {
+							if (var == 0) {
+								return defaultCloseDialog(env, 0, 0);
+							}
+						}
 					}
-					// else if (var == 1 || var == 4 || var == 9) {
-					// return sendQuestDialog(env, 2375); // to have a possibility to change the
-					// choice
-					// }
+					break;
 				}
-				// case STEP_TO_11: {
-				// choice = 0;
-				// return defaultCloseDialog(env, 0, 1); // 1
-				// }
-				case STEP_TO_12: {
-					choice = 1;
-					if (var == 0) {
-						return defaultCloseDialog(env, 0, 4); // 4
-					} else if (var == 4) {
-						return defaultCloseDialog(env, 4, 4);
+				case 204301: { // Aegir
+					switch (dialog) {
+						case USE_OBJECT: {
+							// if (var == 1) {
+							// return sendQuestDialog(env, 1352);
+							// }
+							// else if (var == 9) {
+							// return sendQuestDialog(env, 4080);
+							// }
+							// else if (var == 3 && choice == 1) {
+							// return sendQuestDialog(env, 3398);
+							// }
+							if (var == 7) {
+								return sendQuestDialog(env, 3739);
+							}
+						}
+						// case STEP_TO_2: {
+						// return defaultCloseDialog(env, 1, 2); // 2
+						// }
+						case SELECT_REWARD: {
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return sendQuestDialog(env, 6);
+							// else if (var == 3) {
+							// return defaultCloseDialog(env, 3, 3, true, true); // reward
+							// }
+						}
+						// case SELECT_ACTION_4081: {
+						// return checkQuestItems(env, 9, 9, true, 7, 4081); // reward
+						// }
+						// case FINISH_DIALOG: {
+						// return defaultCloseDialog(env, 9, 9);
+						// }
+					}
+					break;
+				}
+				case 204089: { // Garm
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 4) {
+								return sendQuestDialog(env, 1693);
+							}
+							else if (qs.getQuestVarById(4) == 10) {
+								return sendQuestDialog(env, 2034);
+							}
+							// else if (var == 6) { doesn't work :(
+							// return sendQuestDialog(env, 1779);
+							// }
+						}
+						case STEP_TO_3: {
+							return defaultCloseDialog(env, 4, 5); // 5
+						}
+						case STEP_TO_4: {
+							qs.setQuestVar(7);
+							updateQuestStatus(env);
+							return defaultCloseDialog(env, 7, 7); // 7
+						}
+					}
+					break;
+				}
+				case 700268: { // Statue of Urgasch
+					if (var == 9 && dialog == QuestDialog.USE_OBJECT) {
+						return true; // loot
 					}
 				}
-				// case STEP_TO_13: {
-				// choice = 2;
-				// return defaultCloseDialog(env, 0, 9); // 9
-				// }
-				case FINISH_DIALOG: {
-					if (var == 0) {
-						return defaultCloseDialog(env, 0, 0);
-					}
-				}
-				}
-				break;
 			}
-			case 204301: { // Aegir
-				switch (dialog) {
-				case USE_OBJECT: {
-					// if (var == 1) {
-					// return sendQuestDialog(env, 1352);
-					// }
-					// else if (var == 9) {
-					// return sendQuestDialog(env, 4080);
-					// }
-					// else if (var == 3 && choice == 1) {
-					// return sendQuestDialog(env, 3398);
-					// }
-					if (var == 7) {
-						return sendQuestDialog(env, 3739);
-					}
-				}
-				// case STEP_TO_2: {
-				// return defaultCloseDialog(env, 1, 2); // 2
-				// }
-				case SELECT_REWARD: {
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return sendQuestDialog(env, 6);
-					// else if (var == 3) {
-					// return defaultCloseDialog(env, 3, 3, true, true); // reward
-					// }
-				}
-				// case SELECT_ACTION_4081: {
-				// return checkQuestItems(env, 9, 9, true, 7, 4081); // reward
-				// }
-				// case FINISH_DIALOG: {
-				// return defaultCloseDialog(env, 9, 9);
-				// }
-				}
-				break;
-			}
-			case 204089: { // Garm
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 4) {
-						return sendQuestDialog(env, 1693);
-					} else if (qs.getQuestVarById(4) == 10) {
-						return sendQuestDialog(env, 2034);
-					}
-					// else if (var == 6) { doesn't work :(
-					// return sendQuestDialog(env, 1779);
-					// }
-				}
-				case STEP_TO_3: {
-					return defaultCloseDialog(env, 4, 5); // 5
-				}
-				case STEP_TO_4: {
-					qs.setQuestVar(7);
-					updateQuestStatus(env);
-					return defaultCloseDialog(env, 7, 7); // 7
-				}
-				}
-				break;
-			}
-			case 700268: { // Statue of Urgasch
-				if (var == 9 && dialog == QuestDialog.USE_OBJECT) {
-					return true; // loot
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			switch (targetId) {
-			case 204301: { // Aegir
-				return sendQuestEndDialog(env, choice);
-			}
+				case 204301: { // Aegir
+					return sendQuestEndDialog(env, choice);
+				}
 			}
 		}
 		return false;
@@ -211,39 +213,41 @@ public class _2947FollowingThrough extends QuestHandler {
 				int var2 = qs.getQuestVarById(2);
 				int var3 = qs.getQuestVarById(3);
 				switch (targetId) {
-				case 212396: { // Guzzling Kurin
-					if (var2 == 3 && var3 == 3) {
-						qs.setQuestVar(3); // 3
-						updateQuestStatus(env);
-						playQuestMovie(env, 168);
-						return true;
+					case 212396: { // Guzzling Kurin
+						if (var2 == 3 && var3 == 3) {
+							qs.setQuestVar(3); // 3
+							updateQuestStatus(env);
+							playQuestMovie(env, 168);
+							return true;
+						}
+						changeQuestStep(env, var1, var1 + 1, false, 1); // 1: 1 - 3
 					}
-					changeQuestStep(env, var1, var1 + 1, false, 1); // 1: 1 - 3
-				}
-				case 212611: { // Klaw Scouter
-					if (var1 == 3 && var3 == 3) {
-						qs.setQuestVar(3); // 3
-						updateQuestStatus(env);
-						playQuestMovie(env, 168);
-						return true;
+					case 212611: { // Klaw Scouter
+						if (var1 == 3 && var3 == 3) {
+							qs.setQuestVar(3); // 3
+							updateQuestStatus(env);
+							playQuestMovie(env, 168);
+							return true;
+						}
+						changeQuestStep(env, var2, var2 + 1, false, 2); // 2: 1 - 3
 					}
-					changeQuestStep(env, var2, var2 + 1, false, 2); // 2: 1 - 3
-				}
-				case 212408: { // Dark Lake Spirit
-					if (var1 == 3 && var2 == 3) {
-						qs.setQuestVar(3); // 3
-						updateQuestStatus(env);
-						return true;
+					case 212408: { // Dark Lake Spirit
+						if (var1 == 3 && var2 == 3) {
+							qs.setQuestVar(3); // 3
+							updateQuestStatus(env);
+							return true;
+						}
+						changeQuestStep(env, var3, var3 + 1, false, 3); // 3: 1 - 3
 					}
-					changeQuestStep(env, var3, var3 + 1, false, 3); // 3: 1 - 3
 				}
-				}
-			} else if (var == 5) {
+			}
+			else if (var == 5) {
 				int var4 = qs.getQuestVarById(4);
 				int[] mobs = { 213583, 290048, 211987, 290047, 290050, 211986, 290049, 213584, 211982 };
 				if (var4 < 9) {
 					return defaultOnKillEvent(env, mobs, 0, 9, 4); // 4: 1 - 9
-				} else if (var4 == 9) {
+				}
+				else if (var4 == 9) {
 					defaultOnKillEvent(env, mobs, 9, 10, 4); // 4: 10
 					QuestService.questTimerEnd(env);
 					playQuestMovie(env, 168);
@@ -283,7 +287,8 @@ public class _2947FollowingThrough extends QuestHandler {
 					qs.setQuestVar(4);
 					updateQuestStatus(env);
 					return true;
-				} else {
+				}
+				else {
 					playQuestMovie(env, 167);
 					return true;
 				}
@@ -300,7 +305,8 @@ public class _2947FollowingThrough extends QuestHandler {
 			if (movieId == 168) {
 				TeleportService.teleportTo(player, 120010000, 1006.1f, 1526, 222.2f, 90);
 				return true;
-			} else if (movieId == 167) {
+			}
+			else if (movieId == 167) {
 				QuestService.questTimerStart(env, 240);
 				return true;
 			}

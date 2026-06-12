@@ -44,7 +44,7 @@ public class ShieldService {
 			Shield f = new Shield(t);
 			f.spawn();
 			log.debug("Added " + f.getName() + " at m=" + f.getWorldId() + ",x=" + f.getX() + ",y=" + f.getY() + ",z="
-					+ f.getZ());
+				+ f.getZ());
 		}
 	}
 }

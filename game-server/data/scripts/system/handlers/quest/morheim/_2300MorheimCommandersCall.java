@@ -61,14 +61,16 @@ public class _2300MorheimCommandersCall extends QuestHandler {
 				qs.setStatus(QuestStatus.REWARD);
 				updateQuestStatus(env);
 				return sendQuestDialog(env, 1011);
-			} else
+			}
+			else
 				return sendQuestStartDialog(env);
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (env.getDialogId() == 18) {
 				int[] ids = { 2031, 2032, 2033, 2034, 2035, 2036, 2037, 2038, 2039, 2040, 2041, 2042 };
 				for (int id : ids) {
 					QuestEngine.getInstance().onEnterZoneMissionEnd(
-							new QuestEnv(env.getVisibleObject(), env.getPlayer(), id, env.getDialogId()));
+						new QuestEnv(env.getVisibleObject(), env.getPlayer(), id, env.getDialogId()));
 				}
 			}
 			return sendQuestEndDialog(env);

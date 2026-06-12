@@ -5086,7 +5086,8 @@
 			<spot x="479.056" y="2863.38" z="106.593" h="20" random_walk="8"/>
 		</spawn>
 		<!-- Poevius -->
-		<spawn npc_id="798363" spawn_time="NIGHT" respawn_time="295">
+		<spawn npc_id="798363" respawn_time="295">
+			<temporary_spawn spawn_time="3.*.*" despawn_time="5.*.*"/>
 			<spot x="932.028" y="2931.443" z="179.990" h="110"/>
 		</spawn>
 		<!-- Disciple of Zapiel -->
@@ -5098,6 +5099,7 @@
 		</spawn>
 		<!-- Mahelnu -->
 		<spawn npc_id="798365" respawn_time="295">
+			<temporary_spawn spawn_time="1.*.*" despawn_time="3.*.*"/>
 			<spot x="2326.05" y="694.00" z="351.034" h="6"/>
 		</spawn>
 		<!-- Graveknight Fighter -->

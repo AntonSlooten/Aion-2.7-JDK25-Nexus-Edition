@@ -9,9 +9,11 @@ import com.aionemu.gameserver.network.loginserver.LoginServer;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.Util;
 
-public class CmdPasskeyReset extends BaseCommand {
 
-	@Override
+public class CmdPasskeyReset extends BaseCommand {
+	
+	
+
 	public void execute(Player player, String... params) {
 		if (params.length <= 1) {
 			showHelp(player);
@@ -28,7 +30,8 @@ public class CmdPasskeyReset extends BaseCommand {
 
 		try {
 			Integer.parseInt(params[2]);
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			PacketSendUtility.sendMessage(player, "Parameters should be number!");
 			return;
 		}

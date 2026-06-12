@@ -35,7 +35,7 @@ public class _18510MurderMyShugo extends QuestHandler {
 	}
 
 	@Override
-	public void register() {
+	public void register() {		
 		int[] npcs = { 203166, 700953 };
 		qe.registerQuestNpc(203166).addOnQuestStart(questId);
 		for (int npc : npcs) {
@@ -56,41 +56,46 @@ public class _18510MurderMyShugo extends QuestHandler {
 		QuestDialog dialog = env.getDialog();
 		QuestState qs = player.getQuestStateList().getQuestState(questId);
 
+		
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 203166) {
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env, 182212009, 1);
 				}
 			}
-		} else if (qs != null && qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 700953: {
-				if (dialog == QuestDialog.USE_OBJECT) {
-					if (var >= 3 && var < 5) {
-						changeQuestStep(env, var, var + 1, false); // 4, 5
-						return true;
-					} else if (var == 5) {
-						changeQuestStep(env, 5, 5, true); // reward
-						return true;
+				case 700953: {
+					if (dialog == QuestDialog.USE_OBJECT) {
+						if (var >= 3 && var < 5) {
+							changeQuestStep(env, var, var + 1, false); // 4, 5
+							return true;
+						}
+						else if (var == 5) {
+							changeQuestStep(env, 5, 5, true); // reward
+							return true;
+						}
 					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203166) {
 				switch (dialog) {
-				case USE_OBJECT: {
-					return sendQuestDialog(env, 10002);
-				}
-				case SELECT_REWARD: {
-					return sendQuestDialog(env, 5);
-				}
-				default: {
-					return sendQuestEndDialog(env);
-				}
+					case USE_OBJECT: {
+						return sendQuestDialog(env, 10002);
+					}
+					case SELECT_REWARD: {
+						return sendQuestDialog(env, 5);
+					}
+					default: {
+						return sendQuestEndDialog(env);
+					}
 				}
 			}
 		}

@@ -30,32 +30,32 @@ import com.aionemu.gameserver.world.WorldMapInstance;
 public class DisciplineTrainingGroundsInstance extends PvPArenaInstance {
 
 	protected int togTime = 35;
-
+	
 	@Override
 	public void onInstanceCreate(WorldMapInstance instance) {
 		killBonus = 200;
 		deathFine = -100;
 		super.onInstanceCreate(instance);
 	}
-
+	
 	@Override
 	public void onDie(Npc npc) {
 		super.onDie(npc);
 		int timeRnd = Rnd.get(0, 10) - 5;
-
+		
 		// Tog and brax respawn
-		if (npc.getNpcId() == 218706 || npc.getNpcId() == 218705) {
+		if(npc.getNpcId() == 218706 || npc.getNpcId() == 218705){
 			spawnTog(togTime + timeRnd);
 		}
 		npc.getController().delete();
 	}
-
-	protected void spawnOnStart() {
+	
+	protected void spawnOnStart(){
 		spawnTog(0);
 		spawnRelicsLava(0);
 		spawnRelicsColisea(0);
 	}
-
+	
 	@Override
 	public void handleUseItemFinish(Player player, Npc npc) {
 		super.handleUseItemFinish(player, npc);
@@ -70,7 +70,7 @@ public class DisciplineTrainingGroundsInstance extends PvPArenaInstance {
 			return;
 		}
 	}
-
+	
 	private void spawnRelicsColisea(int time) {
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
@@ -91,26 +91,26 @@ public class DisciplineTrainingGroundsInstance extends PvPArenaInstance {
 				if (isInstanceDestroyed || instanceReward.isRewarded()) {
 					return;
 				}
-				if (Rnd.get(1, 2) == 1) {
+				if(Rnd.get(1, 2) == 1){
 					spawn(701221, 707.409f, 1779.437f, 165.419f, (byte) 0); // Position 1
-				} else {
+				}else{
 					spawn(701221, 692.663f, 1770.740f, 219.014f, (byte) 0); // Position 2
 				}
 			}
 
 		}, time * 1000);
 	}
-
-	private void spawnTog(int time) {
+	
+	private void spawnTog(int time){
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
 			public void run() {
 				if (isInstanceDestroyed || instanceReward.isRewarded()) {
 					return;
 				}
-				if (Rnd.get(1, 2) == 1) {
+				if(Rnd.get(1, 2) == 1){
 					spawn(218706, 1856.197f, 1071.305f, 337.287f, (byte) 90); // Tog
-				} else {
+				}else{
 					spawn(218705, 1856.197f, 1071.305f, 337.287f, (byte) 90); // Brax
 				}
 			}

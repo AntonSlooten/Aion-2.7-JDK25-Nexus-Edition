@@ -32,7 +32,7 @@ public abstract class AbstractItemAction {
 
 	/**
 	 * Check if an item can be used.
-	 *
+	 * 
 	 * @param player
 	 * @param parentItem
 	 * @param targetItem

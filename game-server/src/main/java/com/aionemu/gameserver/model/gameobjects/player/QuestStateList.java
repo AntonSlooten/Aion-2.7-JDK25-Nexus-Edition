@@ -45,7 +45,7 @@ public class QuestStateList {
 	 * Creates an empty quests list
 	 */
 	public QuestStateList() {
-		_quests = new TreeMap<>();
+		_quests = new TreeMap<Integer, QuestState>();
 	}
 
 	public synchronized boolean addQuest(int questId, QuestState questState) {
@@ -74,9 +74,7 @@ public class QuestStateList {
 	}
 
 	/*
-	 * Issue #13 fix Used by the QuestService to check the amount of normal quests
-	 * in the player's list
-	 *
+	 * Issue #13 fix Used by the QuestService to check the amount of normal quests in the player's list
 	 * @author vlog
 	 */
 	public int getNormalQuestListSize() {
@@ -85,19 +83,18 @@ public class QuestStateList {
 
 	/*
 	 * Issue #13 fix Returns the list of normal quests
-	 *
 	 * @author vlog
 	 */
 	public Collection<QuestState> getNormalQuests() {
-		Collection<QuestState> l = new ArrayList<>();
+		Collection<QuestState> l = new ArrayList<QuestState>();
 
 		for (QuestState qs : this.getAllQuestState()) {
 			QuestCategory qc = _questData.getQuestById(qs.getQuestId()).getCategory();
 			String name = _questData.getQuestById(qs.getQuestId()).getName();
 			QuestStatus s = qs.getStatus();
 
-			if (s != QuestStatus.COMPLETE && s != QuestStatus.LOCKED && s != QuestStatus.NONE
-					&& qc == QuestCategory.QUEST && !name.startsWith("[Event]")) {
+			if (s != QuestStatus.COMPLETE && s != QuestStatus.LOCKED && s != QuestStatus.NONE && qc == QuestCategory.QUEST
+				&& !name.startsWith("[Event]")) {
 				l.add(qs);
 			}
 		}
@@ -105,9 +102,7 @@ public class QuestStateList {
 	}
 
 	/*
-	 * Returns true if there is a quest in the list with this id Used by the
-	 * QuestService
-	 *
+	 * Returns true if there is a quest in the list with this id Used by the QuestService
 	 * @author vlog
 	 */
 	public boolean hasQuest(int questId) {
@@ -115,19 +110,17 @@ public class QuestStateList {
 	}
 
 	/*
-	 * Change the old value of the quest status to the new one Used by the
-	 * QuestService
-	 *
+	 * Change the old value of the quest status to the new one Used by the QuestService
 	 * @author vlog
 	 */
 	public void changeQuestStatus(Integer key, QuestStatus newStatus) {
 		_quests.get(key).setStatus(newStatus);
 	}
-
+	
 	public int size() {
 		return this._quests.size();
 	}
-
+	
 	public SortedMap<Integer, QuestState> getQuests() {
 		return this._quests;
 	}

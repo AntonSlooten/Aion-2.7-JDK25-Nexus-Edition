@@ -47,7 +47,7 @@ public class RegularRates extends Rates {
 	public float getXpPlayerGainRate() {
 		return RateConfig.XP_PLAYER_GAIN_RATE;
 	}
-
+	
 	@Override
 	public float getApPlayerLossRate() {
 		return RateConfig.AP_PLAYER_LOSS_RATE;
@@ -75,7 +75,6 @@ public class RegularRates extends Rates {
 
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see com.aionemu.gameserver.utils.rates.Rates#getCraftingXPRate()
 	 */
 	@Override
@@ -85,7 +84,6 @@ public class RegularRates extends Rates {
 
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see com.aionemu.gameserver.utils.rates.Rates#getGatheringXPRate()
 	 */
 	@Override

@@ -78,71 +78,77 @@ public class _20022SpreadingAsmodaesReach extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 799226) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1); // 1
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+					case STEP_TO_1:
+						return defaultCloseDialog(env, 0, 1); // 1
 				}
-			} else if (targetId == 799282) {
+			}
+			else if (targetId == 799282) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-					else if (var == 2) {
-						long itemCount1 = player.getInventory().getItemCountByItemId(182207605);
-						long itemCount2 = player.getInventory().getItemCountByItemId(182207606);
-						long itemCount3 = player.getInventory().getItemCountByItemId(182207607);
-						if (itemCount1 > 9 && itemCount2 > 9 && itemCount3 > 9)
-							return sendQuestDialog(env, 1693);
-						else
-							return sendQuestDialog(env, 10001);
-					} else if (var == 3)
-						return sendQuestDialog(env, 10000);
-					else if (var == 4 || var == 260)
-						return sendQuestDialog(env, 2375);
-					else if (var == 7)
-						return sendQuestDialog(env, 3398);
-					else if (var == 9)
-						return sendQuestDialog(env, 4080);
-				case STEP_TO_2:
-					return defaultCloseDialog(env, 1, 2); // 2
-				case CHECK_COLLECTED_ITEMS:
-					qs.setQuestVarById(0, 3); // 3
-					updateQuestStatus(env);
-					removeQuestItem(env, 182207605, 10);
-					removeQuestItem(env, 182207606, 10);
-					removeQuestItem(env, 182207607, 10);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				case STEP_TO_5:
-					if (!player.getInventory().isFull()) {
-						return defaultCloseDialog(env, 4, 5, 182207608, 2, 0, 0); // 5
-					}
-				case STEP_TO_8:
-					return defaultCloseDialog(env, 7, 8, 182207609, 1, 0, 0); // 8
-				case SET_REWARD:
-					return defaultCloseDialog(env, 9, 9, true, false); // reward
+					case START_DIALOG:
+						if (var == 1)
+							return sendQuestDialog(env, 1352);
+						else if (var == 2) {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182207605);
+							long itemCount2 = player.getInventory().getItemCountByItemId(182207606);
+							long itemCount3 = player.getInventory().getItemCountByItemId(182207607);
+							if (itemCount1 > 9 && itemCount2 > 9 && itemCount3 > 9)
+								return sendQuestDialog(env, 1693);
+							else
+								return sendQuestDialog(env, 10001);
+						}
+						else if (var == 3)
+							return sendQuestDialog(env, 10000);
+						else if (var == 4 || var == 260)
+							return sendQuestDialog(env, 2375);
+						else if (var == 7)
+							return sendQuestDialog(env, 3398);
+						else if (var == 9)
+							return sendQuestDialog(env, 4080);
+					case STEP_TO_2:
+						return defaultCloseDialog(env, 1, 2); // 2
+					case CHECK_COLLECTED_ITEMS:
+						qs.setQuestVarById(0, 3); // 3
+						updateQuestStatus(env);
+						removeQuestItem(env, 182207605, 10);
+						removeQuestItem(env, 182207606, 10);
+						removeQuestItem(env, 182207607, 10);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					case STEP_TO_5:
+						if (!player.getInventory().isFull()) {
+							return defaultCloseDialog(env, 4, 5, 182207608, 2, 0, 0); // 5
+						}
+					case STEP_TO_8:
+						return defaultCloseDialog(env, 7, 8, 182207609, 1, 0, 0); // 8
+					case SET_REWARD:
+						return defaultCloseDialog(env, 9, 9, true, false); // reward
 				}
-			} else if (targetId == 700704) {
+			}
+			else if (targetId == 700704) {
 				if (qs.getQuestVarById(0) == 2 && env.getDialog() == QuestDialog.USE_OBJECT) {
 					return true; // loot
 				}
-			} else if (targetId == 700703) {
+			}
+			else if (targetId == 700703) {
 				if (qs.getQuestVarById(0) == 2 && env.getDialog() == QuestDialog.USE_OBJECT && targetId == 700703) {
 					return true; // loot
 				}
-			} else if (targetId == 700701) {
+			}
+			else if (targetId == 700701) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					return useQuestObject(env, 5, 6, false, 0, 0, 0, 182207608, 1); // 6
 				}
-			} else if (targetId == 700702) {
+			}
+			else if (targetId == 700702) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					return useQuestObject(env, 6, 7, false, 0, 0, 0, 182207608, 1); // 7
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799226) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 10002);
@@ -168,15 +174,16 @@ public class _20022SpreadingAsmodaesReach extends QuestHandler {
 		int var = qs.getQuestVarById(0);
 
 		switch (targetId) {
-		case 216102:
-		case 216103:
-			if (var == 3 && var1 < 4) {
-				qs.setQuestVarById(1, var1 + 1);
-				updateQuestStatus(env);
-			} else if (var == 3 && var1 == 4) {
-				qs.setQuestVar(4);
-				updateQuestStatus(env);
-			}
+			case 216102:
+			case 216103:
+				if (var == 3 && var1 < 4) {
+					qs.setQuestVarById(1, var1 + 1);
+					updateQuestStatus(env);
+				}
+				else if (var == 3 && var1 == 4) {
+					qs.setQuestVar(4);
+					updateQuestStatus(env);
+				}
 		}
 		return false;
 	}
@@ -196,7 +203,8 @@ public class _20022SpreadingAsmodaesReach extends QuestHandler {
 		if (id == 182207609 && var == 8) {
 			if (MathUtil.isInSphere(player, 285.17746f, 1534.7837f, 356.52f, 10)) {
 				return HandlerResult.fromBoolean(useQuestItem(env, item, 8, 9, false, 553)); // 9
-			} else {
+			}
+			else {
 				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300426));
 				return HandlerResult.SUCCESS;
 			}

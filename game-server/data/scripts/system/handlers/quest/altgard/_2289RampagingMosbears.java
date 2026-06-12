@@ -55,55 +55,59 @@ public class _2289RampagingMosbears extends QuestHandler {
 			if (targetId == 203616) { // Gefion
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 203616: { // Gefion
-				switch (dialog) {
-				case STEP_TO_1: {
-					return sendQuestSelectionDialog(env);
+				case 203616: { // Gefion
+					switch (dialog) {
+						case STEP_TO_1: {
+							return sendQuestSelectionDialog(env);
+						}
+						case START_DIALOG: {
+							if (var == 5) {
+								return sendQuestDialog(env, 1352);
+							}
+							else if (var == 7) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case SELECT_ACTION_1354: {
+							playQuestMovie(env, 62);
+							return sendQuestDialog(env, 1354);
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 5, 6); // 6
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 7, 7, true, 5, 2120); // reward
+						}
+						case FINISH_DIALOG: {
+							return defaultCloseDialog(env, 7, 7);
+						}
+					}
+					break;
 				}
-				case START_DIALOG: {
-					if (var == 5) {
-						return sendQuestDialog(env, 1352);
-					} else if (var == 7) {
-						return sendQuestDialog(env, 2034);
+				case 203618: { // Skanin
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 6) {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case STEP_TO_3: {
+							return defaultCloseDialog(env, 6, 7, 182203017, 1, 0, 0); // 7
+						}
 					}
 				}
-				case SELECT_ACTION_1354: {
-					playQuestMovie(env, 62);
-					return sendQuestDialog(env, 1354);
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 5, 6); // 6
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 7, 7, true, 5, 2120); // reward
-				}
-				case FINISH_DIALOG: {
-					return defaultCloseDialog(env, 7, 7);
-				}
-				}
-				break;
 			}
-			case 203618: { // Skanin
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 6) {
-						return sendQuestDialog(env, 1693);
-					}
-				}
-				case STEP_TO_3: {
-					return defaultCloseDialog(env, 6, 7, 182203017, 1, 0, 0); // 7
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203616) { // Gefion
 				return sendQuestEndDialog(env);
 			}

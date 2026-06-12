@@ -25,9 +25,8 @@ import com.aionemu.gameserver.questEngine.model.QuestStatus;
 import com.aionemu.gameserver.utils.stats.AbyssRankEnum;
 
 /**
- * [Group] Confront Asmodian Officers Fight against Asmodian Officers and win
- * (10). -> Race = ASMO, Abyss Rank = 1 - 5-Star Officer Report the result to
- * Michalis (278501). minlevel_permitted="40" cannot_share="true"
+ * [Group] Confront Asmodian Officers Fight against Asmodian Officers and win (10). -> Race = ASMO, Abyss Rank = 1 -
+ * 5-Star Officer Report the result to Michalis (278501). minlevel_permitted="40" cannot_share="true"
  * race_permitted="ELYOS"
  * 
  * @author vlog
@@ -63,7 +62,8 @@ public class _1719ConfrontAsmodianOfficers extends QuestHandler {
 					return sendQuestDialog(env, 1011);
 				else
 					return sendQuestStartDialog(env);
-			} else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
+			}
+			else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 1352);
 				else

@@ -21,7 +21,7 @@ package com.aionemu.gameserver.model.gameobjects.state;
  */
 public enum CreatureState {
 	NPC_IDLE(1 << 6), // 64 (for npc)
-	FLOATING_CORPSE(1 << 3), // 8
+	FLOATING_CORPSE(1<<3), // 8
 
 	FLIGHT_TELEPORT(1 << 1), // 2
 	CHAIR(3 << 1), // 6
@@ -42,8 +42,8 @@ public enum CreatureState {
 	BOOST(1 << 11); // used in windstream
 
 	/**
-	 * Standing, path flying, free flying, riding, sitting, sitting on chair, dead,
-	 * fly dead, private shop, looting, fly looting, default
+	 * Standing, path flying, free flying, riding, sitting, sitting on chair, dead, fly dead, private shop, looting, fly
+	 * looting, default
 	 */
 
 	private int id;

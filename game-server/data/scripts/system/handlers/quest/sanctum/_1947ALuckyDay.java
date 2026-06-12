@@ -53,14 +53,14 @@ public class _1947ALuckyDay extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE)// TODO: If cube size is bigger than 5
 		{
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				return sendQuestDialog(env, 1011);
-			case ASK_ACCEPTION:
-				return sendQuestDialog(env, 4);
-			case ACCEPT_QUEST:
-				env.setQuestId(questId);
-				QuestService.startQuest(env);
-				return sendQuestDialog(env, 1003);
+				case START_DIALOG:
+					return sendQuestDialog(env, 1011);
+				case ASK_ACCEPTION:
+					return sendQuestDialog(env, 4);
+				case ACCEPT_QUEST:
+					env.setQuestId(questId);
+					QuestService.startQuest(env);
+					return sendQuestDialog(env, 1003);
 			}
 		}
 
@@ -71,21 +71,22 @@ public class _1947ALuckyDay extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798012:// Yiehmonerk
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 2375);
-				case SELECT_REWARD:
-					if (var == 0) {
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 5);
+				case 798012:// Yiehmonerk
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 2375);
+						case SELECT_REWARD:
+							if (var == 0) {
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 5);
+							}
 					}
-				}
-				break;
+					break;
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD && targetId == 798012)
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD && targetId == 798012)
 			return sendQuestEndDialog(env);
 		return false;
 	}

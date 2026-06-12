@@ -31,21 +31,21 @@ public class PlayerLimitService {
 	private static FastMap<Integer, Long> sellLimit = new FastMap<Integer, Long>().shared();
 
 	public static boolean updateSellLimit(Player player, long reward) {
-		if (!CustomConfig.LIMITS_ENABLED) {
+		if (!CustomConfig.LIMITS_ENABLED)
 			return true;
-		}
 
 		int accoutnId = player.getPlayerAccount().getId();
 		Long limit = sellLimit.get(accoutnId);
 		if (limit == null) {
-			limit = CustomConfig.LIMITS_SELL; // TODO get limit from char max lvl
+			limit = CustomConfig.LIMITS_SELL; //TODO get limit from char max lvl
 			sellLimit.put(accoutnId, limit);
 		}
 
 		if (limit < reward) {
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_DAY_CANNOT_SELL_NPC(limit));
 			return false;
-		} else {
+		}
+		else {
 			limit -= reward;
 			sellLimit.putEntry(accoutnId, limit);
 			return true;

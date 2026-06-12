@@ -35,16 +35,15 @@ public class MpCondition extends Condition {
 
 	@XmlAttribute
 	protected int delta;
-
+	
 	@XmlAttribute
 	protected boolean ratio;
 
 	@Override
 	public boolean validate(Skill skill) {
 		int valueWithDelta = value + delta * skill.getSkillLevel();
-		if (ratio) {
-			valueWithDelta = (skill.getEffector().getLifeStats().getMaxMp() * valueWithDelta) / 100;
-		}
+		if (ratio)
+			valueWithDelta = (int) ((skill.getEffector().getLifeStats().getMaxMp() * valueWithDelta) / 100);
 		return skill.getEffector().getLifeStats().getCurrentMp() > valueWithDelta;
 	}
 }

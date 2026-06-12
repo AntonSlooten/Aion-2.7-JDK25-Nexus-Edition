@@ -62,7 +62,7 @@ public class NpcStatsTemplate extends StatsTemplate {
 	public float getMdef() {
 		return mdef;
 	}
-
+	
 	/**
 	 * @return the mresist
 	 */

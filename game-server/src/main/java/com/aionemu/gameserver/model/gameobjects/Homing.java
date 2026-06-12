@@ -16,7 +16,7 @@
  */
 package com.aionemu.gameserver.model.gameobjects;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.aionemu.gameserver.controllers.NpcController;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -41,13 +41,13 @@ public class Homing extends SummonedObject {
 	 * @param objectTemplate
 	 * @param level
 	 */
-	public Homing(int objId, NpcController controller, SpawnTemplate spawnTemplate, NpcTemplate objectTemplate,
-			byte level) {
+	public Homing(int objId, NpcController controller, SpawnTemplate spawnTemplate, NpcTemplate objectTemplate, byte level) {
 		super(objId, controller, spawnTemplate, objectTemplate, level);
 	}
 
 	/**
-	 * @param attackCount the attackCount to set
+	 * @param attackCount
+	 *          the attackCount to set
 	 */
 	public void setAttackCount(int attackCount) {
 		this.attackCount = attackCount;
@@ -85,15 +85,14 @@ public class Homing extends SummonedObject {
 
 	@Override
 	public ItemAttackType getAttackType() {
-		if (getName().contains("fire")) {
+		if (getName().contains("fire"))
 			return ItemAttackType.MAGICAL_FIRE;
-		} else if (getName().contains("stone")) {
+		else if (getName().contains("stone"))
 			return ItemAttackType.MAGICAL_EARTH;
-		} else if (getName().contains("water")) {
+		else if (getName().contains("water"))
 			return ItemAttackType.MAGICAL_WATER;
-		} else if ((getName().contains("wind")) || (getName().contains("cyclone"))) {
+		else if ((getName().contains("wind")) || (getName().contains("cyclone")))
 			return ItemAttackType.MAGICAL_WIND;
-		}
 		return ItemAttackType.PHYSICAL;
 	}
 

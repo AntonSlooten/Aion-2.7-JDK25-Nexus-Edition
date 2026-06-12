@@ -43,15 +43,14 @@ import org.slf4j.LoggerFactory;
 
 /**
  * @author synchro2 @reworked Luzien TODO: Send Peace Dredgion without assault
- *         TODO: Artifact Siege
+ * TODO: Artifact Siege
  */
 public class BalaurAssaultService {
 
 	private static final BalaurAssaultService instance = new BalaurAssaultService();
 	private Logger log = LoggerFactory.getLogger("SIEGE_LOG");
 	private final Map<Integer, FortressAssault> fortressAssaults = new FastMap<Integer, FortressAssault>().shared();
-	// private final Map<Integer, ArtifactAssault> artifactAssaults = new
-	// FastMap<Integer, ArtifactAssault>().shared();
+	//private final Map<Integer, ArtifactAssault> artifactAssaults = new FastMap<Integer, ArtifactAssault>().shared();
 
 	public static BalaurAssaultService getInstance() {
 		return instance;
@@ -59,20 +58,18 @@ public class BalaurAssaultService {
 
 	public void onSiegeStart(final Siege<?> siege) {
 		if (siege instanceof FortressSiege) {
-			if (!calculateFortressAssault(((FortressSiege) siege).getSiegeLocation())) {
+			if (!calculateFortressAssault(((FortressSiege) siege).getSiegeLocation()))
 				return;
-			}
-		} else if (siege instanceof ArtifactSiege) {
-			if (!calculateArtifactAssault(((ArtifactSiege) siege).getSiegeLocation())) {
+		}
+		else if (siege instanceof ArtifactSiege) {
+			if (!calculateArtifactAssault(((ArtifactSiege) siege).getSiegeLocation()))
 				return;
-			}
-		} else {
+		}
+		else
 			return;
-		}
 		newAssault(siege, Rnd.get(1, 600));
-		if (LoggingConfig.LOG_SIEGE) {
+		if (LoggingConfig.LOG_SIEGE)
 			log.info("[SIEGE] Balaur Assault scheduled on Siege ID: " + siege.getSiegeLocationId() + "!");
-		}
 	}
 
 	public void onSiegeFinish(Siege<?> siege) {
@@ -80,13 +77,10 @@ public class BalaurAssaultService {
 		if (fortressAssaults.containsKey(locId)) {
 			Boolean bossIsKilled = siege.isBossKilled();
 			fortressAssaults.get(locId).finishAssault(bossIsKilled);
-			if (bossIsKilled && siege.getSiegeLocation().getRace().equals(SiegeRace.BALAUR)) {
-				log.info(
-						"[SIEGE] > [FORTRESS:" + siege.getSiegeLocationId() + "] has been captured by Balaur Assault!");
-			} else {
-				log.info("[SIEGE] > [FORTRESS:" + siege.getSiegeLocationId()
-						+ "] Balaur Assault finished without capture!");
-			}
+			if (bossIsKilled && siege.getSiegeLocation().getRace().equals(SiegeRace.BALAUR))
+				log.info("[SIEGE] > [FORTRESS:" + siege.getSiegeLocationId() + "] has been captured by Balaur Assault!");
+			else
+				log.info("[SIEGE] > [FORTRESS:" + siege.getSiegeLocationId() + "] Balaur Assault finished without capture!");
 			fortressAssaults.remove(locId);
 		}
 	}
@@ -95,32 +89,33 @@ public class BalaurAssaultService {
 		boolean isBalaurea = fortress.getWorldId() != 400010000;
 		int locationId = fortress.getLocationId();
 
-		if (fortressAssaults.containsKey(locationId) || !calcFortressInfluence(isBalaurea, fortress)) {
+		if (fortressAssaults.containsKey(locationId))
 			return false;
-		}
 
-		int count = 0; // Allow only 2 Balaur attacks per map, 1 per Balaurea map
+		if (!calcFortressInfluence(isBalaurea, fortress))
+			return false;
+
+		int count = 0; //Allow only 2 Balaur attacks per map, 1 per Balaurea map
 		for (FortressAssault fa : fortressAssaults.values()) {
 			if (fa.getWorldId() == fortress.getWorldId()) {
 				count++;
 			}
 		}
 
-		// if (count >= (isBalaurea ? 1 : 2))
-		if (count >= 1) { // Custom only 1 attack
+		//if (count >= (isBalaurea ? 1 : 2))
+		if (count >= 1) // Custom only 1 attack
 			return false;
-		}
 
 		return true;
 	}
 
 	private boolean calculateArtifactAssault(ArtifactLocation artifact) {
-		// TODO
+		//TODO
 		return false;
 	}
 
 	public void startAssault(Player player, int location, int delay) {
-		if (fortressAssaults.containsKey(location) /* || artifactAssaults.containsKey(location) */) {
+		if (fortressAssaults.containsKey(location) /* || artifactAssaults.containsKey(location)*/) {
 			PacketSendUtility.sendMessage(player, "Assault on " + location + " was already started");
 			return;
 		}
@@ -133,7 +128,8 @@ public class BalaurAssaultService {
 			FortressAssault assault = new FortressAssault((FortressSiege) siege);
 			assault.startAssault(delay);
 			fortressAssaults.put(siege.getSiegeLocationId(), assault);
-		} else if (siege instanceof ArtifactSiege) {
+		}
+		else if (siege instanceof ArtifactSiege) {
 			ArtifactAssault assault = new ArtifactAssault((ArtifactSiege) siege);
 			assault.startAssault(delay);
 		}
@@ -143,28 +139,25 @@ public class BalaurAssaultService {
 		SiegeRace locationRace = fortress.getRace();
 		float influence;
 
-		if (locationRace.equals(SiegeRace.BALAUR) || !fortress.isVulnerable()) {
+		if (locationRace.equals(SiegeRace.BALAUR) || !fortress.isVulnerable())
 			return false;
-		}
 
 		int ownedForts = 0;
 		if (isBalaurea) {
 			for (FortressLocation fl : SiegeService.getInstance().getFortresses().values()) {
-				if (fl.getWorldId() != 400010000 && !fortressAssaults.containsKey(fl.getLocationId())
-						&& fl.getRace().equals(locationRace)) {
+				if (fl.getWorldId() != 400010000 && !fortressAssaults.containsKey(fl.getLocationId()) && fl.getRace().equals(locationRace))
 					ownedForts++;
-				}
 			}
 			influence = ownedForts >= 2 ? 0.25f : 0.1f;
-			if (!SiegeConfig.BALAUR_AUTO_ASSAULT_BALAUREA) {
+			if(!SiegeConfig.BALAUR_AUTO_ASSAULT_BALAUREA){
 				influence = 0;
 			}
-		} else {
-			influence = locationRace.equals(SiegeRace.ASMODIANS) ? Influence.getInstance().getAsmos()
-					: Influence.getInstance().getElyos();
 		}
-
-		if (influence < 0.5) {
+		else{
+			influence = locationRace.equals(SiegeRace.ASMODIANS) ? Influence.getInstance().getAsmos() : Influence.getInstance().getElyos();
+		}
+		
+		if(influence < 0.5){
 			return false;
 		}
 
@@ -173,13 +166,12 @@ public class BalaurAssaultService {
 
 	public void spawnDredgion(int spawnId) {
 		AssembledNpcTemplate template = DataManager.ASSEMBLED_NPC_DATA.getAssembledNpcTemplate(spawnId);
-		FastList<AssembledNpcPart> assembledPatrs = new FastList<>();
+		FastList<AssembledNpcPart> assembledPatrs = new FastList<AssembledNpcPart>();
 		for (AssembledNpcTemplate.AssembledNpcPartTemplate npcPart : template.getAssembledNpcPartTemplates()) {
 			assembledPatrs.add(new AssembledNpcPart(IDFactory.getInstance().nextId(), npcPart));
 		}
 
-		AssembledNpc npc = new AssembledNpc(template.getRouteId(), template.getMapId(), template.getLiveTime(),
-				assembledPatrs);
+		AssembledNpc npc = new AssembledNpc(template.getRouteId(), template.getMapId(), template.getLiveTime(), assembledPatrs);
 		Iterator<Player> iter = World.getInstance().getPlayersIterator();
 		Player findedPlayer;
 		while (iter.hasNext()) {

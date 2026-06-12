@@ -32,23 +32,22 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "ActionModifiers")
 public class ActionModifiers {
 
-	@XmlElements({ @XmlElement(name = "frontdamage", type = FrontDamageModifier.class),
-			@XmlElement(name = "backdamage", type = BackDamageModifier.class),
-			@XmlElement(name = "abnormaldamage", type = AbnormalDamageModifier.class),
-			@XmlElement(name = "targetrace", type = TargetRaceDamageModifier.class) })
+	@XmlElements({ 
+		@XmlElement(name = "frontdamage", type = FrontDamageModifier.class),
+		@XmlElement(name = "backdamage", type = BackDamageModifier.class),
+		@XmlElement(name = "abnormaldamage", type = AbnormalDamageModifier.class),
+		@XmlElement(name = "targetrace", type = TargetRaceDamageModifier.class) })
 	protected List<ActionModifier> actionModifiers;
 
 	/**
 	 * Gets the value of the actionModifiers property.
 	 * <p>
-	 * Objects of the following type(s) are allowed in the list
-	 * {@link StumbleDamageModifier } {@link FrontDamageModifier }
-	 * {@link BackDamageModifier } {@link StunDamageModifier }
-	 * {@link PoisonDamageModifier } {@link TargetRaceDamageModifier }
+	 * Objects of the following type(s) are allowed in the list {@link StumbleDamageModifier } {@link FrontDamageModifier }
+	 * {@link BackDamageModifier } {@link StunDamageModifier } {@link PoisonDamageModifier } {@link TargetRaceDamageModifier }
 	 */
 	public List<ActionModifier> getActionModifiers() {
 		if (actionModifiers == null) {
-			actionModifiers = new ArrayList<>();
+			actionModifiers = new ArrayList<ActionModifier>();
 		}
 		return this.actionModifiers;
 	}

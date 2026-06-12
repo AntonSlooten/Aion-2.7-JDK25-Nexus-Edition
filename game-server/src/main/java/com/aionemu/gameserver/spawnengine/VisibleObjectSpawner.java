@@ -17,10 +17,9 @@
 package com.aionemu.gameserver.spawnengine;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,9 +80,9 @@ import com.aionemu.gameserver.world.knownlist.PlayerAwareKnownList;
 public class VisibleObjectSpawner {
 
 	private static final Logger log = LoggerFactory.getLogger(VisibleObjectSpawner.class);
-	private static final Set<Integer> modifiedTemplate = ConcurrentHashMap.newKeySet();
-	private static final Map<Integer, List<Trap>> trapLimit = new ConcurrentHashMap<>();
-	private static final int TRAP_LIMIT = 2;
+	private static List<Integer> modifiedTemplate = new ArrayList<Integer>();
+	private static Map<Integer, List<Trap>> trapLimit = new HashMap<Integer, List<Trap>>();
+	private static int TRAP_LIMIT = 2;
 
 	/**
 	 * @param spawn
@@ -101,14 +100,12 @@ public class VisibleObjectSpawner {
 		NpcType npcType = npcTemplate.getNpcType();
 
 		PortalTemplate pt = DataManager.PORTAL_DATA.getPortalTemplate(npcTemplate.getTemplateId());
-		if (pt != null && npcType != NpcType.PORTAL) {
+		if (pt != null && npcType != NpcType.PORTAL)
 			npcTemplate.setNpcType(NpcType.PORTAL);
-		}
 
 		ChestTemplate ct = DataManager.CHEST_DATA.getChestTemplate(npcTemplate.getTemplateId());
-		if (ct != null && npcType != NpcType.CHEST) {
+		if (ct != null && npcType != NpcType.CHEST)
 			npcTemplate.setNpcType(NpcType.CHEST);
-		}
 
 		Npc npc = new Npc(iDFactory.nextId(), new NpcController(), spawn, npcTemplate);
 
@@ -126,9 +123,8 @@ public class VisibleObjectSpawner {
 
 		npc.setEffectController(new EffectController(npc));
 
-		if (WalkerFormator.getInstance().processClusteredNpc(npc, instanceIndex)) {
+		if (WalkerFormator.getInstance().processClusteredNpc(npc, instanceIndex))
 			return npc;
-		}
 
 		try {
 			SpawnEngine.bringIntoWorld(npc, spawn, instanceIndex);
@@ -147,9 +143,8 @@ public class VisibleObjectSpawner {
 	 * @return
 	 */
 	protected static VisibleObject spawnSiegeNpc(SiegeSpawnTemplate spawn, int instanceIndex) {
-		if (!SiegeConfig.SIEGE_ENABLED) {
+		if (!SiegeConfig.SIEGE_ENABLED)
 			return null;
-		}
 
 		int objectId = spawn.getNpcId();
 		NpcTemplate npcTemplate = DataManager.NPC_DATA.getNpcTemplate(objectId);
@@ -165,7 +160,8 @@ public class VisibleObjectSpawner {
 
 		// Custom change templet compare to online player
 		if (loc.isVulnerable() && loc.getType() == SiegeType.FORTRESS
-				&& modifiedTemplate.add(npcTemplate.getTemplateId())) {
+				&& !modifiedTemplate.contains(npcTemplate.getTemplateId())) {
+			modifiedTemplate.add(npcTemplate.getTemplateId());
 			npcTemplate = calcCustomStat(npcTemplate, spawn.getSiegeRace());
 		}
 
@@ -174,7 +170,8 @@ public class VisibleObjectSpawner {
 			// default: GUARD
 			npc = new SiegeNpc(iDFactory.nextId(), new NpcController(), spawn, npcTemplate);
 			npc.setKnownlist(new NpcKnownList(npc));
-		} else if (spawn.isAssault() && loc.isVulnerable() && spawn.getSiegeRace().equals(SiegeRace.BALAUR)) {
+		}
+		else if (spawn.isAssault() && loc.isVulnerable() && spawn.getSiegeRace().equals(SiegeRace.BALAUR)) {
 			// attakers
 			npc = new SiegeNpc(iDFactory.nextId(), new NpcController(), spawn, npcTemplate);
 			npc.setKnownlist(new NpcKnownList(npc));
@@ -256,26 +253,24 @@ public class VisibleObjectSpawner {
 
 		PacketSendUtility.broadcastPacket(trap, new SM_PLAYER_STATE(trap));
 		// Check nb piege
-		trapLimit.compute(creator.getObjectId(), (creatorId, traps) -> {
-			List<Trap> activeTraps = traps == null ? new ArrayList<>() : traps;
-			activeTraps.add(trap);
-
-			int i = 0;
-			while (i < activeTraps.size()) {
-				Trap activeTrap = activeTraps.get(i);
-				if (activeTrap == null || !activeTrap.isSpawned()) {
-					activeTraps.remove(i);
-				} else {
-					i++;
-				}
+		List<Trap> traps = trapLimit.get(creator.getObjectId());
+		if (traps == null) {
+			traps = new ArrayList<Trap>();
+		}
+		traps.add(trap);
+		int i = 0;
+		while (i < traps.size()) {
+			if (traps.get(i) == null || !traps.get(i).isSpawned()) {
+				traps.remove(i);
+			} else {
+				i++;
 			}
-
-			while (activeTraps.size() > TRAP_LIMIT) {
-				activeTraps.get(0).getController().onDelete();
-				activeTraps.remove(0);
-			}
-			return activeTraps;
-		});
+		}
+		while (traps.size() > TRAP_LIMIT) {
+			traps.get(0).getController().onDelete();
+			traps.remove(0);
+		}
+		trapLimit.put(creator.getObjectId(), traps);
 
 		return trap;
 	}
@@ -438,9 +433,8 @@ public class VisibleObjectSpawner {
 			return null;
 		}
 		PetTemplate petTemplate = DataManager.PET_DATA.getPetTemplate(petId);
-		if (petTemplate == null) {
+		if (petTemplate == null)
 			return null;
-		}
 
 		PetController controller = new PetController();
 		Pet pet = new Pet(petTemplate, controller, petCommonData, player);

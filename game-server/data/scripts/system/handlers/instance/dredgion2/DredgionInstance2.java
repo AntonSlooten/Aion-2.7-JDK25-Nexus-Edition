@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import org.apache.commons.lang3.mutable.MutableInt;
+import org.apache.commons.lang.mutable.MutableInt;
 
 import com.aionemu.commons.network.util.ThreadPoolManager;
 import com.aionemu.gameserver.configs.main.GroupConfig;
@@ -116,7 +116,8 @@ public class DredgionInstance2 extends GeneralInstanceHandler {
 		}
 		if (!containPlayer(player)) {
 			addPlayerToReward(player);
-		} else {
+		}
+		else {
 			getPlayerReward(player).setPlayer(player);
 		}
 		sendPacket();
@@ -145,7 +146,8 @@ public class DredgionInstance2 extends GeneralInstanceHandler {
 			if (player.getRace().equals(dredgionReward.getWinningRace())) {
 				abyssPoint = dredgionReward.getWinnerPoints();
 				ItemService.addItem(player, 166000130, 3);
-			} else {
+			}
+			else {
 				abyssPoint = dredgionReward.getLooserPoints();
 				ItemService.addItem(player, 166000120, 3);
 			}
@@ -174,9 +176,8 @@ public class DredgionInstance2 extends GeneralInstanceHandler {
 			summon.getController().release(UnsummonType.UNSPECIFIED);
 		}
 
-		PacketSendUtility.broadcastPacket(player,
-				new SM_EMOTION(player, EmotionType.DIE, 0, lastAttacker == null ? 0 : lastAttacker.getObjectId()),
-				true);
+		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.DIE, 0, lastAttacker == null ? 0
+			: lastAttacker.getObjectId()), true);
 
 		PacketSendUtility.sendPacket(player, new SM_DIE(player.haveSelfRezEffect(), player.haveSelfRezItem(), 0, 8));
 		if (lastAttacker != null) {
@@ -193,7 +194,8 @@ public class DredgionInstance2 extends GeneralInstanceHandler {
 					}
 					updateScore((Player) lastAttacker, player, points, true);
 				}
-			} else {
+			}
+			else {
 				updateScore(player, null, -60, false);
 			}
 		}
@@ -236,18 +238,18 @@ public class DredgionInstance2 extends GeneralInstanceHandler {
 					playersToGainScore.add(member);
 				}
 			}
-		} else {
+		}
+		else {
 			playersToGainScore.add(player);
 		}
 
 		for (Player playerToGainScore : playersToGainScore) {
 			addPointToPlayer(playerToGainScore, Math.round(points / playersToGainScore.size()));
 			if (target instanceof Npc) {
-				PacketSendUtility.sendPacket(playerToGainScore, new SM_SYSTEM_MESSAGE(1400237,
-						new DescriptionId(((Npc) target).getObjectTemplate().getNameId() * 2 + 1), points));
-			} else if (target instanceof Player) {
-				PacketSendUtility.sendPacket(playerToGainScore,
-						new SM_SYSTEM_MESSAGE(1400237, target.getName(), points));
+				PacketSendUtility.sendPacket(playerToGainScore, new SM_SYSTEM_MESSAGE(1400237, new DescriptionId(((Npc) target).getObjectTemplate().getNameId() * 2 + 1), points));
+			}
+			else if (target instanceof Player) {
+				PacketSendUtility.sendPacket(playerToGainScore, new SM_SYSTEM_MESSAGE(1400237, target.getName(), points));
 			}
 		}
 
@@ -258,16 +260,19 @@ public class DredgionInstance2 extends GeneralInstanceHandler {
 		}
 		if (pointDifference >= 3000) {
 			loosingGroupMultiplier = 10;
-		} else if (pointDifference >= 1000) {
+		}
+		else if (pointDifference >= 1000) {
 			loosingGroupMultiplier = 1.5f;
-		} else {
+		}
+		else {
 			loosingGroupMultiplier = 1;
 		}
 
 		// pvpKills for pvp and balaurKills for pve
 		if (pvpKill && points > 0) {
 			addPvPKillToPlayer(player);
-		} else if (target instanceof Npc && ((Npc) target).getRace().equals(Race.DRAKAN)) {
+		}
+		else if (target instanceof Npc && ((Npc) target).getRace().equals(Race.DRAKAN)){
 			addBalaurKillToPlayer(player);
 		}
 		sendPacket();
@@ -279,9 +284,11 @@ public class DredgionInstance2 extends GeneralInstanceHandler {
 		Player mostPlayerDamage = npc.getAggroList().getMostPlayerDamage();
 		if (hpGauge <= 5) {
 			updateScore(mostPlayerDamage, npc, 12, false);
-		} else if (hpGauge <= 9) {
+		}
+		else if (hpGauge <= 9) {
 			updateScore(mostPlayerDamage, npc, 32, false);
-		} else {
+		}
+		else {
 			updateScore(mostPlayerDamage, npc, 42, false);
 		}
 	}
@@ -319,7 +326,8 @@ public class DredgionInstance2 extends GeneralInstanceHandler {
 		long result = System.currentTimeMillis() - instanceTime;
 		if (result < 120000) {
 			return (int) (120000 - result);
-		} else if (result < 2520000) {
+		}
+		else if (result < 2520000) {
 			return (int) (2400000 - (result - 120000));
 		}
 		return 0;
@@ -329,8 +337,7 @@ public class DredgionInstance2 extends GeneralInstanceHandler {
 		sp(npcId, x, y, z, h, 0, time);
 	}
 
-	protected void sp(final int npcId, final float x, final float y, final float z, final byte h, final int staticId,
-			final int time) {
+	protected void sp(final int npcId, final float x, final float y, final float z, final byte h, final int staticId, final int time) {
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override

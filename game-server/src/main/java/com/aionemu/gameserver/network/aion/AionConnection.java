@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -38,6 +38,7 @@ import com.aionemu.gameserver.model.account.Account;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.Crypt;
 import com.aionemu.gameserver.network.PacketFloodFilter;
+import com.aionemu.gameserver.network.PacketLoggerService;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_KEY;
 import com.aionemu.gameserver.network.factories.AionPacketHandlerFactory;
 import com.aionemu.gameserver.network.loginserver.LoginServer;
@@ -48,7 +49,7 @@ import com.google.common.base.Preconditions;
 
 /**
  * Object representing connection between GameServer and Aion Client.
- *
+ * 
  * @author -Nemesiss-
  */
 public class AionConnection extends AConnection {
@@ -58,10 +59,10 @@ public class AionConnection extends AConnection {
 	 */
 	private static final Logger log = LoggerFactory.getLogger(AionConnection.class);
 
-	private static final PacketProcessor<AionConnection> packetProcessor = new PacketProcessor<>(
-			NetworkConfig.PACKET_PROCESSOR_MIN_THREADS, NetworkConfig.PACKET_PROCESSOR_MAX_THREADS,
-			NetworkConfig.PACKET_PROCESSOR_THREAD_SPAWN_THRESHOLD, NetworkConfig.PACKET_PROCESSOR_THREAD_KILL_THRESHOLD,
-			new ExecuteWrapper());
+	private static final PacketProcessor<AionConnection> packetProcessor = new PacketProcessor<AionConnection>(
+		NetworkConfig.PACKET_PROCESSOR_MIN_THREADS, NetworkConfig.PACKET_PROCESSOR_MAX_THREADS,
+		NetworkConfig.PACKET_PROCESSOR_THREAD_SPAWN_THRESHOLD, NetworkConfig.PACKET_PROCESSOR_THREAD_KILL_THRESHOLD,
+		new ExecuteWrapper());
 
 	/**
 	 * Possible states of AionConnection
@@ -84,13 +85,13 @@ public class AionConnection extends AConnection {
 	/**
 	 * Server Packet "to send" Queue
 	 */
-	private final FastList<AionServerPacket> sendMsgQueue = new FastList<>();
+	private final FastList<AionServerPacket> sendMsgQueue = new FastList<AionServerPacket>();
 
 	/**
 	 * Current state of this connection
 	 */
 	private volatile State state;
-
+	
 	/**
 	 * AionClient is authenticating by passing to GameServer id of account.
 	 */
@@ -104,35 +105,34 @@ public class AionConnection extends AConnection {
 	/**
 	 * active Player that owner of this connection is playing [entered game]
 	 */
-	private AtomicReference<Player> activePlayer = new AtomicReference<>();
+	private AtomicReference<Player> activePlayer = new AtomicReference<Player>();
 	private String lastPlayerName = "";
 
 	private AionPacketHandler aionPacketHandler;
 	private long lastPingTimeMS;
 
 	private int nbInvalidPackets = 0;
-	// TODO! why there is no any comments what is this doing? i have no clue what is
-	// it for [Nemesiss]
+	// TODO! why there is no any comments what is this doing? i have no clue what is it for [Nemesiss]
 	private final static int MAX_INVALID_PACKETS = 3;
 
 	private String macAddress;
 
 	/** Ping checker - for detecting hanged up connections **/
 	private PingChecker pingChecker;
-
-	/** packet flood filter **/
+	
+	/**  packet flood filter  **/
 	private int[] pff;
 	private long[] pffRequests;
 
 	/**
 	 * Constructor
-	 *
+	 * 
 	 * @param sc
 	 * @param d
 	 * @throws IOException
 	 */
 	public AionConnection(SocketChannel sc, Dispatcher d) throws IOException {
-		super(sc, d, 8192 * 2, 8192 * 2);
+		super(sc, d, 8192*2, 8192*2);
 
 		AionPacketHandlerFactory aionPacketHandlerFactory = AionPacketHandlerFactory.getInstance();
 		this.aionPacketHandler = aionPacketHandlerFactory.getPacketHandler();
@@ -144,8 +144,8 @@ public class AionConnection extends AConnection {
 
 		pingChecker = new PingChecker();
 		pingChecker.start();
-
-		if (CustomConfig.PFF_ENABLE) {
+		
+		if(CustomConfig.PFF_ENABLE) {
 			pff = PacketFloodFilter.getInstance().getPackets();
 			pffRequests = new long[pff.length];
 		}
@@ -157,109 +157,103 @@ public class AionConnection extends AConnection {
 		sendPacket(new SM_KEY());
 	}
 
+
 	/**
-	 * Enable crypt key - generate random key that will be used to encrypt second
-	 * server packet [first one is unencrypted] and decrypt client packets. This
-	 * method is called from SM_KEY server packet, that packet sends key to aion
-	 * client.
-	 *
-	 * @return "false key" that should by used by aion client to encrypt/decrypt
-	 *         packets.
+	 * Enable crypt key - generate random key that will be used to encrypt second server packet [first one is unencrypted]
+	 * and decrypt client packets. This method is called from SM_KEY server packet, that packet sends key to aion client.
+	 * 
+	 * @return "false key" that should by used by aion client to encrypt/decrypt packets.
 	 */
 	public final int enableCryptKey() {
 		return crypt.enableKey();
 	}
 
 	/**
-	 * Called by Dispatcher. ByteBuffer data contains one packet that should be
-	 * processed.
-	 *
+	 * Called by Dispatcher. ByteBuffer data contains one packet that should be processed.
+	 * 
 	 * @param data
-	 * @return True if data was processed correctly, False if some error occurred
-	 *         and connection should be closed NOW.
+	 * @return True if data was processed correctly, False if some error occurred and connection should be closed NOW.
 	 */
 	@Override
 	protected final boolean processData(ByteBuffer data) {
 		try {
 			if (!crypt.decrypt(data)) {
 				nbInvalidPackets++;
-				log.debug(
-						"[" + nbInvalidPackets + "/" + MAX_INVALID_PACKETS + "] Decrypt fail, client packet passed...");
+				log.debug("[" + nbInvalidPackets + "/" + MAX_INVALID_PACKETS + "] Decrypt fail, client packet passed...");
 				if (nbInvalidPackets >= MAX_INVALID_PACKETS) {
 					log.warn("Decrypt fail!");
 					return false;
 				}
 				return true;
 			}
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			log.error("Exception caught during decrypt!" + ex.getMessage());
 			return false;
 		}
 
-		if (data.remaining() < 5) {// op + static code + op == 5 bytes
-			log.error("Received fake packet from: " + this);
+		if(data.remaining() < 5) {//op + static code + op == 5 bytes
+			log.error("Received fake packet from: "+this);
 			return false;
 		}
-
+			
 		AionClientPacket pck = aionPacketHandler.handle(data, this);
 
 		/**
 		 * Execute packet only if packet exist (!= null) and read was ok.
 		 */
 		if (pck != null) {
-			if (CustomConfig.PFF_ENABLE) {
+			if(CustomConfig.PFF_ENABLE) { 
 				int opcode = pck.getOpcode();
-				if (pff.length > opcode) {
-					if (pff[opcode] > 0) {
+				if(pff.length > opcode) {		
+					if(pff[opcode] > 0) {
 						long last = this.pffRequests[opcode];
-						if (last == 0) {
+						if(last == 0)
 							this.pffRequests[opcode] = System.currentTimeMillis();
-						} else {
+						else {
 							long diff = System.currentTimeMillis() - last;
-							if (diff < pff[opcode]) {
-								log.warn(this + " has flooding " + pck.getClass().getSimpleName() + " " + diff);
-								switch (CustomConfig.PFF_LEVEL) {
-								case 1: // disconnect
-									return false;
-								case 2:
-									break;
+							if(diff < pff[opcode]) {
+								log.warn(this+" has flooding "+pck.getClass().getSimpleName()+" "+diff);
+								switch(CustomConfig.PFF_LEVEL) {
+									case 1: //disconnect
+										return false;
+									case 2:
+										break;
 								}
-							} else {
-								this.pffRequests[opcode] = System.currentTimeMillis();
 							}
+							else this.pffRequests[opcode] = System.currentTimeMillis();
 						}
 					}
 				}
 			}
 
-			if (pck.read()) {
+			PacketLoggerService.getInstance().logPacketCM(pck.getPacketName());
+
+			if(pck.read())
 				packetProcessor.executePacket(pck);
-			}
 		}
 
 		return true;
 	}
 
 	/**
-	 * This method will be called by Dispatcher, and will be repeated till return
-	 * false.
-	 *
+	 * This method will be called by Dispatcher, and will be repeated till return false.
+	 * 
 	 * @param data
-	 * @return True if data was written to buffer, False indicating that there are
-	 *         not any more data to write.
+	 * @return True if data was written to buffer, False indicating that there are not any more data to write.
 	 */
 	@Override
 	protected final boolean writeData(ByteBuffer data) {
 		synchronized (guard) {
 			final long begin = System.nanoTime();
-			if (sendMsgQueue.isEmpty()) {
+			if (sendMsgQueue.isEmpty())
 				return false;
-			}
 			AionServerPacket packet = sendMsgQueue.removeFirst();
 			try {
 				packet.write(this, data);
 				return true;
-			} finally {
+			}
+			finally {
 				RunnableStatsManager.handleStats(packet.getClass(), "runImpl()", System.nanoTime() - begin);
 			}
 
@@ -268,9 +262,8 @@ public class AionConnection extends AConnection {
 
 	/**
 	 * This method is called by Dispatcher when connection is ready to be closed.
-	 *
-	 * @return time in ms after witch onDisconnect() method will be called. Always
-	 *         return 0.
+	 * 
+	 * @return time in ms after witch onDisconnect() method will be called. Always return 0.
 	 */
 	@Override
 	protected final long getDisconnectionDelay() {
@@ -307,7 +300,7 @@ public class AionConnection extends AConnection {
 
 	/**
 	 * Encrypt packet.
-	 *
+	 * 
 	 * @param buf
 	 */
 	public final void encrypt(ByteBuffer buf) {
@@ -316,17 +309,17 @@ public class AionConnection extends AConnection {
 
 	/**
 	 * Sends AionServerPacket to this client.
-	 *
-	 * @param bp AionServerPacket to be sent.
+	 * 
+	 * @param bp
+	 *          AionServerPacket to be sent.
 	 */
 	public final void sendPacket(AionServerPacket bp) {
 		synchronized (guard) {
 			/**
 			 * Connection is already closed or waiting for last (close packet) to be sent
 			 */
-			if (isWriteDisabled()) {
+			if (isWriteDisabled())
 				return;
-			}
 
 			sendMsgQueue.addLast(bp);
 			enableWriteInterest();
@@ -334,19 +327,19 @@ public class AionConnection extends AConnection {
 	}
 
 	/**
-	 * Its guaranteed that closePacket will be sent before closing connection, but
-	 * all past and future packets wont. Connection will be closed [by Dispatcher
-	 * Thread], and onDisconnect() method will be called to clear all other things.
-	 * forced means that server shouldn't wait with removing this connection.
-	 *
-	 * @param closePacket Packet that will be send before closing.
-	 * @param forced      have no effect in this implementation.
+	 * Its guaranteed that closePacket will be sent before closing connection, but all past and future packets wont.
+	 * Connection will be closed [by Dispatcher Thread], and onDisconnect() method will be called to clear all other
+	 * things. forced means that server shouldn't wait with removing this connection.
+	 * 
+	 * @param closePacket
+	 *          Packet that will be send before closing.
+	 * @param forced
+	 *          have no effect in this implementation.
 	 */
 	public final void close(AionServerPacket closePacket, boolean forced) {
 		synchronized (guard) {
-			if (isWriteDisabled()) {
+			if (isWriteDisabled())
 				return;
-			}
 
 			pendingClose = true;
 			isForcedClosing = forced;
@@ -358,7 +351,7 @@ public class AionConnection extends AConnection {
 
 	/**
 	 * Current state of this connection
-	 *
+	 * 
 	 * @return state
 	 */
 	public final State getState() {
@@ -367,8 +360,9 @@ public class AionConnection extends AConnection {
 
 	/**
 	 * Sets the state of this connection
-	 *
-	 * @param state state of this connection
+	 * 
+	 * @param state
+	 *          state of this connection
 	 */
 	public void setState(State state) {
 		this.state = state;
@@ -376,7 +370,7 @@ public class AionConnection extends AConnection {
 
 	/**
 	 * Returns account object associated with this connection
-	 *
+	 * 
 	 * @return account object associated with this connection
 	 */
 	public Account getAccount() {
@@ -385,8 +379,9 @@ public class AionConnection extends AConnection {
 
 	/**
 	 * Sets account object associated with this connection
-	 *
-	 * @param account account object associated with this connection
+	 * 
+	 * @param account
+	 *          account object associated with this connection
 	 */
 	public void setAccount(Account account) {
 		Preconditions.checkArgument(account != null, "Account can't be null");
@@ -395,7 +390,7 @@ public class AionConnection extends AConnection {
 
 	/**
 	 * Sets Active player to new value. Update connection state to correct value.
-	 *
+	 * 
 	 * @param player
 	 * @return True if active player was set to new value.
 	 */
@@ -403,7 +398,8 @@ public class AionConnection extends AConnection {
 		if (player == null) {
 			activePlayer.set(player);
 			setState(State.AUTHED);
-		} else if (activePlayer.compareAndSet(null, player)) {
+		} 
+		else if (activePlayer.compareAndSet(null, player)) {
 			setState(State.IN_GAME);
 			lastPlayerName = player.getName();
 		} else {
@@ -414,7 +410,7 @@ public class AionConnection extends AConnection {
 
 	/**
 	 * Return active player or null.
-	 *
+	 * 
 	 * @return active player or null.
 	 */
 	public Player getActivePlayer() {
@@ -429,7 +425,8 @@ public class AionConnection extends AConnection {
 	}
 
 	/**
-	 * @param lastPingTimeMS the lastPingTimeMS to set
+	 * @param lastPingTimeMS
+	 *          the lastPingTimeMS to set
 	 */
 	public void setLastPingTimeMS(long lastPingTimeMS) {
 		this.lastPingTimeMS = lastPingTimeMS;
@@ -451,9 +448,8 @@ public class AionConnection extends AConnection {
 	public String toString() {
 		Player player = activePlayer.get();
 		if (player != null) {
-			return "AionConnection [state=" + state + ", account=" + account + ", getObjectId()=" + player.getObjectId()
-					+ ", lastPlayerName=" + lastPlayerName + ", macAddress=" + macAddress + ", getIP()=" + getIP()
-					+ "]";
+			return "AionConnection [state=" + state + ", account=" + account + ", getObjectId()=" + player.getObjectId() 
+					+ ", lastPlayerName=" + lastPlayerName + ", macAddress=" + macAddress + ", getIP()=" + getIP() + "]";
 		}
 		return "";
 	}

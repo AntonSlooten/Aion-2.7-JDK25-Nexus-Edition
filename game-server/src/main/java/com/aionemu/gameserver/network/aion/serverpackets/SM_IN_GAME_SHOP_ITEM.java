@@ -28,7 +28,6 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
 public class SM_IN_GAME_SHOP_ITEM extends AionServerPacket {
 
 	private IGItem item;
-
 	public SM_IN_GAME_SHOP_ITEM(Player player, int objectItem) {
 		item = InGameShopEn.getInstance().getIGItem(objectItem);
 	}

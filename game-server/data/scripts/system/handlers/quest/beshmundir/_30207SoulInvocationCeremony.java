@@ -61,22 +61,24 @@ public class _30207SoulInvocationCeremony extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798941: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(182209609);
-					if (itemCount1 > 19) {
-						removeQuestItem(env, 182209609, 20);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 2375);
-					} else
-						return sendQuestDialog(env, 2716);
-				}
+				case 798941: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182209609);
+							if (itemCount1 > 19) {
+								removeQuestItem(env, 182209609, 20);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 2375);
+							}
+							else
+								return sendQuestDialog(env, 2716);
+						}
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798941) {
 				if (env.getDialogId() == 34)
 					return sendQuestDialog(env, 5);

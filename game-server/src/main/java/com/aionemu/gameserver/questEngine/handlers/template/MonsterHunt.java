@@ -39,24 +39,26 @@ public class MonsterHunt extends QuestHandler {
 	private final int endNpc2;
 	private final FastMap<Integer, Monster> monsters;
 
-	public MonsterHunt(int questId, int startNpc, int startNpc2, int endNpc, int endNpc2,
-			FastMap<Integer, Monster> monsters) {
+	public MonsterHunt(int questId, int startNpc, int startNpc2, int endNpc, int endNpc2, FastMap<Integer, Monster> monsters) {
 		super(questId);
 		this.questId = questId;
 		this.startNpc = startNpc;
 		if (startNpc2 != 0) {
 			this.startNpc2 = startNpc2;
-		} else {
+		}
+		else {
 			this.startNpc2 = this.startNpc;
 		}
 		if (endNpc != 0) {
 			this.endNpc = endNpc;
-		} else {
+		}
+		else {
 			this.endNpc = startNpc;
 		}
 		if (endNpc2 != 0) {
 			this.endNpc2 = endNpc2;
-		} else {
+		}
+		else {
 			this.endNpc2 = this.endNpc;
 		}
 		this.monsters = monsters;
@@ -92,11 +94,13 @@ public class MonsterHunt extends QuestHandler {
 			if (startNpc == 0 || targetId == startNpc || targetId == startNpc2) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			for (Monster mi : monsters.values()) {
 				if (mi.getEndVar() > qs.getQuestVarById(mi.getVar())) {
 					return false;
@@ -105,13 +109,15 @@ public class MonsterHunt extends QuestHandler {
 			if (targetId == endNpc || targetId == endNpc2) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1352);
-				} else if (env.getDialog() == QuestDialog.SELECT_REWARD) {
+				}
+				else if (env.getDialog() == QuestDialog.SELECT_REWARD) {
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
 					return sendQuestDialog(env, 5);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == endNpc || targetId == endNpc2) {
 				return sendQuestEndDialog(env);
 			}
@@ -128,22 +134,20 @@ public class MonsterHunt extends QuestHandler {
 			if (m != null) {
 				if (qs.getQuestVarById(m.getVar()) < m.getEndVar()) {
 					qs.setQuestVarById(m.getVar(), qs.getQuestVarById(m.getVar()) + 1);
-
-					// if is the last kill
+					
+					//if is the last kill
 					boolean complet = true;
-					for (Monster mob : monsters.values()) {
-						if (qs.getQuestVarById(mob.getVar()) < m.getEndVar()) {
+					for(Monster mob : monsters.values())
+						if(qs.getQuestVarById(mob.getVar()) < m.getEndVar()){
 							complet = false;
 							break;
 						}
-					}
-
-					if (complet) {
-						if (qs.getQuestVarById(m.getVar()) == m.getEndVar()) {
+					
+					if(complet){
+						if(qs.getQuestVarById(m.getVar()) == m.getEndVar())
 							qs.setStatus(QuestStatus.REWARD);
-						}
 					}
-					updateQuestStatus(env);
+                	updateQuestStatus(env);
 					return true;
 				}
 			}

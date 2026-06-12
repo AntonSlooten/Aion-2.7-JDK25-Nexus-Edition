@@ -39,7 +39,7 @@ public class TargetCondition extends Condition {
 
 	/**
 	 * Gets the value of the value property.
-	 *
+	 * 
 	 * @return possible object is {@link TargetAttribute }
 	 */
 	public TargetAttribute getValue() {
@@ -53,14 +53,14 @@ public class TargetCondition extends Condition {
 		}
 		skill.setTargetCondition(value);
 		switch (value) {
-		case NPC:
-			return ((skill.getFirstTarget() instanceof Npc) || (skill.checkNonTargetAOE()));
-		case PC:
-			return ((skill.getFirstTarget() instanceof Player)
-					|| ((skill.getEffector() instanceof Summon) && (skill.isFirstTargetSelf()))
-					|| ((skill.getEffector() instanceof Servant) && (skill.isFirstTargetSelf())));
-		default:
-			return false;
+			case NPC:
+				return ((skill.getFirstTarget() instanceof Npc) || (skill.checkNonTargetAOE()));
+			case PC:
+				return ( (skill.getFirstTarget() instanceof Player)
+						|| ((skill.getEffector() instanceof Summon) && (skill.isFirstTargetSelf()))
+						|| ((skill.getEffector() instanceof Servant) && (skill.isFirstTargetSelf())) );
+			default:
+				return false;
 		}
 	}
 }

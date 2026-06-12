@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -18,7 +18,6 @@ package com.aionemu.loginserver.network.gameserver.clientpackets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.aionemu.commons.utils.Rnd;
 import com.aionemu.loginserver.controller.AccountController;
 import com.aionemu.loginserver.model.Account;

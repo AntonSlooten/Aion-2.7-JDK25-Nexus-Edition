@@ -29,8 +29,7 @@ import com.aionemu.gameserver.questEngine.model.QuestStatus;
 import com.aionemu.gameserver.questEngine.task.QuestTasks;
 
 /**
- * Collect Bloodwing Meat and lure Vison (798214). Take Bloodwing Meat to Tityus
- * (798191).
+ * Collect Bloodwing Meat and lure Vison (798214). Take Bloodwing Meat to Tityus (798191).
  * 
  * @author Balthazar
  * @reworked vlog
@@ -65,36 +64,38 @@ public class _3092VisonTheDrakie extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 798191) { // Tityus
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				default:
-					return sendQuestStartDialog(env);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798214: { // Vison
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 0) {
-						long itemCount = player.getInventory().getItemCountByItemId(182208066);
-						if (itemCount >= 25) {
-							return sendQuestDialog(env, 1352);
+				case 798214: { // Vison
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 0) {
+								long itemCount = player.getInventory().getItemCountByItemId(182208066);
+								if (itemCount >= 25) {
+									return sendQuestDialog(env, 1352);
+								}
+							}
+						}
+						case STEP_TO_1: {
+							Npc npc = (Npc) env.getVisibleObject();
+							npc.getAi2().onCreatureEvent(AIEventType.FOLLOW_ME, player);
+							player.getController().addTask(TaskId.QUEST_FOLLOW,
+								QuestTasks.newFollowingToTargetCheckTask(env, 402, 1219, 134));
+							return defaultCloseDialog(env, 0, 1); // 1
 						}
 					}
 				}
-				case STEP_TO_1: {
-					Npc npc = (Npc) env.getVisibleObject();
-					npc.getAi2().onCreatureEvent(AIEventType.FOLLOW_ME, player);
-					player.getController().addTask(TaskId.QUEST_FOLLOW,
-							QuestTasks.newFollowingToTargetCheckTask(env, 402, 1219, 134));
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798191) { // Tityus
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 2375);
@@ -102,7 +103,8 @@ public class _3092VisonTheDrakie extends QuestHandler {
 					if (player.getInventory().getItemCountByItemId(182208066) >= 25) {
 						removeQuestItem(env, 182208066, 25);
 						return sendQuestEndDialog(env);
-					} else {
+					}
+					else {
 						return sendQuestDialog(env, 2716);
 					}
 				}

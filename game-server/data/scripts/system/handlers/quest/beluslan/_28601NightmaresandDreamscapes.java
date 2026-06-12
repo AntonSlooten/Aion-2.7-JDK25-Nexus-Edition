@@ -51,19 +51,23 @@ public class _28601NightmaresandDreamscapes extends QuestHandler {
 			if (targetId == 204702) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env, 182213006, 1);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 205234) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 2375);
-				} else if (env.getDialog() == QuestDialog.SELECT_REWARD) {
+				}
+				else if (env.getDialog() == QuestDialog.SELECT_REWARD) {
 					return defaultCloseDialog(env, 0, 0, true, true, 0, 0, 182213006, 1);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 205234) {
 				return sendQuestEndDialog(env);
 			}

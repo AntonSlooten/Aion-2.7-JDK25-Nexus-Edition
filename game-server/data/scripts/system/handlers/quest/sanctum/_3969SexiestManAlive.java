@@ -67,7 +67,8 @@ public class _3969SexiestManAlive extends QuestHandler {
 						return sendQuestStartDialog(env);
 					}
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -88,14 +89,15 @@ public class _3969SexiestManAlive extends QuestHandler {
 						qs.setQuestVar(++var);
 						qs.setStatus(QuestStatus.REWARD);
 						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					}
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (targetId == 798390)// Palentine
+		}
+		else if (targetId == 798390)// Palentine
 		{
 			if (qs.getStatus() == QuestStatus.REWARD) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT)

@@ -59,7 +59,7 @@ import com.aionemu.gameserver.world.zone.ZoneInstance;
 
 /**
  * This class is for controlling Npc's
- *
+ * 
  * @author -Nemesiss-, ATracer (2009-09-29), Sarynth modified by Wakizashi
  */
 
@@ -70,10 +70,9 @@ public class NpcController extends CreatureController<Npc> {
 	@Override
 	public void notSee(VisibleObject object, boolean isOutOfRange) {
 		super.notSee(object, isOutOfRange);
-		if (object instanceof Creature) {
+		if (object instanceof Creature)
 			getOwner().getAggroList().remove((Creature) object);
-			// TODO not see player ai event
-		}
+		// TODO not see player ai event
 	}
 
 	@Override
@@ -85,10 +84,10 @@ public class NpcController extends CreatureController<Npc> {
 		}
 		if (object instanceof Player) {
 			// TODO see player ai event
-			if (owner.getLifeStats().isAlreadyDead()) {
+			if (owner.getLifeStats().isAlreadyDead())
 				DropService.getInstance().see((Player) object, owner);
-			}
-		} else if (object instanceof Summon) {
+		}
+		else if (object instanceof Summon) {
 			// TODO see summon ai event
 		}
 	}
@@ -99,11 +98,10 @@ public class NpcController extends CreatureController<Npc> {
 		Npc owner = getOwner();
 
 		// set state from npc templates
-		if (owner.getObjectTemplate().getState() != 0) {
+		if (owner.getObjectTemplate().getState() != 0)
 			owner.setState(owner.getObjectTemplate().getState());
-		} else {
+		else
 			owner.setState(CreatureState.NPC_IDLE);
-		}
 
 		owner.getLifeStats().setCurrentHpPercent(100);
 		owner.getAi2().onGeneralEvent(AIEventType.RESPAWNED);
@@ -131,28 +129,23 @@ public class NpcController extends CreatureController<Npc> {
 	public void onDie(Creature lastAttacker) {
 		super.onDie(lastAttacker);
 		Npc owner = getOwner();
-		if (owner.getSpawn().hasPool()) {
+		if (owner.getSpawn().hasPool())
 			owner.getSpawn().setUse(false);
-		}
-		PacketSendUtility.broadcastPacket(owner,
-				new SM_EMOTION(owner, EmotionType.DIE, 0, lastAttacker == null ? 0 : lastAttacker.getObjectId()));
-		if (owner.getAi2().poll(AIQuestion.SHOULD_REWARD)) {
+		PacketSendUtility.broadcastPacket(owner, new SM_EMOTION(owner, EmotionType.DIE, 0, lastAttacker == null ? 0
+			: lastAttacker.getObjectId()));
+		if (owner.getAi2().poll(AIQuestion.SHOULD_REWARD))
 			this.doReward();
-		}
 
 		owner.getPosition().getWorldMapInstance().getInstanceHandler().onDie(owner);
 		owner.getAi2().onGeneralEvent(AIEventType.DIED);
 
-		if (owner.getAi2().poll(AIQuestion.SHOULD_DECAY)) {
+		if (owner.getAi2().poll(AIQuestion.SHOULD_DECAY))
 			addTask(TaskId.DECAY, RespawnService.scheduleDecayTask(owner));
-		}
-		if (owner.getAi2().poll(AIQuestion.SHOULD_RESPAWN)
-				&& !SiegeService.getInstance().isSiegeNpcInActiveSiege(getOwner())) {
+		if (owner.getAi2().poll(AIQuestion.SHOULD_RESPAWN) && !SiegeService.getInstance().isSiegeNpcInActiveSiege(getOwner()))
 			scheduleRespawn();
-		} else {
-			if (!hasScheduledTask(TaskId.DECAY)) {
+		else {
+			if (!hasScheduledTask(TaskId.DECAY))
 				onDelete();
-			}
 		}
 	}
 
@@ -160,45 +153,41 @@ public class NpcController extends CreatureController<Npc> {
 	public void doReward() {
 		AionObject winner = getOwner().getAggroList().getMostDamage();
 
-		if (winner == null) {
+		if (winner == null)
 			return;
-		}
 
-		// CustomRank
-		if (CustomFun.CUSTOM_RANK_ENABLED) {
+		//CustomRank
+		if(CustomFun.CUSTOM_RANK_ENABLED)
 			CustomPlayerRank.onMonsterKill(getOwner());
-		}
-
-		if (winner instanceof PlayerAlliance) {
+		
+		if (winner instanceof PlayerAlliance)
 			PlayerTeamDistributionService.doReward((PlayerAlliance) winner, getOwner());
-		} else if (winner instanceof PlayerGroup) {
+		else if (winner instanceof PlayerGroup)
 			PlayerTeamDistributionService.doReward((PlayerGroup) winner, getOwner());
-		} else if (((Player) winner).isInGroup2()) {
+		else if (((Player) winner).isInGroup2())
 			PlayerTeamDistributionService.doReward(((Player) winner).getPlayerGroup2(), getOwner());
-		} else {
+		else {
 			super.doReward();
 
-			Player player = (Player) ((Creature) winner).getActingCreature();
+			Player player = (Player) ((Creature) winner).getActingCreature();;
 
 			long expReward = StatFunctions.calculateSoloExperienceReward(player, getOwner());
-			player.getCommonData().addExp(expReward, RewardType.HUNTING,
-					this.getOwner().getObjectTemplate().getNameId());
+			player.getCommonData().addExp(expReward, RewardType.HUNTING, this.getOwner().getObjectTemplate().getNameId());
 
 			int currentDp = player.getCommonData().getDp();
 			int dpReward = StatFunctions.calculateSoloDPReward(player, getOwner());
 			player.getCommonData().setDp(dpReward + currentDp);
 
-			if (getOwner().isRewardAP()) {
+			if (getOwner().isRewardAP())
 				AbyssPointsService.addAp(player, StatFunctions.calculatePvEApGained(player, getOwner()));
-			}
 
 			QuestEngine.getInstance().onKill(new QuestEnv(getOwner(), player, 0, 0));
 			DropRegistrationService.getInstance().registerDrop(getOwner(), player, player.getLevel(), null);
 			// notify instance script
 		}
-
+		
 		// Custom DropShopPoint
-		if (CustomDrop.SHOPPOINTS_DROPABLE) {
+		if(CustomDrop.SHOPPOINTS_DROPABLE) {
 			DropShopPoint d = new DropShopPoint(getOwner());
 			d.callNpcShopPointRewardForPlayer();
 		}
@@ -229,17 +218,15 @@ public class NpcController extends CreatureController<Npc> {
 
 	@Override
 	public void onAttack(Creature creature, int skillId, TYPE type, int damage, boolean notifyAttack, LOG log) {
-		if (getOwner().getLifeStats().isAlreadyDead()) {
+		if (getOwner().getLifeStats().isAlreadyDead())
 			return;
-		}
 		final Creature actingCreature;
-
-		// summon should gain its own aggro
-		if (creature instanceof Summon) {
+		
+		//summon should gain its own aggro
+		if (creature instanceof Summon)
 			actingCreature = creature;
-		} else {
+		else
 			actingCreature = creature.getActingCreature();
-		}
 
 		super.onAttack(actingCreature, skillId, type, damage, notifyAttack, log);
 
@@ -270,9 +257,10 @@ public class NpcController extends CreatureController<Npc> {
 		Player player = npc.getQuestPlayer();
 		if (zoneInstance.getAreaTemplate().getZoneName() == null) {
 			log.error("No name found for a Zone in the map " + zoneInstance.getAreaTemplate().getWorldId());
-		} else {
+		}
+		else {
 			QuestEngine.getInstance().onEnterZone(new QuestEnv(npc, player, 0, 0),
-					zoneInstance.getAreaTemplate().getZoneName());
+				zoneInstance.getAreaTemplate().getZoneName());
 		}
 	}
 

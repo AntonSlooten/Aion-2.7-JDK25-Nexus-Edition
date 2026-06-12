@@ -71,31 +71,31 @@ public class _1013HuntingLepharistRevolutionaries extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 203126) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 11)
-						return sendQuestDialog(env, 1352);
-					else if (var >= 12) {
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 2375);
-					}
-				case SELECT_ACTION_1012:
-					playQuestMovie(env, 25);
-					return sendQuestDialog(env, 1012);
-				case STEP_TO_1:
-				case STEP_TO_2:
-					if (var == 0 || var == 11) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+						else if (var == 11)
+							return sendQuestDialog(env, 1352);
+						else if (var >= 12) {
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return sendQuestDialog(env, 2375);
+						}
+					case SELECT_ACTION_1012:
+						playQuestMovie(env, 25);
+						return sendQuestDialog(env, 1012);
+					case STEP_TO_1:
+					case STEP_TO_2:
+						if (var == 0 || var == 11) {
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203126)
 				return sendQuestEndDialog(env);
 		}
@@ -117,20 +117,20 @@ public class _1013HuntingLepharistRevolutionaries extends QuestHandler {
 		if (qs.getStatus() != QuestStatus.START)
 			return false;
 		switch (targetId) {
-		case 210688:
-			if (var >= 1 && var <= 10) {
-				qs.setQuestVarById(0, var + 1);
-				updateQuestStatus(env);
-				return true;
-			}
-			break;
-		case 210316:
-			if (var == 12) {
-				qs.setStatus(QuestStatus.REWARD);
-				updateQuestStatus(env);
-				return true;
-			}
-			break;
+			case 210688:
+				if (var >= 1 && var <= 10) {
+					qs.setQuestVarById(0, var + 1);
+					updateQuestStatus(env);
+					return true;
+				}
+				break;
+			case 210316:
+				if (var == 12) {
+					qs.setStatus(QuestStatus.REWARD);
+					updateQuestStatus(env);
+					return true;
+				}
+				break;
 		}
 		return false;
 	}

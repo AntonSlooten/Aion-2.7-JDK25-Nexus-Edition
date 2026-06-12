@@ -201,22 +201,22 @@ public class LegionConfig {
 	 */
 	@Property(key = "gameserver.legion.ranking.periodicupdate", defaultValue = "1200")
 	public static int LEGION_RANKING_PERIODICUPDATE;
-
+	
 	/**
 	 * LWH slots
 	 */
 	@Property(key = "gameserver.legion.warehouse.level1.slots", defaultValue = "24")
 	public static int LWH_LEVEL1_SLOTS;
-
+	
 	@Property(key = "gameserver.legion.warehouse.level2.slots", defaultValue = "32")
 	public static int LWH_LEVEL2_SLOTS;
-
+	
 	@Property(key = "gameserver.legion.warehouse.level3.slots", defaultValue = "40")
 	public static int LWH_LEVEL3_SLOTS;
-
+	
 	@Property(key = "gameserver.legion.warehouse.level4.slots", defaultValue = "48")
 	public static int LWH_LEVEL4_SLOTS;
-
+	
 	@Property(key = "gameserver.legion.warehouse.level5.slots", defaultValue = "56")
 	public static int LWH_LEVEL5_SLOTS;
 }

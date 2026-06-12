@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  *
  *  aion-lightning is free software: you can redistribute it and/or modify
@@ -24,19 +24,30 @@ import java.util.List;
  *
  * @author xTz
  */
-public enum AutoGroupsType {
+public enum  AutoGroupsType {
 
-	CHANTRA_DREDGION((byte) 2, 0, 12), BARANATH_DREDGION((byte) 1, 0, 12), ELYOS_FIRE_TEMPLE((byte) 4, 300000, 6),
-	NOCHSANA_TRAINING_CAMP((byte) 5, 600000, 6), DARK_POETA((byte) 6, 1200000, 6), STEEL_RAKE((byte) 7, 1200000, 6),
-	UDAS_TEMPLE((byte) 8, 600000, 6), LOWER_UDAS_TEMPLE((byte) 9, 600000, 6), EMPYREAN_CRUCIBLE((byte) 11, 600000, 6),
-	ASMODIANS_FIRE_TEMPLE((byte) 14, 300000, 6), ARENA_OF_CHAOS_1((byte) 21, 0, PvPConfig.CHOAS_NB_PLAYER),
+	CHANTRA_DREDGION((byte) 2, 0, 12),
+	BARANATH_DREDGION((byte) 1, 0, 12),
+	ELYOS_FIRE_TEMPLE((byte) 4, 300000, 6),
+	NOCHSANA_TRAINING_CAMP((byte) 5, 600000, 6),
+	DARK_POETA((byte) 6, 1200000, 6),
+	STEEL_RAKE((byte) 7, 1200000, 6),
+	UDAS_TEMPLE((byte) 8, 600000, 6),
+	LOWER_UDAS_TEMPLE((byte) 9, 600000, 6),
+	EMPYREAN_CRUCIBLE((byte) 11, 600000, 6),
+	ASMODIANS_FIRE_TEMPLE((byte) 14, 300000, 6),
+	ARENA_OF_CHAOS_1((byte) 21, 0, PvPConfig.CHOAS_NB_PLAYER),
 	ARENA_OF_CHAOS_2((byte) 22, 0, PvPConfig.CHOAS_NB_PLAYER),
-	ARENA_OF_CHAOS_3((byte) 23, 0, PvPConfig.CHOAS_NB_PLAYER), ARENA_OF_DISCIPLINE_1((byte) 24, 0, 2),
-	ARENA_OF_DISCIPLINE_2((byte) 25, 0, 2), ARENA_OF_DISCIPLINE_3((byte) 26, 0, 2),
+	ARENA_OF_CHAOS_3((byte) 23, 0, PvPConfig.CHOAS_NB_PLAYER),
+	ARENA_OF_DISCIPLINE_1((byte) 24, 0, 2),
+	ARENA_OF_DISCIPLINE_2((byte) 25, 0, 2),
+	ARENA_OF_DISCIPLINE_3((byte) 26, 0, 2),
 	CHAOS_TRAINING_GROUNDS_1((byte) 27, 0, PvPConfig.CHOAS_NB_PLAYER),
 	CHAOS_TRAINING_GROUNDS_2((byte) 28, 0, PvPConfig.CHOAS_NB_PLAYER),
-	CHAOS_TRAINING_GROUNDS_3((byte) 29, 0, PvPConfig.CHOAS_NB_PLAYER), DISCIPLINE_TRAINING_GROUNDS_1((byte) 30, 0, 2),
-	DISCIPLINE_TRAINING_GROUNDS_2((byte) 31, 0, 2), DISCIPLINE_TRAINING_GROUNDS_3((byte) 32, 0, 2);
+	CHAOS_TRAINING_GROUNDS_3((byte) 29, 0, PvPConfig.CHOAS_NB_PLAYER),
+	DISCIPLINE_TRAINING_GROUNDS_1((byte) 30, 0, 2),
+	DISCIPLINE_TRAINING_GROUNDS_2((byte) 31, 0, 2),
+	DISCIPLINE_TRAINING_GROUNDS_3((byte) 32, 0, 2);
 
 	private byte instanceMaskId;
 	private int time;
@@ -131,40 +142,40 @@ public enum AutoGroupsType {
 
 	public boolean isPvPSoloArena() {
 		switch (this) {
-		case ARENA_OF_DISCIPLINE_1:
-		case ARENA_OF_DISCIPLINE_2:
-		case ARENA_OF_DISCIPLINE_3:
-			return true;
+			case ARENA_OF_DISCIPLINE_1:
+			case ARENA_OF_DISCIPLINE_2:
+			case ARENA_OF_DISCIPLINE_3:
+				return true;
 		}
 		return false;
 	}
 
 	public boolean isTrainigPvPSoloArena() {
 		switch (this) {
-		case DISCIPLINE_TRAINING_GROUNDS_1:
-		case DISCIPLINE_TRAINING_GROUNDS_2:
-		case DISCIPLINE_TRAINING_GROUNDS_3:
-			return true;
+			case DISCIPLINE_TRAINING_GROUNDS_1:
+			case DISCIPLINE_TRAINING_GROUNDS_2:
+			case DISCIPLINE_TRAINING_GROUNDS_3:
+				return true;
 		}
 		return false;
 	}
 
 	public boolean isPvPFFAArena() {
 		switch (this) {
-		case ARENA_OF_CHAOS_1:
-		case ARENA_OF_CHAOS_2:
-		case ARENA_OF_CHAOS_3:
-			return true;
+			case ARENA_OF_CHAOS_1:
+			case ARENA_OF_CHAOS_2:
+			case ARENA_OF_CHAOS_3:
+				return true;
 		}
 		return false;
 	}
 
 	public boolean isTrainigPvPFFAArena() {
 		switch (this) {
-		case CHAOS_TRAINING_GROUNDS_1:
-		case CHAOS_TRAINING_GROUNDS_2:
-		case CHAOS_TRAINING_GROUNDS_3:
-			return true;
+			case CHAOS_TRAINING_GROUNDS_1:
+			case CHAOS_TRAINING_GROUNDS_2:
+			case CHAOS_TRAINING_GROUNDS_3:
+				return true;
 		}
 		return false;
 	}

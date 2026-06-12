@@ -16,7 +16,11 @@
  */
 package com.aionemu.commons.configuration;
 
-import java.lang.annotation.*;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * This annotation is used to mark field that should be processed by
@@ -37,7 +41,7 @@ public @interface Property {
 
 	/**
 	 * Property name in configuration
-	 *
+	 * 
 	 * @return name of the property that will be used
 	 */
 	public String key();
@@ -63,7 +67,7 @@ public @interface Property {
 	 * </ul>
 	 * <p/>
 	 * If your value is one of this types - just leave this field empty
-	 *
+	 * 
 	 * @return returns class that will be used to transform value
 	 */
 	@SuppressWarnings("rawtypes")
@@ -72,7 +76,7 @@ public @interface Property {
 	/**
 	 * Represents default value that will be parsed if key not found. If this key equals(default) {@link #DEFAULT_VALUE}
 	 * init value of the object won't be overriden
-	 *
+	 * 
 	 * @return default value of the property
 	 */
 	public String defaultValue() default DEFAULT_VALUE;

@@ -19,12 +19,16 @@ package com.aionemu.gameserver.model.templates.rewards;
 import javax.xml.bind.annotation.*;
 
 /**
+ * @author Rolandas
+ *
+ */
+
+/**
  * <p>
  * Java class for CraftRecipe complex type.
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
- *
+ * The following schema fragment specifies the expected content contained within this class.
+ * 
  * <pre>
  * &lt;complexType name="CraftRecipe">
  *   &lt;complexContent>

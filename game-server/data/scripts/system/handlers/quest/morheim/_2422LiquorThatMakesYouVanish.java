@@ -56,52 +56,56 @@ public class _2422LiquorThatMakesYouVanish extends QuestHandler {
 			if (targetId == 204326) { // Hapenill
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 204327: { // Sveinn
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 204327: { // Sveinn
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+					}
+					break;
+				}
+				case 204375: { // Otis
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_2: {
+							qs.setQuestVar(2);
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							TeleportService.teleportTo(player, 210020000, player.getInstanceId(), (float) 535.46, (float) 2555.62,
+								(float) 326.63605, (byte) 112, 3000, true);
+							return true;
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-				break;
 			}
-			case 204375: { // Otis
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					}
-				}
-				case STEP_TO_2: {
-					qs.setQuestVar(2);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					TeleportService.teleportTo(player, 210020000, player.getInstanceId(), (float) 535.46,
-							(float) 2555.62, (float) 326.63605, (byte) 112, 3000, true);
-					return true;
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204326) { // Hapenill
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

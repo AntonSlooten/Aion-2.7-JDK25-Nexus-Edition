@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.services.toypet;
 
+import java.sql.Timestamp;
+
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.gameserver.configs.main.PeriodicSaveConfig;
 import com.aionemu.gameserver.controllers.PetController;
@@ -25,15 +27,15 @@ import com.aionemu.gameserver.model.TaskId;
 import com.aionemu.gameserver.model.gameobjects.Pet;
 import com.aionemu.gameserver.model.gameobjects.player.PetCommonData;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.items.storage.StorageType;
+import com.aionemu.gameserver.model.templates.pet.PetDopingBag;
 import com.aionemu.gameserver.model.templates.pet.PetFunction;
-import com.aionemu.gameserver.model.templates.pet.PetFunctionType;
 import com.aionemu.gameserver.model.templates.pet.PetTemplate;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PET;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_WAREHOUSE_INFO;
 import com.aionemu.gameserver.spawnengine.VisibleObjectSpawner;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.ThreadPoolManager;
-import java.sql.Timestamp;
 
 /**
  * @author ATracer
@@ -44,7 +46,7 @@ public class PetSpawnService {
 	 * @param player
 	 * @param petId
 	 */
-	public static void summonPet(Player player, int petId, boolean isManualSpawn) {
+	public static final void summonPet(Player player, int petId, boolean isManualSpawn) {
 		PetCommonData lastPetCommonData;
 
 		if (player.getPet() != null) {
@@ -55,18 +57,21 @@ public class PetSpawnService {
 
 			lastPetCommonData = player.getPet().getCommonData();
 			dismissPet(player, isManualSpawn);
-		} else {
+		}
+		else {
 			lastPetCommonData = player.getPetList().getLastUsedPet();
 		}
 
 		if (lastPetCommonData != null) {
 			// reset mood if other pet is spawned
-			lastPetCommonData.clearMoodStatistics();
+			if (petId != lastPetCommonData.getPetId())
+				lastPetCommonData.clearMoodStatistics();
 		}
 
-		player.getController().addTask(TaskId.PET_UPDATE,
-				ThreadPoolManager.getInstance().scheduleAtFixedRate(new PetController.PetUpdateTask(player),
-						PeriodicSaveConfig.PLAYER_PETS * 1000, PeriodicSaveConfig.PLAYER_PETS * 1000));
+		player.getController().addTask(
+			TaskId.PET_UPDATE,
+			ThreadPoolManager.getInstance().scheduleAtFixedRate(new PetController.PetUpdateTask(player),
+				PeriodicSaveConfig.PLAYER_PETS * 1000, PeriodicSaveConfig.PLAYER_PETS * 1000));
 
 		Pet pet = VisibleObjectSpawner.spawnPet(player, petId);
 		// It means serious error or cheater - why its just nothing say "null"?
@@ -78,6 +83,7 @@ public class PetSpawnService {
 				player.getPet().getCommonData().clearMoodStatistics();
 			}
 
+			lastPetCommonData = pet.getCommonData();
 			player.getPetList().setLastUsedPetId(petId);
 		}
 	}
@@ -89,28 +95,11 @@ public class PetSpawnService {
 	private static void sendWhInfo(Player player, int petId) {
 		PetTemplate petTemplate = DataManager.PET_DATA.getPetTemplate(petId);
 		PetFunction pf = petTemplate.getWarehouseFunction();
-		if (pf != null) {
-			int itemLocation = 0;
-
-			switch (pf.getSlots()) {
-			case 6:
-				itemLocation = 32;
-				break;
-			case 12:
-				itemLocation = 33;
-				break;
-			case 18:
-				itemLocation = 34;
-				break;
-			case 24:
-				itemLocation = 35;
-				break;
-			}
-
-			if (itemLocation != 0) {
-				PacketSendUtility.sendPacket(player, new SM_WAREHOUSE_INFO(
-						player.getStorage(itemLocation).getItemsWithKinah(), itemLocation, 0, true, player));
-
+		if (pf != null && pf.getSlots() != 0) {
+			int itemLocation = StorageType.getStorageId(pf.getSlots(), 6);
+			if (itemLocation != -1) {
+				PacketSendUtility.sendPacket(player, new SM_WAREHOUSE_INFO(player.getStorage(itemLocation).getItemsWithKinah(),
+					itemLocation, 0, true, player));
 				PacketSendUtility.sendPacket(player, new SM_WAREHOUSE_INFO(null, itemLocation, 0, false, player));
 			}
 		}
@@ -120,21 +109,25 @@ public class PetSpawnService {
 	 * @param player
 	 * @param isManualDespawn
 	 */
-	public static void dismissPet(Player player, boolean isManualDespawn) {
+	public static final void dismissPet(Player player, boolean isManualDespawn) {
 		Pet toyPet = player.getPet();
 		if (toyPet != null) {
-			toyPet.getCommonData().setCancelFood(true);
-			if (toyPet.getPetTemplate().ContainsFunction(PetFunctionType.FOOD)) {
-				DAOManager.getDAO(PlayerPetsDAO.class).setHungryLevel(player, toyPet.getPetId(),
-						toyPet.getCommonData().getHungryLevel());
+			PetFeedProgress progress = toyPet.getCommonData().getFeedProgress();
+			if (progress != null) {
+				toyPet.getCommonData().setCancelFeed(true);
+				DAOManager.getDAO(PlayerPetsDAO.class).saveFeedStatus(player, toyPet.getPetId(),
+					progress.getHungryLevel().getValue(), progress.getDataForPacket(),
+					toyPet.getCommonData().getCurentTime());
 			}
+			PetDopingBag bag = toyPet.getCommonData().getDopingBag();
+			if (bag != null && bag.isDirty())
+				DAOManager.getDAO(PlayerPetsDAO.class).saveDopingBag(player, toyPet.getPetId(), bag);
 
 			player.getController().cancelTask(TaskId.PET_UPDATE);
 
 			// TODO needs for pet teleportation
-			if (isManualDespawn) {
+			if (isManualDespawn)
 				toyPet.getCommonData().setDespawnTime(new Timestamp(System.currentTimeMillis()));
-			}
 
 			toyPet.getCommonData().savePetMoodData();
 

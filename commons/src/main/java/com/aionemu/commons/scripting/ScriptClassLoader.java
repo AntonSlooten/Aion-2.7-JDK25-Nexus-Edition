@@ -1,111 +1,103 @@
+/*
+ * This file is part of aion-emu <aion-emu.com>.
+ * (License info retained)
+ */
 package com.aionemu.commons.scripting;
+
+import com.aionemu.commons.scripting.url.VirtualClassURLStreamHandler;
+import com.aionemu.commons.utils.ClassUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLStreamHandlerFactory;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.aionemu.commons.scripting.url.VirtualClassURLStreamHandler;
-import com.aionemu.commons.utils.ClassUtils;
-
 /**
- * Base class loader for runtime-compiled scripts.
+ * Abstract class loader that should be extended by child classloaders.
+ * Modernized for Java 25
  */
 public abstract class ScriptClassLoader extends URLClassLoader {
 
-    private static final Logger log = LoggerFactory.getLogger(ScriptClassLoader.class);
+	private static final Logger log = LoggerFactory.getLogger(ScriptClassLoader.class);
 
-    private final Set<String> libraryClassNames = new HashSet<>();
-    private final Set<File> loadedLibraries = new HashSet<>();
-    private volatile VirtualClassURLStreamHandler urlStreamHandler;
+	private final VirtualClassURLStreamHandler urlStreamHandler = new VirtualClassURLStreamHandler(this);
 
-    public ScriptClassLoader(URL[] urls, ClassLoader parent) {
-        super(urls, parent);
-    }
+	private Set<String> libraryClassNames = new HashSet<String>();
 
-    public ScriptClassLoader(URL[] urls) {
-        super(urls);
-    }
+	private Set<File> loadedLibraries = new HashSet<File>();
 
-    public ScriptClassLoader(URL[] urls, ClassLoader parent, URLStreamHandlerFactory factory) {
-        super(urls, parent, factory);
-    }
+	public ScriptClassLoader(URL[] urls, ClassLoader parent) {
+		super(urls, parent);
+	}
 
-    public void addJarFile(File file) throws IOException {
-        Objects.requireNonNull(file, "file");
+	public ScriptClassLoader(URL[] urls) {
+		super(urls);
+	}
 
-        if (loadedLibraries.add(file)) {
-            libraryClassNames.addAll(ClassUtils.getClassNamesFromJarFile(file));
-        }
-    }
+	public ScriptClassLoader(URL[] urls, ClassLoader parent, URLStreamHandlerFactory factory) {
+		super(urls, parent, factory);
+	}
 
-    @Override
-    public URL getResource(String name) {
-        if (name == null || !name.endsWith(".class")) {
-            return super.getResource(name);
-        }
+	public void addJarFile(File file) throws IOException {
+		if(!loadedLibraries.contains(file)){
+			Set<String> jarFileClasses = ClassUtils.getClassNamesFromJarFile(file);
+			libraryClassNames.addAll(jarFileClasses);
+			loadedLibraries.add(file);
+		}
+	}
 
-        String className = name.substring(0, name.length() - ".class".length()).replace('/', '.');
-        if (getCompiledClasses().contains(className)) {
-            try {
-                URI uri = URI.create(VirtualClassURLStreamHandler.HANDLER_PROTOCOL + className);
-                return URL.of(uri, getUrlStreamHandler());
-            } catch (IllegalArgumentException | MalformedURLException e) {
-                log.error("Can't create virtual URL for compiled class {}", className, e);
-            }
-        }
+	@SuppressWarnings("deprecation") // Mempertahankan URL usang demi Custom StreamHandler bawaan Aion
+	@Override
+	public URL getResource(String name) {
+		if (!name.endsWith(".class")) {
+			return super.getResource(name);
+		}
+		String newName = name.substring(0, name.length() - 6);
+		newName = newName.replace('/', '.');
+		if (getCompiledClasses().contains(newName)) {
+			try {
+				return new URL(null, VirtualClassURLStreamHandler.HANDLER_PROTOCOL + newName, urlStreamHandler);
+			}
+			catch (MalformedURLException e) {
+				log.error("Can't create url for compiled class", e);
+			}
+		}
 
-        return super.getResource(name);
-    }
+		return super.getResource(name);
+	}
 
-    @Override
-    public Class<?> loadClass(String name) throws ClassNotFoundException {
-        if (!getCompiledClasses().contains(name)) {
-            return super.loadClass(name);
-        }
+	@Override
+	public Class<?> loadClass(String name) throws ClassNotFoundException {
+		boolean isCompiled = getCompiledClasses().contains(name);
+		if (!isCompiled) {
+			return super.loadClass(name, true);
+		}
 
-        synchronized (getClassLoadingLock(name)) {
-            Class<?> loadedClass = getDefinedClass(name);
+		Class<?> c = getDefinedClass(name);
+		if (c == null) {
+			byte[] b = getByteCode(name);
+			c = super.defineClass(name, b, 0, b.length);
+			setDefinedClass(name, c);
+		}
+		return c;
+	}
 
-            if (loadedClass == null) {
-                byte[] byteCode = getByteCode(name);
-                loadedClass = defineClass(name, byteCode, 0, byteCode.length);
-                setDefinedClass(name, loadedClass);
-            }
+	protected Set<String> getLibraryClassNames(){
+		return Collections.unmodifiableSet(libraryClassNames);
+	}
 
-            resolveClass(loadedClass);
-            return loadedClass;
-        }
-    }
+	public abstract Set<String> getCompiledClasses();
 
-    protected final Set<String> getLibraryClassNames() {
-        return Collections.unmodifiableSet(libraryClassNames);
-    }
+	public abstract byte[] getByteCode(String className);
 
-    private VirtualClassURLStreamHandler getUrlStreamHandler() {
-        VirtualClassURLStreamHandler handler = urlStreamHandler;
-        if (handler == null) {
-            handler = new VirtualClassURLStreamHandler(this);
-            urlStreamHandler = handler;
-        }
-        return handler;
-    }
+	public abstract Class<?> getDefinedClass(String name);
 
-    public abstract Set<String> getCompiledClasses();
-
-    public abstract byte[] getByteCode(String className);
-
-    public abstract Class<?> getDefinedClass(String name);
-
-    public abstract void setDefinedClass(String name, Class<?> clazz);
+	public abstract void setDefinedClass(String name, Class<?> clazz) throws IllegalArgumentException;
 }

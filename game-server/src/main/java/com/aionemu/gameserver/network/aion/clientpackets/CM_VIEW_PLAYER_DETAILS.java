@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-unique.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -54,21 +54,20 @@ public class CM_VIEW_PLAYER_DETAILS extends AionClientPacket {
 	 */
 	@Override
 	protected void runImpl() {
-		Player player = this.getConnection().getActivePlayer();
+		Player player  = this.getConnection().getActivePlayer();
 		VisibleObject obj = player.getKnownList().getObject(targetObjectId);
 		if (obj == null) {
 			// probably targetObjectId can be 0
 			log.warn("CHECKPOINT: can't show player details for " + targetObjectId);
 			return;
 		}
-
+		
 		if (obj instanceof Player) {
 			Player target = (Player) obj;
-
-			if (!target.getPlayerSettings().isInDeniedStatus(DeniedStatus.VIEW_DETAILS)
-					|| player.getAccessLevel() >= AdminConfig.ADMIN_VIEW_DETAILS) {
+			
+			if (!target.getPlayerSettings().isInDeniedStatus(DeniedStatus.VIEW_DETAILS) || player.getAccessLevel() >= AdminConfig.ADMIN_VIEW_DETAILS)
 				sendPacket(new SM_VIEW_PLAYER_DETAILS(target.getEquipment().getEquippedItemsWithoutStigma(), target));
-			} else {
+			else {
 				sendPacket(SM_SYSTEM_MESSAGE.STR_MSG_REJECTED_WATCH(target.getName()));
 				return;
 			}

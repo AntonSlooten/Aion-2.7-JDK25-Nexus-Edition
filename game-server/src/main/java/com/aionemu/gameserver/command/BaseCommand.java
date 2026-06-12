@@ -13,165 +13,158 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public abstract class BaseCommand {
 	private String help;
-
-	public abstract void execute(Player player, String... params);
-
+	public abstract void execute (Player player, String... params);
 	protected Map<String, BaseCommand> subCmds;
 	private int security;
-
-	public BaseCommand() {
-		subCmds = new HashMap<>();
+	
+	public BaseCommand () {
+		subCmds = new HashMap<String, BaseCommand>();
 		security = -1;
 	}
-
-	public void setSecurity(int security) {
+	
+	public void setSecurity (int security) {
 		this.security = security;
 	}
-
-	public void setHelp(String help) {
+	
+	public void setHelp (String help) {
 		this.help = help;
 	}
-
-	public boolean haveAccess(Player player) {
-		if (security < 0) {
+	
+	public boolean haveAccess (Player player) {
+		if (security < 0)
 			return false;
-		}
 		return player.getAccessLevel() >= security;
-
+		
 	}
-
-	public BaseCommand getSubCommand(String name) {
+	
+	public BaseCommand getSubCommand (String name) {
 		return subCmds.get(name);
 	}
-
-	public int getSecurity() {
+	
+	public int getSecurity () {
 		return security;
 	}
-
-	protected void showHelp(Player player) {
+	
+	protected void showHelp (Player player) {
 		PacketSendUtility.sendMessage(player, help);
 	}
-
+	
 	protected void sendCommandMessage(Player player, String message) {
 		PacketSendUtility.sendBrightYellowMessage(player, message);
 	}
-
-	public String getHelp() {
+	
+	public String getHelp () {
 		return help;
 	}
-
-	protected int ParseInteger(String data) {
-		try {
-			return Integer.parseInt(data);
-		} catch (NumberFormatException e) {
-			return 0;
-		}
-	}
-
-	protected long ParseLong(String data) {
+	
+	protected int ParseInteger (String data) {
+    	try {
+    		return Integer.parseInt(data);
+    	}
+    	catch (NumberFormatException e) {
+    		return 0;
+    	}
+    }
+	
+	protected long ParseLong (String data) {
 		try {
 			return Long.parseLong(data);
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			return 0;
 		}
 	}
-
-	protected float ParseFloat(String data) {
+	
+	protected float ParseFloat (String data) {
 		try {
 			return Float.parseFloat(data);
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			return 0f;
 		}
 	}
-
-	protected byte ParseByte(String data) {
+	
+	protected byte ParseByte (String data) {
 		try {
 			return Byte.parseByte(data);
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			return 0;
 		}
 	}
-
-	protected int GetItemIDFromLinkOrID(String data) {
-		if (data.startsWith("[item:")) {
+	
+	protected int GetItemIDFromLinkOrID (String data) {
+		if (data.startsWith("[item:")) { 
 			Pattern id = Pattern.compile("\\[item:(\\d{9})");
 			Matcher result = id.matcher(data);
-
-			if (result.find()) {
+			
+			if (result.find())
 				return ParseInteger(result.group(1));
-			} else {
+			else
 				return 0;
-			}
-		} else {
-			return ParseInteger(data);
 		}
+		else
+			return ParseInteger(data);
 	}
-
-	protected int GetItemIDFromLink(String data0, String data1) {
+	
+	protected int GetItemIDFromLink (String data0, String data1) {
 		if (data0.equals("[item:")) {
 			data0 += data1;
 			Pattern id = Pattern.compile("(\\d{9})");
 			Matcher result = id.matcher(data0);
-
-			if (result.find()) {
+			
+			if (result.find())
 				return ParseInteger(result.group(1));
-			} else {
+			else
 				return 0;
-			}
-		} else {
+		}
+		else
 			return 0;
-		}
 	}
-
-	protected Player AutoTarget(Player admin, boolean notMySelf) {
+	
+	protected Player AutoTarget (Player admin, boolean notMySelf) {
 		VisibleObject target = admin.getTarget();
-		if (target == null && !notMySelf) {
-			return admin;
-		}
+        if (target == null && !notMySelf)
+        	return admin;
 
-		if (target instanceof Player) {
-			return (Player) target;
-		} else if (!notMySelf) {
-			return admin;
-		} else {
-			return null;
-		}
+        if (target instanceof Player)
+        	return (Player)target;
+        else if(!notMySelf)
+        	return admin;
+        else
+        	return null;
 	}
-
-	protected Player AutoTarget(Player admin) {
+	
+	protected Player AutoTarget (Player admin) {
 		return AutoTarget(admin, false);
 	}
-
-	protected Creature getTarget(Player admin, boolean notMySelf) {
+	
+	protected Creature getTarget (Player admin, boolean notMySelf) {
 		VisibleObject target = admin.getTarget();
-		if (target == null && !notMySelf) {
-			return admin;
-		}
+        if (target == null && !notMySelf)
+        	return admin;
 
-		if (target instanceof Creature) {
-			return (Creature) target;
-		} else {
-			return null;
-		}
+        if (target instanceof Creature)
+        	return (Creature)target;
+        else
+        	return null;
 	}
-
-	protected Npc NpcTarget(Player admin) {
+	
+	protected Npc NpcTarget (Player admin) {
 		VisibleObject creature = admin.getTarget();
-		if (admin.getTarget() instanceof Npc) {
+		if (admin.getTarget() instanceof Npc)
 			return (Npc) creature;
-		}
 		return null;
 	}
-
-	protected String getEndString(String[] params, int index, int removeEndIndex) {
+	
+	protected String getEndString (String [] params, int index, int removeEndIndex) {
 		String result = params[index];
-		for (int i = index + 1; i < params.length - removeEndIndex; i++) {
+		for (int i = index + 1; i < params.length - removeEndIndex; i++)
 			result += " " + params[i];
-		}
 		return result;
 	}
-
-	protected String getEndString(String[] params, int index) {
+	
+	protected String getEndString (String [] params, int index) {
 		return getEndString(params, index, 0);
 	}
 }

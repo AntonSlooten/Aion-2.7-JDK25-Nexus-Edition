@@ -62,99 +62,105 @@ public class _10024WillTheAetherRain extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798970: { // Pomponia
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
-					} else if (var == 4) {
-						return sendQuestDialog(env, 2375);
-					} else if (var == 7) {
-						return sendQuestDialog(env, 3398);
+				case 798970: { // Pomponia
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+							else if (var == 4) {
+								return sendQuestDialog(env, 2375);
+							}
+							else if (var == 7) {
+								return sendQuestDialog(env, 3398);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+						case STEP_TO_5: {
+							return defaultCloseDialog(env, 4, 5); // 5
+						}
+						case STEP_TO_8: {
+							return defaultCloseDialog(env, 7, 8, 182206620, 1, 0, 0); // 8
+						}
+					}
+					break;
+				}
+				case 798979: { // Gelon
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+							else if (var == 3) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+						case STEP_TO_4: {
+							return defaultCloseDialog(env, 3, 4); // 4
+						}
+					}
+					break;
+				}
+				case 700605: { // Parchment Map
+					switch (dialog) {
+						case USE_OBJECT: {
+							if (var == 2) {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case STEP_TO_3: {
+							return defaultCloseDialog(env, 2, 3); // 3
+						}
+					}
+					break;
+				}
+				case 203793: { // Daphnis
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 5) {
+								return sendQuestDialog(env, 2716);
+							}
+							else if (var == 6) {
+								return sendQuestDialog(env, 3057);
+							}
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 5, 6, false, 10000, 10001); // 6
+						}
+						case STEP_TO_7: {
+							return defaultCloseDialog(env, 6, 7); // 7
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
+					}
+					break;
+				}
+				case 799020: { // Donikia
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 10) {
+								return sendQuestDialog(env, 1608);
+							}
+						}
+						case SET_REWARD: {
+							return defaultCloseDialog(env, 10, 10, true, false); // reward
+						}
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				case STEP_TO_5: {
-					return defaultCloseDialog(env, 4, 5); // 5
-				}
-				case STEP_TO_8: {
-					return defaultCloseDialog(env, 7, 8, 182206620, 1, 0, 0); // 8
-				}
-				}
-				break;
 			}
-			case 798979: { // Gelon
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					} else if (var == 3) {
-						return sendQuestDialog(env, 2034);
-					}
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				case STEP_TO_4: {
-					return defaultCloseDialog(env, 3, 4); // 4
-				}
-				}
-				break;
-			}
-			case 700605: { // Parchment Map
-				switch (dialog) {
-				case USE_OBJECT: {
-					if (var == 2) {
-						return sendQuestDialog(env, 1693);
-					}
-				}
-				case STEP_TO_3: {
-					return defaultCloseDialog(env, 2, 3); // 3
-				}
-				}
-				break;
-			}
-			case 203793: { // Daphnis
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 5) {
-						return sendQuestDialog(env, 2716);
-					} else if (var == 6) {
-						return sendQuestDialog(env, 3057);
-					}
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 5, 6, false, 10000, 10001); // 6
-				}
-				case STEP_TO_7: {
-					return defaultCloseDialog(env, 6, 7); // 7
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-				break;
-			}
-			case 799020: { // Donikia
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 10) {
-						return sendQuestDialog(env, 1608);
-					}
-				}
-				case SET_REWARD: {
-					return defaultCloseDialog(env, 10, 10, true, false); // reward
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798970) { // Pomponia
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
@@ -171,7 +177,7 @@ public class _10024WillTheAetherRain extends QuestHandler {
 				return HandlerResult.fromBoolean(useQuestItem(env, item, 8, 9, false)); // 9
 			}
 		}
-		return HandlerResult.FAILED;
+		return  HandlerResult.FAILED;
 	}
 
 	@Override

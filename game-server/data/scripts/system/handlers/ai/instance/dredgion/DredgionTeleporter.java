@@ -13,29 +13,29 @@ import ai.ActionItemNpcAI2;
 
 @AIName("dredgion_teleportation_device")
 public class DredgionTeleporter extends ActionItemNpcAI2 {
-
+	
 	@SuppressWarnings("static-access")
 	@Override
-	protected void handleUseItemFinish(Player player) {
+	protected void handleUseItemFinish(Player player)
+	{
 		int npcId = getNpcId();
 		int instanceId = getPosition().getWorldMapInstance().getInstanceId();
 
 		PortalTemplate portalTemplate = DataManager.PORTAL_DATA.getPortalTemplate(npcId);
-
-		if (portalTemplate == null) {
+		
+		if(portalTemplate == null){
 			return;
 		}
 		List<ExitPoint> exits = portalTemplate.getExitPoints();
-		if (exits == null || exits.size() != 1) {
+		if(exits == null || exits.size() != 1){
 			return;
 		}
 		ExitPoint exit = exits.get(0);
-
-		if (exit.getRace() != getRace().PC_ALL && exit.getRace() != player.getRace()) {
+		
+		if(exit.getRace() != getRace().PC_ALL && exit.getRace() != player.getRace()){
 			return;
 		}
-
-		TeleportService.teleportTo(player, exit.getMapId(), instanceId, exit.getX(), exit.getY(), exit.getZ(), 0,
-				false);
+		
+		TeleportService.teleportTo(player, exit.getMapId(), instanceId, exit.getX(), exit.getY(), exit.getZ(), 0, false);
 	}
 }

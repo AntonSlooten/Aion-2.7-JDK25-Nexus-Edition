@@ -44,36 +44,35 @@ public class StaticDoorService {
 	}
 
 	public void openStaticDoor(final Player player, int doorId) {
-		if (player.getAccessLevel() >= 3) {
+		if (player.getAccessLevel() >= 3)
 			PacketSendUtility.sendMessage(player, "door id : " + doorId);
-		}
 
 		StaticDoor door = player.getPosition().getWorldMapInstance().getDoors().get(doorId);
-		if (door == null) {
-			log.warn("Not spawned door worldId: " + player.getWorldId() + " doorId: " + doorId);
+		if (door == null){
+			log.warn("Not spawned door worldId: "+ player.getWorldId()+" doorId: "+doorId);
 			return;
 		}
 		int keyId = door.getObjectTemplate().getKeyId();
 
-		if (player.getAccessLevel() >= 3) {
+		if (player.getAccessLevel() >= 3)
 			PacketSendUtility.sendMessage(player, "key id : " + keyId);
-		}
 
 		if (checkStaticDoorKey(player, doorId, keyId)) {
 			door.setOpen(true);
-		} else {
-			log.info("Opening door without key ...");
 		}
+		else
+			log.info("Opening door without key ...");
 	}
 
 	public boolean checkStaticDoorKey(Player player, int doorId, int keyId) {
-		if ((player.getAccessLevel() >= AdminConfig.DOORS_OPEN) || (keyId == 0)) {
+		if (player.getAccessLevel() >= AdminConfig.DOORS_OPEN)
 			return true;
-		}
 
-		if (keyId == 1) {
+		if (keyId == 0)
+			return true;
+			
+		if (keyId == 1)
 			return false;
-		}
 
 		if (!player.getInventory().decreaseByItemId(keyId, 1)) {
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CANNOT_OPEN_DOOR_NEED_KEY_ITEM);

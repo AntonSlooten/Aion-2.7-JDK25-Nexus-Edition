@@ -29,7 +29,7 @@ public abstract class TaskFromDBHandler implements Runnable {
 
 	/**
 	 * Task's id
-	 *
+	 * 
 	 * @param int
 	 */
 	public void setId(int id) {
@@ -38,8 +38,9 @@ public abstract class TaskFromDBHandler implements Runnable {
 
 	/**
 	 * Task's param(s)
-	 *
-	 * @param params String[]
+	 * 
+	 * @param params
+	 *          String[]
 	 */
 	public void setParam(String params[]) {
 		this.params = params;
@@ -52,14 +53,14 @@ public abstract class TaskFromDBHandler implements Runnable {
 
 	/**
 	 * Check if the task's parameters are valid
-	 *
+	 * 
 	 * @return true if valid, false otherwise
 	 */
 	public abstract boolean isValid();
 
 	/**
 	 * Retuns {@link com.aionemu.gameserver.dao.TaskFromDBDAO} , just a shortcut
-	 *
+	 * 
 	 * @return {@link com.aionemu.gameserver.dao.TaskFromDBDAO}
 	 */
 	protected void setLastActivation() {

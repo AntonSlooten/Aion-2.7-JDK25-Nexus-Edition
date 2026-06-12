@@ -19,12 +19,14 @@ package com.aionemu.gameserver.utils.gametime;
 import java.security.InvalidParameterException;
 
 import com.aionemu.gameserver.spawnengine.DayTimeSpawnEngine;
+import com.aionemu.gameserver.spawnengine.TemporarySpawnEngine;
 
 /**
  * Represents the internal clock for the time in aion world
- *
+ * 
  * @author Ben, reworked by vlog
  */
+@SuppressWarnings("deprecation")
 public class GameTime {
 
 	private static final int MINUTES_IN_HOUR = 60;
@@ -35,8 +37,18 @@ public class GameTime {
 	private DayTime dayTime;
 
 	private enum Monthes {
-		JANUARY(31), FEBRUARY(28), MARCH(31), APRIL(30), MAY(31), JUNE(30), JULY(31), AUGUST(31), SEPTEMBER(30),
-		OCTOBER(31), NOVEMBER(30), DECEMBER(31);
+		JANUARY(31),
+		FEBRUARY(28),
+		MARCH(31),
+		APRIL(30),
+		MAY(31),
+		JUNE(30),
+		JULY(31),
+		AUGUST(31),
+		SEPTEMBER(30),
+		OCTOBER(31),
+		NOVEMBER(30),
+		DECEMBER(31);
 
 		private int _days;
 
@@ -47,25 +59,24 @@ public class GameTime {
 		public int getDays() {
 			return _days;
 		}
-	}
+	};
 
 	/**
-	 * Constructs a GameTime with the given time in minutes since midnight
-	 * 01.01.0000
-	 *
-	 * @param time Minutes since midnight 01.01.0000
+	 * Constructs a GameTime with the given time in minutes since midnight 01.01.0000
+	 * 
+	 * @param time
+	 *          Minutes since midnight 01.01.0000
 	 */
 	public GameTime(int time) {
-		if (time < 0) {
+		if (time < 0)
 			throw new InvalidParameterException("Time must be >= 0");
-		}
 		gameTime = time;
 		calculateDayTime();
 	}
 
 	/**
 	 * Get the proper amount of minutes in this month
-	 *
+	 * 
 	 * @param m
 	 * @return time in minutes in this month
 	 */
@@ -75,7 +86,7 @@ public class GameTime {
 
 	/**
 	 * Gets the ingame time in minutes
-	 *
+	 * 
 	 * @return The number of minutes since 01.01.0000 00:00:00
 	 */
 	public int getTime() {
@@ -98,6 +109,7 @@ public class GameTime {
 	public void checkDayTimeChange() {
 		DayTime oldDayTime = this.dayTime;
 		calculateDayTime();
+		onHourChange();
 		if (oldDayTime != this.dayTime) {
 			onDayTimeChange();
 		}
@@ -108,15 +120,18 @@ public class GameTime {
 	 */
 	public void calculateDayTime() {
 		int hour = getHour();
-		if (hour > 21 || hour < 4) {
+		if (hour > 21 || hour < 4)
 			dayTime = DayTime.NIGHT;
-		} else if (hour > 16) {
+		else if (hour > 16)
 			dayTime = DayTime.EVENING;
-		} else if (hour > 8) {
+		else if (hour > 8)
 			dayTime = DayTime.AFTERNOON;
-		} else {
+		else
 			dayTime = DayTime.MORNING;
-		}
+	}
+
+	private void onHourChange() {
+		TemporarySpawnEngine.onHourChange();
 	}
 
 	/**
@@ -128,7 +143,7 @@ public class GameTime {
 
 	/**
 	 * Gets the year in the game: 0 - <integer bound>
-	 *
+	 * 
 	 * @return Year
 	 */
 	public int getYear() {
@@ -137,7 +152,7 @@ public class GameTime {
 
 	/**
 	 * Gets the month in the game, 1 - 12
-	 *
+	 * 
 	 * @return Month 1-12
 	 */
 	public int getMonth() {
@@ -147,10 +162,12 @@ public class GameTime {
 			if ((minutesInYear - getProperMinutesInMonth(m)) > 0) {
 				minutesInYear = minutesInYear - getProperMinutesInMonth(m);
 				answer = answer + 1;
-			} else if ((minutesInYear - getProperMinutesInMonth(m)) == 0) {
+			}
+			else if ((minutesInYear - getProperMinutesInMonth(m)) == 0) {
 				answer = answer + 1;
 				break;
-			} else {
+			}
+			else {
 				break;
 			}
 		}
@@ -159,7 +176,7 @@ public class GameTime {
 
 	/**
 	 * Gets the day in the game, 1 - Monthes.getDays()
-	 *
+	 * 
 	 * @return Day 1 - Monthes.getDays()
 	 */
 	public int getDay() {
@@ -168,9 +185,11 @@ public class GameTime {
 		for (Monthes m : Monthes.values()) {
 			if ((minutesInYear - getProperMinutesInMonth(m)) > 0) {
 				minutesInYear = minutesInYear - getProperMinutesInMonth(m);
-			} else if ((minutesInYear - getProperMinutesInMonth(m)) == 0) {
+			}
+			else if ((minutesInYear - getProperMinutesInMonth(m)) == 0) {
 				break;
-			} else {
+			}
+			else {
 				answer = minutesInYear / MINUTES_IN_DAY + 1;
 				break;
 			}
@@ -180,7 +199,7 @@ public class GameTime {
 
 	/**
 	 * Gets the hour in the game, 0-23
-	 *
+	 * 
 	 * @return Hour 0-23
 	 */
 	public int getHour() {
@@ -189,7 +208,7 @@ public class GameTime {
 
 	/**
 	 * Gets the minute in the game, 0-59
-	 *
+	 * 
 	 * @return Minute 0-59
 	 */
 	public int getMinute() {
@@ -205,7 +224,7 @@ public class GameTime {
 
 	/**
 	 * Convert from game time into real time
-	 *
+	 * 
 	 * @author vlog
 	 */
 	public int convertTime() {
@@ -214,8 +233,9 @@ public class GameTime {
 
 	/**
 	 * Subtract the given game time from this game time
-	 *
-	 * @param game time to subtract
+	 * 
+	 * @param game
+	 *          time to subtract
 	 * @return new game time
 	 */
 	public GameTime minus(GameTime gt) {
@@ -224,8 +244,9 @@ public class GameTime {
 
 	/**
 	 * Add the given game time to this game time
-	 *
-	 * @param game time to add
+	 * 
+	 * @param game
+	 *          time to add
 	 * @return new game time
 	 */
 	public GameTime plus(GameTime gt) {
@@ -234,7 +255,7 @@ public class GameTime {
 
 	/**
 	 * Compares this time and the time given
-	 *
+	 * 
 	 * @param gt
 	 * @return true, if this time is greater
 	 */
@@ -244,7 +265,7 @@ public class GameTime {
 
 	/**
 	 * Compares this time and the time given
-	 *
+	 * 
 	 * @param gt
 	 * @return true, if this time is less
 	 */
@@ -254,8 +275,9 @@ public class GameTime {
 
 	/**
 	 * Compare two game times
-	 *
-	 * @param GameTime object
+	 * 
+	 * @param GameTime
+	 *          object
 	 * @return true or false
 	 * @author vlog
 	 */

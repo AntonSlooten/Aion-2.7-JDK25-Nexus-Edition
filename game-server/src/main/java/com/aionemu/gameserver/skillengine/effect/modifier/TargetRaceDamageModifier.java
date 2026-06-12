@@ -29,7 +29,8 @@ import com.aionemu.gameserver.skillengine.model.Effect;
 import com.aionemu.gameserver.skillengine.model.SkillTargetRace;
 
 /**
- * @author ATracer modified by Sippolo, kecimis
+ * @author ATracer
+ * modified by Sippolo, kecimis
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "TargetRaceDamageModifier")
@@ -47,23 +48,21 @@ public class TargetRaceDamageModifier extends ActionModifier {
 
 			Player player = (Player) effected;
 			switch (skillTargetRace) {
-			case ASMODIANS:
-				if (player.getRace() == Race.ASMODIANS) {
-					return newValue;
-				}
-				break;
-			case ELYOS:
-				if (player.getRace() == Race.ELYOS) {
-					return newValue;
-				}
+				case ASMODIANS:
+					if (player.getRace() == Race.ASMODIANS)
+						return newValue;
+					break;
+				case ELYOS:
+					if (player.getRace() == Race.ELYOS)
+						return newValue;
 			}
-		} else if (effected instanceof Npc) {
+		}
+		else if (effected instanceof Npc) {
 			Npc npc = (Npc) effected;
-			if (String.valueOf(npc.getObjectTemplate().getRace()) == String.valueOf(skillTargetRace)) {
+			if (String.valueOf(npc.getObjectTemplate().getRace()) == String.valueOf(skillTargetRace))
 				return newValue;
-			} else {
+			else
 				return 0;
-			}
 		}
 
 		return 0;
@@ -77,14 +76,14 @@ public class TargetRaceDamageModifier extends ActionModifier {
 			Player player = (Player) effected;
 			Race race = player.getRace();
 			return (race == Race.ASMODIANS && skillTargetRace == SkillTargetRace.ASMODIANS)
-					|| (race == Race.ELYOS && skillTargetRace == SkillTargetRace.ELYOS);
-		} else if (effected instanceof Npc) {
+				|| (race == Race.ELYOS && skillTargetRace == SkillTargetRace.ELYOS);
+		}
+		else if (effected instanceof Npc) {
 			Npc npc = (Npc) effected;
 
 			Race race = npc.getObjectTemplate().getRace();
-			if (race == null) {
+			if (race == null)
 				return false;
-			}
 
 			return (String.valueOf(race) == String.valueOf(skillTargetRace));
 		}

@@ -38,50 +38,52 @@ public class _30265APolearmWalksintoaBar extends QuestHandler {
 
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			return false;
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 203830: { // Fuchsia
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1352);
+				case 203830: { // Fuchsia
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+					}
+					break;
+				}
+				case 203058: { // Asteros
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2, false, false); // 2
+						}
+					}
+					break;
+				}
+				case 790001: { // Aratus
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 2) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case SELECT_REWARD: {
+							changeQuestStep(env, 2, 2, true); // reward
+							return sendQuestDialog(env, 5);
+						}
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-				break;
 			}
-			case 203058: { // Asteros
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1693);
-					}
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2, false, false); // 2
-				}
-				}
-				break;
-			}
-			case 790001: { // Aratus
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 2) {
-						return sendQuestDialog(env, 2375);
-					}
-				}
-				case SELECT_REWARD: {
-					changeQuestStep(env, 2, 2, true); // reward
-					return sendQuestDialog(env, 5);
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 790001) { // Aratus
 				return sendQuestEndDialog(env);
 			}

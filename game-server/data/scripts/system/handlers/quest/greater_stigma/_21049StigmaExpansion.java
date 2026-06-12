@@ -61,22 +61,24 @@ public class _21049StigmaExpansion extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 799208: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(182207838);
-					if (itemCount1 > 2) {
-						removeQuestItem(env, 182207838, 3);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 2375);
-					} else
-						return sendQuestDialog(env, 2716);
-				}
+				case 799208: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182207838);
+							if (itemCount1 > 2) {
+								removeQuestItem(env, 182207838, 3);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 2375);
+							}
+							else
+								return sendQuestDialog(env, 2716);
+						}
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799208) {
 				if (env.getDialogId() == 34)
 					return sendQuestDialog(env, 5);

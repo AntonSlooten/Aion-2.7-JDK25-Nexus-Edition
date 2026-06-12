@@ -93,68 +93,68 @@ public class _2059APeaceOffering extends QuestHandler {
 					return sendQuestEndDialog(env);
 			}
 			return false;
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 204787) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-				else if (var == 4)
-					return sendQuestDialog(env, 2375);
-			case SELECT_ACTION_1012:
-				playQuestMovie(env, 252);
-				break;
-			case STEP_TO_1:
-				if (var == 0) {
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+					else if (var == 4)
+						return sendQuestDialog(env, 2375);
+				case SELECT_ACTION_1012:
+					playQuestMovie(env, 252);
+					break;
+				case STEP_TO_1:
+					if (var == 0) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+				case SET_REWARD:
+					if (var == 4) {
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+			}
+		}
+		else if (targetId == 204795) {
+			switch (env.getDialog()) {
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+				case STEP_TO_2:
+					if (var == 1) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+			}
+		}
+		else if (targetId == 204796) {
+			switch (env.getDialog()) {
+				case START_DIALOG:
+					if (var == 2)
+						return sendQuestDialog(env, 1693);
+				case STEP_TO_3:
 					qs.setQuestVarById(0, var + 1);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				}
-			case SET_REWARD:
-				if (var == 4) {
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
 			}
-		} else if (targetId == 204795) {
-			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-			case STEP_TO_2:
-				if (var == 1) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			}
-		} else if (targetId == 204796) {
-			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 2)
-					return sendQuestDialog(env, 1693);
-			case STEP_TO_3:
-				qs.setQuestVarById(0, var + 1);
-				updateQuestStatus(env);
-				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-				return true;
-			}
-		} else if (targetId == 204806) {
+		}
+		else if (targetId == 204806) {
 			if (var == 3) {
 				final Npc npc = (Npc) env.getVisibleObject();
 				npc.getAi2().onCreatureEvent(AIEventType.FOLLOW_ME, player);
-				player.getController().addTask(TaskId.QUEST_FOLLOW,
-						QuestTasks.newFollowingToTargetCheckTask(env, 204813)); // 204813 => Kalitan || 204813 =>
-																				// df3_hiddennpc_q2059
+				player.getController().addTask(TaskId.QUEST_FOLLOW, 
+						QuestTasks.newFollowingToTargetCheckTask(env, 204813)); //204813 => Kalitan || 204813 => df3_hiddennpc_q2059
 				return true;
 			}
 		}

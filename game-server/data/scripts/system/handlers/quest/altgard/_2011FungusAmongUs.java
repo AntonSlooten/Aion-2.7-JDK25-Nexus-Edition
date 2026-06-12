@@ -63,7 +63,8 @@ public class _2011FungusAmongUs extends QuestHandler {
 				qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 				updateQuestStatus(env);
 				return true;
-			} else if (var == 6) {
+			}
+			else if (var == 6) {
 				changeQuestStep(env, 6, 6, true); // reward
 				return true;
 			}
@@ -86,24 +87,26 @@ public class _2011FungusAmongUs extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 203558) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1); // 1
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+					case STEP_TO_1:
+						return defaultCloseDialog(env, 0, 1); // 1
 				}
-			} else if (targetId == 203572) {
+			}
+			else if (targetId == 203572) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_2:
-					playQuestMovie(env, 60);
-					return defaultCloseDialog(env, 1, 2); // 2
+					case START_DIALOG:
+						if (var == 1)
+							return sendQuestDialog(env, 1352);
+					case STEP_TO_2:
+						playQuestMovie(env, 60);
+						return defaultCloseDialog(env, 1, 2); // 2
 				}
 			}
 
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203558) {
 				return sendQuestEndDialog(env);
 			}

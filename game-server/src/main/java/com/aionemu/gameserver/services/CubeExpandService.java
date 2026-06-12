@@ -46,19 +46,18 @@ public class CubeExpandService {
 
 	/**
 	 * Shows Question window and expands on positive response
-	 *
+	 * 
 	 * @param player
 	 * @param npc
 	 */
 	public static void expandCube(final Player player, Npc npc) {
-		final CubeExpandTemplate expandTemplate = DataManager.CUBEEXPANDER_DATA
-				.getCubeExpandListTemplate(npc.getNpcId());
+		final CubeExpandTemplate expandTemplate = DataManager.CUBEEXPANDER_DATA.getCubeExpandListTemplate(npc.getNpcId());
 
 		if (expandTemplate == null) {
 			log.error("Cube Expand Template could not be found for Npc ID: " + npc.getObjectId());
 			return;
 		}
-
+	
 		if (npcCanExpandLevel(expandTemplate, player.getNpcExpands() + 1) && canExpand(player)) {
 			/**
 			 * Check if player is allowed to expand by buying
@@ -91,32 +90,30 @@ public class CubeExpandService {
 			};
 
 			boolean result = player.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_WAREHOUSE_EXPAND_WARNING,
-					responseHandler);
+				responseHandler);
 			if (result) {
-				PacketSendUtility.sendPacket(player, new SM_QUESTION_WINDOW(
-						SM_QUESTION_WINDOW.STR_WAREHOUSE_EXPAND_WARNING, 0, String.valueOf(price)));
+				PacketSendUtility.sendPacket(player, new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_WAREHOUSE_EXPAND_WARNING, 0,
+					String.valueOf(price)));
 			}
-		} else {
-			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300430));
 		}
+		else
+			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300430));
 	}
 
 	/**
 	 * Expands the cubes
-	 *
+	 * 
 	 * @param player
 	 * @param isNpcExpand TODO
 	 */
 	public static void expand(Player player, boolean isNpcExpand) {
-		if (!canExpand(player)) {
+		if (!canExpand(player))
 			return;
-		}
 		PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300431, "9")); // 9 Slots added
-		if (isNpcExpand) {
+		if(isNpcExpand)
 			player.setNpcExpands(player.getNpcExpands() + 1);
-		} else {
+		else
 			player.setQuestExpands(player.getQuestExpands() + 1);
-		}
 		PacketSendUtility.sendPacket(player, SM_CUBE_UPDATE.cubeSize(StorageType.CUBE, player));
 	}
 
@@ -130,37 +127,34 @@ public class CubeExpandService {
 
 	/**
 	 * Checks if new player cube is not max
-	 *
+	 * 
 	 * @param level
 	 * @return true or false
 	 */
 	private static boolean validateNewSize(int level) {
 		// check min and max level
-		if (level < MIN_EXPAND || level > MAX_EXPAND) {
+		if (level < MIN_EXPAND || level > MAX_EXPAND)
 			return false;
-		}
 		return true;
 	}
 
 	/**
 	 * Checks if npc can expand level
-	 *
+	 * 
 	 * @param clist
 	 * @param level
 	 * @return true or false
 	 */
 	private static boolean npcCanExpandLevel(CubeExpandTemplate clist, int level) {
 		// check if level exists in template
-		if (!clist.contains(level)) {
+		if (!clist.contains(level))
 			return false;
-		}
 		return true;
 	}
 
 	/**
-	 * The guy who created cube template should blame himself :) One day I will
-	 * rewrite them
-	 *
+	 * The guy who created cube template should blame himself :) One day I will rewrite them
+	 * 
 	 * @param clist
 	 * @param level
 	 * @return

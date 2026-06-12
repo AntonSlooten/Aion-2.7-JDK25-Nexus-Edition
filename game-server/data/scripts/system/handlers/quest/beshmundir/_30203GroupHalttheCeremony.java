@@ -72,12 +72,13 @@ public class _30203GroupHalttheCeremony extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 798926) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 10002);
+					case START_DIALOG:
+						return sendQuestDialog(env, 10002);
 				}
 			}
 			return false;
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798926)
 				return sendQuestEndDialog(env);
 			return false;
@@ -102,37 +103,37 @@ public class _30203GroupHalttheCeremony extends QuestHandler {
 		int var3 = qs.getQuestVarById(3);
 
 		switch (targetId) {
-		case 216175:
-			if (var == 0 || var1 == 0 || var2 == 1 || var3 == 1 || var1 == 0 || var2 == 0 || var3 == 0) {
-				qs.setQuestVarById(0, 1);
-				updateQuestStatus(env);
-			}
-			break;
-		case 216177:
-			if (var == 1 || var1 == 0 || var2 == 1 || var3 == 1 || var == 0 || var2 == 0 || var3 == 0) {
-				qs.setQuestVarById(1, 1);
-				updateQuestStatus(env);
-			}
-			break;
-		case 216179:
-			if (var == 1 || var1 == 0 || var2 == 0 || var3 == 1 || var == 0 || var1 == 0 || var3 == 0) {
-				qs.setQuestVarById(2, 1);
-				updateQuestStatus(env);
-			}
-			break;
-		case 216181:
-			if (var == 1 || var1 == 0 || var2 == 1 || var3 == 0 || var == 0 || var2 == 0 || var1 == 0) {
-				qs.setQuestVarById(3, 1);
-				updateQuestStatus(env);
-			}
-			break;
-		case 216263:
-			if (var == 1 && var1 == 1 && var2 == 1 && var3 == 1) {
-				qs.setStatus(QuestStatus.REWARD);
-				updateQuestStatus(env);
-				playQuestMovie(env, 443);
-			}
-			break;
+			case 216175:
+				if (var == 0 || var1 == 0 || var2 == 1 || var3 == 1 || var1 == 0 || var2 == 0 || var3 == 0) {
+					qs.setQuestVarById(0, 1);
+					updateQuestStatus(env);
+				}
+				break;
+			case 216177:
+				if (var == 1 || var1 == 0 || var2 == 1 || var3 == 1 || var == 0 || var2 == 0 || var3 == 0) {
+					qs.setQuestVarById(1, 1);
+					updateQuestStatus(env);
+				}
+				break;
+			case 216179:
+				if (var == 1 || var1 == 0 || var2 == 0 || var3 == 1 || var == 0 || var1 == 0 || var3 == 0) {
+					qs.setQuestVarById(2, 1);
+					updateQuestStatus(env);
+				}
+				break;
+			case 216181:
+				if (var == 1 || var1 == 0 || var2 == 1 || var3 == 0 || var == 0 || var2 == 0 || var1 == 0) {
+					qs.setQuestVarById(3, 1);
+					updateQuestStatus(env);
+				}
+				break;
+			case 216263:
+				if (var == 1 && var1 == 1 && var2 == 1 && var3 == 1) {
+					qs.setStatus(QuestStatus.REWARD);
+					updateQuestStatus(env);
+					playQuestMovie(env, 443);
+				}
+				break;
 		}
 		return false;
 	}

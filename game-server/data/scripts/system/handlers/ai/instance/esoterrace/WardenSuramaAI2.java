@@ -38,20 +38,20 @@ import ai.SummonerAI2;
  */
 @AIName("wardensurama")
 public class WardenSuramaAI2 extends SummonerAI2 {
-
+	
 	private List<Integer> percents = new ArrayList<Integer>();
 
 	@Override
 	protected void handleIndividualSpawnedSummons(Percentage percent) {
 		spawnGeysers();
 	}
-
+	
 	@Override
 	protected void handleAttack(Creature creature) {
 		super.handleAttack(creature);
 		checkPercentage(getLifeStats().getHpPercentage());
 	}
-
+	
 	private void checkPercentage(int hpPercentage) {
 		if (hpPercentage > 55 && percents.size() < 2) {
 			addPercent();
@@ -59,26 +59,27 @@ public class WardenSuramaAI2 extends SummonerAI2 {
 		for (Integer percent : percents) {
 			if (hpPercentage <= percent) {
 				switch (percent) {
-				case 50:
-				case 25:
-					useSkill();
-					break;
+					case 50:
+					case 25:
+						useSkill();
+						break;
 				}
 				percents.remove(percent);
 				break;
 			}
 		}
 	}
-
+	
 	private void useSkill() {
-		if (!isAlreadyDead()) // Adds Krunchy : && !this.getOwner().isCasting()
+		if(!isAlreadyDead()) // Adds Krunchy :  && !this.getOwner().isCasting()
 			AI2Actions.useSkill(this, (19332)); // Uses Collapsing Earth
 	}
-
+	
 	private void addPercent() {
 		percents.clear();
-		Collections.addAll(percents, new Integer[] { 50, 25 });
+		Collections.addAll(percents, new Integer[]{50, 25});
 	}
+
 
 	private void spawnGeysers() {
 		spawn(282171, 1317.097656f, 1145.419556f, 53.203529f, (byte) 0, 595);

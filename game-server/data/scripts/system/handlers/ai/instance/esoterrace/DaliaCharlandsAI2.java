@@ -58,11 +58,11 @@ public class DaliaCharlandsAI2 extends AggressiveNpcAI2 {
 		for (Integer percent : percents) {
 			if (hpPercentage <= percent) {
 				switch (percent) {
-				case 75:
-				case 50:
-				case 25:
-					spawnHelpers();
-					break;
+					case 75:
+					case 50:
+					case 25:
+						spawnHelpers();
+						break;
 				}
 				percents.remove(percent);
 				break;
@@ -72,7 +72,7 @@ public class DaliaCharlandsAI2 extends AggressiveNpcAI2 {
 
 	private void addPercent() {
 		percents.clear();
-		Collections.addAll(percents, new Integer[] { 75, 50, 25 });
+		Collections.addAll(percents, new Integer[]{75, 50, 25});
 	}
 
 	private void spawnHelpers() {

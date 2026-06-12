@@ -60,7 +60,7 @@ public class YamenesAI2 extends AggressiveNpcAI2 {
 
 	private void startTasks() {
 
-		if (getOwner().getNpcId() != 216952) {
+		if(getOwner().getNpcId() != 216952){
 			bufflTask = ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 				@Override
@@ -77,32 +77,32 @@ public class YamenesAI2 extends AggressiveNpcAI2 {
 
 			@Override
 			public void run() {
-				spawnPortal();
-				if (getOwner().getNpcId() == 216952) {
-					return;
-				}
-				Npc boss = getOwner();
-				WorldMapInstance instance = getPosition().getWorldMapInstance();
-				deleteNpcs(instance.getNpcs(282107));
-				spawn(282107, boss.getX() + 10, boss.getY() - 10, boss.getZ(), (byte) 0);
-				spawn(282107, boss.getX() - 10, boss.getY() + 10, boss.getZ(), (byte) 0);
-				spawn(282107, boss.getX() + 10, boss.getY() + 10, boss.getZ(), (byte) 0);
+					spawnPortal();
+					if(getOwner().getNpcId() == 216952){
+						return;
+					}
+					Npc boss = getOwner();
+					WorldMapInstance instance = getPosition().getWorldMapInstance();
+					deleteNpcs(instance.getNpcs(282107));
+					spawn(282107, boss.getX() + 10, boss.getY() - 10, boss.getZ(), (byte) 0);
+					spawn(282107, boss.getX() - 10, boss.getY() + 10, boss.getZ(), (byte) 0);
+					spawn(282107, boss.getX() + 10, boss.getY() + 10, boss.getZ(), (byte) 0);				
 			}
 		}, 120000, 120000);
-
+		
 		skillTask = ThreadPoolManager.getInstance().scheduleAtFixedRate(new Runnable() {
 
 			@Override
 			public void run() {
-				if (getOwner().getNpcId() == 216952) {
-					return;
-				}
-				Npc boss = getOwner();
-				EmoteManager.emoteStopAttacking(getOwner());
-				SkillEngine.getInstance().getSkill(boss, 19282, 55, getTarget()).useSkill();
-				boss.clearAttackedCount();
-				NpcShoutsService.getInstance().sendMsg(getOwner(), 1400729);
-
+					if(getOwner().getNpcId() == 216952){
+						return;
+					}
+					Npc boss = getOwner();
+					EmoteManager.emoteStopAttacking(getOwner());
+					SkillEngine.getInstance().getSkill(boss, 19282, 55, getTarget()).useSkill();
+					boss.clearAttackedCount();
+					NpcShoutsService.getInstance().sendMsg(getOwner(), 1400729);
+				
 			}
 		}, 70000, 70000);
 	}
@@ -113,25 +113,28 @@ public class YamenesAI2 extends AggressiveNpcAI2 {
 		Npc portalC = getPosition().getWorldMapInstance().getNpc(282131);
 
 		NpcShoutsService.getInstance().sendMsg(getOwner(), 1400637);
-
+		
 		if (portalA == null) {
 			if (!top) {
 				spawn(282014, 288.10f, 741.95f, 216.81f, (byte) 3);
-			} else {
+			}
+			else {
 				spawn(282014, 303.69f, 736.35f, 198.7f, (byte) 0);
 			}
 		}
 		if (portalB == null) {
 			if (!top) {
 				spawn(282015, 375.05f, 750.67f, 216.82f, (byte) 59);
-			} else {
+			}
+			else {
 				spawn(282015, 335.19f, 708.92f, 198.9f, (byte) 35);
 			}
 		}
 		if (portalC == null) {
 			if (!top) {
 				spawn(282131, 341.33f, 699.38f, 216.86f, (byte) 59);
-			} else {
+			}
+			else {
 				spawn(282131, 360.23f, 741.07f, 198.7f, (byte) 0);
 			}
 		}
@@ -164,7 +167,7 @@ public class YamenesAI2 extends AggressiveNpcAI2 {
 		AI2Actions.deleteOwner(this);
 	}
 
-	private void cancel() {
+	private void cancel(){
 		top = true;
 		isStart.set(false);
 		WorldMapInstance instance = getPosition().getWorldMapInstance();

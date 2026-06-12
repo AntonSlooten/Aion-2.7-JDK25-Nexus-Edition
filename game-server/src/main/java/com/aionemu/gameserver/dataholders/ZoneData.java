@@ -42,41 +42,38 @@ import com.aionemu.gameserver.model.templates.zone.ZoneTemplate;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
 @XmlRootElement(name = "zones")
-public class ZoneData {
-
+public class ZoneData{
+	
 	@XmlElement(name = "zone")
 	protected List<ZoneTemplate> zoneList;
 
 	@XmlTransient
-	private TIntObjectHashMap<List<ZoneInfo>> zoneNameMap = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<List<ZoneInfo>> zoneNameMap = new TIntObjectHashMap<List<ZoneInfo>>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (ZoneTemplate zone : zoneList) {
 			Area area = null;
-			switch (zone.getAreaType()) {
-			case POLYGON:
-				area = new PolyArea(zone.getName(), zone.getMapid(), zone.getPoints().getPoint(),
-						zone.getPoints().getBottom(), zone.getPoints().getTop());
-				break;
-			case CYLINDER:
-				area = new CylinderArea(zone.getName(), zone.getMapid(), zone.getCylinder().getX(),
-						zone.getCylinder().getY(), zone.getCylinder().getR(), zone.getCylinder().getBottom(),
-						zone.getCylinder().getTop());
-				break;
-			case SPHERE:
-				area = new SphereArea(zone.getName(), zone.getMapid(), zone.getSphare().getX(), zone.getSphare().getY(),
-						zone.getSphare().getZ(), zone.getSphare().getR());
+			switch (zone.getAreaType()){
+				case POLYGON:
+					area = new PolyArea(zone.getName(), zone.getMapid(), zone.getPoints().getPoint(), zone.getPoints().getBottom(),zone.getPoints().getTop());
+					break;
+				case CYLINDER:
+					area = new CylinderArea(zone.getName(), zone.getMapid(), zone.getCylinder().getX(), zone.getCylinder().getY(), zone.getCylinder().getR(), zone.getCylinder().getBottom(), zone.getCylinder().getTop());
+					break;
+				case SPHERE:
+					area = new SphereArea(zone.getName(), zone.getMapid(), zone.getSphare().getX(), zone.getSphare().getY(), zone.getSphare().getZ(), zone.getSphare().getR());
 			}
-			if (area != null) {
+			if(area != null){
 				List<ZoneInfo> zones = zoneNameMap.get(zone.getMapid());
-				if (zones == null) {
-					zones = new ArrayList<>();
+				if (zones == null){
+					zones = new ArrayList<ZoneInfo>();
 					zoneNameMap.put(zone.getMapid(), zones);
 				}
 				zones.add(new ZoneInfo(area, zone));
 			}
 		}
 	}
+
 
 	public TIntObjectHashMap<List<ZoneInfo>> getZones() {
 		return zoneNameMap;

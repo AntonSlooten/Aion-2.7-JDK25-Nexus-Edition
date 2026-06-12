@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -31,9 +31,9 @@ import com.aionemu.gameserver.network.factories.LsPacketHandlerFactory;
 import com.aionemu.gameserver.network.loginserver.serverpackets.SM_GS_AUTH;
 import com.aionemu.gameserver.utils.ThreadPoolManager;
 
-/**
+/** 
  * Object representing connection between LoginServer and GameServer.
- *
+ * 
  * @author -Nemesiss-
  */
 public class LoginServerConnection extends AConnection {
@@ -60,7 +60,7 @@ public class LoginServerConnection extends AConnection {
 	/**
 	 * Server Packet "to send" Queue
 	 */
-	private final Deque<LsServerPacket> sendMsgQueue = new ArrayDeque<>();
+	private final Deque<LsServerPacket> sendMsgQueue = new ArrayDeque<LsServerPacket>();
 
 	/**
 	 * Current state of this connection
@@ -70,14 +70,14 @@ public class LoginServerConnection extends AConnection {
 
 	/**
 	 * Constructor.
-	 *
+	 * 
 	 * @param sc
 	 * @param d
 	 * @throws IOException
 	 */
 
 	public LoginServerConnection(SocketChannel sc, Dispatcher d) throws IOException {
-		super(sc, d, 8192 * 8, 8192 * 8);
+		super(sc, d, 8192*8, 8192*8);
 		LsPacketHandlerFactory lsPacketHandlerFactory = LsPacketHandlerFactory.getInstance();
 		this.lsPacketHandler = lsPacketHandlerFactory.getPacketHandler();
 
@@ -93,13 +93,12 @@ public class LoginServerConnection extends AConnection {
 		this.sendPacket(new SM_GS_AUTH());
 	}
 
+
 	/**
-	 * Called by Dispatcher. ByteBuffer data contains one packet that should be
-	 * processed.
-	 *
+	 * Called by Dispatcher. ByteBuffer data contains one packet that should be processed.
+	 * 
 	 * @param data
-	 * @return True if data was processed correctly, False if some error occurred
-	 *         and connection should be closed NOW.
+	 * @return True if data was processed correctly, False if some error occurred and connection should be closed NOW.
 	 */
 	@Override
 	public boolean processData(ByteBuffer data) {
@@ -109,28 +108,24 @@ public class LoginServerConnection extends AConnection {
 		/**
 		 * Execute packet only if packet exist (!= null) and read was ok.
 		 */
-		if (pck != null && pck.read()) {
+		if (pck != null && pck.read())
 			ThreadPoolManager.getInstance().executeLsPacket(pck);
-		}
 
 		return true;
 	}
 
 	/**
-	 * This method will be called by Dispatcher, and will be repeated till return
-	 * false.
-	 *
+	 * This method will be called by Dispatcher, and will be repeated till return false.
+	 * 
 	 * @param data
-	 * @return True if data was written to buffer, False indicating that there are
-	 *         not any more data to write.
+	 * @return True if data was written to buffer, False indicating that there are not any more data to write.
 	 */
 	@Override
 	protected final boolean writeData(ByteBuffer data) {
 		synchronized (guard) {
 			LsServerPacket packet = sendMsgQueue.pollFirst();
-			if (packet == null) {
+			if (packet == null)
 				return false;
-			}
 
 			packet.write(this, data);
 			return true;
@@ -139,9 +134,8 @@ public class LoginServerConnection extends AConnection {
 
 	/**
 	 * This method is called by Dispatcher when connection is ready to be closed.
-	 *
-	 * @return time in ms after witch onDisconnect() method will be called. Always
-	 *         return 0.
+	 * 
+	 * @return time in ms after witch onDisconnect() method will be called. Always return 0.
 	 */
 	@Override
 	protected final long getDisconnectionDelay() {
@@ -167,17 +161,17 @@ public class LoginServerConnection extends AConnection {
 
 	/**
 	 * Sends GsServerPacket to this client.
-	 *
-	 * @param bp GsServerPacket to be sent.
+	 * 
+	 * @param bp
+	 *          GsServerPacket to be sent.
 	 */
 	public final void sendPacket(LsServerPacket bp) {
 		synchronized (guard) {
 			/**
 			 * Connection is already closed or waiting for last (close packet) to be sent
 			 */
-			if (isWriteDisabled()) {
+			if (isWriteDisabled())
 				return;
-			}
 
 			log.debug("sending packet: " + bp);
 
@@ -187,19 +181,19 @@ public class LoginServerConnection extends AConnection {
 	}
 
 	/**
-	 * Its guaranted that closePacket will be sent before closing connection, but
-	 * all past and future packets wont. Connection will be closed [by Dispatcher
-	 * Thread], and onDisconnect() method will be called to clear all other things.
-	 * forced means that server shouldn't wait with removing this connection.
-	 *
-	 * @param closePacket Packet that will be send before closing.
-	 * @param forced      have no effect in this implementation.
+	 * Its guaranted that closePacket will be sent before closing connection, but all past and future packets wont.
+	 * Connection will be closed [by Dispatcher Thread], and onDisconnect() method will be called to clear all other
+	 * things. forced means that server shouldn't wait with removing this connection.
+	 * 
+	 * @param closePacket
+	 *          Packet that will be send before closing.
+	 * @param forced
+	 *          have no effect in this implementation.
 	 */
 	public final void close(LsServerPacket closePacket, boolean forced) {
 		synchronized (guard) {
-			if (isWriteDisabled()) {
+			if (isWriteDisabled())
 				return;
-			}
 
 			log.debug("sending packet: " + closePacket + " and closing connection after that.");
 
@@ -219,7 +213,8 @@ public class LoginServerConnection extends AConnection {
 	}
 
 	/**
-	 * @param state Set current state of this connection.
+	 * @param state
+	 *          Set current state of this connection.
 	 */
 	public void setState(State state) {
 		this.state = state;

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>
  *
  *  aion-lightning is free software: you can redistribute it and/or modify
@@ -21,14 +21,14 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * @author LokiReborn
- *
+ * 
  */
 public class SM_WINDSTREAM_ANNOUNCE extends AionServerPacket {
 	private int bidirectional;
 	private int mapId;
 	private int streamId;
 	private int boost;
-
+	
 	public SM_WINDSTREAM_ANNOUNCE(int bidirectional, int mapId, int streamId, int boost) {
 		this.bidirectional = bidirectional;
 		this.mapId = mapId;

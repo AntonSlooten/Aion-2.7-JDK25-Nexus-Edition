@@ -38,9 +38,11 @@ public class CustomBalaurAssault {
 
 	public static void startCheck(final SiegeNpc target) {
 		SiegeRace targetRace = selectTarget();
-		if (targetRace.equals(SiegeRace.BALAUR)
-				|| !((targetRace.equals(SiegeRace.ELYOS) && (target.getRace().equals(Race.GCHIEF_LIGHT)))
-						|| (targetRace.equals(SiegeRace.ASMODIANS) && (target.getRace().equals(Race.GCHIEF_DARK))))) {
+		if (targetRace.equals(SiegeRace.BALAUR)) {
+			return;
+		}
+		if (!((targetRace.equals(SiegeRace.ELYOS) && (target.getRace().equals(Race.GCHIEF_LIGHT)))
+				|| (targetRace.equals(SiegeRace.ASMODIANS) && (target.getRace().equals(Race.GCHIEF_DARK))))) {
 			return;
 		}
 		startAssault(target);
@@ -49,12 +51,13 @@ public class CustomBalaurAssault {
 	private static SiegeRace selectTarget() {
 		float elyosInfl = Influence.getInstance().getElyos();
 		float asmosInfl = Influence.getInstance().getAsmos();
-		// float balaurInfl = Influence.getInstance().getBalaur();
+		//float balaurInfl = Influence.getInstance().getBalaur();
 		SiegeRace targetRace = SiegeRace.BALAUR;
 
 		if ((Rnd.get() < asmosInfl)) {
 			targetRace = SiegeRace.ASMODIANS;
-		} else if (Rnd.get() < elyosInfl) {
+		}
+		else if (Rnd.get() < elyosInfl) {
 			targetRace = SiegeRace.ELYOS;
 		}
 
@@ -74,14 +77,14 @@ public class CustomBalaurAssault {
 		int templateId;
 		SiegeSpawnTemplate spawn = null;
 
-		float interval = (float) (Math.PI * 2.0f / (amount / 2));
+		float interval = (float) (Math.PI * 2.0f / (amount/2));
 		float x1;
 		float y1;
 
 		VisibleObject visibleObject;
-		List<VisibleObject> despawnList = new ArrayList<>();
+		List<VisibleObject> despawnList = new ArrayList<VisibleObject>();
 
-		List<Integer> idList = new ArrayList<>();
+		List<Integer> idList = new ArrayList<Integer>();
 		idList.add(210799);
 		idList.add(211961);
 		idList.add(213831);
@@ -108,25 +111,26 @@ public class CustomBalaurAssault {
 		idList.add(250182);
 		idList.add(250187);
 
-		for (int i = 0; amount > i; i++) {
+		for( int i = 0; amount > i; i++) {
 			int hateValue;
-			if (i < (amount / 2)) {
-				x1 = (float) (Math.cos(interval * i) * radius1);
-				y1 = (float) (Math.sin(interval * i) * radius1);
+			if(i < (amount/2)) {
+				x1 = (float)(Math.cos( interval * i ) * radius1);
+				y1 = (float)(Math.sin( interval * i ) * radius1);
 				hateValue = 5000;
-			} else {
-				x1 = (float) (Math.cos(interval * i) * radius2);
-				y1 = (float) (Math.sin(interval * i) * radius2);
+			}
+			else {
+				x1 = (float)(Math.cos( interval * i ) * radius2);
+				y1 = (float)(Math.sin( interval * i ) * radius2);
 				hateValue = 500;
 			}
-			templateId = idList.get((int) (Math.random() * idList.size()));
-			spawn = SpawnEngine.addNewSiegeSpawn(worldId, templateId, x + x1, y + y1, z, heading);
+			templateId = idList.get((int)(Math.random() * idList.size()));
+			spawn = SpawnEngine.addNewSiegeSpawn(worldId, templateId, x + x1 , y + y1, z, heading);
 
 			visibleObject = SpawnEngine.spawnObject(spawn, 1);
 			despawnList.add(visibleObject);
 
-			Creature attaker = (Creature) visibleObject;
-			attaker.getAggroList().addHate(target, hateValue, false);
+			Creature attaker = (Creature)visibleObject;
+			attaker.getAggroList().addHate((Creature)target, hateValue, false);
 		}
 
 		despawnAttakers(despawnList, despawnTime);
@@ -147,12 +151,11 @@ public class CustomBalaurAssault {
 	private static void spawnDredgion() {
 		int spawnId = 1;
 		AssembledNpcTemplate template = DataManager.ASSEMBLED_NPC_DATA.getAssembledNpcTemplate(spawnId);
-		FastList<AssembledNpcPart> assembledPatrs = new FastList<>();
+		FastList<AssembledNpcPart> assembledPatrs = new FastList<AssembledNpcPart>();
 		for (AssembledNpcTemplate.AssembledNpcPartTemplate npcPart : template.getAssembledNpcPartTemplates()) {
 			assembledPatrs.add(new AssembledNpcPart(IDFactory.getInstance().nextId(), npcPart));
 		}
-		AssembledNpc npc = new AssembledNpc(template.getRouteId(), template.getMapId(), template.getLiveTime(),
-				assembledPatrs);
+		AssembledNpc npc = new AssembledNpc(template.getRouteId(), template.getMapId(), template.getLiveTime(), assembledPatrs);
 		Iterator<Player> iter = World.getInstance().getPlayersIterator();
 		Player findedPlayer = null;
 		while (iter.hasNext()) {
@@ -165,11 +168,11 @@ public class CustomBalaurAssault {
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
 			public void run() {
-				// int despawnCount = 0;
-				for (VisibleObject visObj : despawnList) {
-					if (visObj != null && visObj.isSpawned()) {
+				//int despawnCount = 0;
+				for(VisibleObject visObj : despawnList)	{
+					if(visObj != null && visObj.isSpawned()) {
 						visObj.getController().delete();
-						// despawnCount++;
+						//despawnCount++;
 					}
 				}
 			}

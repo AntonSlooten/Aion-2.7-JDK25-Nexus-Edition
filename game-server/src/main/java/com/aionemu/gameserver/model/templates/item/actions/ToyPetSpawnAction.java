@@ -74,19 +74,19 @@ public class ToyPetSpawnAction extends AbstractItemAction {
 			return false;
 		}
 		if (!isPutKiskZone(player)) {
-			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CANNOT_USE_ITEM_INVALID_LOCATION);
-			return false;
+ 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CANNOT_USE_ITEM_INVALID_LOCATION);
+ 			return false;
 		}
 		switch (player.getWorldId()) {
-		case 110010000:
-		case 120010000:
-		case 110020000:
-		case 120020000:
-		case 600010000:
-			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CANNOT_USE_ITEM_INVALID_LOCATION);
-			return false;
-		default:
-			break;
+			case 110010000:
+			case 120010000:
+			case 110020000:
+			case 120020000:
+			case 600010000:
+				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CANNOT_USE_ITEM_INVALID_LOCATION);
+				return false;
+			default:
+				break;
 		}
 
 		return true;
@@ -103,27 +103,23 @@ public class ToyPetSpawnAction extends AbstractItemAction {
 			public void abort() {
 				player.getController().cancelTask(TaskId.ITEM_USE);
 				player.removeItemCoolDown(parentItem.getItemTemplate().getDelayId());
-				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE
-						.STR_ITEM_CANCELED(new DescriptionId(parentItem.getItemTemplate().getNameId())));
-				PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(),
-						parentItem.getObjectId(), parentItem.getItemTemplate().getTemplateId(), 0, 2, 0), true);
+				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_ITEM_CANCELED(new DescriptionId(parentItem.getItemTemplate().getNameId())));
+				PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), parentItem.getObjectId(), parentItem.getItemTemplate().getTemplateId(), 0, 2, 0), true);
 			}
 		};
-
+		
 		player.getObserveController().attach(observer);
 		player.getController().addTask(TaskId.ITEM_USE, ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
-				PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(),
-						parentItem.getObjectId(), parentItem.getItemId(), 0, 1, 1), true);
+				PacketSendUtility.broadcastPacket(player,
+					new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), parentItem.getObjectId(), parentItem.getItemId(), 0, 1, 1), true);
 				player.getObserveController().removeObserver(observer);
 				// RemoveKisk
-				if (!player.getInventory().decreaseByObjectId(parentItem.getObjectId(), 1)) {
+				if (!player.getInventory().decreaseByObjectId(parentItem.getObjectId(), 1))
 					return;
-				}
-				PacketSendUtility.sendPacket(player,
-						SM_SYSTEM_MESSAGE.STR_USE_ITEM(new DescriptionId(parentItem.getItemTemplate().getNameId())));
+				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_USE_ITEM(new DescriptionId(parentItem.getItemTemplate().getNameId())));
 				float x = player.getX();
 				float y = player.getY();
 				float z = player.getZ();
@@ -145,27 +141,27 @@ public class ToyPetSpawnAction extends AbstractItemAction {
 				kisk.getController().addTask(TaskId.DESPAWN, task);
 
 				// ShowFinalAction
-				// TODO Bad idea...
-				// player.getController().cancelUseItem();
+				//TODO Bad idea...
+				//player.getController().cancelUseItem();
 				player.getController().cancelTask(TaskId.ITEM_USE);
+				
 
-				if (kisk.getMaxMembers() > 1) {
+				if (kisk.getMaxMembers() > 1)
 					kisk.getController().onDialogRequest(player);
-				} else {
+				else
 					KiskService.onBind(kisk, player);
-				}
 			}
 		}, 10000));
 	}
-
+	
 	private boolean isPutKiskZone(Player player) {
 		return !player.isInsideZoneType(ZoneType.SIEGE);
-
+		
 		// Cant put kisk in siege forteresse only
-		/*
-		 * for (ZoneInstance zone :
-		 * player.getPosition().getMapRegion().getZones(player)) { if
-		 * (!zone.canPutKisk()) return false; } return true;
-		 */
+		/*for (ZoneInstance zone : player.getPosition().getMapRegion().getZones(player)) {
+			if (!zone.canPutKisk())
+				return false;
+		}
+		return true;*/
 	}
 }

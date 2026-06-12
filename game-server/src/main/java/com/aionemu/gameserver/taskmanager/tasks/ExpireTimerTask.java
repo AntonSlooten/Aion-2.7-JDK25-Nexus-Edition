@@ -31,14 +31,13 @@ import com.aionemu.gameserver.taskmanager.AbstractPeriodicTaskManager;
  */
 public class ExpireTimerTask extends AbstractPeriodicTaskManager {
 
-	private FastMap<IExpirable, Player> expirables = new FastMap<>();
+	private FastMap<IExpirable, Player> expirables = new FastMap<IExpirable, Player>();
 
 	/**
 	 * @param period
 	 */
 	public ExpireTimerTask() {
 		super(1000);
-		registerStartupHook();
 	}
 
 	public static ExpireTimerTask getInstance() {
@@ -49,7 +48,8 @@ public class ExpireTimerTask extends AbstractPeriodicTaskManager {
 		writeLock();
 		try {
 			expirables.put(expirable, player);
-		} finally {
+		}
+		finally {
 			writeUnlock();
 		}
 	}
@@ -58,7 +58,8 @@ public class ExpireTimerTask extends AbstractPeriodicTaskManager {
 		writeLock();
 		try {
 			expirables.remove(expirable);
-		} finally {
+		}
+		finally {
 			writeUnlock();
 		}
 	}
@@ -67,11 +68,11 @@ public class ExpireTimerTask extends AbstractPeriodicTaskManager {
 		writeLock();
 		try {
 			for (Map.Entry<IExpirable, Player> entry : expirables.entrySet()) {
-				if (entry.getValue() == player) {
+				if (entry.getValue() == player)
 					expirables.remove(entry.getKey());
-				}
 			}
-		} finally {
+		}
+		finally {
 			writeUnlock();
 		}
 	}
@@ -91,16 +92,17 @@ public class ExpireTimerTask extends AbstractPeriodicTaskManager {
 					continue;
 				}
 				switch (min) {
-				case 1800:
-				case 900:
-				case 600:
-				case 300:
-				case 60:
-					expirable.expireMessage(player, min / 60);
-					break;
+					case 1800:
+					case 900:
+					case 600:
+					case 300:
+					case 60:
+						expirable.expireMessage(player, min / 60);
+						break;
 				}
 			}
-		} finally {
+		}
+		finally {
 			writeUnlock();
 		}
 	}

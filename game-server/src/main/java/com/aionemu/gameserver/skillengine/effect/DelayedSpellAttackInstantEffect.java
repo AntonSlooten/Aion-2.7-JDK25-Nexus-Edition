@@ -41,15 +41,15 @@ public class DelayedSpellAttackInstantEffect extends DamageEffect {
 	public void calculate(Effect effect) {
 		super.calculate(effect, DamageType.MAGICAL);
 	}
-
+	
 	@Override
 	public void applyEffect(final Effect effect) {
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
-				effect.getEffected().getController().onAttack(effect.getEffector(), effect.getSkillId(),
-						TYPE.DELAYDAMAGE, effect.getReserved1(), true, LOG.DELAYEDSPELLATKINSTANT);
+				effect.getEffected().getController()
+					.onAttack(effect.getEffector(), effect.getSkillId(), TYPE.DELAYDAMAGE, effect.getReserved1(), true, LOG.DELAYEDSPELLATKINSTANT);
 				effect.getEffector().getObserveController().notifyAttackObservers(effect.getEffected());
 			}
 		}, delay);

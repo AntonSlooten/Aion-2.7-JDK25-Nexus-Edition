@@ -1,18 +1,18 @@
 /*
  * This file is part of aion-lightning <aion-lightning.com>.
  *
- *  aion-lightning is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * aion-lightning is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  aion-lightning is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * aion-lightning is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with aion-lightning.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with aion-lightning.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.aionemu.gameserver.spawnengine;
 
@@ -20,13 +20,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.stream.Collectors;
-import java.util.Comparator;
 
 import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.model.gameobjects.Npc;
@@ -38,11 +35,9 @@ import com.aionemu.gameserver.model.templates.walker.WalkerTemplate;
  * Brings NPCs back to their positions if they die<br>
  * Cleanup and rework will be made after tests and error handling<br>
  * To use only with patch!
- *
- * @author vlog
+ * * @author vlog
  * @based on Imaginary's imagination
- * @modified Rolandas 
- * @ModernationCode NexusConnect
+ * @modified Rolandas
  */
 public class WalkerFormator {
 
@@ -57,15 +52,14 @@ public class WalkerFormator {
 				log.warn("Missing walker ID: " + spawn.getWalkerId());
 				return false;
 			}
-			if (template.getPool() < 2) {
+			if (template.getPool() < 2)
 				return false;
-			}
 			ClusteredNpc candidate = new ClusteredNpc(npc, instance, template);
 			List<ClusteredNpc> candidateList = null;
-			if (groupedSpawnObjects.containsKey(spawn.getWalkerId())) {
+			if (groupedSpawnObjects.containsKey(spawn.getWalkerId()))
 				candidateList = groupedSpawnObjects.get(spawn.getWalkerId());
-			} else {
-				candidateList = new ArrayList<>();
+			else {
+				candidateList = new ArrayList<ClusteredNpc>();
 				groupedSpawnObjects.put(spawn.getWalkerId(), candidateList);
 			}
 			return candidateList.add(candidate);
@@ -73,48 +67,51 @@ public class WalkerFormator {
 		return false;
 	}
 
+	// PERBAIKAN: Menggunakan Java Streams API menggantikan lambdaj
 	public void organizeAndSpawn() {
 		for (List<ClusteredNpc> candidates : groupedSpawnObjects.values()) {
 			
+			// Grouping berdasarkan PositionHash menggunakan Java Streams (Integer Key)
 			Map<Integer, List<ClusteredNpc>> bySize = candidates.stream()
 					.collect(Collectors.groupingBy(ClusteredNpc::getPositionHash));
 
+			int maxSize = 0;
+			List<ClusteredNpc> npcs = null;
 			
-			List<ClusteredNpc> npcs = bySize.values().stream()
-					.max(Comparator.comparingInt(List::size))
-					.orElse(new ArrayList<>());
-
-			int maxSize = npcs.size();
-
-			if (maxSize <= 1) {
-				for (ClusteredNpc snpc : candidates) {
+			// Perulangan menggunakan tipe Integer
+			for (Map.Entry<Integer, List<ClusteredNpc>> entry : bySize.entrySet()) {
+				if (entry.getValue().size() > maxSize) {
+					npcs = entry.getValue();
+					maxSize = npcs.size();
+				}
+			}
+			
+			if (maxSize == 1 || npcs == null) {
+				for (ClusteredNpc snpc : candidates)
 					snpc.spawn(snpc.getNpc().getZ());
-				}
-			} else {
+			}
+			else {
 				WalkerGroup wg = new WalkerGroup(npcs);
-				if (candidates.get(0).getWalkTemplate().getPool() != candidates.size()) {
+				if (candidates.get(0).getWalkTemplate().getPool() != candidates.size())
 					log.warn("Incorrect pool for route: " + candidates.get(0).getWalkTemplate().getRouteId());
-				}
 				wg.form();
 				wg.spawn();
 				// spawn the rest which didn't have the same coordinates
 				for (ClusteredNpc snpc : candidates) {
-					if (npcs.contains(snpc)) {
+					if (npcs.contains(snpc))
 						continue;
-					}
 					snpc.spawn(snpc.getNpc().getZ());
 				}
 			}
 		}
 		clear();
 	}
-
 	private void clear() {
 		groupedSpawnObjects.clear();
 	}
 
 	private WalkerFormator() {
-		groupedSpawnObjects = new HashMap<>();
+		groupedSpawnObjects = new HashMap<String, List<ClusteredNpc>>();
 	}
 
 	public static final WalkerFormator getInstance() {

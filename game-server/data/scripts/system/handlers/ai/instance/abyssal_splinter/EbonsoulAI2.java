@@ -21,7 +21,8 @@ public class EbonsoulAI2 extends AggressiveNpcAI2 {
 	private Future<?> task;
 
 	@Override
-	protected void handleAttack(Creature creature) {
+	protected void handleAttack(Creature creature)
+	{
 		super.handleAttack(creature);
 		checkPercentage(getLifeStats().getHpPercentage());
 	}
@@ -33,17 +34,17 @@ public class EbonsoulAI2 extends AggressiveNpcAI2 {
 		}
 	}
 
-	private void startSkillTask() {
+	private void startSkillTask()	{
 		skillTask = ThreadPoolManager.getInstance().scheduleAtFixedRate(new Runnable() {
 			@Override
-			public void run() {
-				if (isAlreadyDead()) {
+			public void run()	{
+				if (isAlreadyDead()){
 					cancelTask();
 				} else {
 					SkillEngine.getInstance().getSkill(getOwner(), 19159, 55, getOwner()).useSkill();
 				}
 			}
-		}, 5000, 70000); // re-check delay
+		}, 5000, 70000); //re-check delay
 	}
 
 	private void cancelTask() {
@@ -59,16 +60,16 @@ public class EbonsoulAI2 extends AggressiveNpcAI2 {
 		task = ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
-			public void run() {
+			public void run(){
 				doTask();
 			}
 		}, 1000);
 	}
 
-	private void doTask() {
+	private void doTask(){
 		Npc twin = getPosition().getWorldMapInstance().getNpc(216948);
 		if (twin != null && !twin.getLifeStats().isAlreadyDead() && MathUtil.isIn3dRange(getOwner(), twin, 5)) {
-			if (getEffectController().hasAbnormalEffect(19266) || getEffectController().hasAbnormalEffect(19159)) {
+			if(getEffectController().hasAbnormalEffect(19266) || getEffectController().hasAbnormalEffect(19159)){
 				getEffectController().removeEffect(19266);
 				getEffectController().removeEffect(19159);
 			} else {
@@ -83,7 +84,6 @@ public class EbonsoulAI2 extends AggressiveNpcAI2 {
 		cancelTask();
 		super.handleDied();
 	}
-
 	@Override
 	protected void handleBackHome() {
 		super.handleBackHome();

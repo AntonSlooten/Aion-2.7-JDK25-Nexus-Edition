@@ -58,76 +58,91 @@ public class _1054ThePowerofElim extends QuestHandler {
 			int var = qs.getQuestVarById(0);
 			if (targetId == 730024) { // Trajanus
 				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+					case START_DIALOG: {
+						if (var == 0) {
+							return sendQuestDialog(env, 1011);
+						}
 					}
-				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-			} else if (targetId == 204647) { // Voice of Arbolu
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					} else if (var == 4) {
-						return sendQuestDialog(env, 2375);
-					} else if (var == 5) {
-						return sendQuestDialog(env, 2716);
+					case STEP_TO_1: {
+						return defaultCloseDialog(env, 0, 1); // 1
 					}
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				case SELECT_ACTION_2376: {
-					if (player.getInventory().getItemCountByItemId(182201606) > 0
-							&& player.getInventory().getItemCountByItemId(182201607) > 0) {
-						return sendQuestDialog(env, 2376);
-					} else {
-						return sendQuestDialog(env, 2461);
-					}
-				}
-				case SELECT_ACTION_2377: {
-					return playQuestMovie(env, 187);
-				}
-				case STEP_TO_5: {
-					removeQuestItem(env, 182201606, 1);
-					removeQuestItem(env, 182201607, 1);
-					return defaultCloseDialog(env, 4, 5); // 5
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 5, 5, true, 5, 10001); // reward
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-			} else if (targetId == 730008) { // Daminu
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 2) {
-						return sendQuestDialog(env, 1693);
-					}
-				}
-				case STEP_TO_3: {
-					return defaultCloseDialog(env, 2, 3, 182201606, 1, 0, 0); // 3
-				}
-				}
-			} else if (targetId == 730019) { // Lodas
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 3) {
-						return sendQuestDialog(env, 2034);
-					}
-				}
-				case STEP_TO_4: {
-					return defaultCloseDialog(env, 3, 4, 182201607, 1, 0, 0); // 4
-				}
+				default:
+					break;
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+			else if (targetId == 204647) { // Voice of Arbolu
+				switch (dialog) {
+					case START_DIALOG: {
+						if (var == 1) {
+							return sendQuestDialog(env, 1352);
+						}
+						else if (var == 4) {
+							return sendQuestDialog(env, 2375);
+						}
+						else if (var == 5) {
+							return sendQuestDialog(env, 2716);
+						}
+					}
+					case STEP_TO_2: {
+						return defaultCloseDialog(env, 1, 2); // 2
+					}
+					case SELECT_ACTION_2376: {
+						if (player.getInventory().getItemCountByItemId(182201606) > 0
+							&& player.getInventory().getItemCountByItemId(182201607) > 0) {
+							return sendQuestDialog(env, 2376);
+						}
+						else {
+							return sendQuestDialog(env, 2461);
+						}
+					}
+					case SELECT_ACTION_2377: {
+						return playQuestMovie(env, 187);
+					}
+					case STEP_TO_5: {
+						removeQuestItem(env, 182201606, 1);
+						removeQuestItem(env, 182201607, 1);
+						return defaultCloseDialog(env, 4, 5); // 5
+					}
+					case CHECK_COLLECTED_ITEMS: {
+						return checkQuestItems(env, 5, 5, true, 5, 10001); // reward
+					}
+					case FINISH_DIALOG: {
+						return sendQuestSelectionDialog(env);
+					}
+				default:
+					break;
+				}
+			}
+			else if (targetId == 730008) { // Daminu
+				switch (dialog) {
+					case START_DIALOG: {
+						if (var == 2) {
+							return sendQuestDialog(env, 1693);
+						}
+					}
+					case STEP_TO_3: {
+						return defaultCloseDialog(env, 2, 3, 182201606, 1, 0, 0); // 3
+					}
+				default:
+					break;
+				}
+			}
+			else if (targetId == 730019) { // Lodas
+				switch (dialog) {
+					case START_DIALOG: {
+						if (var == 3) {
+							return sendQuestDialog(env, 2034);
+						}
+					}
+					case STEP_TO_4: {
+						return defaultCloseDialog(env, 3, 4, 182201607, 1, 0, 0); // 4
+					}
+				default:
+					break;
+				}
+			}
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204647) { // Voice of Arbolu
 				return sendQuestEndDialog(env);
 			}

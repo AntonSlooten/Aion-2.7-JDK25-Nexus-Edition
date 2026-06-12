@@ -58,7 +58,8 @@ public class _29003ExpertAethertappingExpert extends QuestHandler {
 						return sendQuestDialog(env, 1011);
 					else
 						return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -68,16 +69,17 @@ public class _29003ExpertAethertappingExpert extends QuestHandler {
 
 		if (qs != null && qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798800: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return sendQuestDialog(env, 2375);
+				case 798800: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return sendQuestDialog(env, 2375);
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798800) {
 				if (env.getDialogId() == 34)
 					return sendQuestDialog(env, 5);

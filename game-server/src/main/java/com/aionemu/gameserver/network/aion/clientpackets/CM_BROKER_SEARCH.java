@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>
  *
  *  aion-lightning is free software: you can redistribute it and/or modify
@@ -48,11 +48,10 @@ public class CM_BROKER_SEARCH extends AionClientPacket {
 		this.page = readH();
 		this.mask = readH();
 		this.itemCount = readH();
-		this.itemList = new ArrayList<>();
+		this.itemList = new ArrayList<Integer>();
 
-		for (int index = 0; index < this.itemCount; index++) {
+		for (int index = 0; index < this.itemCount; index++)
 			this.itemList.add(readD());
-		}
 	}
 
 	@Override

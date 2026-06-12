@@ -36,13 +36,13 @@ public class TeleportLocation {
 
 	@XmlAttribute(name = "price", required = true)
 	private int price = 0;
-
+	
 	@XmlAttribute(name = "pricePvp")
 	private int pricePvp = 0;
-
+	
 	@XmlAttribute(name = "required_quest")
 	private int required_quest = 0;
-
+	
 	@XmlAttribute(name = "type", required = true)
 	private TeleportType type;
 
@@ -57,15 +57,15 @@ public class TeleportLocation {
 	public int getPrice() {
 		return price;
 	}
-
+	
 	public int getPricePvp() {
 		return pricePvp;
 	}
-
+	
 	public int getRequiredQuest() {
 		return required_quest;
 	}
-
+	
 	public TeleportType getType() {
 		return type;
 	}

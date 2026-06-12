@@ -46,9 +46,8 @@ public class CM_BUY_BROKER_ITEM extends AionClientPacket {
 	protected void runImpl() {
 		Player player = getConnection().getActivePlayer();
 
-		if (itemCount < 1) {
+		if (itemCount < 1)
 			return;
-		}
 		BrokerService.getInstance().buyBrokerItem(player, itemUniqueId);
 	}
 }

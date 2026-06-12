@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -19,7 +19,7 @@ package com.aionemu.gameserver.model.account;
 
 /**
  * Class for storing account's online and rest time
- *
+ * 
  * @author EvilSpirit
  */
 public class AccountTime {
@@ -36,7 +36,7 @@ public class AccountTime {
 
 	/**
 	 * get daily accumulated online time in millis
-	 *
+	 * 
 	 * @return time in millis
 	 */
 	public long getAccumulatedOnlineTime() {
@@ -45,8 +45,9 @@ public class AccountTime {
 
 	/**
 	 * get daily accumulated online time in millis
-	 *
-	 * @param accumulatedOnlineTime time in millis
+	 * 
+	 * @param accumulatedOnlineTime
+	 *          time in millis
 	 */
 	public void setAccumulatedOnlineTime(long accumulatedOnlineTime) {
 		this.accumulatedOnlineTime = accumulatedOnlineTime;
@@ -54,7 +55,7 @@ public class AccountTime {
 
 	/**
 	 * get daily accumulated rest (offline) time since first login
-	 *
+	 * 
 	 * @return time in millis
 	 */
 	public long getAccumulatedRestTime() {
@@ -63,8 +64,9 @@ public class AccountTime {
 
 	/**
 	 * get daily accumulated rest (offline) time since first login
-	 *
-	 * @param accumulatedRestTime time in millis
+	 * 
+	 * @param accumulatedRestTime
+	 *          time in millis
 	 */
 	public void setAccumulatedRestTime(long accumulatedRestTime) {
 		this.accumulatedRestTime = accumulatedRestTime;
@@ -73,7 +75,7 @@ public class AccountTime {
 	/**
 	 * Returns hour part rounded down.<br>
 	 * For instance if time is 1 hr 32 min - it will return 1 hr
-	 *
+	 * 
 	 * @return hours part of accumulated online time
 	 */
 	public int getAccumulatedOnlineHours() {
@@ -83,7 +85,7 @@ public class AccountTime {
 	/**
 	 * Returns minutes part.<br>
 	 * For instance: if time is 1 hr 32 min - it will return 32 min
-	 *
+	 * 
 	 * @return minutes part of accumulated online time
 	 */
 	public int getAccumulatedOnlineMinutes() {
@@ -93,7 +95,7 @@ public class AccountTime {
 	/**
 	 * Returns hour part rounded down.<br>
 	 * For instance if time is 1 hr 32 min - it will return 1 hr
-	 *
+	 * 
 	 * @return hours part of accumulated rest time
 	 */
 	public int getAccumulatedRestHours() {
@@ -103,7 +105,7 @@ public class AccountTime {
 	/**
 	 * Returns minutes part.<br>
 	 * For instance: if time is 1 hr 32 min - it will return 32 min
-	 *
+	 * 
 	 * @return minutes part of accumulated rest time
 	 */
 	public int getAccumulatedRestMinutes() {
@@ -113,8 +115,9 @@ public class AccountTime {
 	/**
 	 * Converts milliseconds to hours.<br>
 	 * For instance if millis = 1 hr 32 min, 1 hour will be returned
-	 *
-	 * @param millis milliseconds
+	 * 
+	 * @param millis
+	 *          milliseconds
 	 * @return hours
 	 */
 	private static int toHours(long millis) {
@@ -124,8 +127,9 @@ public class AccountTime {
 	/**
 	 * Converts milliseconds to minutes.<br>
 	 * For instance if millis = 1 hr 32 min, 32 min will be returned
-	 *
-	 * @param millis milliseconds
+	 * 
+	 * @param millis
+	 *          milliseconds
 	 * @return minutes
 	 */
 	private static int toMinutes(long millis) {

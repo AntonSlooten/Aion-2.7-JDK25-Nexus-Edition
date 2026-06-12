@@ -48,13 +48,13 @@ public class Calamity extends AggressiveNpcAI2 {
 	private void attackPlayer() {
 		List<Player> players = getClosePlayer(50);
 		Player player = (!players.isEmpty() ? players.get(Rnd.get(players.size())) : null);
-		if (player == null) {
+		if(player == null){
 			return;
 		}
 
 		SkillEngine.getInstance().getSkill(getOwner(), 18968, 50, player).useSkill();
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
-
+			
 			@Override
 			public void run() {
 				AI2Actions.deleteOwner(Calamity.this);
@@ -63,7 +63,7 @@ public class Calamity extends AggressiveNpcAI2 {
 	}
 
 	private void cancelTask() {
-		if (skillTask != null && !skillTask.isCancelled()) {
+		if (skillTask != null && !skillTask.isCancelled()){
 			skillTask.cancel(true);
 		}
 	}

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -121,11 +121,12 @@ public abstract class PlayerInfo extends AionServerPacket {
 		writeD(pbd.getPosition().getHeading());
 		writeD(pbd.getLevel());// lvl confirmed
 		writeH(pbd.getTitleId());
-		writeH(0); // unk 2.5
+		writeH(0); //unk 2.5
 		if (accPlData.isLegionMember()) {
 			writeD(accPlData.getLegion().getLegionId());
 			writeS(accPlData.getLegion().getLegionName(), 88);
-		} else {
+		}
+		else {
 			writeB(new byte[92]);
 		}
 
@@ -134,9 +135,8 @@ public abstract class PlayerInfo extends AionServerPacket {
 		List<Item> items = accPlData.getEquipment();
 
 		for (Item item : items) {
-			if (itemsDataSize >= 208) {
+			if(itemsDataSize >= 208)
 				break;
-			}
 
 			ItemTemplate itemTemplate = item.getItemTemplate();
 			if (itemTemplate == null) {
@@ -144,7 +144,7 @@ public abstract class PlayerInfo extends AionServerPacket {
 				continue;
 			}
 
-			if (itemTemplate.isArmor() || itemTemplate.isWeapon()) {
+			if(itemTemplate.isArmor() || itemTemplate.isWeapon()) {
 				if (itemTemplate.getItemSlot() <= ItemSlot.PANTS.getSlotIdMask()) {
 					writeC(1); // this flas is needed to show equipment on selection screen
 					writeD(item.getItemSkinTemplate().getTemplateId());

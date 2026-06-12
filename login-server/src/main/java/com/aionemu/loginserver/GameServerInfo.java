@@ -1,17 +1,14 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
- * 
- * aion-lightning is free software: you can redistribute it and/or modify
+ * * aion-lightning is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
- * aion-lightning is distributed in the hope that it will be useful,
+ * * aion-lightning is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
+ * * You should have received a copy of the GNU General Public License
  * along with aion-lightning.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.aionemu.loginserver;
@@ -19,7 +16,6 @@ package com.aionemu.loginserver;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import com.aionemu.commons.network.IPRange;
 import com.aionemu.loginserver.model.Account;
 import com.aionemu.loginserver.network.gameserver.GsConnection;
@@ -27,8 +23,7 @@ import com.aionemu.loginserver.network.gameserver.GsConnection.State;
 
 /**
  * This class represents GameServer at LoginServer side. It contain info about id, ip etc.
- * 
- * @author -Nemesiss-
+ * * @author -Nemesiss-
  */
 public class GameServerInfo {
 
@@ -79,8 +74,7 @@ public class GameServerInfo {
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param id
+	 * * @param id
 	 * @param ip
 	 * @param password
 	 */
@@ -92,8 +86,7 @@ public class GameServerInfo {
 
 	/**
 	 * Returns id of this GameServer.
-	 * 
-	 * @return byte id
+	 * * @return byte id
 	 */
 	public byte getId() {
 		return id;
@@ -101,8 +94,7 @@ public class GameServerInfo {
 
 	/**
 	 * Returns Password of this GameServer.
-	 * 
-	 * @return String password
+	 * * @return String password
 	 */
 	public String getPassword() {
 		return password;
@@ -110,8 +102,7 @@ public class GameServerInfo {
 
 	/**
 	 * Returns allowed IP for this GameServer.
-	 * 
-	 * @return String ip
+	 * * @return String ip
 	 */
 	public String getIp() {
 		return ip;
@@ -119,8 +110,7 @@ public class GameServerInfo {
 
 	/**
 	 * Returns port of this GameServer.
-	 * 
-	 * @return in port
+	 * * @return in port
 	 */
 	public int getPort() {
 		return port;
@@ -128,8 +118,7 @@ public class GameServerInfo {
 
 	/**
 	 * Set port for this GameServer.
-	 * 
-	 * @param port
+	 * * @param port
 	 */
 	public void setPort(int port) {
 		this.port = port;
@@ -137,8 +126,7 @@ public class GameServerInfo {
 
 	/**
 	 * Retunrs default server address, usually used as internet address
-	 * 
-	 * @return default server address
+	 * * @return default server address
 	 */
 	public byte[] getDefaultAddress() {
 		return defaultAddress;
@@ -146,9 +134,8 @@ public class GameServerInfo {
 
 	/**
 	 * Sets default server address
-	 * 
-	 * @param defaultAddress
-	 *          default server address
+	 * * @param defaultAddress
+	 * default server address
 	 */
 	public void setDefaultAddress(byte[] defaultAddress) {
 		this.defaultAddress = defaultAddress;
@@ -156,8 +143,7 @@ public class GameServerInfo {
 
 	/**
 	 * Returns IP range mappings
-	 * 
-	 * @return IPRange mappings
+	 * * @return IPRange mappings
 	 */
 	public List<IPRange> getIpRanges() {
 		return ipRanges;
@@ -165,9 +151,8 @@ public class GameServerInfo {
 
 	/**
 	 * Sets IPRange mappings
-	 * 
-	 * @param ipRanges
-	 *          ipRangeMappings
+	 * * @param ipRanges
+	 * ipRangeMappings
 	 */
 	public void setIpRanges(List<IPRange> ipRanges) {
 		this.ipRanges = ipRanges;
@@ -175,8 +160,7 @@ public class GameServerInfo {
 
 	/**
 	 * Returns active GsConnection for this GameServer or null if this GameServer is down.
-	 * 
-	 * @return GsConnection
+	 * * @return GsConnection
 	 */
 	public final GsConnection getConnection()
 	{
@@ -185,8 +169,7 @@ public class GameServerInfo {
 
 	/**
 	 * Set active GsConnection.
-	 * 
-	 * @param gsConnection
+	 * * @param gsConnection
 	 */
 	public final void setConnection(GsConnection gscHandler)
 	{
@@ -195,8 +178,7 @@ public class GameServerInfo {
 
 	/**
 	 * Returns number of max allowed players for this GameServer.
-	 * 
-	 * @return int maxPlayers
+	 * * @return int maxPlayers
 	 */
 	public final int getMaxPlayers() {
 		return maxPlayers;
@@ -204,8 +186,7 @@ public class GameServerInfo {
 
 	/**
 	 * Set max allowed players for this GameServer.
-	 * 
-	 * @param maxPlayers
+	 * * @param maxPlayers
 	 */
 	public final void setMaxPlayers(int maxPlayers) {
 		this.maxPlayers = maxPlayers;
@@ -213,17 +194,16 @@ public class GameServerInfo {
 
 	/**
 	 * Check if GameServer is Online
-	 * 
-	 * @return true if GameServer is Online.
+	 * * @return true if GameServer is Online.
 	 */
 	public final boolean isOnline()
 	{
 		return gscHandler != null && gscHandler.getState() == State.AUTHED;
 	}
+	
 	/**
 	 * Check if given account is already on This GameServer
-	 * 
-	 * @param accountId
+	 * * @param accountId
 	 * @return true if account is on this GameServer
 	 */
 	public final boolean isAccountOnGameServer(int accountId) {
@@ -232,8 +212,7 @@ public class GameServerInfo {
 
 	/**
 	 * Remove account from this GameServer
-	 * 
-	 * @param accountId
+	 * * @param accountId
 	 * @return removed account.
 	 */
 	public final Account removeAccountFromGameServer(int accountId) {
@@ -242,8 +221,7 @@ public class GameServerInfo {
 
 	/**
 	 * Add account to this GameServer
-	 * 
-	 * @param acc
+	 * * @param acc
 	 */
 	public final void addAccountToGameServer(Account acc) {
 		accountsOnGameServer.put(acc.getId(), acc);
@@ -251,8 +229,7 @@ public class GameServerInfo {
 
 	/**
 	 * Get Account object from account on GameServer list.
-	 * 
-	 * @param accountId
+	 * * @param accountId
 	 * @return Account object if account is on this game server or null.
 	 */
 	public final Account getAccountFromGameServer(int accountId) {
@@ -268,8 +245,7 @@ public class GameServerInfo {
 
 	/**
 	 * Return number of online players connected to this GameServer.
-	 * 
-	 * @return number of online players
+	 * * @return number of online players
 	 */
 	public int getCurrentPlayers() {
 		return accountsOnGameServer.size();
@@ -277,8 +253,7 @@ public class GameServerInfo {
 
 	/**
 	 * Return true if server is full.
-	 * 
-	 * @return true if full.
+	 * * @return true if full.
 	 */
 	public boolean isFull() {
 		return getCurrentPlayers() >= getMaxPlayers();
@@ -288,9 +263,8 @@ public class GameServerInfo {
 	 * Returns ip address that will be used as server ip for specific player.<br>
 	 * The problem is that players can access server from various subnetworks so we need to send different ip adresses.<br>
 	 * If gameserver is not online - it returns 127.0.0.1 as server address.
-	 * 
-	 * @param playerIp
-	 *          Player address
+	 * * @param playerIp
+	 * Player address
 	 * @return ip address that is valid for player
 	 */
 	public byte[] getIPAddressForPlayer(String playerIp) {

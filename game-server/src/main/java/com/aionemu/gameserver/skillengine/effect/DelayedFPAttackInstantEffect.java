@@ -40,13 +40,14 @@ public class DelayedFPAttackInstantEffect extends EffectTemplate {
 
 	@Override
 	public void calculate(Effect effect) {
-		if (!(effect.getEffected() instanceof Player) || !super.calculate(effect, null, null)) {
+		if (!(effect.getEffected() instanceof Player))
 			return;
-		}
-
+		if (!super.calculate(effect, null, null))
+			return;
+		
 		int maxFP = ((Player) effect.getEffected()).getLifeStats().getMaxFp();
-		int newValue = (percent) ? ((maxFP * value) / 100) : value;
-
+		int newValue = (percent) ? (int) ((maxFP * value) / 100) : value;
+		
 		effect.setReserved2(newValue);
 	}
 

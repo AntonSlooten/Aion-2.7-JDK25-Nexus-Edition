@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  *
  *  aion-lightning is free software: you can redistribute it and/or modify
@@ -26,7 +26,7 @@ import java.util.List;
  */
 public class LookingForParty {
 
-	private List<SearchInstance> searchInstances = new ArrayList<>();
+	private List<SearchInstance> searchInstances = new ArrayList<SearchInstance>();
 	private boolean canRegister = true;
 	private Player player;
 	private long startEnterTime;
@@ -37,7 +37,7 @@ public class LookingForParty {
 	}
 
 	public List<Byte> getInstanceMaskIds() {
-		List<Byte> instanceMaskIds = new ArrayList<>();
+		List<Byte> instanceMaskIds = new ArrayList<Byte>();
 		for (SearchInstance si : searchInstances) {
 			instanceMaskIds.add(si.getInstanceMaskId());
 		}
@@ -64,7 +64,7 @@ public class LookingForParty {
 
 	public SearchInstance getSearchInstance(byte instanceMaskId) {
 		for (SearchInstance si : searchInstances) {
-			if (si.getInstanceMaskId() == instanceMaskId) {
+			if (si.getInstanceMaskId() == instanceMaskId ) {
 				return si;
 			}
 		}
@@ -73,7 +73,7 @@ public class LookingForParty {
 
 	public boolean isRegistredInstance(byte instanceMaskId) {
 		for (SearchInstance si : searchInstances) {
-			if (si.getInstanceMaskId() == instanceMaskId) {
+			if (si.getInstanceMaskId() == instanceMaskId ) {
 				return true;
 			}
 		}
@@ -118,7 +118,7 @@ public class LookingForParty {
 	}
 
 	public boolean isOnStartEnterTask() {
-		if (System.currentTimeMillis() - startEnterTime <= (120000 * 2)) {
+		if (System.currentTimeMillis() - startEnterTime <= (120000 * 2)){
 			return true;
 		}
 		return false;

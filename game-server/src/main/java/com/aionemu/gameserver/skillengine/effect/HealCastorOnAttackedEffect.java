@@ -29,6 +29,7 @@ import com.aionemu.gameserver.skillengine.model.Effect;
 import com.aionemu.gameserver.skillengine.model.HealType;
 import com.aionemu.gameserver.utils.MathUtil;
 
+
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "HealCastorOnAttackedEffect")
 public class HealCastorOnAttackedEffect extends EffectTemplate {
@@ -45,9 +46,8 @@ public class HealCastorOnAttackedEffect extends EffectTemplate {
 
 	@Override
 	public void calculate(Effect effect) {
-		if (effect.getEffected() instanceof Player) {
+		if (effect.getEffected() instanceof Player)
 			super.calculate(effect, null, null);
-		}
 	}
 
 	@Override
@@ -63,23 +63,21 @@ public class HealCastorOnAttackedEffect extends EffectTemplate {
 			public void attacked(Creature creature) {
 				if (player.getPlayerGroup2() != null) {
 					for (Player p : player.getPlayerGroup2().getMembers()) {
-						if (MathUtil.isIn3dRange(effect.getEffected(), p, range)) {
+						if (MathUtil.isIn3dRange(effect.getEffected(), p, range))
 							p.getController().onRestore(type, valueWithDelta);
-						}
 					}
-				} else if (player.isInAlliance2()) {
-					for (Player p : player.getPlayerAllianceGroup2().getMembers()) {
-						if (!p.isOnline()) {
+				}
+				else if (player.isInAlliance2()) {
+					for(Player p : player.getPlayerAllianceGroup2().getMembers()){
+						if (!p.isOnline())
 							continue;
-						}
-						if (MathUtil.isIn3dRange(effect.getEffected(), p, range)) {
+						if (MathUtil.isIn3dRange(effect.getEffected(), p, range))
 							p.getController().onRestore(type, valueWithDelta);
-						}
 					}
-				} else {
-					if (MathUtil.isIn3dRange(effect.getEffected(), player, range)) {
+				}
+				else {
+					if (MathUtil.isIn3dRange(effect.getEffected(), player, range))
 						player.getController().onRestore(type, valueWithDelta);
-					}
 				}
 			}
 		};
@@ -92,8 +90,7 @@ public class HealCastorOnAttackedEffect extends EffectTemplate {
 	public void endEffect(Effect effect) {
 		super.endEffect(effect);
 		ActionObserver observer = effect.getActionObserver(position);
-		if (observer != null) {
+		if (observer != null)
 			effect.getEffected().getObserveController().removeObserver(observer);
-		}
 	}
 }

@@ -55,7 +55,7 @@ public class ItemChargeService {
 	}
 
 	public static final void startChargingEquippedItems(final Player player) {
-
+		
 		final Collection<Item> filteredItems = filterItemsToCondition(player, null);
 		if (filteredItems.size() == 0) {
 			// None of the equipped items are conditionable.
@@ -69,7 +69,7 @@ public class ItemChargeService {
 		final long payAmountKinah = payAmount;
 		if (payAmount > 0) {
 			RequestResponseHandler request = new RequestResponseHandler(player) {
-
+	
 				@Override
 				public void acceptRequest(Creature requester, Player responder) {
 					if (processPayment(player, payAmountKinah)) {
@@ -78,26 +78,22 @@ public class ItemChargeService {
 						}
 					}
 				}
-
+	
 				@Override
 				public void denyRequest(Creature requester, Player responder) {
 					// Nothing Happens
 				}
-
+	
 			};
 
-			if (player.getResponseRequester().putRequest(903026, request)) {
-				PacketSendUtility.sendPacket(player,
-						new SM_QUESTION_WINDOW(903026, player.getObjectId(), String.valueOf(payAmount)));
-			}
-
-		} else { // All equipped items are already conditioned. You cannot condition them
-					// further.
-			// All equipped items are already conditioned. You cannot condition them
-			// further.
-			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400890));
+			if (player.getResponseRequester().putRequest(903026, request))
+				PacketSendUtility.sendPacket(player, new SM_QUESTION_WINDOW(903026, player.getObjectId(), String.valueOf(payAmount)));
+			
 		}
-
+		else
+			// All equipped items are already conditioned. You cannot condition them further.
+			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400890));
+		
 	}
 
 	public static void chargeItems(Player player, Collection<Item> items, int level) {
@@ -109,24 +105,22 @@ public class ItemChargeService {
 	public static void chargeItem(Player player, Item item, int level) {
 		int currentCharge = item.getChargePoints();
 		switch (level) {
-		case 1:
-			if (item.getChargePoints() == ChargeInfo.LEVEL1) {
-				return;
-			}
-			item.getConditioningInfo().updateChargePoints(ChargeInfo.LEVEL1 - currentCharge);
-			break;
-		case 2:
-			if (item.getChargePoints() == ChargeInfo.LEVEL2) {
-				return;
-			}
-			item.getConditioningInfo().updateChargePoints(ChargeInfo.LEVEL2 - currentCharge);
-			break;
+			case 1:
+				if (item.getChargePoints() == ChargeInfo.LEVEL1)
+					return;
+				item.getConditioningInfo().updateChargePoints(ChargeInfo.LEVEL1 - currentCharge);
+				break;
+			case 2:
+				if (item.getChargePoints() == ChargeInfo.LEVEL2)
+					return;
+				item.getConditioningInfo().updateChargePoints(ChargeInfo.LEVEL2 - currentCharge);
+				break;
 		}
 		PacketSendUtility.sendPacket(player, new SM_INVENTORY_UPDATE_ITEM(player, item));
 		player.getEquipment().setPersistentState(PersistentState.UPDATE_REQUIRED);
 		player.getInventory().setPersistentState(PersistentState.UPDATE_REQUIRED);
 		PacketSendUtility.sendPacket(player,
-				SM_SYSTEM_MESSAGE.STR_MSG_ITEM_CHARGE_SUCCESS(new DescriptionId(item.getNameID()), level));
+			SM_SYSTEM_MESSAGE.STR_MSG_ITEM_CHARGE_SUCCESS(new DescriptionId(item.getNameID()), level));
 		player.getGameStats().updateStatsVisually();
 	}
 
@@ -141,7 +135,7 @@ public class ItemChargeService {
 		player.getInventory().decreaseKinah(requiredKinah);
 		return true;
 	}
-
+	
 	/**
 	 * Pay for conditioning of all equiped item
 	 */
@@ -155,21 +149,20 @@ public class ItemChargeService {
 
 	public static long getPayAmountForService(Item item, int chargeLevel) {
 		ItemTemplate itemTemplate;
-		if (item.getItemTemplate().getChargePrice1() == 0 && item.hasFusionedItem()) {
+		if (item.getItemTemplate().getChargePrice1() == 0 && item.hasFusionedItem())
 			itemTemplate = item.getFusionedItemTemplate();
-		} else {
+		else
 			itemTemplate = item.getItemTemplate();
-		}
 		switch (chargeLevel) {
-		case 1:
-			return itemTemplate.getChargePrice1() / 2;
-		case 2:
-			switch (getNextChargeLevel(item)) {
 			case 1:
-				return (itemTemplate.getChargePrice1() + itemTemplate.getChargePrice2()) / 2;
+				return itemTemplate.getChargePrice1() / 2;
 			case 2:
-				return itemTemplate.getChargePrice2() / 2;
-			}
+				switch (getNextChargeLevel(item)) {
+					case 1:
+						return (itemTemplate.getChargePrice1() + itemTemplate.getChargePrice2()) / 2;
+					case 2:
+						return itemTemplate.getChargePrice2() / 2;
+				}
 		}
 		return 0;
 	}

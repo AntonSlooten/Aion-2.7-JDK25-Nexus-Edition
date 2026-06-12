@@ -51,25 +51,26 @@ public class _28600SuspiciousErrand extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (env.getTargetId() == 205233) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1352);
-					else if (var == 2)
-						return sendQuestDialog(env, 2034);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1);
-				case STEP_TO_3:
-					qs.setQuestVarById(0, 3);
-					return defaultCloseDialog(env, 3, 3, true, false, 182213005, 1, 182213004, 1);
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1352);
+						else if (var == 2)
+							return sendQuestDialog(env, 2034);
+					case STEP_TO_1:
+						return defaultCloseDialog(env, 0, 1);
+					case STEP_TO_3:
+						qs.setQuestVarById(0, 3);
+						return defaultCloseDialog(env, 3, 3, true, false, 182213005, 1, 182213004, 1);
 
 				}
-			} else if (env.getTargetId() == 204254) {
+			}
+			else if (env.getTargetId() == 204254) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1693);
-				case STEP_TO_2:
-					return defaultCloseDialog(env, 1, 2);
+					case START_DIALOG:
+						if (var == 1)
+							return sendQuestDialog(env, 1693);
+					case STEP_TO_2:
+						return defaultCloseDialog(env, 1, 2);
 				}
 			}
 		}

@@ -66,72 +66,78 @@ public class _2034TheHandBehindtheIceClaw extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204303: { // Nina
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
-					} else if (var == 5) {
-						return sendQuestDialog(env, 2716);
-					}
-				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				case SET_REWARD: {
-					return defaultCloseDialog(env, 5, 5, true, false); // reward
-				}
-				}
-				break;
-			}
-			case 204332: { // Jorund
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					} else if (var == 2) {
-						if (player.getInventory().getItemCountByItemId(182204008) == 0) {
-							return sendQuestDialog(env, 1694);
-						} else {
-							return sendQuestDialog(env, 1693);
+				case 204303: { // Nina
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+							else if (var == 5) {
+								return sendQuestDialog(env, 2716);
+							}
 						}
-					} else if (var == 3) {
-						return sendQuestDialog(env, 2034);
-					}
-				}
-				case STEP_TO_2: {
-					if (var == 1) {
-						return defaultCloseDialog(env, 1, 2, 182204008, 1, 0, 0); // 2
-					} else if (var == 2) {
-						return defaultCloseDialog(env, 2, 2, 182204008, 1, 0, 0); // 2
-					}
-				}
-				case STEP_TO_4: {
-					player.getTitleList().addTitle(58, true, 0);
-					return defaultCloseDialog(env, 3, 4); // 4
-				}
-				}
-				break;
-			}
-			case 700246: { // Dead Fire
-				if (dialog == QuestDialog.USE_OBJECT) {
-					if (var == 2) {
-						if (player.getInventory().getItemCountByItemId(182204019) > 0) {
-							final Npc npc = (Npc) env.getVisibleObject();
-							QuestService.addNewSpawn(220020000, 1, 204417, npc.getX(), npc.getY(), npc.getZ(),
-									npc.getHeading());
-							removeQuestItem(env, 182204008, 1);
-							removeQuestItem(env, 182204019, 1);
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+						case SET_REWARD: {
+							return defaultCloseDialog(env, 5, 5, true, false); // reward
 						}
 					}
+					break;
+				}
+				case 204332: { // Jorund
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+							else if (var == 2) {
+								if (player.getInventory().getItemCountByItemId(182204008) == 0) {
+									return sendQuestDialog(env, 1694);
+								}
+								else {
+									return sendQuestDialog(env, 1693);
+								}
+							}
+							else if (var == 3) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case STEP_TO_2: {
+							if (var == 1) {
+								return defaultCloseDialog(env, 1, 2, 182204008, 1, 0, 0); // 2
+							}
+							else if (var == 2) {
+								return defaultCloseDialog(env, 2, 2, 182204008, 1, 0, 0); // 2
+							}
+						}
+						case STEP_TO_4: {
+							player.getTitleList().addTitle(58, true, 0);
+							return defaultCloseDialog(env, 3, 4); // 4
+						}
+					}
+					break;
+				}
+				case 700246: { // Dead Fire
+					if (dialog == QuestDialog.USE_OBJECT) {
+						if (var == 2) {
+							if (player.getInventory().getItemCountByItemId(182204019) > 0) {
+								final Npc npc = (Npc) env.getVisibleObject();
+								QuestService.addNewSpawn(220020000, 1, 204417, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading());
+								removeQuestItem(env, 182204008, 1);
+								removeQuestItem(env, 182204019, 1);
+							}
+						}
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204301) { // Aegir
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
@@ -155,12 +161,12 @@ public class _2034TheHandBehindtheIceClaw extends QuestHandler {
 		if (qs != null && qs.getStatus() == QuestStatus.START) {
 			int targetId = env.getTargetId();
 			switch (targetId) {
-			case 204417: {
-				return defaultOnKillEvent(env, 204417, 2, 3); // 3
-			}
-			case 212877: {
-				return defaultOnKillEvent(env, 212877, 4, 5); // 5
-			}
+				case 204417: {
+					return defaultOnKillEvent(env, 204417, 2, 3); // 3
+				}
+				case 212877: {
+					return defaultOnKillEvent(env, 212877, 4, 5); // 5
+				}
 			}
 		}
 		return false;

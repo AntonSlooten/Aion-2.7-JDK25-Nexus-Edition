@@ -43,9 +43,8 @@ public class ReturnPointEffect extends EffectTemplate {
 	@Override
 	public void calculate(Effect effect) {
 		ItemTemplate itemTemplate = effect.getItemTemplate();
-		if (itemTemplate != null) {
+		if (itemTemplate != null)
 			effect.addSucessEffect(this);
-		}
 	}
 
 }

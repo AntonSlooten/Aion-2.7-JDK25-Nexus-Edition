@@ -33,7 +33,7 @@ public abstract class ServerVariablesDAO implements DAO {
 
 	/**
 	 * Loads the server variables stored in the database
-	 *
+	 * 
 	 * @returns variable stored in database
 	 */
 	public abstract int load(String var);

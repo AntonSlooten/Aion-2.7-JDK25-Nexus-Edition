@@ -43,8 +43,8 @@ public class QuestsData {
 
 	@XmlElement(name = "quest", required = true)
 	protected List<QuestTemplate> questsData;
-	private TIntObjectHashMap<QuestTemplate> questData = new TIntObjectHashMap<>();
-	private TIntObjectHashMap<List<QuestTemplate>> sortedByFactionId = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<QuestTemplate> questData = new TIntObjectHashMap<QuestTemplate>();
+	private TIntObjectHashMap<List<QuestTemplate>> sortedByFactionId = new TIntObjectHashMap<List<QuestTemplate>>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		questData.clear();
@@ -52,14 +52,14 @@ public class QuestsData {
 		for (QuestTemplate quest : questsData) {
 			questData.put(quest.getId(), quest);
 			int npcFactionId = quest.getNpcFactionId();
-			if (npcFactionId == 0 || quest.isTimeBased()) {
+			if (npcFactionId == 0 || quest.isTimeBased())
 				continue;
-			}
 			if (!sortedByFactionId.containsKey(npcFactionId)) {
-				List<QuestTemplate> factionQuests = new ArrayList<>();
+				List<QuestTemplate> factionQuests = new ArrayList<QuestTemplate>();
 				factionQuests.add(quest);
 				sortedByFactionId.put(npcFactionId, factionQuests);
-			} else {
+			}
+			else {
 				sortedByFactionId.get(npcFactionId).add(quest);
 			}
 		}
@@ -71,18 +71,16 @@ public class QuestsData {
 
 	public List<QuestTemplate> getQuestsByNpcFaction(int npcFactionId, Player player) {
 		List<QuestTemplate> factionQuests = sortedByFactionId.get(npcFactionId);
-		List<QuestTemplate> quests = new ArrayList<>();
+		List<QuestTemplate> quests = new ArrayList<QuestTemplate>();
 		QuestEnv questEnv = new QuestEnv(null, player, 0, 0);
-		for (QuestTemplate questTemplate : factionQuests) {
-			if (!QuestEngine.getInstance().isHaveHandler(questTemplate.getId())
-					|| (questTemplate.getMinlevelPermitted() != 0
-							&& player.getLevel() < questTemplate.getMinlevelPermitted())) {
+		for (QuestTemplate questTemplate : factionQuests){
+			if (!QuestEngine.getInstance().isHaveHandler(questTemplate.getId()))
 				continue;
-			}
+			if (questTemplate.getMinlevelPermitted() != 0 && player.getLevel() < questTemplate.getMinlevelPermitted())
+				continue;
 			questEnv.setQuestId(questTemplate.getId());
-			if (QuestService.checkStartConditions(questEnv)) {
+			if (QuestService.checkStartConditions(questEnv))
 				quests.add(questTemplate);
-			}
 		}
 		return quests;
 	}
@@ -99,7 +97,8 @@ public class QuestsData {
 	}
 
 	/**
-	 * @param questsData the questsData to set
+	 * @param questsData
+	 *          the questsData to set
 	 */
 	public void setQuestsData(List<QuestTemplate> questsData) {
 		this.questsData = questsData;

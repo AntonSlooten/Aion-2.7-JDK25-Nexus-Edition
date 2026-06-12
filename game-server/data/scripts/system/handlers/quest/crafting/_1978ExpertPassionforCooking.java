@@ -61,26 +61,28 @@ public class _1978ExpertPassionforCooking extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203784: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(182206919);
-					long itemCount2 = player.getInventory().getItemCountByItemId(182206920);
-					long itemCount3 = player.getInventory().getItemCountByItemId(182206921);
-					if (itemCount1 > 0 && itemCount2 > 0 && itemCount3 > 0) {
-						removeQuestItem(env, 182206919, 1);
-						removeQuestItem(env, 182206920, 1);
-						removeQuestItem(env, 182206921, 1);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 2375);
-					} else
-						return sendQuestDialog(env, 2716);
-				}
+				case 203784: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182206919);
+							long itemCount2 = player.getInventory().getItemCountByItemId(182206920);
+							long itemCount3 = player.getInventory().getItemCountByItemId(182206921);
+							if (itemCount1 > 0 && itemCount2 > 0 && itemCount3 > 0) {
+								removeQuestItem(env, 182206919, 1);
+								removeQuestItem(env, 182206920, 1);
+								removeQuestItem(env, 182206921, 1);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 2375);
+							}
+							else
+								return sendQuestDialog(env, 2716);
+						}
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203784) {
 				if (env.getDialogId() == 34)
 					return sendQuestDialog(env, 5);

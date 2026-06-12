@@ -35,15 +35,14 @@ public class HostileUpEffect extends EffectTemplate {
 	public void applyEffect(Effect effect) {
 		Creature effected = effect.getEffected();
 		if (effected instanceof Npc) {
-			effected.getAggroList().addHate(effect.getEffector(), effect.getTauntHate());
+			((Npc) effected).getAggroList().addHate(effect.getEffector(), effect.getTauntHate());
 		}
 	}
 
 	@Override
 	public void calculate(Effect effect) {
-		if (!super.calculate(effect, null, null)) {
+		if (!super.calculate(effect, null, null))
 			return;
-		}
 		effect.setTauntHate(value + delta * effect.getSkillLevel());
 	}
 }

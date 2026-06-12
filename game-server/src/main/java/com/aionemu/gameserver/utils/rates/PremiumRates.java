@@ -42,7 +42,7 @@ public class PremiumRates extends Rates {
 	public float getXpPlayerGainRate() {
 		return RateConfig.PREMIUM_XP_PLAYER_GAIN_RATE;
 	}
-
+	
 	@Override
 	public float getApPlayerLossRate() {
 		return RateConfig.PREMIUM_AP_PLAYER_LOSS_RATE;
@@ -75,7 +75,6 @@ public class PremiumRates extends Rates {
 
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see com.aionemu.gameserver.utils.rates.Rates#getCraftingXPRate()
 	 */
 	@Override
@@ -85,7 +84,6 @@ public class PremiumRates extends Rates {
 
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see com.aionemu.gameserver.utils.rates.Rates#getGatheringXPRate()
 	 */
 	@Override

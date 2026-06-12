@@ -33,11 +33,10 @@ public class StatSetFunction extends StatFunction {
 
 	@Override
 	public void apply(Stat2 stat) {
-		if (isBonus()) {
+		if (isBonus())
 			stat.setBonus(getValue());
-		} else {
+		else
 			stat.setBase(getValue());
-		}
 	}
 
 	@Override

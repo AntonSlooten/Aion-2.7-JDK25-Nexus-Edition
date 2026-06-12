@@ -21,7 +21,7 @@ import com.aionemu.gameserver.model.templates.item.ItemTemplate;
 /**
  * This table contains all nesessary data for new players. <br/>
  * Created on: 09.08.2009 18:20:41
- *
+ * 
  * @author Aquanox
  */
 @XmlRootElement(name = "player_initial_data")
@@ -29,14 +29,14 @@ import com.aionemu.gameserver.model.templates.item.ItemTemplate;
 public class PlayerInitialData {
 
 	@XmlElement(name = "player_data")
-	private List<PlayerCreationData> dataList = new ArrayList<>();
+	private List<PlayerCreationData> dataList = new ArrayList<PlayerCreationData>();
 
 	@XmlElement(name = "elyos_spawn_location", required = true)
 	private LocationData elyosSpawnLocation;
 	@XmlElement(name = "asmodian_spawn_location", required = true)
 	private LocationData asmodianSpawnLocation;
 
-	private THashMap<PlayerClass, PlayerCreationData> data = new THashMap<>();
+	private THashMap<PlayerClass, PlayerCreationData> data = new THashMap<PlayerClass, PlayerCreationData>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (PlayerCreationData pt : dataList) {
@@ -57,12 +57,12 @@ public class PlayerInitialData {
 
 	public LocationData getSpawnLocation(Race race) {
 		switch (race) {
-		case ASMODIANS:
-			return asmodianSpawnLocation;
-		case ELYOS:
-			return elyosSpawnLocation;
-		default:
-			throw new IllegalArgumentException();
+			case ASMODIANS:
+				return asmodianSpawnLocation;
+			case ELYOS:
+				return elyosSpawnLocation;
+			default:
+				throw new IllegalArgumentException();
 		}
 	}
 
@@ -91,7 +91,7 @@ public class PlayerInitialData {
 		static class ItemsType {
 
 			@XmlElement(name = "item")
-			public List<ItemType> items = new ArrayList<>();
+			public List<ItemType> items = new ArrayList<ItemType>();
 		}
 
 		public static class ItemType {

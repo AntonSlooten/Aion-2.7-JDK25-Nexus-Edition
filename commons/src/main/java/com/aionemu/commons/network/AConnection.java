@@ -28,7 +28,7 @@ import com.aionemu.commons.options.Assertion;
  * Class that represent Connection with server socket. Connection is created by <code>ConnectionFactory</code> and
  * attached to <code>SelectionKey</code> key. Selection key is registered to one of Dispatchers <code>Selector</code> to
  * handle io read and write.
- *
+ * 
  * @author -Nemesiss-
  */
 public abstract class AConnection {
@@ -82,7 +82,7 @@ public abstract class AConnection {
 
 	/**
 	 * Constructor
-	 *
+	 * 
 	 * @param sc
 	 * @param d
 	 * @throws IOException
@@ -101,7 +101,7 @@ public abstract class AConnection {
 
 	/**
 	 * Set selection key - result of registration this AConnection socketChannel to one of dispatchers.
-	 *
+	 * 
 	 * @param key
 	 */
 	final void setKey(SelectionKey key) {
@@ -135,9 +135,10 @@ public abstract class AConnection {
 	/**
 	 * Connection will be closed at some time [by Dispatcher Thread], after that onDisconnect() method will be called to
 	 * clear all other things.
-	 *
-	 * @param forced is just hint that getDisconnectionDelay() should return 0 so OnDisconnect() method will be called without
-	 *               any delay.
+	 * 
+	 * @param forced
+	 *          is just hint that getDisconnectionDelay() should return 0 so OnDisconnect() method will be called without
+	 *          any delay.
 	 */
 	public final void close(boolean forced) {
 		synchronized (guard) {
@@ -152,7 +153,7 @@ public abstract class AConnection {
 	/**
 	 * This will only close the connection without taking care of the rest. May be called only by Dispatcher Thread.
 	 * Returns true if connection was not closed before.
-	 *
+	 * 
 	 * @return true if connection was not closed before.
 	 */
 	final boolean onlyClose() {
@@ -172,7 +173,8 @@ public abstract class AConnection {
 					key.cancel();
 				}
 				closed = true;
-			} catch (IOException ignored) {
+			}
+			catch (IOException ignored) {
 			}
 		}
 		return true;
@@ -201,7 +203,7 @@ public abstract class AConnection {
 
 	/**
 	 * Used only for PacketProcessor synchronization purpose. Return true if locked successful - if wasn't locked before.
-	 *
+	 * 
 	 * @return locked
 	 */
 	boolean tryLockConnection() {
@@ -225,7 +227,7 @@ public abstract class AConnection {
 
 	/**
 	 * This method will be called by Dispatcher, and will be repeated till return false.
-	 *
+	 * 
 	 * @param data
 	 * @return True if data was written to buffer, False indicating that there are not any more data to write.
 	 */
@@ -239,7 +241,7 @@ public abstract class AConnection {
 
 	/**
 	 * This method is called by Dispatcher when connection is ready to be closed.
-	 *
+	 * 
 	 * @return time in ms after witch onDisconnect() method will be called.
 	 */
 	abstract protected long getDisconnectionDelay();

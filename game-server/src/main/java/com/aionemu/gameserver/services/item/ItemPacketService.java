@@ -32,19 +32,27 @@ import java.util.Collections;
  * 0x1A 0001 1010 increase kinah by loot<br>
  * 0x1D 0001 1101 decrease kinah<br>
  * 0x32 0011 0010 increase kinah by quest<br>
- *
+ * 
  * @author ATracer
  */
 public class ItemPacketService {
 
 	public static enum ItemUpdateType {
-		EQUIP_UNEQUIP(-1, false), // internal usage only
-		INC_MERGE(0x01, true), INC_MERGE_KINAH(0x05, true), DEC_SPLIT(0x06, true), DEC_USE(0x16, true),
-		INC_LOOT(0x19, true), INC_GATHER(0x19, true), INC_KINAH_LOOT(0x1A, true), DEC_KINAH(0x1D, true),
-		INC_KINAH_QUEST(0x32, true), DEFAULT(0x16, true);
+		EQUIP_UNEQUIP(-1, false),//internal usage only
+		INC_MERGE(0x01, true),
+		INC_MERGE_KINAH(0x05, true),
+		DEC_SPLIT(0x06, true),
+		DEC_USE(0x16, true),
+		INC_LOOT(0x19, true),
+		INC_GATHER(0x19, true),
+		INC_KINAH_LOOT(0x1A, true),
+		DEC_KINAH(0x1D, true),
+		INC_KINAH_QUEST(0x32, true),
+		DEC_PET_FOOD(0x5E, true),
+		DEFAULT(0x16, true);
 
 		private final int mask;
-		private final boolean sendable;
+		private final boolean	sendable;
 
 		private ItemUpdateType(int mask, boolean sendable) {
 			this.mask = mask;
@@ -61,8 +69,12 @@ public class ItemPacketService {
 	}
 
 	public static enum ItemAddType {
-		WITH_SLOT(0x07), PUT(0x13), BUY(0x1C), DEFAULT(0x19), // ?
-		QUEST(0x35), QUESTIONNAIRE(0x40);
+		WITH_SLOT(0x07),
+		PUT(0x13),
+		BUY(0x1C),
+		DEFAULT(0x19), // ?
+		QUEST(0x35),
+		QUESTIONNAIRE(0x40);
 
 		private final int mask;
 
@@ -76,7 +88,11 @@ public class ItemPacketService {
 	}
 
 	public static enum ItemDeleteType {
-		UNKNOWN(0), SPLIT(0x04), MOVE(0x14), DISCARD(0x15), USE(0x17);
+		UNKNOWN(0),
+		SPLIT(0x04),
+		MOVE(0x14),
+		DISCARD(0x15),
+		USE(0x17);
 
 		private final int mask;
 
@@ -90,10 +106,10 @@ public class ItemPacketService {
 
 		public static ItemDeleteType fromUpdateType(ItemUpdateType updateType) {
 			switch (updateType) {
-			case DEC_SPLIT:
-				return SPLIT;
-			default:
-				return UNKNOWN;
+				case DEC_SPLIT:
+					return SPLIT;
+				default:
+					return UNKNOWN;
 			}
 		}
 	}
@@ -109,7 +125,8 @@ public class ItemPacketService {
 	public static void sendItemPacket(Player player, StorageType storageType, Item item, ItemUpdateType updateType) {
 		if (item.getItemCount() <= 0 && !item.getItemTemplate().isKinah()) {
 			sendItemDeletePacket(player, storageType, item, ItemDeleteType.fromUpdateType(updateType));
-		} else {
+		}
+		else {
 			sendItemUpdatePacket(player, storageType, item, updateType);
 		}
 	}
@@ -118,14 +135,14 @@ public class ItemPacketService {
 	 * Item will be deleted from UI slot
 	 */
 	public static void sendItemDeletePacket(Player player, StorageType storageType, Item item,
-			ItemDeleteType deleteType) {
+		ItemDeleteType deleteType) {
 		switch (storageType) {
-		case CUBE:
-			PacketSendUtility.sendPacket(player, new SM_DELETE_ITEM(item.getObjectId(), deleteType));
-			break;
-		default:
-			PacketSendUtility.sendPacket(player,
-					new SM_DELETE_WAREHOUSE_ITEM(storageType.getId(), item.getObjectId(), deleteType));
+			case CUBE:
+				PacketSendUtility.sendPacket(player, new SM_DELETE_ITEM(item.getObjectId(), deleteType));
+				break;
+			default:
+				PacketSendUtility.sendPacket(player, new SM_DELETE_WAREHOUSE_ITEM(storageType.getId(), item.getObjectId(),
+					deleteType));
 		}
 		PacketSendUtility.sendPacket(player, SM_CUBE_UPDATE.cubeSize(storageType, player));
 	}
@@ -134,19 +151,19 @@ public class ItemPacketService {
 	 * Item will be updated in UI slot (stacked items)
 	 */
 	public static void sendItemUpdatePacket(Player player, StorageType storageType, Item item,
-			ItemUpdateType updateType) {
+		ItemUpdateType updateType) {
 		switch (storageType) {
-		case CUBE:
-			PacketSendUtility.sendPacket(player, new SM_INVENTORY_UPDATE_ITEM(player, item, updateType));
-			break;
-		case LEGION_WAREHOUSE:
-			if (item.getItemTemplate().isKinah()) {
-				PacketSendUtility.sendPacket(player, new SM_LEGION_EDIT(0x04, player.getLegion()));
-			} else {
+			case CUBE:
+				PacketSendUtility.sendPacket(player, new SM_INVENTORY_UPDATE_ITEM(player, item, updateType));
+				break;
+			case LEGION_WAREHOUSE:
+				if (item.getItemTemplate().isKinah()) {
+					PacketSendUtility.sendPacket(player, new SM_LEGION_EDIT(0x04, player.getLegion()));
+					break;
+				}
+			default:
 				PacketSendUtility.sendPacket(player,
-						new SM_WAREHOUSE_UPDATE_ITEM(player, item, storageType.getId(), updateType));
-			}
-			break;
+					new SM_WAREHOUSE_UPDATE_ITEM(player, item, storageType.getId(), updateType));
 		}
 	}
 
@@ -155,16 +172,16 @@ public class ItemPacketService {
 	 */
 	public static void sendStorageUpdatePacket(Player player, StorageType storageType, Item item) {
 		switch (storageType) {
-		case CUBE:
-			PacketSendUtility.sendPacket(player, new SM_INVENTORY_ADD_ITEM(Collections.singletonList(item), player));
-			break;
-		case LEGION_WAREHOUSE:
-			if (item.getItemTemplate().isKinah()) {
-				PacketSendUtility.sendPacket(player, new SM_LEGION_EDIT(0x04, player.getLegion()));
-			} else {
+			case CUBE:
+				PacketSendUtility.sendPacket(player, new SM_INVENTORY_ADD_ITEM(Collections.singletonList(item), player));
+				break;
+			case LEGION_WAREHOUSE:
+				if (item.getItemTemplate().isKinah()) {
+					PacketSendUtility.sendPacket(player, new SM_LEGION_EDIT(0x04, player.getLegion()));
+					break;
+				}
+			default:
 				PacketSendUtility.sendPacket(player, new SM_WAREHOUSE_ADD_ITEM(item, storageType.getId(), player));
-			}
-			break;
 		}
 		PacketSendUtility.sendPacket(player, SM_CUBE_UPDATE.cubeSize(storageType, player));
 	}

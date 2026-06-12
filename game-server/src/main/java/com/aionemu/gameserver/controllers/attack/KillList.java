@@ -32,7 +32,7 @@ public class KillList {
 	private FastMap<Integer, List<Long>> killList;
 
 	public KillList() {
-		killList = new FastMap<>();
+		killList = new FastMap<Integer, List<Long>>();
 	}
 
 	/**
@@ -43,9 +43,8 @@ public class KillList {
 	public int getKillsFor(int victimId) {
 		List<Long> killTimes = killList.get(victimId);
 
-		if (killTimes == null) {
+		if (killTimes == null)
 			return 0;
-		}
 
 		long now = System.currentTimeMillis();
 		int killCount = 0;
@@ -53,7 +52,8 @@ public class KillList {
 		for (Iterator<Long> i = killTimes.iterator(); i.hasNext();) {
 			if (now - i.next().longValue() > CustomConfig.PVP_DAY_DURATION) {
 				i.remove();
-			} else {
+			}
+			else {
 				killCount++;
 			}
 		}
@@ -67,7 +67,7 @@ public class KillList {
 	public void addKillFor(int victimId) {
 		List<Long> killTimes = killList.get(victimId);
 		if (killTimes == null) {
-			killTimes = new ArrayList<>();
+			killTimes = new ArrayList<Long>();
 			killList.put(victimId, killTimes);
 		}
 

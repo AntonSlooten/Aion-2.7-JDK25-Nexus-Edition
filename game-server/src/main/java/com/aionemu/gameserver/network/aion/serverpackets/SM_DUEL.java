@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.smfnew.com>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -15,6 +15,7 @@
  *  along with aion-unique.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
+
 
 import com.aionemu.gameserver.model.DuelResult;
 import com.aionemu.gameserver.network.aion.AionConnection;
@@ -64,18 +65,18 @@ public class SM_DUEL extends AionServerPacket {
 		writeC(type);
 
 		switch (type) {
-		case 0x00:
-			writeD(requesterObjId);
-			break;
-		case 0x01:
-			writeC(result.getResultId()); // unknown
-			writeD(result.getMsgId());
-			writeS(playerName);
-			break;
-		case 0xE0:
-			break;
-		default:
-			throw new IllegalArgumentException("invalid SM_DUEL packet type " + type);
+			case 0x00:
+				writeD(requesterObjId);
+				break;
+			case 0x01:
+				writeC(result.getResultId()); // unknown
+				writeD(result.getMsgId());
+				writeS(playerName);
+				break;
+			case 0xE0:
+				break;
+			default:
+				throw new IllegalArgumentException("invalid SM_DUEL packet type " + type);
 		}
 	}
 }

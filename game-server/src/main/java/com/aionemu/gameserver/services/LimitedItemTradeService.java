@@ -34,9 +34,10 @@ import javolution.util.FastMap;
 
 /**
  * @author xTz
- *
- *         TYPE_A: BuyLimit == 0 && SellLimit != 0 TYPE_B: BuyLimit != 0 &&
- *         SellLimit == 0 TYPE_C: BuyLimit != 0 && SellLimit != 0
+ * 
+ * TYPE_A: BuyLimit == 0 && SellLimit != 0
+ * TYPE_B: BuyLimit != 0 && SellLimit == 0
+ * TYPE_C: BuyLimit != 0 && SellLimit != 0
  */
 public class LimitedItemTradeService {
 
@@ -59,7 +60,8 @@ public class LimitedItemTradeService {
 				}
 				if (!limitedTradeNpcs.containsKey(npcId)) {
 					limitedTradeNpcs.putIfAbsent(npcId, new LimitedTradeNpc(limitedItems));
-				} else {
+				}
+				else {
 					limitedTradeNpcs.get(npcId).putLimitedItems(limitedItems);
 				}
 			}

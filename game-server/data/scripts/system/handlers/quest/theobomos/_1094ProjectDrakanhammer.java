@@ -87,57 +87,67 @@ public class _1094ProjectDrakanhammer extends QuestHandler {
 				}
 			}
 			return false;
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 203834) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-			case STEP_TO_1:
-				if (var == 0) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			}
-		} else if (targetId == 798155) {
-			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-			case SELECT_ACTION_1353:
-				playQuestMovie(env, 367);
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+				case STEP_TO_1:
+					if (var == 0) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+			default:
 				break;
-			case STEP_TO_2:
-				if (var == 1) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
 			}
-		} else if (targetId == 700411) {
+		}
+		else if (targetId == 798155) {
 			switch (env.getDialog()) {
-			case USE_OBJECT:
-				if (var == 2 && player.getInventory().getItemCountByItemId(182208017) == 0) {
-					giveQuestItem(env, 182208017, 1);
-					return false;
-				}
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+				case SELECT_ACTION_1353:
+					playQuestMovie(env, 367);
+					break;
+				case STEP_TO_2:
+					if (var == 1) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+			default:
+				break;
 			}
-		} else if (targetId == 730153) {
+		}
+		else if (targetId == 700411) {
 			switch (env.getDialog()) {
-			case USE_OBJECT:
-				if (var == 3) {
-					qs.setStatus(QuestStatus.REWARD);
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					updateQuestStatus(env);
-					return false;
-				}
+				case USE_OBJECT:
+					if (var == 2 && player.getInventory().getItemCountByItemId(182208017) == 0) {
+						giveQuestItem(env, 182208017, 1);
+						return false;
+					}
+			default:
+				break;
+			}
+		}
+		else if (targetId == 730153) {
+			switch (env.getDialog()) {
+				case USE_OBJECT:
+					if (var == 3) {
+						qs.setStatus(QuestStatus.REWARD);
+						qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+						updateQuestStatus(env);
+						return false;
+					}
+			default:
+				break;
 			}
 		}
 		return false;
@@ -155,14 +165,14 @@ public class _1094ProjectDrakanhammer extends QuestHandler {
 		final QuestState qs = player.getQuestStateList().getQuestState(questId);
 		if (qs == null || qs.getQuestVarById(0) != 2)
 			return HandlerResult.UNKNOWN;
-		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 1000, 0, 0), true);
+		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 1000, 0,
+			0), true);
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
-				PacketSendUtility.broadcastPacket(player,
-						new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+				PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+					1, 0), true);
 				removeQuestItem(env, 182208017, 1);
 				qs.setQuestVarById(0, 3);
 				updateQuestStatus(env);

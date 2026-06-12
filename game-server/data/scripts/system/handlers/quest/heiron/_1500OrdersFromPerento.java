@@ -65,12 +65,13 @@ public class _1500OrdersFromPerento extends QuestHandler {
 				return sendQuestDialog(env, 5);
 			}
 			return false;
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (env.getDialogId() == 18) {
 				int[] ids = { 1051, 1052, 1053, 1054, 1055, 1056, 1057, 1058, 1059, 1062, 1063 };
 				for (int id : ids) {
 					QuestEngine.getInstance().onEnterZoneMissionEnd(
-							new QuestEnv(env.getVisibleObject(), env.getPlayer(), id, env.getDialogId()));
+						new QuestEnv(env.getVisibleObject(), env.getPlayer(), id, env.getDialogId()));
 				}
 			}
 			return sendQuestEndDialog(env);

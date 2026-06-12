@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -20,10 +20,9 @@ import com.aionemu.gameserver.network.loginserver.LoginServerConnection;
 import com.aionemu.gameserver.network.loginserver.LsServerPacket;
 
 /**
- * In this packet Gameserver is asking if given account sessionKey is valid at
- * Loginserver side. [if user that is authenticating on Gameserver is already
- * authenticated on Loginserver]
- *
+ * In this packet Gameserver is asking if given account sessionKey is valid at Loginserver side. [if user that is
+ * authenticating on Gameserver is already authenticated on Loginserver]
+ * 
  * @author -Nemesiss-
  */
 public class SM_ACCOUNT_AUTH extends LsServerPacket {
@@ -47,8 +46,9 @@ public class SM_ACCOUNT_AUTH extends LsServerPacket {
 
 	/**
 	 * Constructs new instance of <tt>SM_ACCOUNT_AUTH </tt> packet.
-	 *
-	 * @param accountId account identifier.
+	 * 
+	 * @param accountId
+	 *          account identifier.
 	 * @param loginOk
 	 * @param playOk1
 	 * @param playOk2

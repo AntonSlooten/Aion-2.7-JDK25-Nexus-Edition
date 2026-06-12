@@ -33,7 +33,7 @@ public class ShapeChangeEffect extends TransformEffect {
 	public void startEffect(Effect effect) {
 		super.startEffect(effect, null);
 	}
-
+	
 	@Override
 	public void endEffect(Effect effect) {
 		super.endEffect(effect, null);

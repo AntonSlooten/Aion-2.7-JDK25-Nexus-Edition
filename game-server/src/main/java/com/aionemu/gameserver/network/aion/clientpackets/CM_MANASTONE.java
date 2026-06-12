@@ -59,17 +59,17 @@ public class CM_MANASTONE extends AionClientPacket {
 		targetFusedSlot = readC();
 		targetItemUniqueId = readD();
 		switch (actionType) {
-		case 1:
-		case 2:
-			stoneUniqueId = readD();
-			supplementUniqueId = readD();
-			break;
-		case 3:
-			slotNum = readC();
-			readC();
-			readH();
-			npcObjId = readD();
-			break;
+			case 1:
+			case 2:
+				stoneUniqueId = readD();
+				supplementUniqueId = readD();
+				break;
+			case 3:
+				slotNum = readC();
+				readC();
+				readH();
+				npcObjId = readD();
+				break;
 		}
 	}
 
@@ -79,38 +79,37 @@ public class CM_MANASTONE extends AionClientPacket {
 		VisibleObject obj = player.getKnownList().getObject(npcObjId);
 
 		switch (actionType) {
-		case 1: // enchant stone
-		case 2: // add manastone
-			EnchantItemAction action = new EnchantItemAction();
-			Item manastone = player.getInventory().getItemByObjId(stoneUniqueId);
-			Item targetItem = player.getEquipment().getEquippedItemByObjId(targetItemUniqueId);
-			if (targetItem == null) {
-				targetItem = player.getInventory().getItemByObjId(targetItemUniqueId);
-			}
-			if (action.canAct(player, manastone, targetItem)) {
-				Item supplement = player.getInventory().getItemByObjId(supplementUniqueId);
-				if (supplement != null) {
-					if (supplement.getItemId() / 100000 != 1661) { // suppliment id check
-						return;
+			case 1: // enchant stone
+			case 2: // add manastone
+				EnchantItemAction action = new EnchantItemAction();
+				Item manastone = player.getInventory().getItemByObjId(stoneUniqueId);
+				Item targetItem = player.getEquipment().getEquippedItemByObjId(targetItemUniqueId);
+				if (targetItem == null) {
+					targetItem = player.getInventory().getItemByObjId(targetItemUniqueId);
+				}
+				if (action.canAct(player, manastone, targetItem)) {
+					Item supplement = player.getInventory().getItemByObjId(supplementUniqueId);
+					if (supplement != null) {
+						if (supplement.getItemId() / 100000 != 1661) { // suppliment id check
+							return;
+						}
 					}
+					action.act(player, manastone, targetItem, supplement, targetFusedSlot);
 				}
-				action.act(player, manastone, targetItem, supplement, targetFusedSlot);
-			}
-			break;
-		case 3: // remove manastone
-			long price = PricesService.getPriceForService(500, player.getRace());
-			if (player.getInventory().getKinah() < price) {
-				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_NOT_ENOUGH_KINA(price));
-				return;
-			}
-			if (obj != null && obj instanceof Npc && MathUtil.isInRange(player, obj, 7)) {
-				player.getInventory().decreaseKinah(price);
-				if (targetFusedSlot == 1) {
-					ItemSocketService.removeManastone(player, targetItemUniqueId, slotNum);
-				} else {
-					ItemSocketService.removeFusionstone(player, targetItemUniqueId, slotNum);
+				break;
+			case 3: // remove manastone
+				long price = PricesService.getPriceForService(500, player.getRace());
+				if (player.getInventory().getKinah() < price) {
+					PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_NOT_ENOUGH_KINA(price));
+					return;
 				}
-			}
+				if (obj != null && obj instanceof Npc && MathUtil.isInRange(player, obj, 7)) {
+					player.getInventory().decreaseKinah(price);
+					if (targetFusedSlot == 1)
+						ItemSocketService.removeManastone(player, targetItemUniqueId, slotNum);
+					else
+						ItemSocketService.removeFusionstone(player, targetItemUniqueId, slotNum);
+				}
 		}
 	}
 

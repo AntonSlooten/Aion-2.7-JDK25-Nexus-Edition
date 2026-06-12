@@ -55,7 +55,7 @@ public class RepurchaseService {
 
 	public Collection<Item> getRepurchaseItems(int playerObjectId) {
 		Collection<Item> items = repurchaseItems.get(playerObjectId);
-		return items != null ? items : Collections.<Item>emptyList();
+		return items != null ? items : Collections.<Item> emptyList();
 	}
 
 	public Item getRepurchaseItem(Player player, int itemObjectId) {

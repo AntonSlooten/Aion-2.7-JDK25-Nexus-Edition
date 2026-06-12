@@ -32,10 +32,10 @@ public class SM_LEGION_MEMBERLIST extends AionServerPacket {
 	private ArrayList<LegionMemberEx> legionMembers;
 
 	/**
-	 * This constructor will handle legion member info when a List of members is
-	 * given
-	 *
-	 * @param ArrayList <LegionMemberEx> legionMembers
+	 * This constructor will handle legion member info when a List of members is given
+	 * 
+	 * @param ArrayList
+	 *          <LegionMemberEx> legionMembers
 	 */
 	public SM_LEGION_MEMBERLIST(ArrayList<LegionMemberEx> legionMembers) {
 		this.legionMembers = legionMembers;

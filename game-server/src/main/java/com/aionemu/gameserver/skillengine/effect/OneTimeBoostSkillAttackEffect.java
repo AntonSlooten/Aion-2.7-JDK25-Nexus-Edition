@@ -47,45 +47,42 @@ public class OneTimeBoostSkillAttackEffect extends BufEffect {
 		AttackCalcObserver observer = null;
 
 		switch (type) {
-		case MAGICAL:
-			observer = new AttackCalcObserver() {
+			case MAGICAL:
+				observer = new AttackCalcObserver() {
 
-				private int count = 0;
+					private int count = 0;
 
-				@Override
-				public float getBaseMagicalDamageMultiplier() {
-					if (count++ < stopCount) {
-						return percent;
-					} else {
-						effect.getEffected().getEffectController().removeEffect(effect.getSkillId());
-					}
-
-					return 1.0f;
-				}
-			};
-			break;
-		case PHYSICAL:
-			observer = new AttackCalcObserver() {
-
-				private int count = 0;
-
-				@Override
-				public float getBasePhysicalDamageMultiplier(boolean isSkill) {
-					if (!isSkill) {
-						return 1f;
-					}
-
-					if (count++ < stopCount) {
-						if (count == stopCount) {
+					@Override
+					public float getBaseMagicalDamageMultiplier() {
+						if (count++ < stopCount)
+							return percent;
+						else
 							effect.getEffected().getEffectController().removeEffect(effect.getSkillId());
-						}
-						return percent;
-					}
 
-					return 1.0f;
-				}
-			};
-			break;
+						return 1.0f;
+					}
+				};
+				break;
+			case PHYSICAL:
+				observer = new AttackCalcObserver() {
+
+					private int count = 0;
+
+					@Override
+					public float getBasePhysicalDamageMultiplier(boolean isSkill) {
+						if (!isSkill)
+							return 1f;
+
+						if (count++ < stopCount) {
+							if (count == stopCount)
+								effect.getEffected().getEffectController().removeEffect(effect.getSkillId());
+							return percent;
+						}
+
+						return 1.0f;
+					}
+				};
+				break;
 		}
 
 		effect.getEffected().getObserveController().addAttackCalcObserver(observer);

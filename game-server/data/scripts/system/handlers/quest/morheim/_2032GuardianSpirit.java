@@ -70,62 +70,65 @@ public class _2032GuardianSpirit extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204302: { // Bragi
-				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
+				case 204302: { // Bragi
+					switch (dialog) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 1011);
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+					}
+					break;
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
+				case 204329: { // Tofa
+					switch (dialog) {
+						case START_DIALOG: {
+							switch (var) {
+								case 1: {
+									return sendQuestDialog(env, 1352);
+								}
+								case 2: {
+									return sendQuestDialog(env, 1693);
+								}
+								case 3: {
+									return sendQuestDialog(env, 10000);
+								}
+							}
+						}
+						case SELECT_ACTION_1353: {
+							if (var == 1) {
+								playQuestMovie(env, 73);
+								return sendQuestDialog(env, 1353);
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 2, 3, false, 10000, 10001); // 3
+						}
+						case STEP_TO_4: {
+							if (!player.getInventory().isFull()) {
+								return defaultCloseDialog(env, 3, 4, 182204005, 1, 0, 0); // 4
+							}
+							else {
+								return sendQuestSelectionDialog(env);
+							}
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
+					}
 				}
-				}
-				break;
 			}
-			case 204329: { // Tofa
-				switch (dialog) {
-				case START_DIALOG: {
-					switch (var) {
-					case 1: {
-						return sendQuestDialog(env, 1352);
-					}
-					case 2: {
-						return sendQuestDialog(env, 1693);
-					}
-					case 3: {
-						return sendQuestDialog(env, 10000);
-					}
-					}
-				}
-				case SELECT_ACTION_1353: {
-					if (var == 1) {
-						playQuestMovie(env, 73);
-						return sendQuestDialog(env, 1353);
-					}
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 2, 3, false, 10000, 10001); // 3
-				}
-				case STEP_TO_4: {
-					if (!player.getInventory().isFull()) {
-						return defaultCloseDialog(env, 3, 4, 182204005, 1, 0, 0); // 4
-					} else {
-						return sendQuestSelectionDialog(env);
-					}
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
-			if (targetId == 204329) { // Tofa
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
+			if (targetId == 204329) {  // Tofa
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

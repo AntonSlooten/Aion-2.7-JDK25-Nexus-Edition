@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -16,11 +16,11 @@
  */
 package com.aionemu.loginserver.taskmanager.handler.implementations;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.aionemu.loginserver.Shutdown;
 import com.aionemu.loginserver.taskmanager.handler.TaskFromDBHandler;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Divinity, nrg

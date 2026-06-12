@@ -22,7 +22,7 @@ import com.aionemu.gameserver.network.aion.AionConnection.State;
 
 /**
  * Response to SM_QUESTION_WINDOW
- *
+ * 
  * @author Ben
  * @author Sarynth
  */
@@ -58,9 +58,8 @@ public class CM_QUESTION_RESPONSE extends AionClientPacket {
 	@Override
 	protected void runImpl() {
 		Player player = getConnection().getActivePlayer();
-		if (player.isTrading()) {
+		if (player.isTrading())
 			return;
-		}
 		player.getResponseRequester().respond(questionid, response);
 	}
 

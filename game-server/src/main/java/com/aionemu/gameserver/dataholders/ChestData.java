@@ -42,14 +42,13 @@ public class ChestData {
 	private List<ChestTemplate> chests;
 
 	/** A map containing all npc templates */
-	private TIntObjectHashMap<ChestTemplate> chestData = new TIntObjectHashMap<>();
-	private TIntObjectHashMap<ArrayList<ChestTemplate>> instancesMap = new TIntObjectHashMap<>();
-	private THashMap<String, ChestTemplate> namedChests = new THashMap<>();
+	private TIntObjectHashMap<ChestTemplate> chestData = new TIntObjectHashMap<ChestTemplate>();
+	private TIntObjectHashMap<ArrayList<ChestTemplate>> instancesMap = new TIntObjectHashMap<ArrayList<ChestTemplate>>();
+	private THashMap<String, ChestTemplate> namedChests = new THashMap<String, ChestTemplate>();
 
 	/**
-	 * - Inititialize all maps for subsequent use - Don't nullify initial chest list
-	 * as it will be used during reload
-	 *
+	 * - Inititialize all maps for subsequent use - Don't nullify initial chest list as it will be used during reload
+	 * 
 	 * @param u
 	 * @param parent
 	 */
@@ -60,9 +59,8 @@ public class ChestData {
 
 		for (ChestTemplate chest : chests) {
 			chestData.put(chest.getNpcId(), chest);
-			if (chest.getName() != null && !chest.getName().isEmpty()) {
+			if (chest.getName() != null && !chest.getName().isEmpty())
 				namedChests.put(chest.getName(), chest);
-			}
 		}
 	}
 
@@ -86,7 +84,8 @@ public class ChestData {
 	}
 
 	/**
-	 * @param chests the chests to set
+	 * @param chests
+	 *          the chests to set
 	 */
 	public void setChests(List<ChestTemplate> chests) {
 		this.chests = chests;

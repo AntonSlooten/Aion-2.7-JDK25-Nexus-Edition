@@ -12,8 +12,9 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.ThreadPoolManager;
 
 public class CmdUnstuck extends BaseCommand {
+	
+	
 
-	@Override
 	public void execute(final Player player, String... params) {
 		if (player.getLifeStats().isAlreadyDead()) {
 			PacketSendUtility.sendMessage(player, "You can't use the unstuck command when you are dead.");
@@ -23,30 +24,27 @@ public class CmdUnstuck extends BaseCommand {
 			PacketSendUtility.sendMessage(player, "You can't use the unstuck command when you are in Prison.");
 			return;
 		}
-
-		final long now = (new Date().getTime()) / 1000;
-
+		
+		final long now = (new Date().getTime())/1000;
+		
 		if (player.getCommonData().getUnStuck() + CustomConfig.UNSTUCK_DELAY > now) {
 			long cdTime = player.getCommonData().getUnStuck() - now + CustomConfig.UNSTUCK_DELAY;
-			long min = (long) Math.floor(cdTime / 60);
+			long min = (long)Math.floor(cdTime / 60);
 			long sec = cdTime - min * 60;
-			if (min > 0) {
-				PacketSendUtility.sendMessage(player,
-						"You must wait " + min + ":" + sec + " before use this command again.");
-			} else {
-				PacketSendUtility.sendMessage(player,
-						"You must wait " + sec + " seconds before use this command again.");
-			}
+			if (min > 0)
+				PacketSendUtility.sendMessage(player, "You must wait " + min + ":" + sec + " before use this command again.");
+			else
+				PacketSendUtility.sendMessage(player, "You must wait " + sec + " seconds before use this command again.");
 			return;
 		}
-
+		
 		player.getController().cancelAllTasks();
 		player.getMoveController().abortMove();
-
+		
 		PacketSendUtility.broadcastPacketAndReceive(player,
 				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), player.getObjectId(), 0, 180000, 0, 0));
 		player.getController().addTask(TaskId.ITEM_USE, ThreadPoolManager.getInstance().schedule(new Runnable() {
-
+			
 			@Override
 			public void run() {
 				player.getCommonData().setUnStuck(now);
@@ -55,3 +53,4 @@ public class CmdUnstuck extends BaseCommand {
 		}, 180000));
 	}
 }
+

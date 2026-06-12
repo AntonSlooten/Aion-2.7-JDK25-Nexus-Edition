@@ -17,17 +17,15 @@
 
 package com.aionemu.commons.callbacks.enhancer;
 
-import javassist.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.aionemu.commons.callbacks.Callback;
 import com.aionemu.commons.callbacks.CallbackResult;
 import com.aionemu.commons.callbacks.EnhancedObject;
 import com.aionemu.commons.callbacks.metadata.ObjectCallback;
 import com.aionemu.commons.callbacks.util.CallbacksUtil;
 import com.aionemu.commons.callbacks.util.ObjectCallbackHelper;
+import javassist.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.util.HashSet;
@@ -51,11 +49,14 @@ public class ObjectCallbackEnhancer extends CallbackClassFileTransformer {
 
 	/**
 	 * Does actual transformation
-	 *
-	 * @param loader     class loader
-	 * @param clazzBytes class bytecode
+	 * 
+	 * @param loader
+	 *          class loader
+	 * @param clazzBytes
+	 *          class bytecode
 	 * @return transformed class bytecode
-	 * @throws Exception is something went wrong
+	 * @throws Exception
+	 *           is something went wrong
 	 */
 	protected byte[] transformClass(ClassLoader loader, byte[] clazzBytes) throws Exception {
 		ClassPool cp = new ClassPool();
@@ -89,7 +90,8 @@ public class ObjectCallbackEnhancer extends CallbackClassFileTransformer {
 			}
 
 			return clazz.toBytecode();
-		} else {
+		}
+		else {
 			log.trace("Class " + clazz.getName() + " was not enhanced");
 			return null;
 		}
@@ -97,12 +99,15 @@ public class ObjectCallbackEnhancer extends CallbackClassFileTransformer {
 
 	/**
 	 * Responsible for method enhancing, writing service calls to method.
-	 *
-	 * @param method Method that has to be edited
+	 * 
+	 * @param method
+	 *          Method that has to be edited
 	 * @throws javassist.CannotCompileException
-	 *                                     if something went wrong
-	 * @throws javassist.NotFoundException if something went wrong
-	 * @throws ClassNotFoundException      if something went wrong
+	 *           if something went wrong
+	 * @throws javassist.NotFoundException
+	 *           if something went wrong
+	 * @throws ClassNotFoundException
+	 * 					 if something went wrong
 	 */
 	protected void enhanceMethod(CtMethod method) throws CannotCompileException, NotFoundException, ClassNotFoundException {
 		ClassPool cp = method.getDeclaringClass().getClassPool();
@@ -111,13 +116,13 @@ public class ObjectCallbackEnhancer extends CallbackClassFileTransformer {
 
 		CtClass listenerClazz = cp.get(((ObjectCallback) method.getAnnotation(ObjectCallback.class)).value().getName());
 
-		String listenerFieldName = "$$$" + listenerClazz.getSimpleName();
+		String listenerFieldName = "$$$"+listenerClazz.getSimpleName();
 
 		CtClass clazz = method.getDeclaringClass();
-		try {
+		try	{
 			clazz.getField(listenerFieldName);
-		} catch (NotFoundException e) {
-			clazz.addField(CtField.make("Class " + listenerFieldName + " = Class.forName(\"" + listenerClazz.getName() + "\");", clazz));
+		}	catch(NotFoundException e) {
+			clazz.addField(CtField.make("Class "+listenerFieldName+" = Class.forName(\""+listenerClazz.getName()+"\");", clazz));
 		}
 
 		int paramLength = method.getParameterTypes().length;
@@ -128,16 +133,20 @@ public class ObjectCallbackEnhancer extends CallbackClassFileTransformer {
 
 	/**
 	 * Code that is added in the begining of the method
-	 *
-	 * @param method            method that should be edited
-	 * @param paramLength       Lenght of methods parameters
-	 * @param listenerFieldName Listener class that is used for method
+	 * 
+	 * @param method
+	 *          method that should be edited
+	 * @param paramLength
+	 *          Lenght of methods parameters
+	 * @param listenerFieldName
+	 *          Listener class that is used for method
 	 * @return code that will be inserted before method
-	 * @throws NotFoundException      if something went wrong
-	 * @throws CannotCompileException
+	 * @throws NotFoundException
+	 *           if something went wrong
+	 * @throws CannotCompileException 
 	 */
 	protected String writeBeforeMethod(CtMethod method, int paramLength, String listenerFieldName)
-			throws NotFoundException, CannotCompileException {
+		throws NotFoundException, CannotCompileException {
 		StringBuilder sb = new StringBuilder();
 		sb.append('{');
 
@@ -155,7 +164,8 @@ public class ObjectCallbackEnhancer extends CallbackClassFileTransformer {
 				}
 			}
 			sb.append("}");
-		} else {
+		}
+		else {
 			sb.append("null");
 		}
 		sb.append(");");
@@ -167,13 +177,16 @@ public class ObjectCallbackEnhancer extends CallbackClassFileTransformer {
 		CtClass returnType = method.getReturnType();
 		if (returnType.equals(CtClass.voidType)) {
 			sb.append("return");
-		} else if (returnType.equals(CtClass.booleanType)) {
+		}
+		else if (returnType.equals(CtClass.booleanType)) {
 			sb.append("return false");
-		} else if (returnType.equals(CtClass.charType)) {
+		}
+		else if (returnType.equals(CtClass.charType)) {
 			sb.append("return 'a'");
-		} else if (returnType.equals(CtClass.byteType) || returnType.equals(CtClass.shortType)
-				|| returnType.equals(CtClass.intType) || returnType.equals(CtClass.floatType)
-				|| returnType.equals(CtClass.longType) || returnType.equals(CtClass.longType)) {
+		}
+		else if (returnType.equals(CtClass.byteType) || returnType.equals(CtClass.shortType)
+			|| returnType.equals(CtClass.intType) || returnType.equals(CtClass.floatType)
+			|| returnType.equals(CtClass.longType) || returnType.equals(CtClass.longType)) {
 			sb.append("return 0");
 		}
 		sb.append(";}}");
@@ -183,15 +196,19 @@ public class ObjectCallbackEnhancer extends CallbackClassFileTransformer {
 
 	/**
 	 * Writes code that will be inserted after method
-	 *
-	 * @param method            method to edit
-	 * @param paramLength       lenght of method paramenters
-	 * @param listenerFieldName method listener
+	 * 
+	 * @param method
+	 *          method to edit
+	 * @param paramLength
+	 *          lenght of method paramenters
+	 * @param listenerFieldName
+	 *          method listener
 	 * @return actual code that should be inserted
-	 * @throws NotFoundException if something went wrong
+	 * @throws NotFoundException
+	 *           if something went wrong
 	 */
 	protected String writeAfterMethod(CtMethod method, int paramLength, String listenerFieldName)
-			throws NotFoundException {
+		throws NotFoundException {
 		StringBuilder sb = new StringBuilder();
 		sb.append('{');
 
@@ -214,14 +231,16 @@ public class ObjectCallbackEnhancer extends CallbackClassFileTransformer {
 				}
 			}
 			sb.append("}");
-		} else {
+		}
+		else {
 			sb.append("null");
 		}
 		sb.append(", ($w)$_);");
 		sb.append("if(___cbr.isBlockingCaller()){");
 		if (method.getReturnType().equals(CtClass.voidType)) {
 			sb.append("return;");
-		} else {
+		}
+		else {
 			sb.append("return ($r)($w)___cbr.getResult();");
 		}
 		sb.append("}");
@@ -232,10 +251,13 @@ public class ObjectCallbackEnhancer extends CallbackClassFileTransformer {
 
 	/**
 	 * Implements {@link EnhancedObject on class}
-	 *
-	 * @param clazz class to edit
-	 * @throws NotFoundException      if something went wrong
-	 * @throws CannotCompileException if something went wrong
+	 * 
+	 * @param clazz
+	 *          class to edit
+	 * @throws NotFoundException
+	 *           if something went wrong
+	 * @throws CannotCompileException
+	 *           if something went wrong
 	 */
 	protected void writeEnhancedObjectImpl(CtClass clazz) throws NotFoundException, CannotCompileException {
 		ClassPool cp = clazz.getClassPool();
@@ -246,10 +268,13 @@ public class ObjectCallbackEnhancer extends CallbackClassFileTransformer {
 
 	/**
 	 * Implements {@link EnhancedObject} fields
-	 *
-	 * @param clazz Class to add fields
-	 * @throws CannotCompileException if something went wrong
-	 * @throws NotFoundException      if something went wrong
+	 * 
+	 * @param clazz
+	 *          Class to add fields
+	 * @throws CannotCompileException
+	 *           if something went wrong
+	 * @throws NotFoundException
+	 *           if something went wrong
 	 */
 	private void writeEnhancedOBjectFields(CtClass clazz) throws CannotCompileException, NotFoundException {
 		ClassPool cp = clazz.getClassPool();
@@ -267,10 +292,13 @@ public class ObjectCallbackEnhancer extends CallbackClassFileTransformer {
 
 	/**
 	 * Implements {@link EnhancedObject methods}
-	 *
-	 * @param clazz Class to add methods
-	 * @throws NotFoundException      if something went wrong
-	 * @throws CannotCompileException if something went wrong
+	 * 
+	 * @param clazz
+	 *          Class to add methods
+	 * @throws NotFoundException
+	 *           if something went wrong
+	 * @throws CannotCompileException
+	 *           if something went wrong
 	 */
 	private void writeEnhancedObjectMethods(CtClass clazz) throws NotFoundException, CannotCompileException {
 
@@ -280,27 +308,27 @@ public class ObjectCallbackEnhancer extends CallbackClassFileTransformer {
 		CtClass mapClass = cp.get(Map.class.getName());
 		CtClass reentrantReadWriteLockClass = cp.get(ReentrantReadWriteLock.class.getName());
 
-		CtMethod method = new CtMethod(CtClass.voidType, "addCallback", new CtClass[]{callbackClass}, clazz);
+		CtMethod method = new CtMethod(CtClass.voidType, "addCallback", new CtClass[] { callbackClass }, clazz);
 		method.setModifiers(java.lang.reflect.Modifier.PUBLIC);
 		method.setBody("com.aionemu.commons.callbacks.util.ObjectCallbackHelper.addCallback($1, this);");
 		clazz.addMethod(method);
 
-		method = new CtMethod(CtClass.voidType, "removeCallback", new CtClass[]{callbackClass}, clazz);
+		method = new CtMethod(CtClass.voidType, "removeCallback", new CtClass[] { callbackClass }, clazz);
 		method.setModifiers(java.lang.reflect.Modifier.PUBLIC);
 		method.setBody("com.aionemu.commons.callbacks.util.ObjectCallbackHelper.removeCallback($1, this);");
 		clazz.addMethod(method);
 
-		method = new CtMethod(mapClass, "getCallbacks", new CtClass[]{}, clazz);
+		method = new CtMethod(mapClass, "getCallbacks", new CtClass[] {}, clazz);
 		method.setModifiers(java.lang.reflect.Modifier.PUBLIC);
 		method.setBody("return " + FIELD_NAME_CALLBACKS + ";");
 		clazz.addMethod(method);
 
-		method = new CtMethod(CtClass.voidType, "setCallbacks", new CtClass[]{mapClass}, clazz);
+		method = new CtMethod(CtClass.voidType, "setCallbacks", new CtClass[] { mapClass }, clazz);
 		method.setModifiers(java.lang.reflect.Modifier.PUBLIC);
 		method.setBody("this." + FIELD_NAME_CALLBACKS + " = $1;");
 		clazz.addMethod(method);
 
-		method = new CtMethod(reentrantReadWriteLockClass, "getCallbackLock", new CtClass[]{}, clazz);
+		method = new CtMethod(reentrantReadWriteLockClass, "getCallbackLock", new CtClass[] {}, clazz);
 		method.setModifiers(java.lang.reflect.Modifier.PUBLIC);
 		method.setBody("return " + FIELD_NAME_CALLBACKS_LOCK + ";");
 		clazz.addMethod(method);
@@ -309,13 +337,14 @@ public class ObjectCallbackEnhancer extends CallbackClassFileTransformer {
 	/**
 	 * Checks if method is enhanceable. It should be marked with
 	 * {@link com.aionemu.commons.callbacks.metadata.ObjectCallback} annotation, be not native and not abstract
-	 *
-	 * @param method method to check
+	 * 
+	 * @param method
+	 *          method to check
 	 * @return check result
 	 */
 	protected boolean isEnhanceable(CtMethod method) {
 		int modifiers = method.getModifiers();
 		return !(Modifier.isAbstract(modifiers) || Modifier.isNative(modifiers) || Modifier.isStatic(modifiers))
-				&& CallbacksUtil.isAnnotationPresent(method, ObjectCallback.class);
+			&& CallbacksUtil.isAnnotationPresent(method, ObjectCallback.class);
 	}
 }

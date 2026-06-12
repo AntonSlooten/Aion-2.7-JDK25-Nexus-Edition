@@ -41,7 +41,6 @@ public class MovementNotifyTask extends AbstractFIFOPeriodicTaskManager<Creature
 
 	public MovementNotifyTask() {
 		super(500);
-		registerStartupHook();
 	}
 
 	@Override

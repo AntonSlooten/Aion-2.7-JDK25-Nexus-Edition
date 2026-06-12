@@ -51,37 +51,37 @@ public class CM_LEGION_TABS extends AionClientPacket {
 	@Override
 	protected void runImpl() {
 		Player activePlayer = getConnection().getActivePlayer();
-
-		if (activePlayer.getLegion() != null) {
-			// Collection<LegionHistory> history =
-			// activePlayer.getLegion().getLegionHistory();
+		
+		if(activePlayer.getLegion() != null) {
+			//Collection<LegionHistory> history = activePlayer.getLegion().getLegionHistory();
 			Collection<LegionHistory> history = activePlayer.getLegion().getLegionHistoryByTabId(tab);
 			/**
 			 * Max page is 16 for legion history
 			 */
+			if (page > 16)
+				return;
+
 			/**
 			 * If history size is less than page*8 return
 			 */
-			if ((page > 16) || (history.size() < page * 8)) {
+			if (history.size() < page * 8)
 				return;
-			}
 
 			switch (tab) {
-			/**
-			 * History Tab
-			 */
-			case 0: // Legion History
-			case 2: // Legion WH History
-				if (!history.isEmpty()) {
-					PacketSendUtility.sendPacket(activePlayer, new SM_LEGION_TABS(history, page, tab));
-				}
-				break;
-			case 1:
-				// TODO Reward Tab Page
-				break;
+				/**
+				 * History Tab
+				 */
+				case 0: //Legion History
+				case 2: //Legion WH History
+					if (!history.isEmpty())
+						PacketSendUtility.sendPacket(activePlayer, new SM_LEGION_TABS(history, page, tab));
+					break;
+				case 1:
+					//TODO Reward Tab Page
+					break;
 			}
-		} else {
-			log.warn("Player " + activePlayer.getName() + " was requested null legion");
 		}
+		else
+			log.warn("Player "+activePlayer.getName()+" was requested null legion");
 	}
 }

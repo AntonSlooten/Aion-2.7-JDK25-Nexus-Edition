@@ -35,42 +35,40 @@ public abstract class DamageEffect extends EffectTemplate {
 
 	@XmlAttribute
 	protected Func mode = Func.ADD;
-
+	
 	@Override
 	public void applyEffect(Effect effect) {
-		effect.getEffected().getController().onAttack(effect.getEffector(), effect.getSkillId(), effect.getReserved1(),
-				true);
+		effect.getEffected().getController()
+			.onAttack(effect.getEffector(), effect.getSkillId(), effect.getReserved1(), true);
 		effect.getEffector().getObserveController().notifyAttackObservers(effect.getEffected());
 	}
 
 	public boolean calculate(Effect effect, DamageType damageType) {
-		if (!super.calculate(effect, null, null)) {
+		if (!super.calculate(effect, null, null))
 			return false;
-		}
-
+		
 		int skillLvl = effect.getSkillLevel();
 		int valueWithDelta = value + delta * skillLvl;
 		int bonus = getActionModifiers(effect);
 		int accMod = this.accMod2 + this.accMod1 * skillLvl;
 		int critAddDmg = this.critAddDmg2 + this.critAddDmg1 * skillLvl;
-
+		
 		switch (damageType) {
-		case PHYSICAL:
-			int rndDmg = (this instanceof SkillAttackInstantEffect ? ((SkillAttackInstantEffect) this).getRnddmg() : 0);
-			AttackUtil.calculatePhysicalSkillResult(effect, valueWithDelta, bonus, this.getMode(), rndDmg, accMod,
-					this.critProbMod2, critAddDmg, false, false, false);
-			break;
-		case MAGICAL:
-			boolean useKnowledge = true;
-			if (this instanceof ProcAtkInstantEffect) {
-				useKnowledge = false;
-			}
-			AttackUtil.calculateMagicalSkillResult(effect, valueWithDelta, bonus, getElement(), useKnowledge, false);
-			break;
-		default:
-			AttackUtil.calculatePhysicalSkillResult(effect, 0, 0, this.getMode(), 0, accMod);
+			case PHYSICAL:
+				int rndDmg = (this instanceof SkillAttackInstantEffect ? ((SkillAttackInstantEffect)this).getRnddmg() : 0);
+				AttackUtil.calculatePhysicalSkillResult(effect, valueWithDelta, bonus, this.getMode(), rndDmg, accMod, this.critProbMod2, critAddDmg, false, false, false);
+				break;
+			case MAGICAL:
+				boolean useKnowledge = true;
+				if (this instanceof ProcAtkInstantEffect) {
+					useKnowledge = false;
+				}
+				AttackUtil.calculateMagicalSkillResult(effect, valueWithDelta, bonus, getElement(), useKnowledge, false);
+				break;
+			default:
+				AttackUtil.calculatePhysicalSkillResult(effect, 0, 0, this.getMode(), 0, accMod);
 		}
-
+		
 		return true;
 	}
 

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.smfnew.com>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -49,9 +49,8 @@ public class CM_DELETE_QUEST extends AionClientPacket {
 			player.getController().cancelTask(TaskId.QUEST_TIMER);
 			sendPacket(new SM_QUEST_ACTION(questId, 0));
 		}
-		if (!QuestService.abandonQuest(player, questId)) {
+		if (!QuestService.abandonQuest(player, questId))
 			return;
-		}
 		player.getController().updateNearbyQuests();
 	}
 }

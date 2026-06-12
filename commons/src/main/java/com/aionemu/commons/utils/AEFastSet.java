@@ -1,116 +1,121 @@
+/*
+ * This file is part of InPanic Core <Ver:3.1>.
+ *
+ *  InPanic-Core is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  InPanic-Core is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with InPanic-Core.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.aionemu.commons.utils;
 
 import java.util.Iterator;
-import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import javolution.util.FastMap;
+import javolution.util.FastCollection.Record;
 
 /**
- * Java 25 compatible set used by legacy Aion code.
- *
- * <p>Preserves deterministic iteration order while avoiding Javolution.</p>
+ * @author NB4L1
  */
-public final class AEFastSet<E> extends AEFastCollection<E> implements Set<E> {
+@SuppressWarnings("unchecked")
+public class AEFastSet<E> extends AEFastCollection<E> implements Set<E> {
 
-    private final Set<E> delegate;
-    private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+	private static final Object NULL = new Object();
 
-    public AEFastSet() {
-        this.delegate = new LinkedHashSet<>();
-    }
+	private final FastMap<E, Object> map;
 
-    public AEFastSet(int capacity) {
-        this.delegate = new LinkedHashSet<>(capacity);
-    }
+	public AEFastSet() {
+		map = new FastMap<E, Object>();
+	}
 
-    public AEFastSet(Set<? extends E> elements) {
-        this.delegate = new LinkedHashSet<>(elements);
-    }
+	public AEFastSet(int capacity) {
+		map = new FastMap<E, Object>(capacity);
+	}
 
-    /**
-     * Compatibility method for older code that used Javolution shared maps.
-     */
-    public boolean isShared() {
-        return true;
-    }
+	public AEFastSet(Set<? extends E> elements) {
+		map = new FastMap<E, Object>(elements.size());
 
-    @Override
-    public boolean add(E value) {
-        lock.writeLock().lock();
-        try {
-            return delegate.add(value);
-        } finally {
-            lock.writeLock().unlock();
-        }
-    }
+		addAll(elements);
+	}
 
-    @Override
-    public boolean remove(Object value) {
-        lock.writeLock().lock();
-        try {
-            return delegate.remove(value);
-        } finally {
-            lock.writeLock().unlock();
-        }
-    }
+	/*
+	 * public AEFastSet<E> setShared(boolean isShared) { map.setShared(isShared); return this; }
+	 */
 
-    @Override
-    public void clear() {
-        lock.writeLock().lock();
-        try {
-            delegate.clear();
-        } finally {
-            lock.writeLock().unlock();
-        }
-    }
+	public boolean isShared() {
+		return map.isShared();
+	}
 
-    @Override
-    public boolean contains(Object value) {
-        lock.readLock().lock();
-        try {
-            return delegate.contains(value);
-        } finally {
-            lock.readLock().unlock();
-        }
-    }
+	@Override
+	public Record head() {
+		return map.head();
+	}
 
-    @Override
-    public boolean isEmpty() {
-        lock.readLock().lock();
-        try {
-            return delegate.isEmpty();
-        } finally {
-            lock.readLock().unlock();
-        }
-    }
+	@Override
+	public Record tail() {
+		return map.tail();
+	}
 
-    @Override
-    public Iterator<E> iterator() {
-        lock.readLock().lock();
-        try {
-            return new LinkedHashSet<>(delegate).iterator();
-        } finally {
-            lock.readLock().unlock();
-        }
-    }
+	@Override
+	public E valueOf(Record record) {
+		return ((FastMap.Entry<E, Object>) record).getKey();
+	}
 
-    @Override
-    public int size() {
-        lock.readLock().lock();
-        try {
-            return delegate.size();
-        } finally {
-            lock.readLock().unlock();
-        }
-    }
+	@Override
+	public void delete(Record record) {
+		map.remove(((FastMap.Entry<E, Object>) record).getKey());
+	}
 
-    @Override
-    public String toString() {
-        lock.readLock().lock();
-        try {
-            return delegate.toString();
-        } finally {
-            lock.readLock().unlock();
-        }
-    }
+	@Override
+	public void delete(Record record, E value) {
+		map.remove(value);
+	}
+
+	@Override
+	public boolean add(E value) {
+		return map.put(value, NULL) == null;
+	}
+
+	@Override
+	public void clear() {
+		map.clear();
+	}
+
+	@Override
+	public boolean contains(Object o) {
+		return map.containsKey(o);
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return map.isEmpty();
+	}
+
+	@Override
+	public Iterator<E> iterator() {
+		return map.keySet().iterator();
+	}
+
+	@Override
+	public boolean remove(Object o) {
+		return map.remove(o) != null;
+	}
+
+	@Override
+	public int size() {
+		return map.size();
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() + "-" + map.keySet().toString();
+	}
 }

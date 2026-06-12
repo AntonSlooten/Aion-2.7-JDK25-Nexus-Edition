@@ -34,8 +34,7 @@ public class SiegeCounter {
 		} else if (creature instanceof SiegeNpc) {
 			siegeRace = ((SiegeNpc) creature).getSiegeRace();
 		} else {
-			log.warn("Please debug me!",
-					new RuntimeException("Damage to Siege boss done by non-SiegeRace creature" + creature));
+			log.warn("Please debug me!", new RuntimeException("Damage to Siege boss done by non-SiegeRace creature" + creature));
 			return;
 		}
 
@@ -51,22 +50,22 @@ public class SiegeCounter {
 		SiegeRace sr = SiegeRace.getByRace(player.getRace());
 		siegeRaceCounters.get(sr).addKill(player);
 	}
-
+	
 	public SiegeRaceCounter getRaceCounter(SiegeRace race) {
 		return siegeRaceCounters.get(race);
 	}
 
-	public void addLegionDamage(SiegeRace race, Legion legion, int damage) {
+	public void addLegionDamage(SiegeRace race, Legion legion, int damage){
 		getRaceCounter(race).addLegionDamage(legion, damage);
 	}
 
-	public void addRaceDamage(SiegeRace race, int damage) {
+	public void addRaceDamage(SiegeRace race, int damage){
 		getRaceCounter(race).addTotalDamage(damage);
 	}
 
 	/**
-	 * Returns list of siege race counters sorted by total damage done to siege
-	 * boss. Sorted in descending order.
+	 * Returns list of siege race counters sorted by total damage done to siege boss.
+	 * Sorted in descending order.
 	 *
 	 * @return all siege race damage counters sorted by descending order
 	 */

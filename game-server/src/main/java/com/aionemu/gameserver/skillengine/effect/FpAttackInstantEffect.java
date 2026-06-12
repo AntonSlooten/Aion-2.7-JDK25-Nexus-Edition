@@ -37,24 +37,21 @@ public class FpAttackInstantEffect extends EffectTemplate {
 	@Override
 	public void calculate(Effect effect) {
 		// Only players have FP
-		if (effect.getEffected() instanceof Player) {
+		if (effect.getEffected() instanceof Player)
 			super.calculate(effect, null, null);
-		}
 	}
-
+	
 	@Override
 	public void applyEffect(Effect effect) {
 		// Restriction to players because lack of FP on other Creatures
-		if (!(effect.getEffected() instanceof Player)) {
+		if (!(effect.getEffected() instanceof Player))
 			return;
-		}
 		Player player = (Player) effect.getEffected();
 		int maxFP = player.getLifeStats().getMaxFp();
 		int newValue = value;
 		// Support for values in percentage
-		if (percent) {
-			newValue = (maxFP * value) / 100;
-		}
+		if (percent)
+			newValue = (int) ((maxFP * value) / 100);
 		player.getLifeStats().reduceFp(newValue);
 	}
 }

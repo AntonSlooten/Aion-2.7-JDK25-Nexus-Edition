@@ -24,13 +24,13 @@ import org.slf4j.Logger;
 
 /**
  * Manages the asking of and responding to <tt>SM_QUESTION_WINDOW</tt>
- *
+ * 
  * @author Ben
  */
 public class ResponseRequester {
 
 	private Player player;
-	private HashMap<Integer, RequestResponseHandler> map = new HashMap<>();
+	private HashMap<Integer, RequestResponseHandler> map = new HashMap<Integer, RequestResponseHandler>();
 	private static Logger log = LoggerFactory.getLogger(ResponseRequester.class);
 
 	public ResponseRequester(Player player) {
@@ -38,16 +38,15 @@ public class ResponseRequester {
 	}
 
 	/**
-	 * Adds this handler to this messageID, returns false if there already exists
-	 * one
-	 *
-	 * @param messageId ID of the request message
+	 * Adds this handler to this messageID, returns false if there already exists one
+	 * 
+	 * @param messageId
+	 *          ID of the request message
 	 * @return true or false
 	 */
 	public synchronized boolean putRequest(int messageId, RequestResponseHandler handler) {
-		if (map.containsKey(messageId)) {
+		if (map.containsKey(messageId))
 			return false;
-		}
 
 		map.put(messageId, handler);
 		return true;
@@ -55,7 +54,7 @@ public class ResponseRequester {
 
 	/**
 	 * Responds to the given message ID with the given response Returns success
-	 *
+	 * 
 	 * @param messageId
 	 * @param response
 	 * @return Success
@@ -72,8 +71,7 @@ public class ResponseRequester {
 	}
 
 	/**
-	 * Automatically responds 0 to all requests, passing the given player as the
-	 * responder
+	 * Automatically responds 0 to all requests, passing the given player as the responder
 	 */
 	public synchronized void denyAll() {
 		for (RequestResponseHandler handler : map.values()) {

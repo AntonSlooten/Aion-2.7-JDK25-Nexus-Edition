@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.model.instance.instancereward;
 
+import static ch.lambdaj.Lambda.*;
 import com.aionemu.commons.utils.Rnd;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.instance.instanceposition.ChaosInstancePosition;
@@ -37,12 +38,11 @@ import javolution.util.FastList;
 /**
  *
  * @author xTz
- * @Modernized Nexus Connect
  */
 public class PvPArenaReward extends InstanceReward<PvPArenaPlayerReward> {
 
-	private Map<Integer, Boolean> positions = new HashMap<>();
-	private FastList<Integer> zones = new FastList<>();
+	private Map<Integer, Boolean> positions = new HashMap<Integer, Boolean>();
+	private FastList<Integer> zones = new FastList<Integer>();
 	private int round = 1;
 	private Integer zone;
 	private int bonusTime;
@@ -91,7 +91,7 @@ public class PvPArenaReward extends InstanceReward<PvPArenaPlayerReward> {
 	}
 
 	private List<Integer> getFreePositions() {
-		List<Integer> p = new ArrayList<>();
+		List<Integer> p = new ArrayList<Integer>();
 		for (Integer key : positions.keySet()) {
 			if (!positions.get(key)) {
 				p.add(key);
@@ -148,9 +148,14 @@ public class PvPArenaReward extends InstanceReward<PvPArenaPlayerReward> {
 	}
 
 	public List<PvPArenaPlayerReward> sortPoints() {
-		List<PvPArenaPlayerReward> sorted = new ArrayList<>(getInstanceRewards());
-		sorted.sort(Comparator.comparingInt(PvPArenaPlayerReward::getScorePoints).reversed());
-		return sorted;
+		return sort(getInstanceRewards(), on(PvPArenaPlayerReward.class).getScorePoints(), new Comparator<Integer>() {
+
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				return o2 != null ? o2.compareTo(o1) : -o1.compareTo(o2);
+			}
+
+		});
 	}
 
 	public int getRank(int points) {
@@ -164,21 +169,16 @@ public class PvPArenaReward extends InstanceReward<PvPArenaPlayerReward> {
 	}
 
 	public boolean hasCapPoints() {
-		if (getInstanceRewards().isEmpty()) return false;
-		
-		int maxPoints = getInstanceRewards().stream().mapToInt(PvPArenaPlayerReward::getPoints).max().orElse(0);
-		int minPoints = getInstanceRewards().stream().mapToInt(PvPArenaPlayerReward::getPoints).min().orElse(0);
-
-		if (isSoloArena() && (maxPoints - minPoints >= 1500)) {
+		if (isSoloArena()
+				&& (maxFrom(getInstanceRewards()).getPoints() - minFrom(getInstanceRewards()).getPoints() >= 1500))
 			return true;
-		}
-		return maxPoints >= capPoints;
+		return maxFrom(getInstanceRewards()).getPoints() >= capPoints;
 	}
 
 	public int getTotalPoints() {
-		return getInstanceRewards().stream().mapToInt(PvPArenaPlayerReward::getScorePoints).sum();
+		return sum(getInstanceRewards(), on(PvPArenaPlayerReward.class).getScorePoints());
 	}
-	
+
 	public boolean canRewarded() {
 		return mapId == 300350000 || mapId == 300360000 || mapId == 300550000 || mapId == 300450000;
 	}
@@ -261,13 +261,36 @@ public class PvPArenaReward extends InstanceReward<PvPArenaPlayerReward> {
 		if (!isRewarded()) {
 			return 0;
 		}
-		/*
-		 * switch (mapId) { case 300430000: case 300360000: switch (playerRank) { case
-		 * 0: return 48700; case 1: return 20300; default: return 20300; } case
-		 * 300350000: case 300420000: switch (playerRank) { case 0: return 75900; case
-		 * 1: return 57000; case 2: return 47900; case 3: return 39500; case 4: return
-		 * 31100; case 5: return 22700; default: return 14200; } }
-		 */
+		/*switch (mapId) {
+		case 300430000:
+		case 300360000:
+			switch (playerRank) {
+			case 0:
+				return 48700;
+			case 1:
+				return 20300;
+			default:
+				return 20300;
+			}
+		case 300350000:
+		case 300420000:
+			switch (playerRank) {
+			case 0:
+				return 75900;
+			case 1:
+				return 57000;
+			case 2:
+				return 47900;
+			case 3:
+				return 39500;
+			case 4:
+				return 31100;
+			case 5:
+				return 22700;
+			default:
+				return 14200;
+			}
+		}*/
 		return 0;
 	}
 

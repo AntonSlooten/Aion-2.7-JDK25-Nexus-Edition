@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -17,7 +17,6 @@
 package com.aionemu.loginserver.controller;
 
 import java.sql.Timestamp;
-
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.loginserver.dao.AccountTimeDAO;
 import com.aionemu.loginserver.model.Account;

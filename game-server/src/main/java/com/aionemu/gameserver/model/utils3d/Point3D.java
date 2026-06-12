@@ -38,9 +38,9 @@ public class Point3D {
 	}
 
 	public Point3D(float x, float y, float z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+		this.x = (double) x;
+		this.y = (double) y;
+		this.z = (double) z;
 	}
 
 	public double distance(Point3D p) {

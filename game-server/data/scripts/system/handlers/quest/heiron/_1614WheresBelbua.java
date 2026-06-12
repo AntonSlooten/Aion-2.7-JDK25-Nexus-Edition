@@ -28,9 +28,8 @@ import com.aionemu.gameserver.questEngine.model.QuestStatus;
 import com.aionemu.gameserver.questEngine.task.QuestTasks;
 
 /**
- * Go to the Mudthorn Experiment Lab and find Belbua (204645). When you're ready
- * to leave, talk to Belbua. Escort Belbua outside the Mudthorn Experiment Lab.
- * Let Phuthollo (204519) know Belbua is free.
+ * Go to the Mudthorn Experiment Lab and find Belbua (204645). When you're ready to leave, talk to Belbua. Escort Belbua
+ * outside the Mudthorn Experiment Lab. Let Phuthollo (204519) know Belbua is free.
  * 
  * @author Rhys2002
  * @reworked vlog
@@ -68,26 +67,28 @@ public class _1614WheresBelbua extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204645: { // Belbua
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 0) {
-						return sendQuestDialog(env, 1011);
+				case 204645: { // Belbua
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							Npc npc = (Npc) env.getVisibleObject();
+							npc.getAi2().onCreatureEvent(AIEventType.FOLLOW_ME, player);
+							player.getController().addTask(TaskId.QUEST_FOLLOW,
+								QuestTasks.newFollowingToTargetCheckTask(env, 376, 529, 133));
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
 					}
 				}
-				case STEP_TO_1: {
-					Npc npc = (Npc) env.getVisibleObject();
-					npc.getAi2().onCreatureEvent(AIEventType.FOLLOW_ME, player);
-					player.getController().addTask(TaskId.QUEST_FOLLOW,
-							QuestTasks.newFollowingToTargetCheckTask(env, 376, 529, 133));
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204519) { // Phuthollo
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 10002);

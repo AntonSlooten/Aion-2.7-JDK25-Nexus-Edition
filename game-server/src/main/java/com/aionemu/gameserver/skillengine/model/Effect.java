@@ -57,6 +57,8 @@ import com.aionemu.gameserver.utils.ThreadPoolManager;
  * @modified by kecimis
  */
 public class Effect implements StatOwner {
+	
+
 
 	private Skill skill;
 	private SkillTemplate skillTemplate;
@@ -99,14 +101,14 @@ public class Effect implements StatOwner {
 	private int[] reservedInts;
 
 	/**
-	 * Spell Status 1 : stumble 2 : knockback 4 : open aerial 8 : close aerial 16 :
-	 * spin 32 : block 64 : parry 128 : dodge 256 : resist
+	 * Spell Status 1 : stumble 2 : knockback 4 : open aerial 8 : close aerial 16 : spin 32 : block 64 : parry 128 : dodge
+	 * 256 : resist
 	 */
 	private SpellStatus spellStatus = SpellStatus.NONE;
 	private DashStatus dashStatus = DashStatus.NONE;
 
 	private AttackStatus attackStatus = AttackStatus.NORMALHIT;
-
+	
 	/**
 	 * shield effects related
 	 */
@@ -128,7 +130,7 @@ public class Effect implements StatOwner {
 	private boolean isStopped;
 
 	private boolean isDelayedDamage;
-
+	
 	private boolean isDamageEffect;
 
 	private boolean isXpBoost;
@@ -150,12 +152,12 @@ public class Effect implements StatOwner {
 	 */
 	private int effectHate;
 
-	private Map<Integer, EffectTemplate> sucessEffects = new FastMap<Integer, EffectTemplate>().shared();
+	private Map<Integer,EffectTemplate> sucessEffects = new FastMap<Integer,EffectTemplate>().shared();
 
 	private int carvedSignet = 0;
-
+	
 	private int signetBurstedCount = 0;
-
+	
 	protected int abnormals;
 
 	/**
@@ -165,21 +167,22 @@ public class Effect implements StatOwner {
 
 	float x, y, z;
 	int worldId, instanceId;
-
+	
 	/**
 	 * used to force duration, you should be very careful when to use it
 	 */
 	private boolean forcedDuration = false;
-
+	
 	/**
 	 * power of effect ( used for dispels)
 	 */
 	private int power = 10;
 	/**
-	 * accModBoost used for SignetBurstEffect
+	 * accModBoost used for SignetBurstEffect 
 	 */
 	private int accModBoost = 0;
 
+	
 	public final Skill getSkill() {
 		return skill;
 	}
@@ -199,12 +202,12 @@ public class Effect implements StatOwner {
 		this.skillLevel = skillLevel;
 		this.duration = duration;
 		this.periodicActions = skillTemplate.getPeriodicActions();
-
+		
 		this.power = initializePower(skillTemplate.getSkillId());
 	}
 
 	public Effect(Creature effector, Creature effected, SkillTemplate skillTemplate, int skillLevel, int duration,
-			ItemTemplate itemTemplate) {
+		ItemTemplate itemTemplate) {
 		this(effector, effected, skillTemplate, skillLevel, duration);
 		this.itemTemplate = itemTemplate;
 	}
@@ -295,9 +298,8 @@ public class Effect implements StatOwner {
 	}
 
 	public void setPeriodicTask(Future<?> periodicTask, int i) {
-		if (periodicTasks == null) {
+		if (periodicTasks == null)
 			periodicTasks = new Future<?>[4];
-		}
 		this.periodicTasks[i - 1] = periodicTask;
 	}
 
@@ -361,7 +363,7 @@ public class Effect implements StatOwner {
 	public boolean isToggle() {
 		return skillTemplate.getActivationAttribute() == ActivationAttribute.TOGGLE;
 	}
-
+	
 	public boolean isChant() {
 		return skillTemplate.getTargetSlot() == SkillTargetSlot.CHANT;
 	}
@@ -381,7 +383,6 @@ public class Effect implements StatOwner {
 	public DispelCategoryType getDispelCategory() {
 		return skillTemplate.getDispelCategory();
 	}
-
 	public int getReqDispelLevel() {
 		return skillTemplate.getReqDispelLevel();
 	}
@@ -395,12 +396,12 @@ public class Effect implements StatOwner {
 	}
 
 	/**
-	 * @param attackStatusObserver the attackCalcObserver to set
+	 * @param attackStatusObserver
+	 *          the attackCalcObserver to set
 	 */
 	public void setAttackStatusObserver(AttackCalcObserver attackStatusObserver, int i) {
-		if (this.attackStatusObserver == null) {
+		if (this.attackStatusObserver == null)
 			this.attackStatusObserver = new AttackCalcObserver[4];
-		}
 		this.attackStatusObserver[i - 1] = attackStatusObserver;
 	}
 
@@ -413,12 +414,12 @@ public class Effect implements StatOwner {
 	}
 
 	/**
-	 * @param attackShieldObserver the attackShieldObserver to set
+	 * @param attackShieldObserver
+	 *          the attackShieldObserver to set
 	 */
 	public void setAttackShieldObserver(AttackCalcObserver attackShieldObserver, int i) {
-		if (this.attackShieldObserver == null) {
+		if (this.attackShieldObserver == null)
 			this.attackShieldObserver = new AttackCalcObserver[4];
-		}
 		this.attackShieldObserver[i - 1] = attackShieldObserver;
 	}
 
@@ -427,9 +428,8 @@ public class Effect implements StatOwner {
 	}
 
 	public void setReservedInt(int i, int value) {
-		if (this.reservedInts == null) {
+		if (this.reservedInts == null)
 			this.reservedInts = new int[4];
-		}
 		this.reservedInts[i - 1] = value;
 	}
 
@@ -441,7 +441,8 @@ public class Effect implements StatOwner {
 	}
 
 	/**
-	 * @param launchSubEffect the launchSubEffect to set
+	 * @param launchSubEffect
+	 *          the launchSubEffect to set
 	 */
 	public void setLaunchSubEffect(boolean launchSubEffect) {
 		this.launchSubEffect = launchSubEffect;
@@ -455,15 +456,15 @@ public class Effect implements StatOwner {
 	}
 
 	/**
-	 * @param shieldDefense the shieldDefense to set
+	 * @param shieldDefense
+	 *          the shieldDefense to set
 	 */
 	public void setShieldDefense(int shieldDefense) {
 		this.shieldDefense = shieldDefense;
 	}
-
 	/**
 	 * reflected damage
-	 *
+	 * 
 	 * @return
 	 */
 	public int getReflectedDamage() {
@@ -481,7 +482,6 @@ public class Effect implements StatOwner {
 	public void setReflectedSkillId(int value) {
 		this.reflectedSkillId = value;
 	}
-
 	public int getProtectedSkillId() {
 		return this.protectedSkillId;
 	}
@@ -489,7 +489,7 @@ public class Effect implements StatOwner {
 	public void setProtectedSkillId(int skillId) {
 		this.protectedSkillId = skillId;
 	}
-
+	
 	public int getProtectedDamage() {
 		return this.protectedDamage;
 	}
@@ -497,7 +497,7 @@ public class Effect implements StatOwner {
 	public void setProtectedDamage(int protectedDamage) {
 		this.protectedDamage = protectedDamage;
 	}
-
+	
 	public int getProtectorId() {
 		return this.protectorId;
 	}
@@ -505,6 +505,7 @@ public class Effect implements StatOwner {
 	public void setProtectorId(int protectorId) {
 		this.protectorId = protectorId;
 	}
+	
 
 	/**
 	 * @return the spellStatus
@@ -514,7 +515,8 @@ public class Effect implements StatOwner {
 	}
 
 	/**
-	 * @param spellStatus the spellStatus to set
+	 * @param spellStatus
+	 *          the spellStatus to set
 	 */
 	public void setSpellStatus(SpellStatus spellStatus) {
 		this.spellStatus = spellStatus;
@@ -528,21 +530,20 @@ public class Effect implements StatOwner {
 	}
 
 	/**
-	 * @param dashStatus the dashStatus to set
+	 * @param dashStatus
+	 *          the dashStatus to set
 	 */
 	public void setDashStatus(DashStatus dashStatus) {
 		this.dashStatus = dashStatus;
 	}
-
+	
 	/**
 	 * Number of signets carved on target
-	 *
 	 * @return
 	 */
 	public int getCarvedSignet() {
 		return this.carvedSignet;
 	}
-
 	public void setCarvedSignet(int value) {
 		this.carvedSignet = value;
 	}
@@ -555,7 +556,8 @@ public class Effect implements StatOwner {
 	}
 
 	/**
-	 * @param subEffect the subEffect to set
+	 * @param subEffect
+	 *          the subEffect to set
 	 */
 	public void setSubEffect(Effect subEffect) {
 		this.subEffect = subEffect;
@@ -567,43 +569,42 @@ public class Effect implements StatOwner {
 	 */
 	public boolean containsEffectId(int effectId) {
 		for (EffectTemplate template : sucessEffects.values()) {
-			if (template.getEffectid() == effectId) {
+			if (template.getEffectid() == effectId)
 				return true;
-			}
 		}
 		return false;
 	}
-
-	public TransformType getTransformType() {
-		for (EffectTemplate et : skillTemplate.getEffects().getEffects()) {
-			if (et instanceof TransformEffect) {
+	
+	public TransformType getTransformType()	{
+		for (EffectTemplate et : skillTemplate.getEffects().getEffects())	{
+			if (et instanceof TransformEffect)
 				return ((TransformEffect) et).getTransformType();
-			}
 		}
 		return null;
 	}
-
+	
 	public void setForcedDuration(boolean forcedDuration) {
 		this.forcedDuration = forcedDuration;
 	}
 
 	/**
+	 * Correct lifecycle of Effect - INITIALIZE - APPLY - START - END
+	 */
+
+	/**
 	 * Do initialization with proper calculations
 	 */
 	public void initialize() {
-		if (skillTemplate.getEffects() == null) {
+		if (skillTemplate.getEffects() == null)
 			return;
-		}
 
 		for (EffectTemplate template : getEffectTemplates()) {
 			template.calculate(this);
 
-			if (template instanceof DelayedSpellAttackInstantEffect) {
+			if (template instanceof DelayedSpellAttackInstantEffect)
 				setDelayedDamage(true);
-			}
-			if (template instanceof DamageEffect) {
+			if (template instanceof DamageEffect)
 				setDamageEffect(true);
-			}
 		}
 
 		for (EffectTemplate template : getEffectTemplates()) {
@@ -618,38 +619,35 @@ public class Effect implements StatOwner {
 		if (sucessEffects.isEmpty()) {
 			skillMoveType = SkillMoveType.RESIST;
 			if (getSkillType() == SkillType.PHYSICAL) {
-				if (getAttackStatus() == AttackStatus.CRITICAL) {
+				if (getAttackStatus() == AttackStatus.CRITICAL)
 					setAttackStatus(AttackStatus.CRITICAL_DODGE);
-				} else {
+				else
 					setAttackStatus(AttackStatus.DODGE);
-				}
-			} else {
-				if (getAttackStatus() == AttackStatus.CRITICAL) {
-					setAttackStatus(AttackStatus.PHYSICAL_CRITICAL_RESIST);// TODO recheck
-				} else {
+			}
+			else {
+				if (getAttackStatus() == AttackStatus.CRITICAL)
+					setAttackStatus(AttackStatus.PHYSICAL_CRITICAL_RESIST);//TODO recheck
+				else
 					setAttackStatus(AttackStatus.RESIST);
-				}
 			}
 		}
-
+		
 		// set spellstatus for sm_castspell_end packet
 		switch (AttackStatus.getBaseStatus(getAttackStatus())) {
-		case DODGE:
-			setSpellStatus(SpellStatus.DODGE);
-			break;
-		case PARRY:
-			if (getSpellStatus() == SpellStatus.NONE) {
-				setSpellStatus(SpellStatus.PARRY);
-			}
-			break;
-		case BLOCK:
-			if (getSpellStatus() == SpellStatus.NONE) {
-				setSpellStatus(SpellStatus.BLOCK);
-			}
-			break;
-		case RESIST:
-			setSpellStatus(SpellStatus.RESIST);
-			break;
+			case DODGE:
+				setSpellStatus(SpellStatus.DODGE);
+				break;
+			case PARRY:
+				if (getSpellStatus() == SpellStatus.NONE)
+					setSpellStatus(SpellStatus.PARRY);
+				break;
+			case BLOCK:
+				if (getSpellStatus() == SpellStatus.NONE)
+					setSpellStatus(SpellStatus.BLOCK);
+				break;
+			case RESIST:
+				setSpellStatus(SpellStatus.RESIST);
+				break;
 		}
 	}
 
@@ -658,7 +656,7 @@ public class Effect implements StatOwner {
 	 */
 	public void applyEffect() {
 
-		// TODO move it somewhere more appropriate
+		//TODO move it somewhere more appropriate
 		// Fear is not applied on players who are gliding
 		if (isFearEffect()) {
 			if (getEffected().isInState(CreatureState.GLIDING)) {
@@ -676,39 +674,33 @@ public class Effect implements StatOwner {
 		/**
 		 * broadcast final hate to all visible objects
 		 */
-		// TODO hostile_type?
+		//TODO hostile_type?
 		if (effectHate != 0) {
-			if (getEffected() instanceof Npc && !this.isDelayedDamage) {
+			if (getEffected() instanceof Npc && !this.isDelayedDamage)	
 				getEffected().getAggroList().addHate(effector, 1);
-			}
-
+			
 			effector.getController().broadcastHate(effectHate);
 		}
 
-		if (skillTemplate.getEffects() == null || sucessEffects.isEmpty()) {
+		if (skillTemplate.getEffects() == null || sucessEffects.isEmpty())
 			return;
-		}
 
 		for (EffectTemplate template : sucessEffects.values()) {
-			if (getEffected() != null) {
-				if (getEffected().getLifeStats().isAlreadyDead() && !skillTemplate.hasResurrectEffect()) {
+			if (getEffected() != null) 
+				if (getEffected().getLifeStats().isAlreadyDead() && !skillTemplate.hasResurrectEffect())
 					continue;
-				}
-			}
 			template.applyEffect(this);
 			template.startSubEffect(this);
 		}
 	}
 
 	/**
-	 * Start effect which includes: - start effect defined in template - start
-	 * subeffect if possible - activate toogle skill if needed - schedule end of
-	 * effect
+	 * Start effect which includes: - start effect defined in template - start subeffect if possible - activate toogle
+	 * skill if needed - schedule end of effect
 	 */
 	public void startEffect(boolean restored) {
-		if (sucessEffects.isEmpty()) {
+		if (sucessEffects.isEmpty())
 			return;
-		}
 
 		shedulePeriodicActions();
 
@@ -721,12 +713,10 @@ public class Effect implements StatOwner {
 		if (isToggle() && effector instanceof Player) {
 			activateToggleSkill();
 		}
-		if (!restored && !forcedDuration) {
+		if (!restored && !forcedDuration)
 			duration = getEffectsDuration();
-		}
-		if (duration == 0) {
+		if (duration == 0)
 			return;
-		}
 		endTime = System.currentTimeMillis() + duration;
 
 		task = ThreadPoolManager.getInstance().schedule(new Runnable() {
@@ -753,21 +743,20 @@ public class Effect implements StatOwner {
 	}
 
 	/**
-	 * End effect and all effect actions This method is synchronized and prevented
-	 * to be called several times which could cause unexpected behavior
+	 * End effect and all effect actions This method is synchronized and prevented to be called several times which could
+	 * cause unexpected behavior
 	 */
 	public synchronized void endEffect() {
-		if (isStopped) {
+		if (isStopped)
 			return;
-		}
-
+		
 		for (EffectTemplate template : sucessEffects.values()) {
 			template.endEffect(this);
 		}
-
+		
 		// if effect is a stance, remove stance from player
 		if (effector instanceof Player) {
-			Player player = (Player) effector;
+			Player player = (Player)effector;
 			if (player.getController().getStanceSkillId() == getSkillId()) {
 				PacketSendUtility.sendPacket(player, new SM_PLAYER_STANCE(player, 0));
 				player.getController().startStance(0);
@@ -816,7 +805,7 @@ public class Effect implements StatOwner {
 
 	/**
 	 * Time till the effect end
-	 *
+	 * 
 	 * @return
 	 */
 	public int getRemainingTime() {
@@ -833,7 +822,7 @@ public class Effect implements StatOwner {
 
 	/**
 	 * PVP damage ration
-	 *
+	 * 
 	 * @return
 	 */
 	public int getPvpDamage() {
@@ -862,7 +851,8 @@ public class Effect implements StatOwner {
 	}
 
 	/**
-	 * @param effectHate the effectHate to set
+	 * @param effectHate
+	 *          the effectHate to set
 	 */
 	public void setEffectHate(int effectHate) {
 		this.effectHate = effectHate;
@@ -876,7 +866,8 @@ public class Effect implements StatOwner {
 	}
 
 	/**
-	 * @param tauntHate the tauntHate to set
+	 * @param tauntHate
+	 *          the tauntHate to set
 	 */
 	public void setTauntHate(int tauntHate) {
 		this.tauntHate = tauntHate;
@@ -891,12 +882,12 @@ public class Effect implements StatOwner {
 	}
 
 	/**
-	 * @param observer the observer to set
+	 * @param observer
+	 *          the observer to set
 	 */
 	public void setActionObserver(ActionObserver observer, int i) {
-		if (actionObserver == null) {
+		if (actionObserver == null)
 			actionObserver = new ActionObserver[4];
-		}
 		actionObserver[i - 1] = observer;
 	}
 
@@ -905,13 +896,12 @@ public class Effect implements StatOwner {
 	}
 
 	public boolean isInSuccessEffects(int position) {
-		if (sucessEffects.get(position) != null) {
+		if (sucessEffects.get(position) != null)
 			return true;
-		}
 
 		return false;
 	}
-
+	
 	/**
 	 * @return
 	 */
@@ -926,23 +916,21 @@ public class Effect implements StatOwner {
 		}
 	}
 
-	public void clearSucessEffects() {
+	public void clearSucessEffects()	{
 		sucessEffects.clear();
 	}
-
+	
 	private void shedulePeriodicActions() {
 		if (periodicActions == null || periodicActions.getPeriodicActions() == null
-				|| periodicActions.getPeriodicActions().isEmpty()) {
+			|| periodicActions.getPeriodicActions().isEmpty())
 			return;
-		}
 		int checktime = periodicActions.getChecktime();
 		periodicActionsTask = ThreadPoolManager.getInstance().scheduleAtFixedRate(new Runnable() {
 
 			@Override
 			public void run() {
-				for (PeriodicAction action : periodicActions.getPeriodicActions()) {
+				for (PeriodicAction action : periodicActions.getPeriodicActions())
 					action.act(Effect.this);
-				}
 			}
 		}, 0, checktime);
 	}
@@ -953,38 +941,35 @@ public class Effect implements StatOwner {
 			periodicActionsTask = null;
 		}
 	}
-
+	
 	public int getEffectsDuration() {
-		int randomTime = 0;
+		int randomTime = 0; 
 		int pvpDura = 100;
 		int duration = 0;
 
-		if (effected instanceof Player && skillTemplate.getPvpDuration() != 0) {
+		if (effected instanceof Player && skillTemplate.getPvpDuration() != 0)
 			pvpDura = skillTemplate.getPvpDuration();
-		}
-
+		
 		for (EffectTemplate template : sucessEffects.values()) {
 			int effectDuration = template.getDuration() * pvpDura / 100;
 			int effectRandomTime = 0;
-			if (template.getRandomTime() > 0) {
+			if (template.getRandomTime() > 0)
 				effectRandomTime = Rnd.get(template.getRandomTime());
-			}
-
-			if (effectDuration > duration && (randomTime == 0 || effectRandomTime != 0)) {
+			
+			if(effectDuration > duration && (randomTime == 0 || effectRandomTime != 0)){
 				duration = effectDuration;
 				randomTime = effectRandomTime;
 			}
 		}
-
+		
 		duration = Math.max(duration - randomTime, 0);
-
-		// special duration for soul sickness
+		
+		//special duration for soul sickness
 		if (getTargetSlotEnum() == SkillTargetSlot.SPEC2) {
 			Player player = (Player) effector;
 			duration = player.getResWithHalfSoulTime() ? duration / 2 : duration;
-			if (player.getResWithHalfSoulTime()) {
+			if(player.getResWithHalfSoulTime())
 				player.setResWithHalfSoulTime(false);
-			}
 		}
 		return duration;
 	}
@@ -1030,7 +1015,8 @@ public class Effect implements StatOwner {
 	}
 
 	/**
-	 * @param skillMoveType the skillMoveType to set
+	 * @param skillMoveType
+	 *          the skillMoveType to set
 	 */
 	public void setSkillMoveType(SkillMoveType skillMoveType) {
 		this.skillMoveType = skillMoveType;
@@ -1090,7 +1076,7 @@ public class Effect implements StatOwner {
 
 	/**
 	 * Check all in use equipment conditions
-	 *
+	 * 
 	 * @return true if all conditions have been satisfied
 	 */
 	private boolean useEquipmentConditionsCheck() {
@@ -1105,16 +1091,15 @@ public class Effect implements StatOwner {
 		// If skill has use equipment conditions
 		// Observe for unequip event and remove effect if event occurs
 		if ((getSkillTemplate().getUseEquipmentconditions() != null)
-				&& (getSkillTemplate().getUseEquipmentconditions().getConditions().size() > 0)) {
+			&& (getSkillTemplate().getUseEquipmentconditions().getConditions().size() > 0)) {
 			ActionObserver observer = new ActionObserver(ObserverType.UNEQUIP) {
 
 				@Override
 				public void unequip(Item item, Player owner) {
 					if (!useEquipmentConditionsCheck()) {
 						endEffect();
-						if (this != null) {
+						if (this != null)
 							effected.getObserveController().removeObserver(this);
-						}
 					}
 				}
 			};
@@ -1123,8 +1108,7 @@ public class Effect implements StatOwner {
 	}
 
 	/**
-	 * Add Attacked/Dot_Attacked observers if this effect needs to be removed on
-	 * damage received by effected
+	 * Add Attacked/Dot_Attacked observers if this effect needs to be removed on damage received by effected
 	 */
 	private void checkCancelOnDmg() {
 		if (isCancelOnDmg()) {
@@ -1162,53 +1146,53 @@ public class Effect implements StatOwner {
 
 	public boolean isFearEffect() {
 		for (EffectTemplate template : sucessEffects.values()) {
-			if (template instanceof FearEffect) {
+			if (template instanceof FearEffect)
 				return true;
-			}
 		}
 		return false;
 	}
-
+	
 	public boolean isDelayedDamage() {
 		return this.isDelayedDamage;
 	}
-
+	
 	public void setDelayedDamage(boolean value) {
 		this.isDelayedDamage = value;
 	}
-
+	
 	private int initializePower(int skillId) {
-		// TODO debuffs done, Some buffs todo
+		//TODO debuffs done, Some buffs todo
 		switch (skillId) {
-		case 1176:// Word of Destruction I
-		case 2259:// Word of Destruction II
-			return 20;
-		case 287:// Unwavering Devotion
-		case 426:// Iron Skin
-		case 537:// Prayer of Freedom
-		case 1794:// Spirit Substitution
-		case 671:// Shock Arrow
-		case 672:
-		case 2089:
-		case 2090:
-		case 322:// Ankle Snare
-		case 1560:// Curse Of Weakness
-		case 1561:
-		case 2196:
-		case 1040:// Chain of Suffering
-		case 2129:
-		case 2136:
-		case 2152:
-		case 1343: // Stilling Word
-			return 30;
-		case 1774:// Cursecloud
-		case 2225:
-			return 40; // need 2 cleric dispels or potions
+			case 1176:// Word of Destruction I
+			case 2259:// Word of Destruction II
+				return 20;
+			case 287:// Unwavering Devotion
+			case 426:// Iron Skin
+			case 537:// Prayer of Freedom
+			case 1794:// Spirit Substitution
+			case 671://Shock Arrow
+			case 672:
+			case 2089:
+			case 2090:	
+			case 322://Ankle Snare
+			case 1560://Curse Of Weakness
+			case 1561:
+			case 2196:
+			case 1040://Chain of Suffering
+			case 2129:
+			case 2136:
+			case 2152:
+			case 1343: //Stilling Word
+				return 30;
+			case 1774://Cursecloud	
+			case 2225:
+				return 40; //need 2 cleric dispels or potions
 		}
-
+		
 		return 10;
 	}
 
+	
 	/**
 	 * @return the power
 	 */
@@ -1216,19 +1200,20 @@ public class Effect implements StatOwner {
 		return power;
 	}
 
+	
 	/**
 	 * @param power the power to set
 	 */
 	public void setPower(int power) {
 		this.power = power;
 	}
-
+	
 	public int removePower(int power) {
 		this.power -= power;
-
+		
 		return this.power;
 	}
-
+	
 	public void setAccModBoost(int accModBoost) {
 		this.accModBoost = accModBoost;
 	}
@@ -1236,7 +1221,7 @@ public class Effect implements StatOwner {
 	public int getAccModBoost() {
 		return this.accModBoost;
 	}
-
+	
 	/**
 	 * @return the isDamageEffect
 	 */
@@ -1244,13 +1229,14 @@ public class Effect implements StatOwner {
 		return isDamageEffect;
 	}
 
+	
 	/**
 	 * @param isDamageEffect the isDamageEffect to set
 	 */
 	public void setDamageEffect(boolean isDamageEffect) {
 		this.isDamageEffect = isDamageEffect;
 	}
-
+	
 	/**
 	 * @return the signetBurstedCount
 	 */
@@ -1258,6 +1244,7 @@ public class Effect implements StatOwner {
 		return signetBurstedCount;
 	}
 
+	
 	/**
 	 * @param signetBurstedCount the signetBurstedCount to set
 	 */

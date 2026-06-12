@@ -64,8 +64,7 @@ public class GoldenEyeMantutuAI2 extends AggressiveNpcAI2 {
 			setStateIfNot(AIState.FOLLOWING);
 			getMoveController().moveToTargetObject();
 			getOwner().setState(1);
-			PacketSendUtility.broadcastPacket(getOwner(),
-					new SM_EMOTION(getOwner(), EmotionType.START_EMOTE2, 0, getObjectId()));
+			PacketSendUtility.broadcastPacket(getOwner(), new SM_EMOTION(getOwner(), EmotionType.START_EMOTE2, 0, getObjectId()));
 		}
 	}
 
@@ -91,16 +90,16 @@ public class GoldenEyeMantutuAI2 extends AggressiveNpcAI2 {
 			public void run() {
 				if (!isAlreadyDead() && npc != null) {
 					switch (npc.getNpcId()) {
-					case 281128:
-						// Feed Supply Device
-						getEffectController().removeEffect(20489);
-						spawn(701386, 716.508f, 508.571f, 939.607f, (byte) 119);
-						break;
-					case 281129:
-						// Water Supply Device
-						spawn(701387, 716.389f, 494.207f, 939.607f, (byte) 119);
-						getEffectController().removeEffect(20490);
-						break;
+						case 281128:
+							// Feed Supply Device
+							getEffectController().removeEffect(20489);
+							spawn(701386, 716.508f, 508.571f, 939.607f, (byte) 119);
+							break;
+						case 281129:
+							// Water Supply Device
+							spawn(701387, 716.389f, 494.207f, 939.607f, (byte) 119);
+							getEffectController().removeEffect(20490);
+							break;
 					}
 					NpcActions.delete(npc);
 					canThink = true;
@@ -108,7 +107,8 @@ public class GoldenEyeMantutuAI2 extends AggressiveNpcAI2 {
 					if (creature == null || creature.getLifeStats().isAlreadyDead() || !getOwner().canSee(creature)) {
 						setStateIfNot(AIState.FIGHT);
 						think();
-					} else {
+					}
+					else {
 						getOwner().setTarget(creature);
 						getOwner().getGameStats().renewLastAttackTime();
 						getOwner().getGameStats().renewLastAttackedTime();
@@ -126,10 +126,10 @@ public class GoldenEyeMantutuAI2 extends AggressiveNpcAI2 {
 	@Override
 	public AIAnswer ask(AIQuestion question) {
 		switch (question) {
-		case CAN_RESIST_ABNORMAL:
-			return AIAnswers.POSITIVE;
-		default:
-			return AIAnswers.NEGATIVE;
+			case CAN_RESIST_ABNORMAL:
+				return AIAnswers.POSITIVE;
+			default:
+				return AIAnswers.NEGATIVE;
 		}
 	}
 
@@ -174,12 +174,12 @@ public class GoldenEyeMantutuAI2 extends AggressiveNpcAI2 {
 				int rnd = Rnd.get(1, 2);
 				int skill = 0;
 				switch (rnd) {
-				case 1:
-					skill = 20489; // Hunger
-					break;
-				case 2:
-					skill = 20490; // Thirst
-					break;
+					case 1:
+						skill = 20489; // Hunger
+						break;
+					case 2:
+						skill = 20490; // Thirst
+						break;
 				}
 				SkillEngine.getInstance().getSkill(getOwner(), skill, 20, getOwner());
 			}

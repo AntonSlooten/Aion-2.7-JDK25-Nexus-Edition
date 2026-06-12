@@ -11,7 +11,7 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
  */
 public class CmdToll extends BaseCommand {
 
-	@Override
+
 	public void execute(Player player, String... params) {
 		if (params == null || params.length < 2) {
 			PacketSendUtility.sendMessage(player, ".toll <ap | kinah> <value>" + "\nAp 1,000:1 : Kinah 10,000:1");
@@ -20,10 +20,11 @@ public class CmdToll extends BaseCommand {
 		int toll;
 		try {
 			toll = Integer.parseInt(params[1]);
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			return;
 		}
-		if (toll > 1000000) {
+		if(toll > 1000000){
 			PacketSendUtility.sendMessage(player, "Too large.");
 			return;
 		}

@@ -53,64 +53,66 @@ public class _21081A_Helping_Hand extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 799225) {
 				switch (dialog) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 1011);
-				default: {
-					return sendQuestStartDialog(env, 182214017, 1);
-				}
+					case START_DIALOG:
+						return sendQuestDialog(env, 1011);
+					default: {
+						return sendQuestStartDialog(env, 182214017, 1);
+					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 799332: // Brontes
-			{
-				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1353);
+				case 799332: // Brontes
+				{
+					switch (dialog) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 1353);
+						}
+						case SELECT_ACTION_1353: {
+							return sendQuestDialog(env, 1353);
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1);
+						}
+					}
 				}
-				case SELECT_ACTION_1353: {
-					return sendQuestDialog(env, 1353);
+				case 799217: // Pilipides
+				{
+					switch (dialog) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 1693);
+						}
+						case SELECT_ACTION_1694: {
+							return sendQuestDialog(env, 1694);
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2);
+						}
+					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1);
-				}
+				case 799202: // Drenia
+				{
+					switch (dialog) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 2375);
+						}
+						case SELECT_REWARD: {
+							return defaultCloseDialog(env, 2, 3, true, true);
+						}
+					}
 				}
 			}
-			case 799217: // Pilipides
-			{
-				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1693);
-				}
-				case SELECT_ACTION_1694: {
-					return sendQuestDialog(env, 1694);
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2);
-				}
-				}
-			}
-			case 799202: // Drenia
-			{
-				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2375);
-				}
-				case SELECT_REWARD: {
-					return defaultCloseDialog(env, 2, 3, true, true);
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799202) // Drenia
 			{
 				switch (env.getDialogId()) {
-				case 1009: {
-					return sendQuestDialog(env, 5);
-				}
-				default:
-					return sendQuestEndDialog(env);
+					case 1009: {
+						return sendQuestDialog(env, 5);
+					}
+					default:
+						return sendQuestEndDialog(env);
 				}
 			}
 		}

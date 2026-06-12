@@ -48,9 +48,8 @@ public class ItemFactory {
 
 	private static final long calculateCount(ItemTemplate itemTemplate, long count) {
 		long maxStackCount = itemTemplate.getMaxStackCount();
-		if (count > maxStackCount && !itemTemplate.isKinah()) {
+		if (count > maxStackCount && !itemTemplate.isKinah())
 			count = maxStackCount;
-		}
 		return count;
 	}
 

@@ -69,68 +69,73 @@ public class _2053AMissingFather extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 204707) { // Mani
 				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
-					} else if (var == 5) {
-						return sendQuestDialog(env, 2716);
+					case START_DIALOG: {
+						if (var == 0) {
+							return sendQuestDialog(env, 1011);
+						}
+						else if (var == 5) {
+							return sendQuestDialog(env, 2716);
+						}
+					}
+					case STEP_TO_1: {
+						return defaultCloseDialog(env, 0, 1); // 1
+					}
+					case STEP_TO_6: {
+						return defaultCloseDialog(env, 5, 6, 0, 0, 182204306, 1); // 6
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				case STEP_TO_6: {
-					return defaultCloseDialog(env, 5, 6, 0, 0, 182204306, 1); // 6
-				}
-				}
-			} else if (targetId == 204749) { // Paeru
+			}
+			else if (targetId == 204749) { // Paeru
 				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
+					case START_DIALOG: {
+						if (var == 1) {
+							return sendQuestDialog(env, 1352);
+						}
+					}
+					case SELECT_ACTION_1353:
+						return playQuestMovie(env, 235);
+					case STEP_TO_2: {
+						return defaultCloseDialog(env, 1, 2, 182204305, 1, 0, 0); // 2
 					}
 				}
-				case SELECT_ACTION_1353:
-					return playQuestMovie(env, 235);
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2, 182204305, 1, 0, 0); // 2
-				}
-				}
-			} else if (targetId == 730108) { // Strahein's Liquor Bottle
+			}
+			else if (targetId == 730108) { // Strahein's Liquor Bottle
 				switch (dialog) {
-				case USE_OBJECT: {
-					if (var == 4) {
-						return sendQuestDialog(env, 2375);
+					case USE_OBJECT: {
+						if (var == 4) {
+							return sendQuestDialog(env, 2375);
+						}
+					}
+					case STEP_TO_5: {
+						return defaultCloseDialog(env, 4, 5, 182204306, 1, 182204305, 1); // 5
 					}
 				}
-				case STEP_TO_5: {
-					return defaultCloseDialog(env, 4, 5, 182204306, 1, 182204305, 1); // 5
-				}
-				}
-			} else if (targetId == 204800) { // Hammel
+			}
+			else if (targetId == 204800) { // Hammel
 				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 6) {
-						return sendQuestDialog(env, 3057);
+					case START_DIALOG: {
+						if (var == 6) {
+							return sendQuestDialog(env, 3057);
+						}
+					}
+					case STEP_TO_7: {
+						return defaultCloseDialog(env, 6, 7); // 7
 					}
 				}
-				case STEP_TO_7: {
-					return defaultCloseDialog(env, 6, 7); // 7
-				}
-				}
-			} else if (targetId == 700359 && var == 7 && player.getInventory().getItemCountByItemId(182204307) >= 1) { // Secret
-																														// Port
-																														// Entrance
+			}
+			else if (targetId == 700359 && var == 7 && player.getInventory().getItemCountByItemId(182204307) >= 1) { // Secret Port Entrance
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					TeleportService.teleportTo(player, player.getWorldId(), 1757.82f, 1392.94f, 401.75f, (byte) 94);
 					return true;
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204707) { // Mani
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
@@ -161,23 +166,24 @@ public class _2053AMissingFather extends QuestHandler {
 		if (qs != null && qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			if (name == ZoneName.MALEK_MINE_220040000) {
-				if (var == 3) {
-					changeQuestStep(env, 3, 4, false); // 4
-				}
-			} else if (name == ZoneName.MINE_PORT_220040000) {
-				if (var == 7) {
+			  if (var == 3) {
+				  changeQuestStep(env, 3, 4, false); // 4
+			  }
+			}
+			else if (name == ZoneName.MINE_PORT_220040000) {
+				if(var == 7) {
 					ThreadPoolManager.getInstance().schedule(new Runnable() {
 						@Override
 						public void run() {
-							playQuestMovie(env, 236);
+						playQuestMovie(env, 236);
 						}
-					}, 10000);
+					}, 10000);	
 				}
 			}
 		}
 		return false;
 	}
-
+	
 	@Override
 	public boolean onMovieEndEvent(QuestEnv env, int movieId) {
 		if (movieId != 236)

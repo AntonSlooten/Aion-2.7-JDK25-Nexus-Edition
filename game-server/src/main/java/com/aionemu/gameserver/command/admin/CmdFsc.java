@@ -10,8 +10,8 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
  * @author Luno
  */
 public class CmdFsc extends BaseCommand {
+	
 
-	@Override
 	public void execute(Player admin, String... params) {
 		if (params.length < 4) {
 			showHelp(admin);
@@ -21,9 +21,8 @@ public class CmdFsc extends BaseCommand {
 		int id = Integer.decode(params[1]);
 		String format = "";
 
-		if (params.length > 2) {
+		if (params.length > 2)
 			format = params[2];
-		}
 
 		SM_CUSTOM_PACKET packet = new SM_CUSTOM_PACKET(id);
 

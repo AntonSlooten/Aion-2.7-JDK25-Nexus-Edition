@@ -51,65 +51,70 @@ public class _2123TheImprisonedGourmet extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 203550) { // Munin
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				default: {
-					return sendQuestStartDialog(env);
-				}
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					default: {
+						return sendQuestStartDialog(env);
+					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203550: { // Munin
-				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1352);
-				}
-				case STEP_TO_1: {
-					if (player.getInventory().getItemCountByItemId(182203121) >= 1) {
-						qs.setQuestVar(5); // 5
-						qs.setStatus(QuestStatus.REWARD); // rewatd
-						updateQuestStatus(env);
-						removeQuestItem(env, 182203121, 1);
-						return sendQuestDialog(env, 5);
-					} else {
-						return sendQuestDialog(env, 1693);
+				case 203550: { // Munin
+					switch (dialog) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 1352);
+						}
+						case STEP_TO_1: {
+							if (player.getInventory().getItemCountByItemId(182203121) >= 1) {
+								qs.setQuestVar(5); // 5
+								qs.setStatus(QuestStatus.REWARD); // rewatd
+								updateQuestStatus(env);
+								removeQuestItem(env, 182203121, 1);
+								return sendQuestDialog(env, 5);
+							}
+							else {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case STEP_TO_2: {
+							if (player.getInventory().getItemCountByItemId(182203122) >= 1) {
+								qs.setQuestVar(6); // 6
+								qs.setStatus(QuestStatus.REWARD); // rewatd
+								updateQuestStatus(env);
+								removeQuestItem(env, 182203122, 1);
+								return sendQuestDialog(env, 6);
+							}
+							else {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case STEP_TO_3: {
+							if (player.getInventory().getItemCountByItemId(182203123) >= 1) {
+								qs.setQuestVar(7); // 7
+								qs.setStatus(QuestStatus.REWARD); // rewatd
+								updateQuestStatus(env);
+								removeQuestItem(env, 182203123, 1);
+								return sendQuestDialog(env, 7);
+							}
+							else {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
 					}
+					break;
 				}
-				case STEP_TO_2: {
-					if (player.getInventory().getItemCountByItemId(182203122) >= 1) {
-						qs.setQuestVar(6); // 6
-						qs.setStatus(QuestStatus.REWARD); // rewatd
-						updateQuestStatus(env);
-						removeQuestItem(env, 182203122, 1);
-						return sendQuestDialog(env, 6);
-					} else {
-						return sendQuestDialog(env, 1693);
-					}
+				case 700128: { // Methu Egg
+					return true;
 				}
-				case STEP_TO_3: {
-					if (player.getInventory().getItemCountByItemId(182203123) >= 1) {
-						qs.setQuestVar(7); // 7
-						qs.setStatus(QuestStatus.REWARD); // rewatd
-						updateQuestStatus(env);
-						removeQuestItem(env, 182203123, 1);
-						return sendQuestDialog(env, 7);
-					} else {
-						return sendQuestDialog(env, 1693);
-					}
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-				break;
 			}
-			case 700128: { // Methu Egg
-				return true;
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203550) { // Munin
 				return sendQuestEndDialog(env, qs.getQuestVarById(0) - 5);
 			}

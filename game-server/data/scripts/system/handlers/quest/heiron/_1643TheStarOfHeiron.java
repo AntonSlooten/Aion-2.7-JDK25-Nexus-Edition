@@ -60,18 +60,18 @@ public class _1643TheStarOfHeiron extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 204545) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 4762);
-				}
-				case ACCEPT_QUEST: {
-					if (player.getInventory().getItemCountByItemId(182201764) == 0) {
-						if (!giveQuestItem(env, 182201764, 1)) {
-							return true;
+					case START_DIALOG: {
+						return sendQuestDialog(env, 4762);
+					}
+					case ACCEPT_QUEST: {
+						if (player.getInventory().getItemCountByItemId(182201764) == 0) {
+							if (!giveQuestItem(env, 182201764, 1)) {
+								return true;
+							}
 						}
 					}
-				}
-				default:
-					return sendQuestStartDialog(env);
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
@@ -81,58 +81,59 @@ public class _1643TheStarOfHeiron extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204630: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 0) {
-						return sendQuestDialog(env, 1011);
-					} else if (qs.getQuestVarById(0) == 2) {
-						return sendQuestDialog(env, 1693);
-					}
-				}
-				case STEP_TO_1: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					removeQuestItem(env, 182201764, 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-					QuestService.addNewSpawn(210040000, 1, 204614, (float) 1591.4327, (float) 2774.2283,
-							(float) 127.63001, (byte) 0);
-					return true;
-				}
-				case SET_REWARD: {
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-					return true;
-				}
-				}
-			}
-			case 204614: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 1) {
-						return sendQuestDialog(env, 1011);
-					}
-				}
-				case STEP_TO_1: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					final Npc npc = (Npc) env.getVisibleObject();
-					ThreadPoolManager.getInstance().schedule(new Runnable() {
-
-						@Override
-						public void run() {
-							npc.getController().onDelete();
+				case 204630: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+							else if (qs.getQuestVarById(0) == 2) {
+								return sendQuestDialog(env, 1693);
+							}
 						}
-					}, 40000);
-					return true;
+						case STEP_TO_1: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							removeQuestItem(env, 182201764, 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+							QuestService.addNewSpawn(210040000, 1, 204614, (float) 1591.4327, (float) 2774.2283, (float) 127.63001,
+								(byte) 0);
+							return true;
+						}
+						case SET_REWARD: {
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+							return true;
+						}
+					}
 				}
+				case 204614: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 1) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							final Npc npc = (Npc) env.getVisibleObject();
+							ThreadPoolManager.getInstance().schedule(new Runnable() {
+
+								@Override
+								public void run() {
+									npc.getController().onDelete();
+								}
+							}, 40000);
+							return true;
+						}
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204545) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

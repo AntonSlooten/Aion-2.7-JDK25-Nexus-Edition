@@ -22,12 +22,11 @@ import com.aionemu.gameserver.network.aion.AionConnection.State;
 import com.aionemu.gameserver.network.aion.clientpackets.*;
 
 /**
- * This factory is responsible for creating {@link AionPacketHandler} object. It
- * also initializes created handler with a set of packet prototypes.<br>
- * Object of this classes uses <tt>Injector</tt> for injecting dependencies into
- * prototype objects.<br>
+ * This factory is responsible for creating {@link AionPacketHandler} object. It also initializes created handler with a
+ * set of packet prototypes.<br>
+ * Object of this classes uses <tt>Injector</tt> for injecting dependencies into prototype objects.<br>
  * <br>
- *
+ * 
  * @author Luno
  */
 public class AionPacketHandlerFactory {
@@ -117,7 +116,7 @@ public class AionPacketHandlerFactory {
 		addPacket(new CM_BROKER_SETTLE_ACCOUNT(0x171, State.IN_GAME));// 2.6
 		addPacket(new CM_REGISTER_BROKER_ITEM(0x172, State.IN_GAME));// 2.6
 		addPacket(new CM_BROKER_CANCEL_REGISTERED(0x173, State.IN_GAME));// 2.6
-		addPacket(new CM_OPEN_MAIL_WINDOW(0x174, State.IN_GAME));// 2.7
+		addPacket(new CM_OPEN_MAIL_WINDOW(0x174, State.IN_GAME));//2.7 
 		addPacket(new CM_READ_MAIL(0x175, State.IN_GAME));// 2.6
 		addPacket(new CM_SEND_MAIL(0x177, State.IN_GAME));// 2.6
 		addPacket(new CM_DELETE_MAIL(0x178, State.IN_GAME));// 2.6
@@ -143,7 +142,7 @@ public class AionPacketHandlerFactory {
 		addPacket(new CM_REMOVE_ALTERED_STATE(0x96, State.IN_GAME));// 2.6
 		addPacket(new CM_PLAYER_LISTENER(0x9B, State.IN_GAME));// 2.7
 		addPacket(new CM_LEGION(0x9C, State.IN_GAME));// 2.6
-		addPacket(new CM_INSTANCE_LEAVE(0x9D, State.IN_GAME));// 2.6
+		addPacket(new CM_INSTANCE_LEAVE(0x9D, State.IN_GAME));//2.6
 		addPacket(new CM_EMOTION(0x9E, State.IN_GAME));// 2.6
 		addPacket(new CM_PING(0x9F, State.AUTHED, State.IN_GAME));// 2.6
 		addPacket(new CM_MOVE_IN_AIR(0xA0, State.IN_GAME));// 2.6¸
@@ -167,7 +166,7 @@ public class AionPacketHandlerFactory {
 		addPacket(new CM_EXCHANGE_OK(0x2B7, State.IN_GAME));// 2.6
 		addPacket(new CM_MANASTONE(0x2B9, State.IN_GAME));// 2.7
 		addPacket(new CM_MOTION(0x2BA, State.IN_GAME));// 2.6
-		addPacket(new CM_FIND_GROUP(0x2BC, State.IN_GAME));// 2.7 //TODO its sent also on AUTHED state
+		addPacket(new CM_FIND_GROUP(0x2BC, State.AUTHED, State.IN_GAME));// 2.7
 		addPacket(new CM_CHARGE_ITEM(0x2BD, State.IN_GAME));// 2.6
 		addPacket(new CM_LEGION_WH_KINAH(0x2BF, State.IN_GAME));// 2.6
 		addPacket(new CM_CHARACTER_PASSKEY(0x1C0, State.AUTHED));// 2.6
@@ -194,7 +193,6 @@ public class AionPacketHandlerFactory {
 		handler.addPacketPrototype(prototype);
 	}
 
-	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder {
 
 		protected static final AionPacketHandlerFactory instance = new AionPacketHandlerFactory();

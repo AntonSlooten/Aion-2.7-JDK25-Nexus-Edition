@@ -36,7 +36,7 @@ public class CollectItem {
 
 	/**
 	 * Gets the value of the itemId property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getItemId() {
@@ -45,7 +45,7 @@ public class CollectItem {
 
 	/**
 	 * Gets the value of the count property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getCount() {

@@ -66,16 +66,16 @@ public class _1640TeleporterRepairs extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 730033) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				case STEP_TO_1: {
-					QuestService.startQuest(env);
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
-					return true;
-				}
-				default:
-					return sendQuestStartDialog(env);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					case STEP_TO_1: {
+						QuestService.startQuest(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
+						return true;
+					}
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
@@ -84,11 +84,9 @@ public class _1640TeleporterRepairs extends QuestHandler {
 			return false;
 
 		if (qs.getStatus() == QuestStatus.START) {
-			if (targetId == 730033 && env.getDialog() == QuestDialog.USE_OBJECT
-					&& player.getInventory().getItemCountByItemId(182201790) >= 1) {
+			if (targetId == 730033 && env.getDialog() == QuestDialog.USE_OBJECT && player.getInventory().getItemCountByItemId(182201790) >= 1) {
 				final int targetObjectId = env.getVisibleObject().getObjectId();
-				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.SIT, 0, targetObjectId),
-						true);
+				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.SIT, 0, targetObjectId), true);
 				ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 					@Override
@@ -101,7 +99,8 @@ public class _1640TeleporterRepairs extends QuestHandler {
 					}
 				}, 3000);
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 730033) {
 				removeQuestItem(env, 182201790, 1);
 
@@ -120,13 +119,13 @@ public class _1640TeleporterRepairs extends QuestHandler {
 				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
 				return true;
 			}
-		} else if (qs.getStatus() == QuestStatus.COMPLETE) {
+		}
+		else if (qs.getStatus() == QuestStatus.COMPLETE) {
 			ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 				@Override
 				public void run() {
-					TeleportService.teleportTo(player, WorldMapType.HEIRON.getId(), 187.71689f, 2712.14870f, 141.91672f,
-							195);
+					TeleportService.teleportTo(player, WorldMapType.HEIRON.getId(), 187.71689f, 2712.14870f, 141.91672f, 195);
 				}
 			}, 1000);
 		}

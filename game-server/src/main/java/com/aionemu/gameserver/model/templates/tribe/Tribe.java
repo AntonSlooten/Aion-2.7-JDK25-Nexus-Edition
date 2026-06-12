@@ -46,10 +46,10 @@ public class Tribe {
 	protected List<TribeClass> none;
 	@XmlList
 	protected List<TribeClass> support;
-
+	
 	@XmlAttribute
 	protected TribeClass base = TribeClass.NONE;
-
+	
 	@XmlAttribute(required = true)
 	protected TribeClass name;
 
@@ -80,7 +80,7 @@ public class Tribe {
 		}
 		return this.neutral;
 	}
-
+	
 	public List<TribeClass> getNone() {
 		if (none == null) {
 			none = Collections.emptyList();
@@ -106,11 +106,11 @@ public class Tribe {
 	public final boolean isGuard() {
 		return name.isGuard();
 	}
-
+	
 	public final boolean isBasic() {
 		return name.isBasicClass();
 	}
-
+	
 	@Override
 	public String toString() {
 		return name + " (" + base + ")";

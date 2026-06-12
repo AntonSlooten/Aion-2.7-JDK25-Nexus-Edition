@@ -62,38 +62,42 @@ public class _28510DestroytheHaramelFacilities extends QuestHandler {
 			if (targetId == 203649) { // Gulkalla
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env, 182212021, 1);
 				}
 			}
-		} else if (qs != null && qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 700953: { // Processed Odella
-				if (dialog == QuestDialog.USE_OBJECT) {
-					if (var >= 3 && var < 5) {
-						changeQuestStep(env, var, var + 1, false); // 4, 5
-						((Npc) env.getVisibleObject()).getController().onDelete();
-						return true;
-					} else if (var == 5) {
-						changeQuestStep(env, 5, 5, true); // reward
-						return true;
+				case 700953: { // Processed Odella
+					if (dialog == QuestDialog.USE_OBJECT) {
+						if (var >= 3 && var < 5) {
+							changeQuestStep(env, var, var + 1, false); // 4, 5
+							((Npc) env.getVisibleObject()).getController().onDelete();
+							return true;
+						}
+						else if (var == 5) {
+							changeQuestStep(env, 5, 5, true); // reward
+							return true;
+						}
 					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203649) { // Gulkalla
 				switch (dialog) {
-				case USE_OBJECT: {
-					return sendQuestDialog(env, 10002);
-				}
-				case SELECT_REWARD: {
-					return sendQuestDialog(env, 5);
-				}
-				default: {
-					return sendQuestEndDialog(env);
-				}
+					case USE_OBJECT: {
+						return sendQuestDialog(env, 10002);
+					}
+					case SELECT_REWARD: {
+						return sendQuestDialog(env, 5);
+					}
+					default: {
+						return sendQuestEndDialog(env);
+					}
 				}
 			}
 		}

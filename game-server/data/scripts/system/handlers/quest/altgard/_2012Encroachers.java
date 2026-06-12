@@ -25,8 +25,8 @@ import com.aionemu.gameserver.questEngine.model.QuestState;
 import com.aionemu.gameserver.questEngine.model.QuestStatus;
 
 /**
- * @author Pyro refix by Nephis Aller tuer 4 brutes et retourner voir Meiyer
- *         Status locked de toutes les missions de Altgard
+ * @author Pyro refix by Nephis Aller tuer 4 brutes et retourner voir Meiyer Status locked de toutes les missions de
+ *         Altgard
  */
 public class _2012Encroachers extends QuestHandler {
 
@@ -74,27 +74,29 @@ public class _2012Encroachers extends QuestHandler {
 			if (targetId == 203559) {
 
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0) // Initialisation du dialogue
-						return sendQuestDialog(env, 1011);
-					else if (var <= 5) // Rendu de la quete
-					{
-						return sendQuestDialog(env, 1352);
-					} else if (var >= 5) {
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-					}
-				case STEP_TO_1:
-				case STEP_TO_2:
-					if (var == 0 || var == 5) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						return sendQuestSelectionDialog(env);
-					}
+					case START_DIALOG:
+						if (var == 0) // Initialisation du dialogue
+							return sendQuestDialog(env, 1011);
+						else if (var <= 5) // Rendu de la quete
+						{
+							return sendQuestDialog(env, 1352);
+						}
+						else if (var >= 5) {
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+						}
+					case STEP_TO_1:
+					case STEP_TO_2:
+						if (var == 0 || var == 5) {
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							return sendQuestSelectionDialog(env);
+						}
 				}
 
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203559) {
 				return sendQuestEndDialog(env);
 			}
@@ -119,18 +121,19 @@ public class _2012Encroachers extends QuestHandler {
 			return false;
 
 		switch (targetId) {
-		case 210715: // Brute
-			if (var > 0 && var < 4) // En tuer 4
-			{
-				qs.setQuestVarById(0, var + 1);
-				updateQuestStatus(env);
-				return true;
-			} else if (var == 4) // Au 4eme REWARD
-			{
-				qs.setStatus(QuestStatus.REWARD);
-				updateQuestStatus(env);
-				return true;
-			}
+			case 210715: // Brute
+				if (var > 0 && var < 4) // En tuer 4
+				{
+					qs.setQuestVarById(0, var + 1);
+					updateQuestStatus(env);
+					return true;
+				}
+				else if (var == 4) // Au 4eme REWARD
+				{
+					qs.setStatus(QuestStatus.REWARD);
+					updateQuestStatus(env);
+					return true;
+				}
 		}
 		return false;
 	}

@@ -72,111 +72,123 @@ public class _20021TheAetherMustFlow extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 799226) { // Valetta
 				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
-					}
-				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-			} else if (targetId == 799247) { // Angrad
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					}
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				}
-			} else if (targetId == 799250) { // Eddas
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 2)
-						return sendQuestDialog(env, 1693);
-				}
-				case STEP_TO_3: {
-					return defaultCloseDialog(env, 2, 3); // 3
-				}
-				}
-			} else if (targetId == 799325) { // Taloc's Guardian
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 3) {
-						return sendQuestDialog(env, 2034);
-					} else if (var == 4) {
-						return sendQuestDialog(env, 2120);
-					} else if (var == 5) {
-						return sendQuestDialog(env, 2716);
-					}
-				}
-				case STEP_TO_4: {
-					return defaultCloseDialog(env, 3, 4); // 4
-				}
-				case STEP_TO_6: {
-					if (player.isInGroup2()) {
-						return sendQuestDialog(env, 2717);
-					} else {
-						if (giveQuestItem(env, 182207603, 1) && giveQuestItem(env, 182207604, 1)) {
-							WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(300190000);
-							InstanceService.registerPlayerWithInstance(newInstance, player);
-							TeleportService.teleportTo(player, 300190000, newInstance.getInstanceId(), 202.26694f,
-									226.0532f, 1098.236f, 3000, true);
-							changeQuestStep(env, 5, 6, false); // 6
-							return closeDialogWindow(env);
-						} else {
-							PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_FULL_INVENTORY);
-							return sendQuestSelectionDialog(env);
+					case START_DIALOG: {
+						if (var == 0) {
+							return sendQuestDialog(env, 1011);
 						}
 					}
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-			} else if (targetId == 799503) { // Taloc's Mirage
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 9) {
-						return sendQuestDialog(env, 4080);
+					case STEP_TO_1: {
+						return defaultCloseDialog(env, 0, 1); // 1
 					}
-				}
-				case STEP_TO_10: {
-					return defaultCloseDialog(env, 9, 10); // 10
-				}
-				}
-			} else if (targetId == 799258) { // Denskel
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 10) {
-						return sendQuestDialog(env, 1267);
-					}
-				}
-				case STEP_TO_11: {
-					return defaultCloseDialog(env, 10, 11); // 11
-				}
-				}
-			} else if (targetId == 799239) { // Vellun
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 11)
-						return sendQuestDialog(env, 1608);
-				}
-				case SET_REWARD: {
-					return defaultCloseDialog(env, 11, 11, true, false); // reward
-				}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+			else if (targetId == 799247) { // Angrad
+				switch (dialog) {
+					case START_DIALOG: {
+						if (var == 1) {
+							return sendQuestDialog(env, 1352);
+						}
+					}
+					case STEP_TO_2: {
+						return defaultCloseDialog(env, 1, 2); // 2
+					}
+				}
+			}
+			else if (targetId == 799250) { // Eddas
+				switch (dialog) {
+					case START_DIALOG: {
+						if (var == 2)
+							return sendQuestDialog(env, 1693);
+					}
+					case STEP_TO_3: {
+						return defaultCloseDialog(env, 2, 3); // 3
+					}
+				}
+			}
+			else if (targetId == 799325) { // Taloc's Guardian
+				switch (dialog) {
+					case START_DIALOG: {
+						if (var == 3) {
+							return sendQuestDialog(env, 2034);
+						}
+						else if (var == 4) {
+							return sendQuestDialog(env, 2120);
+						}
+						else if (var == 5) {
+							return sendQuestDialog(env, 2716);
+						}
+					}
+					case STEP_TO_4: {
+						return defaultCloseDialog(env, 3, 4); // 4
+					}
+					case STEP_TO_6: {
+						if (player.isInGroup2()) {
+							return sendQuestDialog(env, 2717);
+						}
+						else {
+							if (giveQuestItem(env, 182207603, 1) && giveQuestItem(env, 182207604, 1)) {
+								WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(300190000);
+								InstanceService.registerPlayerWithInstance(newInstance, player);
+								TeleportService.teleportTo(player, 300190000, newInstance.getInstanceId(), 202.26694f, 226.0532f,
+									1098.236f, 3000, true);
+								changeQuestStep(env, 5, 6, false); // 6
+								return closeDialogWindow(env);
+							}
+							else {
+								PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_FULL_INVENTORY);
+								return sendQuestSelectionDialog(env);
+							}
+						}
+					}
+					case FINISH_DIALOG: {
+						return sendQuestSelectionDialog(env);
+					}
+				}
+			}
+			else if (targetId == 799503) { // Taloc's Mirage
+				switch (dialog) {
+					case START_DIALOG: {
+						if (var == 9) {
+							return sendQuestDialog(env, 4080);
+						}
+					}
+					case STEP_TO_10: {
+						return defaultCloseDialog(env, 9, 10); // 10
+					}
+				}
+			}
+			else if (targetId == 799258) { // Denskel
+				switch (dialog) {
+					case START_DIALOG: {
+						if (var == 10) {
+							return sendQuestDialog(env, 1267);
+						}
+					}
+					case STEP_TO_11: {
+						return defaultCloseDialog(env, 10, 11); // 11
+					}
+				}
+			}
+			else if (targetId == 799239) { // Vellun
+				switch (dialog) {
+					case START_DIALOG: {
+						if (var == 11)
+							return sendQuestDialog(env, 1608);
+					}
+					case SET_REWARD: {
+						return defaultCloseDialog(env, 11, 11, true, false); // reward
+					}
+				}
+			}
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799226) { // Valetta
 				if (dialog == QuestDialog.START_DIALOG) {
 					removeQuestItem(env, 182207604, 1);
 					removeQuestItem(env, 182207603, 1);
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
@@ -195,41 +207,45 @@ public class _20021TheAetherMustFlow extends QuestHandler {
 			int var2 = qs.getQuestVarById(2);
 
 			switch (targetId) {
-			case 215992: { // Sticky Sludger
-				if (var == 4) {
-					if (var1 >= 0 && var1 < 9) {
-						return defaultOnKillEvent(env, 215992, 0, 9, 1); // 1: 9
-					} else if (var1 == 9) {
-						if (var2 == 10) {
-							qs.setQuestVar(5); // 5
-							updateQuestStatus(env);
-							return true;
-						} else {
-							defaultOnKillEvent(env, 215992, 9, 10, 1); // 1: 10
+				case 215992: { // Sticky Sludger
+					if (var == 4) {
+						if (var1 >= 0 && var1 < 9) {
+							return defaultOnKillEvent(env, 215992, 0, 9, 1); // 1: 9
+						}
+						else if (var1 == 9) {
+							if (var2 == 10) {
+								qs.setQuestVar(5); // 5
+								updateQuestStatus(env);
+								return true;
+							}
+							else {
+								defaultOnKillEvent(env, 215992, 9, 10, 1); // 1: 10
+							}
 						}
 					}
+					break;
 				}
-				break;
-			}
-			case 215995: { // Whirling Seafoam
-				if (var == 4) {
-					if (var2 >= 0 && var2 < 9) {
-						return defaultOnKillEvent(env, 215995, 0, 9, 2); // 2: 9
-					} else if (var2 == 9) {
-						if (var1 == 10) {
-							qs.setQuestVar(5); // 5
-							updateQuestStatus(env);
-							return true;
-						} else {
-							return defaultOnKillEvent(env, 215995, 9, 10, 2); // 2: 10
+				case 215995: { // Whirling Seafoam
+					if (var == 4) {
+						if (var2 >= 0 && var2 < 9) {
+							return defaultOnKillEvent(env, 215995, 0, 9, 2); // 2: 9
+						}
+						else if (var2 == 9) {
+							if (var1 == 10) {
+								qs.setQuestVar(5); // 5
+								updateQuestStatus(env);
+								return true;
+							}
+							else {
+								return defaultOnKillEvent(env, 215995, 9, 10, 2); // 2: 10
+							}
 						}
 					}
+					break;
 				}
-				break;
-			}
-			case 215488: { // Celestius
-				return defaultOnKillEvent(env, 215488, 8, 9); // 9
-			}
+				case 215488: { // Celestius
+					return defaultOnKillEvent(env, 215488, 8, 9); // 9
+				}
 			}
 		}
 		return false;
@@ -246,14 +262,15 @@ public class _20021TheAetherMustFlow extends QuestHandler {
 				int var3 = qs.getQuestVarById(3);
 				if (itemId == 182207604) { // Taloc Fruit
 					changeQuestStep(env, 6, 7, false); // 7
-					return HandlerResult.SUCCESS; // //TODO: Should return FAILED (not removed, but skill still should
-													// be used)
-				} else if (itemId == 182207603) { // Taloc's Tears
+					return HandlerResult.SUCCESS; // //TODO: Should return FAILED (not removed, but skill still should be used)
+				}
+				else if (itemId == 182207603) { // Taloc's Tears
 					if (var == 7) {
 						if (var3 >= 0 && var3 < 50) {
 							changeQuestStep(env, var3, var3 + 1, false, 3); // 3: 50
 							return HandlerResult.SUCCESS;
-						} else if (var3 == 50) {
+						}
+						else if (var3 == 50) {
 							qs.setQuestVar(8);
 							updateQuestStatus(env);
 							return HandlerResult.SUCCESS;

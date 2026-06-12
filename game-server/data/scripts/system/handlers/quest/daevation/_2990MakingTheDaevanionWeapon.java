@@ -71,7 +71,8 @@ public class _2990MakingTheDaevanionWeapon extends QuestHandler {
 						return sendQuestDialog(env, 4848);
 					else
 						return sendQuestDialog(env, 4762);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -85,63 +86,63 @@ public class _2990MakingTheDaevanionWeapon extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 204146) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-					if (var == 2 && var1 == 60)
-						return sendQuestDialog(env, 1693);
-					if (var == 3 && player.getInventory().getItemCountByItemId(186000040) > 0)
-						return sendQuestDialog(env, 2034);
-				case CHECK_COLLECTED_ITEMS:
-					if (var == 0) {
-						if (QuestService.collectItemCheck(env, true)) {
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+						if (var == 1)
+							return sendQuestDialog(env, 1352);
+						if (var == 2 && var1 == 60)
+							return sendQuestDialog(env, 1693);
+						if (var == 3 && player.getInventory().getItemCountByItemId(186000040) > 0)
+							return sendQuestDialog(env, 2034);
+					case CHECK_COLLECTED_ITEMS:
+						if (var == 0) {
+							if (QuestService.collectItemCheck(env, true)) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 10000);
+							}
+							else
+								return sendQuestDialog(env, 10001);
+						}
+						break;
+					case SELECT_ACTION_1352:
+						if (var == 0)
+							return sendQuestDialog(env, 1352);
+					case SELECT_ACTION_2035:
+						if (var == 3) {
+							if (player.getCommonData().getDp() == 4000 && player.getInventory().getItemCountByItemId(186000040) > 0) {
+								removeQuestItem(env, 186000040, 1);
+								player.getCommonData().setDp(0);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 5);
+							}
+							else
+								return sendQuestDialog(env, 2120);
+						}
+						break;
+					case STEP_TO_2:
+						if (var == 1) {
 							qs.setQuestVarById(0, var + 1);
 							updateQuestStatus(env);
-							return sendQuestDialog(env, 10000);
-						} else
-							return sendQuestDialog(env, 10001);
-					}
-					break;
-				case SELECT_ACTION_1352:
-					if (var == 0)
-						return sendQuestDialog(env, 1352);
-				case SELECT_ACTION_2035:
-					if (var == 3) {
-						if (player.getCommonData().getDp() == 4000
-								&& player.getInventory().getItemCountByItemId(186000040) > 0) {
-							removeQuestItem(env, 186000040, 1);
-							player.getCommonData().setDp(0);
-							qs.setStatus(QuestStatus.REWARD);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
+						break;
+					case STEP_TO_3:
+						if (var == 2) {
+							qs.setQuestVar(3);
 							updateQuestStatus(env);
-							return sendQuestDialog(env, 5);
-						} else
-							return sendQuestDialog(env, 2120);
-					}
-					break;
-				case STEP_TO_2:
-					if (var == 1) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-					break;
-				case STEP_TO_3:
-					if (var == 2) {
-						qs.setQuestVar(3);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-					break;
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
+						break;
 				}
 			}
 			return false;
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204146)// Kanensa
 			{
 				return sendQuestEndDialog(env);
@@ -152,47 +153,47 @@ public class _2990MakingTheDaevanionWeapon extends QuestHandler {
 	}
 
 	@Override
-	public boolean onKillEvent(QuestEnv env) {
-		Player player = env.getPlayer();
-		QuestState qs = player.getQuestStateList().getQuestState(questId);
-		if (qs == null || qs.getStatus() != QuestStatus.START)
-			return false;
+  public boolean onKillEvent(QuestEnv env) {
+      Player player = env.getPlayer();
+      QuestState qs = player.getQuestStateList().getQuestState(questId);
+      if (qs == null || qs.getStatus() != QuestStatus.START)
+          return false;
 
-		int var1 = qs.getQuestVarById(1);
-		int var2 = qs.getQuestVarById(2);
-		int var3 = qs.getQuestVarById(3);
-		int targetId = env.getTargetId();
+      int var1 = qs.getQuestVarById(1);
+      int var2 = qs.getQuestVarById(2);
+      int var3 = qs.getQuestVarById(3);
+      int targetId = env.getTargetId();
 
-		if ((targetId == 256617 || targetId == 253720 || targetId == 254513) && qs.getQuestVarById(0) == 2) {
-			switch (targetId) {
-			case 256617:
-				if (var1 >= 0 && var1 < 60) {
-					++var1;
-					qs.setQuestVarById(1, var1 + 1);
-					updateQuestStatus(env);
-				}
-				break;
-			case 253720:
-				if (var2 >= 0 && var2 < 120) {
-					++var2;
-					qs.setQuestVarById(2, var2 + 3);
-					updateQuestStatus(env);
-				}
-				break;
-			case 254513:
-				if (var3 >= 0 && var3 < 240) {
-					++var3;
-					qs.setQuestVarById(3, var3 + 7);
-					updateQuestStatus(env);
-				}
-				break;
-			}
-		}
-		if (qs.getQuestVarById(0) == 2 && var1 == 60 && var2 == 120 && var3 == 240) {
-			qs.setQuestVarById(1, 60);
-			updateQuestStatus(env);
-			return true;
-		}
-		return false;
-	}
+      if ((targetId == 256617 || targetId == 253720 || targetId == 254513) && qs.getQuestVarById(0) == 2) {
+          switch (targetId) {
+              case 256617:
+                  if (var1 >= 0 && var1 < 60) {
+                      ++var1;
+                      qs.setQuestVarById(1, var1 + 1);
+                      updateQuestStatus(env);
+                  }
+                  break;
+              case 253720:
+                  if (var2 >= 0 && var2 < 120) {
+                      ++var2;
+                      qs.setQuestVarById(2, var2 + 3);
+                      updateQuestStatus(env);
+                  }
+                  break;
+              case 254513:
+                  if (var3 >= 0 && var3 < 240) {
+                      ++var3;
+                      qs.setQuestVarById(3, var3 + 7);
+                      updateQuestStatus(env);
+                  }
+                  break;
+          }
+      }
+      if (qs.getQuestVarById(0) == 2 && var1 == 60 && var2 == 120 && var3 == 240) {
+          qs.setQuestVarById(1, 60);
+          updateQuestStatus(env);
+          return true;
+      }
+      return false;
+  }
 }

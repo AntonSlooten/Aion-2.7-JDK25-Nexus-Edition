@@ -62,28 +62,27 @@ public class SkillUseAction extends AbstractItemAction {
 	@Override
 	public boolean canAct(Player player, Item parentItem, Item targetItem) {
 		Skill skill = SkillEngine.getInstance().getSkill(player, skillid, level, player.getTarget(),
-				parentItem.getItemTemplate());
-		if (skill == null) {
+			parentItem.getItemTemplate());
+		if (skill == null)
 			return false;
-		}
 		// Cant use transform items while already transformed
 		if (player.isTransformed()) {
 			for (EffectTemplate template : skill.getSkillTemplate().getEffects().getEffects()) {
 				if (template instanceof TransformEffect) {
-					PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE
-							.STR_CANT_USE_ITEM(new DescriptionId(parentItem.getItemTemplate().getNameId())));
+					PacketSendUtility.sendPacket(player,
+						SM_SYSTEM_MESSAGE.STR_CANT_USE_ITEM(new DescriptionId(parentItem.getItemTemplate().getNameId())));
 					return false;
 				}
 			}
 		}
-
+			
 		return skill.canUseSkill();
 	}
 
 	@Override
 	public void act(Player player, Item parentItem, Item targetItem) {
 		Skill skill = SkillEngine.getInstance().getSkill(player, skillid, level, player.getTarget(),
-				parentItem.getItemTemplate());
+			parentItem.getItemTemplate());
 		if (skill != null) {
 			player.getController().cancelUseItem();
 			skill.setItemObjectId(parentItem.getObjectId());

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  * aion-emu is free software: you can redistribute it and/or modify it under the
@@ -72,93 +72,93 @@ public class SM_INSTANCE_SCORE extends AionServerPacket {
 		writeD(instanceTime);
 		writeD(instanceScoreType.getId());
 		switch (mapId) {
-		case 300110000:
-		case 300210000:
-			fillTableWithGroup(Race.ELYOS);
-			fillTableWithGroup(Race.ASMODIANS);
-			DredgionReward dredgionReward = (DredgionReward) instanceReward;
-			int elyosScore = dredgionReward.getPointsByRace(Race.ELYOS).intValue();
-			int asmosScore = dredgionReward.getPointsByRace(Race.ASMODIANS).intValue();
-			writeD(instanceScoreType.isEndProgress() ? (asmosScore > elyosScore ? 1 : 0) : 255);
-			writeD(elyosScore);
-			writeD(asmosScore);
-			for (DredgionReward.DredgionRooms dredgionRoom : dredgionReward.getDredgionRooms()) {
-				writeC(dredgionRoom.getState());
-			}
-			break;
-		case 300320000:
-		case 300300000:
-			for (CruciblePlayerReward playerReward : (FastList<CruciblePlayerReward>) instanceReward
-					.getPlayersInside()) {
-				writeD(playerReward.getOwner()); // obj
-				writeD(playerReward.getPoints()); // points
-				writeD(playerReward.getPlayer().getPlayerClass().getClassId()); // unk
-				writeD(playerReward.getInsignia());
-				playerCount++;
-			}
-			if (playerCount < 6) {
-				writeB(new byte[16 * (6 - playerCount)]); // spaces
-			}
-			break;
-		case 300040000:
-			DarkPoetaReward dpr = (DarkPoetaReward) instanceReward;
-			writeD(dpr.getPoints());
-			writeD(dpr.getNpcKills());
-			writeD(dpr.getGatherCollections()); // gathers
-			writeD(dpr.getRank()); // 7 for none, 8 for F, 5 for D, 4 C, 3 B, 2 A, 1 S
-			break;
-		case 300350000:
-		case 300360000:
-		case 300420000:
-		case 300430000:
-			PvPArenaReward arenaReward = (PvPArenaReward) instanceReward;
-			int rank, points;
-			boolean isRewarded = false;// arenaReward.isRewarded();
-			for (InstancePlayerReward reward : arenaReward.getPlayersInside()) {
-				PvPArenaPlayerReward playerReward = (PvPArenaPlayerReward) reward;
-				points = playerReward.getPoints();
-				rank = arenaReward.getRank(points);
-				Player player = playerReward.getPlayer();
-				writeD(player.getObjectId()); // obj
-				writeD(playerReward.getPvPKills()); // kills
-				writeD(isRewarded ? points + playerReward.getTimeBonus() : points); // points
-				writeD(player.getAbyssRank().getRank().getId()); // abyss rank
-				writeC(0); // unk
-				writeC(player.getPlayerClass().getClassId()); // class id
-				writeC(1); // unk
-				writeC(rank); // top position
-				writeD(0); // 0F 00 00 00
-				writeD(arenaReward.getRankBonus(rank)); // rank bonus
-				writeD(isRewarded ? playerReward.getTimeBonus() : 0); // time bonus
+			case 300110000:
+			case 300210000:
+				fillTableWithGroup(Race.ELYOS);
+				fillTableWithGroup(Race.ASMODIANS);
+				DredgionReward dredgionReward = (DredgionReward) instanceReward;
+				int elyosScore = dredgionReward.getPointsByRace(Race.ELYOS).intValue();
+				int asmosScore = dredgionReward.getPointsByRace(Race.ASMODIANS).intValue();
+				writeD(instanceScoreType.isEndProgress() ? (asmosScore > elyosScore ? 1 : 0) : 255);
+				writeD(elyosScore);
+				writeD(asmosScore);
+				for (DredgionReward.DredgionRooms dredgionRoom : dredgionReward.getDredgionRooms()) {
+					writeC(dredgionRoom.getState());
+				}
+				break;
+			case 300320000:
+			case 300300000:
+				for (CruciblePlayerReward playerReward : (FastList<CruciblePlayerReward>) instanceReward.getPlayersInside()) {
+					writeD(playerReward.getOwner()); // obj
+					writeD(playerReward.getPoints()); // points
+					writeD(playerReward.getPlayer().getPlayerClass().getClassId()); // unk
+					writeD(playerReward.getInsignia());
+					playerCount++;
+				}
+				if (playerCount < 6) {
+					writeB(new byte[16 * (6 - playerCount)]); // spaces
+				}
+				break;
+			case 300040000:
+				DarkPoetaReward dpr = (DarkPoetaReward) instanceReward;
+				writeD(dpr.getPoints());
+				writeD(dpr.getNpcKills());
+				writeD(dpr.getGatherCollections()); // gathers
+				writeD(dpr.getRank()); // 7 for none, 8 for F, 5 for D, 4 C, 3 B, 2 A, 1 S
+				break;
+			case 300350000:
+			case 300360000:
+			case 300420000:
+			case 300430000:
+				PvPArenaReward arenaReward = (PvPArenaReward) instanceReward;
+				int rank, points;
+				boolean isRewarded = false;//arenaReward.isRewarded();
+				for (InstancePlayerReward reward : arenaReward.getPlayersInside()) {
+					PvPArenaPlayerReward playerReward = (PvPArenaPlayerReward) reward;
+					points = playerReward.getPoints();
+					rank = arenaReward.getRank(points);
+					Player player = playerReward.getPlayer();
+					writeD(player.getObjectId()); // obj
+					writeD(playerReward.getPvPKills()); // kills
+					writeD(isRewarded ? points + playerReward.getTimeBonus() : points); // points
+					writeD(player.getAbyssRank().getRank().getId()); // abyss rank
+					writeC(0); // unk
+					writeC(player.getPlayerClass().getClassId()); // class id
+					writeC(1); // unk
+					writeC(rank); // top position
+					writeD(0); // 0F 00 00 00 
+					writeD(arenaReward.getRankBonus(rank)); // rank bonus
+					writeD(isRewarded ? playerReward.getTimeBonus() : 0); // time bonus
+					writeD(0); // unk
+					writeD(0); // unk
+					writeS(player.getName(), 52); // playerName
+					playerCount++;
+				}
+				if (playerCount < 12) {
+					writeB(new byte[92 * (12 - playerCount)]); // spaces
+				}
+				PvPArenaPlayerReward rewardedPlayer = arenaReward.getPlayerReward(con.getActivePlayer());
+				if (isRewarded && arenaReward.canRewarded()) {
+					writeD(rewardedPlayer.getScoreAP()); // abyss points
+					writeD(186000130); // 186000130
+					writeD(rewardedPlayer.getScoreCrucible()); // Crucible Insignia
+					writeD(186000137); // 186000137
+					writeD(rewardedPlayer.getScoreCourage()); // Courage Insignia
+				}
+				else {
+					writeB(new byte[20]);
+				}
 				writeD(0); // unk
 				writeD(0); // unk
-				writeS(player.getName(), 52); // playerName
-				playerCount++;
-			}
-			if (playerCount < 12) {
-				writeB(new byte[92 * (12 - playerCount)]); // spaces
-			}
-			PvPArenaPlayerReward rewardedPlayer = arenaReward.getPlayerReward(con.getActivePlayer());
-			if (isRewarded && arenaReward.canRewarded()) {
-				writeD(rewardedPlayer.getScoreAP()); // abyss points
-				writeD(186000130); // 186000130
-				writeD(rewardedPlayer.getScoreCrucible()); // Crucible Insignia
-				writeD(186000137); // 186000137
-				writeD(rewardedPlayer.getScoreCourage()); // Courage Insignia
-			} else {
-				writeB(new byte[20]);
-			}
-			writeD(0); // unk
-			writeD(0); // unk
-			writeD(0); // unk
-			writeD(0); // unk
-			writeD(0); // unk
-			writeD(0); // unk
-			writeD(arenaReward.getRound()); // round
-			writeD(arenaReward.getCapPoints()); // cap points
-			writeD(3); // unk
-			writeD(0); // unk
-			break;
+				writeD(0); // unk
+				writeD(0); // unk
+				writeD(0); // unk
+				writeD(0); // unk
+				writeD(arenaReward.getRound()); // round
+				writeD(arenaReward.getCapPoints()); // cap points
+				writeD(3); // unk
+				writeD(0); // unk
+				break;
 		}
 	}
 
@@ -177,10 +177,10 @@ public class SM_INSTANCE_SCORE extends AionServerPacket {
 
 			if (instanceScoreType.isEndProgress()) {
 				boolean winner = race.equals(dredgionReward.getWinningRace());
-				writeD((winner ? dredgionReward.getWinnerPoints() : dredgionReward.getLooserPoints())
-						+ (int) (dpr.getPoints() * 1.6f)); // apBonus1
+				writeD((winner ? dredgionReward.getWinnerPoints() : dredgionReward.getLooserPoints()) + (int) (dpr.getPoints() * 1.6f)); // apBonus1
 				writeD((winner ? dredgionReward.getWinnerPoints() : dredgionReward.getLooserPoints())); // apBonus2
-			} else {
+			}
+			else {
 				writeB(new byte[8]);
 			}
 

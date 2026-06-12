@@ -49,29 +49,26 @@ public class Mailbox {
 	 * @param letter
 	 */
 	public void putLetterToMailbox(Letter letter) {
-		if (haveFreeSlots()) {
+		if (haveFreeSlots())
 			mails.put(letter.getObjectId(), letter);
-		} else {
+		else
 			reserveMail.put(letter.getObjectId(), letter);
-		}
 	}
 
 	/**
 	 * Get all letters in mailbox (sorted according to time received)
-	 *
+	 * 
 	 * @return
 	 */
 	public Collection<Letter> getLetters() {
-		SortedSet<Letter> letters = new TreeSet<>(new Comparator<Letter>() {
+		SortedSet<Letter> letters = new TreeSet<Letter>(new Comparator<Letter>() {
 
 			@Override
 			public int compare(Letter o1, Letter o2) {
-				if (o1.getTimeStamp().getTime() > o2.getTimeStamp().getTime()) {
+				if (o1.getTimeStamp().getTime() > o2.getTimeStamp().getTime())
 					return 1;
-				}
-				if (o1.getTimeStamp().getTime() < o2.getTimeStamp().getTime()) {
+				if (o1.getTimeStamp().getTime() < o2.getTimeStamp().getTime())
 					return -1;
-				}
 
 				return o1.getObjectId() > o2.getObjectId() ? 1 : -1;
 			}
@@ -82,39 +79,36 @@ public class Mailbox {
 		}
 		return letters;
 	}
-
+	
 	/**
 	 * Get all Express letters only in mailbox (sorted according to time received)
-	 *
+	 * 
 	 * @return
 	 */
 	public Collection<Letter> getExpressLetters() {
-		SortedSet<Letter> letters = new TreeSet<>(new Comparator<Letter>() {
+		SortedSet<Letter> letters = new TreeSet<Letter>(new Comparator<Letter>() {
 
 			@Override
 			public int compare(Letter o1, Letter o2) {
-				if (o1.getTimeStamp().getTime() > o2.getTimeStamp().getTime()) {
+				if (o1.getTimeStamp().getTime() > o2.getTimeStamp().getTime())
 					return 1;
-				}
-				if (o1.getTimeStamp().getTime() < o2.getTimeStamp().getTime()) {
+				if (o1.getTimeStamp().getTime() < o2.getTimeStamp().getTime())
 					return -1;
-				}
 
 				return o1.getObjectId() > o2.getObjectId() ? 1 : -1;
 			}
 		});
 
 		for (Letter letter : mails.values()) {
-			if (letter.isExpress()) {
+			if(letter.isExpress())
 				letters.add(letter);
-			}
 		}
 		return letters;
 	}
 
 	/**
 	 * Get letter with specified letter id
-	 *
+	 * 
 	 * @param letterObjId
 	 * @return
 	 */
@@ -124,43 +118,39 @@ public class Mailbox {
 
 	/**
 	 * Check whether mailbox contains empty letters
-	 *
+	 * 
 	 * @return
 	 */
 	public boolean haveUnread() {
 		for (Letter letter : mails.values()) {
-			if (letter.isUnread()) {
+			if (letter.isUnread())
 				return true;
-			}
 		}
 		return false;
 	}
-
-	public final int getUnreadCount() {
+	
+	public final int getUnreadCount(){
 		int unreadCount = 0;
 		for (Letter letter : mails.values()) {
-			if (letter.isUnread()) {
+			if (letter.isUnread())
 				unreadCount++;
-			}
 		}
 		return unreadCount;
 	}
 
 	public boolean haveUnreadExpress() {
 		for (Letter letter : mails.values()) {
-			if (letter.isUnread() && letter.isExpress()) {
+			if (letter.isUnread() && letter.isExpress())
 				return true;
-			}
 		}
 		return false;
 	}
-
-	public final int getUnreadExpressCount() {
+	
+	public final int getUnreadExpressCount(){
 		int expressCount = 0;
 		for (Letter letter : mails.values()) {
-			if (letter.isUnread() && letter.isExpress()) {
+			if (letter.isUnread() && letter.isExpress())
 				expressCount++;
-			}
 		}
 		return expressCount;
 	}
@@ -182,7 +172,7 @@ public class Mailbox {
 
 	/**
 	 * Current size of mailbox
-	 *
+	 * 
 	 * @return
 	 */
 	public int size() {
@@ -195,16 +185,16 @@ public class Mailbox {
 				if (haveFreeSlots()) {
 					mails.put(letter.getObjectId(), letter);
 					reserveMail.remove(letter.getObjectId());
-				} else {
-					break;
 				}
+				else
+					break;
 			}
 			MailService.getInstance().refreshMail(getOwner());
 		}
 	}
-
-	public void sendMailList() {
-		if (!isMailListSent) {
+	
+	public void sendMailList(){
+		if(!isMailListSent){
 			isMailListSent = true;
 			PacketSendUtility.sendPacket(owner, new SM_MAIL_SERVICE(owner, getLetters()));
 		}

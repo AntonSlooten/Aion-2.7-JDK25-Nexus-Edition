@@ -48,10 +48,10 @@ public class RightWingChamberInstance extends GeneralInstanceHandler {
 	}
 
 	private void spawnRings() {
-		FlyRing f1 = new FlyRing(
-				new FlyRingTemplate("RIGHT_WING_1", mapId, new Point3D(262.87686, 361.04962, 107.83435),
-						new Point3D(262.87686, 361.04962, 113.83435), new Point3D(254.22054, 358.58627, 107.83435), 8),
-				instanceId);
+		FlyRing f1 = new FlyRing(new FlyRingTemplate("RIGHT_WING_1", mapId,
+				new Point3D(262.87686, 361.04962,107.83435),
+				new Point3D(262.87686, 361.04962,113.83435),
+				new Point3D(254.22054, 358.58627, 107.83435), 8), instanceId);
 		f1.spawn();
 	}
 

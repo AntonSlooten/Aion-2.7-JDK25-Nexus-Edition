@@ -14,8 +14,8 @@ import com.aionemu.gameserver.world.World;
  * @author xTz
  */
 public class CmdDelSkill extends BaseCommand {
-
-	@Override
+	
+	
 	public void execute(Player admin, String... params) {
 		if (params.length < 2 || params.length > 3) {
 			showHelp(admin);
@@ -34,19 +34,19 @@ public class CmdDelSkill extends BaseCommand {
 				return;
 			}
 
-			if ("all".startsWith(params[2])) {
+			if ("all".startsWith(params[2]))
 				playerSkillList = player.getSkillList();
-			} else {
+			else {
 				try {
 					skillId = ParseInteger(params[2]);
-				} catch (NumberFormatException e) {
+				}
+				catch (NumberFormatException e) {
 					PacketSendUtility.sendMessage(admin, "Param 1 must be an integer or <all>.");
 					return;
 				}
 
-				if (!check(admin, player, skillId)) {
+				if (!check(admin, player, skillId))
 					return;
-				}
 			}
 			apply(admin, player, skillId, playerSkillList);
 
@@ -61,26 +61,25 @@ public class CmdDelSkill extends BaseCommand {
 			if (target instanceof Player) {
 				player = (Player) target;
 
-				if ("all".startsWith(params[1])) {
+				if ("all".startsWith(params[1]))
 					playerSkillList = player.getSkillList();
-				} else {
+				else {
 					try {
 						skillId = ParseInteger(params[1]);
-					} catch (NumberFormatException e) {
+					}
+					catch (NumberFormatException e) {
 						PacketSendUtility.sendMessage(admin, "Param 0 must be an integer or <all>.");
 						return;
 					}
 
-					if (!check(admin, player, skillId)) {
+					if (!check(admin, player, skillId))
 						return;
-					}
 				}
-				if (target instanceof Player) {
+				if (target instanceof Player)
 					apply(admin, player, skillId, playerSkillList);
-				}
-			} else {
-				PacketSendUtility.sendMessage(admin, "This command can only be used on a player !");
 			}
+			else
+				PacketSendUtility.sendMessage(admin, "This command can only be used on a player !");
 		}
 	}
 
@@ -100,7 +99,8 @@ public class CmdDelSkill extends BaseCommand {
 		if (skillId != 0) {
 			SkillLearnService.removeSkill(player, skillId);
 			PacketSendUtility.sendMessage(admin, "You have successfully deleted the specified skill.");
-		} else {
+		}
+		else {
 			for (PlayerSkillEntry skillEntry : playerSkillList.getAllSkills()) {
 				if (!skillEntry.isStigma()) {
 					SkillLearnService.removeSkill(player, skillEntry.getSkillId());

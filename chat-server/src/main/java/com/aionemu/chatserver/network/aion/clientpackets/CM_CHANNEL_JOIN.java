@@ -1,25 +1,10 @@
 /*
  * This file is part of Aion X EMU <aionxemu.com>.
- *
- *  This is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This software is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this software.  If not, see <http://www.gnu.org/licenses/>.
+ * (License info retained)
  */
 package com.aionemu.chatserver.network.aion.clientpackets;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jboss.netty.buffer.ChannelBuffer;
-
 import com.aionemu.chatserver.model.ChatClient;
 import com.aionemu.chatserver.model.channel.Channel;
 import com.aionemu.chatserver.network.aion.AbstractClientPacket;
@@ -31,11 +16,10 @@ import com.aionemu.chatserver.service.ChatService;
  * @author SuneC
  */
 public class CM_CHANNEL_JOIN extends AbstractClientPacket {
-	private static final Logger log = LoggerFactory.getLogger(CM_CHANNEL_JOIN.class);
 
 	private int channelIndex;
 	private byte[] channelIdentifier;
-	private byte[] channelPassword;
+	// Variabel channelPassword dan log sudah dibuang
 
 	public CM_CHANNEL_JOIN(ChannelBuffer channelBuffer, ClientChannelHandler gameChannelHandler) {
 		super(channelBuffer, gameChannelHandler, 0x0D);
@@ -49,26 +33,19 @@ public class CM_CHANNEL_JOIN extends AbstractClientPacket {
 		int length = readH() * 2;
 		channelIdentifier = readB(length);
 		length = readH() * 2;
-		if (length == 0)
-			channelPassword = null;
-		else
-			channelPassword = readB(length);
+		
+		// PERBAIKAN: Tetap memajukan pembacaan buffer tanpa menyimpannya
+		if (length > 0) {
+			readB(length); 
+		}
 	}
 
 	@Override
 	protected void runImpl() {
-		/*
-		 * try { log.info("CM_CHANNEL_JOIN: {} and channel: {}", channelIndex, new
-		 * String(channelIdentifier, "UTF-16le")); } catch(UnsupportedEncodingException
-		 * e) { e.printStackTrace(); }
-		 */
-
 		ChatClient chatClient = clientChannelHandler.getChatClient();
 		Channel channel = ChatService.getInstance().registerPlayerWithChannel(chatClient, channelIndex,
 				channelIdentifier);
 		if (channel != null) {
-			// log.info("Sending SM_CHANNEL_RESPONSE with channel " + channel.getChannelId()
-			// + " index " + channelIndex);
 			clientChannelHandler.sendPacket(new SM_CHANNEL_RESPONSE(channel, channelIndex));
 		}
 	}

@@ -21,22 +21,23 @@ import java.nio.ByteBuffer;
 import com.aionemu.gameserver.model.gameobjects.Item;
 import com.aionemu.gameserver.network.aion.iteminfo.ItemInfoBlob.ItemBlobType;
 
+
 /**
- * This blob entry is sent with ALL items. (unless partial blob is constructed,
- * ie: sending equip slot only) It is the first and only block for non-equipable
- * items, and the last blob for EquipableItems
+ * This blob entry is sent with ALL items. (unless partial blob is constructed, ie: sending equip slot only) It is the first
+ * and only block for non-equipable items, and the last blob for EquipableItems
  *
  * @author -Nemesiss-
  *
  */
-public class GeneralInfoBlobEntry extends ItemBlobEntry {
+public class GeneralInfoBlobEntry extends ItemBlobEntry{
 
 	GeneralInfoBlobEntry() {
 		super(ItemBlobType.GENERAL_INFO);
 	}
 
 	@Override
-	public void writeThisBlob(ByteBuffer buf) {// TODO what with kinah?
+	public
+	void writeThisBlob(ByteBuffer buf) {//TODO what with kinah?
 		Item item = parent.item;
 		writeH(buf, item.getItemMask(parent.player));
 		writeQ(buf, item.getItemCount());

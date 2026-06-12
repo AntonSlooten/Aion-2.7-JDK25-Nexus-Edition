@@ -43,15 +43,13 @@ public class ItemSocketService {
 	private static final Logger log = LoggerFactory.getLogger(ItemSocketService.class);
 
 	public static ManaStone addManaStone(Item item, int itemId) {
-		if (item == null) {
+		if (item == null)
 			return null;
-		}
 
 		Set<ManaStone> manaStones = item.getItemStones();
 		// temp fix for manastone spam till templates are updated
-		if (manaStones.size() > 6) {
+		if (manaStones.size() > 6)
 			return null;
-		}
 
 		int nextSlot = 0;
 		boolean slotFound = false;
@@ -63,26 +61,23 @@ public class ItemSocketService {
 			nextSlot++;
 		}
 
-		if (!slotFound) {
+		if (!slotFound)
 			nextSlot = manaStones.size();
-		}
 
 		ManaStone stone = new ManaStone(item.getObjectId(), itemId, nextSlot, PersistentState.NEW);
 		manaStones.add(stone);
 
 		return stone;
 	}
-
+	
 	public static ManaStone addManaStone(Item item, int itemId, int slotId) {
-		if (item == null) {
+		if (item == null)
 			return null;
-		}
 
 		Set<ManaStone> manaStones = item.getItemStones();
 		// temp fix for manastone spam till templates are updated
-		if (manaStones.size() > 6) {
+		if (manaStones.size() > 6)
 			return null;
-		}
 
 		ManaStone stone = new ManaStone(item.getObjectId(), itemId, slotId, PersistentState.NEW);
 		manaStones.add(stone);
@@ -92,21 +87,19 @@ public class ItemSocketService {
 	public static void copyFusionStones(Item source, Item target) {
 		if (source.hasManaStones()) {
 			for (ManaStone manaStone : source.getItemStones()) {
-				target.getFusionStones().add(new ManaStone(target.getObjectId(), manaStone.getItemId(),
-						manaStone.getSlot(), PersistentState.NEW));
+				target.getFusionStones().add(
+					new ManaStone(target.getObjectId(), manaStone.getItemId(), manaStone.getSlot(), PersistentState.NEW));
 			}
 		}
 	}
 
 	public static ManaStone addFusionStone(Item item, int itemId) {
-		if (item == null) {
+		if (item == null)
 			return null;
-		}
 
 		Set<ManaStone> fusionStones = item.getFusionStones();
-		if (fusionStones.size() > item.getSockets(true)) {
+		if (fusionStones.size() > item.getSockets(true))
 			return null;
-		}
 
 		int nextSlot = 0;
 		boolean slotFound = false;
@@ -118,24 +111,21 @@ public class ItemSocketService {
 			nextSlot++;
 		}
 
-		if (!slotFound) {
+		if (!slotFound)
 			nextSlot = fusionStones.size();
-		}
 
 		ManaStone stone = new ManaStone(item.getObjectId(), itemId, nextSlot, PersistentState.NEW);
 		fusionStones.add(stone);
 		return stone;
 	}
-
+	
 	public static ManaStone addFusionStone(Item item, int itemId, int slotId) {
-		if (item == null) {
+		if (item == null)
 			return null;
-		}
 
 		Set<ManaStone> fusionStones = item.getFusionStones();
-		if (fusionStones.size() > item.getSockets(true)) {
+		if (fusionStones.size() > item.getSockets(true))
 			return null;
-		}
 
 		ManaStone stone = new ManaStone(item.getObjectId(), itemId, slotId, PersistentState.NEW);
 		fusionStones.add(stone);
@@ -157,9 +147,8 @@ public class ItemSocketService {
 
 		Set<ManaStone> itemStones = item.getItemStones();
 
-		if (itemStones.size() <= slotNum) {
+		if (itemStones.size() <= slotNum)
 			return;
-		}
 
 		int counter = 0;
 		for (ManaStone ms : itemStones) {
@@ -189,9 +178,8 @@ public class ItemSocketService {
 
 		Set<ManaStone> itemStones = item.getFusionStones();
 
-		if (itemStones.size() <= slotNum) {
+		if (itemStones.size() <= slotNum)
 			return;
-		}
 
 		int counter = 0;
 		for (ManaStone ms : itemStones) {
@@ -248,14 +236,12 @@ public class ItemSocketService {
 
 	public static void socketGodstone(Player player, int weaponId, int stoneId) {
 		long socketPrice = PricesService.getPriceForService(100000, player.getRace());
-		if (player.getInventory().getKinah() < socketPrice) {
+		if (player.getInventory().getKinah() < socketPrice)
 			return;
-		}
 
 		Item weaponItem = player.getInventory().getItemByObjId(weaponId);
 		if (weaponItem == null) {
-			PacketSendUtility.sendPacket(player,
-					SM_SYSTEM_MESSAGE.STR_GIVE_ITEM_PROC_CANNOT_GIVE_PROC_TO_EQUIPPED_ITEM);
+			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_GIVE_ITEM_PROC_CANNOT_GIVE_PROC_TO_EQUIPPED_ITEM);
 			return;
 		}
 		int weaponItemId = weaponItem.getItemTemplate().getTemplateId();
@@ -275,15 +261,18 @@ public class ItemSocketService {
 			log.warn("Godstone info missing for itemid " + godStoneItemId);
 			return;
 		}
-
+		
 		int godsstoneItemIdmask = Math.round(godStoneItemId / 1000000);
-		if ((godsstoneItemIdmask != 168) || !player.getInventory().decreaseByObjectId(stoneId, 1)) {
+		if (godsstoneItemIdmask != 168){
 			return;
 		}
 
+		if (!player.getInventory().decreaseByObjectId(stoneId, 1))
+			return;
+
 		weaponItem.addGodStone(godStoneItemId);
 		PacketSendUtility.sendPacket(player,
-				SM_SYSTEM_MESSAGE.STR_GIVE_ITEM_PROC_ENCHANTED_TARGET_ITEM(new DescriptionId(weaponItem.getNameID())));
+			SM_SYSTEM_MESSAGE.STR_GIVE_ITEM_PROC_ENCHANTED_TARGET_ITEM(new DescriptionId(weaponItem.getNameID())));
 
 		player.getInventory().decreaseKinah(socketPrice);
 		ItemPacketService.updateItemAfterInfoChange(player, weaponItem);

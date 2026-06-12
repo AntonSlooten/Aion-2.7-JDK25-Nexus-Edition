@@ -5,13 +5,15 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public class CmdTeleportation extends BaseCommand {
+	
+	
 
-	@Override
 	public void execute(Player player, String... params) {
 		if (player.getAdminTeleportation()) {
 			PacketSendUtility.sendMessage(player, "Teleportation disabled.");
 			player.setAdminTeleportation(false);
-		} else {
+		}
+		else {
 			PacketSendUtility.sendMessage(player, "Teleportation enabled.");
 			player.setAdminTeleportation(true);
 		}

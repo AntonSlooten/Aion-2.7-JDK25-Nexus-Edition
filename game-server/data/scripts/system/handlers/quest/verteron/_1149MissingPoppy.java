@@ -25,8 +25,7 @@ import com.aionemu.gameserver.questEngine.model.QuestState;
 import com.aionemu.gameserver.questEngine.model.QuestStatus;
 
 /**
- * Find Poppy (203191), the lost Porgus. Take Poppy safely to Cannon (203145).
- * Talk with Cannon.
+ * Find Poppy (203191), the lost Porgus. Take Poppy safely to Cannon (203145). Talk with Cannon.
  * 
  * @author Rhys2002
  * @reworked vlog
@@ -61,24 +60,30 @@ public class _1149MissingPoppy extends QuestHandler {
 			if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
-			} else if (qs.getStatus() == QuestStatus.REWARD) {
+			}
+			else if (qs.getStatus() == QuestStatus.REWARD) {
 				if (env.getDialogId() == 1009) {
 					return sendQuestDialog(env, 5);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
-			} else {
+			}
+			else {
 				return false;
 			}
-		} else if (targetId == 203191) { // Poppy
+		}
+		else if (targetId == 203191) { // Poppy
 			if (qs != null && qs.getStatus() == QuestStatus.START) {
 				int var = qs.getQuestVarById(0);
 				if (env.getDialog() == QuestDialog.START_DIALOG && var == 0) {
 					return sendQuestDialog(env, 1352);
-				} else if (env.getDialog() == QuestDialog.STEP_TO_1) {
+				}
+				else if (env.getDialog() == QuestDialog.STEP_TO_1) {
 					return defaultStartFollowEvent(env, 203145, 0, 1); // 1
 				}
 			}

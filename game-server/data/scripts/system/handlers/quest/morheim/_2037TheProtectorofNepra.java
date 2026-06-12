@@ -72,90 +72,85 @@ public class _2037TheProtectorofNepra extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204369: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-				case SELECT_ACTION_1012:
-					playQuestMovie(env, 80);
-					break;
-				case STEP_TO_1:
-					if (var == 0) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
+				case 204369: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+						case SELECT_ACTION_1012:
+							playQuestMovie(env, 80);
+							break;
+						case STEP_TO_1:
+							if (var == 0) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
 					}
 				}
-			}
-			case 204361: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-					else if (var == 3 && (player.getInventory().getItemCountByItemId(182204015) == 1))
-						return sendQuestDialog(env, 2034);
-					else if (var == 5)
-						return sendQuestDialog(env, 2716);
-					else if (var == 7)
-						return sendQuestDialog(env, 3057);
-				case STEP_TO_2:
-					if (var == 1) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-				case STEP_TO_4:
-					if (var == 3) {
-						removeQuestItem(env, 182204015, 1);
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-				case STEP_TO_6:
-					if (var == 5) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-				case SET_REWARD:
-					if (var == 7) {
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
+				case 204361: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 1)
+								return sendQuestDialog(env, 1352);
+							else if (var == 3 && (player.getInventory().getItemCountByItemId(182204015) == 1))
+								return sendQuestDialog(env, 2034);
+							else if (var == 5)
+								return sendQuestDialog(env, 2716);
+							else if (var == 7)
+								return sendQuestDialog(env, 3057);
+						case STEP_TO_2:
+							if (var == 1) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
+						case STEP_TO_4:
+							if (var == 3) {
+								removeQuestItem(env, 182204015, 1);
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
+						case STEP_TO_6:
+							if (var == 5) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
+						case SET_REWARD:
+							if (var == 7) {
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
 					}
 				}
-			}
-			case 278004: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 2)
-						return sendQuestDialog(env, 1693);
-				case STEP_TO_3:
-					if (var == 2) {
-						if (!giveQuestItem(env, 182204015, 1))
-							return true;
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
+				case 278004: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 2)
+								return sendQuestDialog(env, 1693);
+						case STEP_TO_3:
+							if (var == 2) {
+								if (!giveQuestItem(env, 182204015, 1))
+									return true;
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
 					}
 				}
-			}
 
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204369) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT)
 					return sendQuestDialog(env, 10002);
@@ -181,12 +176,12 @@ public class _2037TheProtectorofNepra extends QuestHandler {
 		if (qs.getStatus() != QuestStatus.START)
 			return false;
 		switch (targetId) {
-		case 212861:
-			if (var == 6) {
-				qs.setQuestVarById(0, var + 1);
-				updateQuestStatus(env);
-				return true;
-			}
+			case 212861:
+				if (var == 6) {
+					qs.setQuestVarById(0, var + 1);
+					updateQuestStatus(env);
+					return true;
+				}
 		}
 		return false;
 	}

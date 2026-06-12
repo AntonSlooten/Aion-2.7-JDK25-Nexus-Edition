@@ -45,7 +45,10 @@ public class CosmeticItemAction extends AbstractItemAction {
 	@Override
 	public boolean canAct(Player player, Item parentItem, Item targetItem) {
 		CosmeticItemTemplate template = DataManager.COSMETIC_ITEMS_DATA.getCosmeticItemsTemplate(cosmeticName);
-		if ((template == null) || !template.getRace().equals(player.getRace())) {
+		if (template == null) {
+			return false;
+		}
+		if (!template.getRace().equals(player.getRace())) {
 			return false;
 		}
 		if (!template.getGenderPermitted().equals("ALL")) {
@@ -64,23 +67,32 @@ public class CosmeticItemAction extends AbstractItemAction {
 		int id = template.getId();
 		if (type.equals("hair_color")) {
 			playerAppearance.setHairRGB(id);
-		} else if (type.equals("face_color")) {
+		}
+		else if (type.equals("face_color")) {
 			playerAppearance.setSkinRGB(id);
-		} else if (type.equals("lip_color")) {
+		}
+		else if (type.equals("lip_color")) {
 			playerAppearance.setLipRGB(id);
-		} else if (type.equals("eye_color")) {
+		}
+		else if (type.equals("eye_color")) {
 			playerAppearance.setEyeRGB(id);
-		} else if (type.equals("hair_type")) {
+		}
+		else if (type.equals("hair_type")) {
 			playerAppearance.setHair(id);
-		} else if (type.equals("face_type")) {
+		}
+		else if (type.equals("face_type")) {
 			playerAppearance.setFace(id);
-		} else if (type.equals("voice_type")) {
+		}
+		else if (type.equals("voice_type")) {
 			playerAppearance.setVoice(id);
-		} else if (type.equals("makeup_type")) {
+		}
+		else if (type.equals("makeup_type")) {
 			playerAppearance.setTattoo(id);
-		} else if (type.equals("tattoo_type")) {
+		}
+		else if (type.equals("tattoo_type")) {
 			playerAppearance.setDeco(id);
-		} else if (type.equals("preset_name")) {
+		}
+		else if (type.equals("preset_name")) {
 			CosmeticItemTemplate.Preset preset = template.getPreset();
 			playerAppearance.setEyeRGB((preset.getEyeColor()));
 			playerAppearance.setLipRGB((preset.getLipColor()));

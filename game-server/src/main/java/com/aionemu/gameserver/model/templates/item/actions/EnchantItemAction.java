@@ -35,7 +35,7 @@ import com.aionemu.gameserver.world.World;
 
 /**
  * @author Nemiroff, Wakizashi, vlog
- *
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "EnchantItemAction")
@@ -68,38 +68,31 @@ public class EnchantItemAction extends AbstractItemAction {
 			final int targetWeapon) {
 		// Current enchant level
 		final int currentEnchant = targetItem.getEnchantLevel();
-		final boolean isSuccess = isSuccess(player, parentItem, targetItem, supplementItem, targetWeapon,
-				currentEnchant);
+		final boolean isSuccess = isSuccess(player, parentItem, targetItem, supplementItem, targetWeapon, currentEnchant);
 		player.getController().cancelUseItem();
 		PacketSendUtility.broadcastPacketAndReceive(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), parentItem.getObjectId(),
-						parentItem.getItemTemplate().getTemplateId(), CustomConfig.ENCHANT_INCANT_TIME, 0, 0));
+				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), parentItem.getObjectId(), parentItem.getItemTemplate().getTemplateId(), CustomConfig.ENCHANT_INCANT_TIME, 0, 0));
 		player.getController().addTask(TaskId.ITEM_USE, ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
 				int itemId = parentItem.getItemTemplate().getTemplateId();
 				// Enchantment stone
-				if (itemId > 166000000 && itemId < 167000000) {
-					EnchantService.enchantItemAct(player, parentItem, targetItem, supplementItem, currentEnchant,
-							isSuccess);
-					// Manastone
-				} else {
-					EnchantService.socketManastoneAct(player, parentItem, targetItem, supplementItem, targetWeapon,
-							isSuccess);
-				}
-				PacketSendUtility.broadcastPacketAndReceive(player,
-						new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), parentItem.getObjectId(),
-								parentItem.getItemTemplate().getTemplateId(), 0, isSuccess ? 1 : 2, 0));
+				if (itemId > 166000000 && itemId < 167000000)
+					EnchantService.enchantItemAct(player, parentItem, targetItem, supplementItem, currentEnchant, isSuccess);
+				// Manastone
+				else
+					EnchantService.socketManastoneAct(player, parentItem, targetItem, supplementItem, targetWeapon, isSuccess);
+				PacketSendUtility.broadcastPacketAndReceive(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(),
+						parentItem.getObjectId(), parentItem.getItemTemplate().getTemplateId(), 0, isSuccess ? 1 : 2, 0));
 				if (CustomConfig.ENABLE_ENCHANT_ANNOUNCE) {
 					if ((itemId > 166000000 && itemId < 167000000) && currentEnchant == 14 && isSuccess) {
 						Iterator<Player> iter = World.getInstance().getPlayersIterator();
 						while (iter.hasNext()) {
 							Player player2 = iter.next();
 							if (player2.getRace() == player.getRace()) {
-								PacketSendUtility.sendPacket(player2,
-										SM_SYSTEM_MESSAGE.STR_MSG_ENCHANT_ITEM_SUCCEEDED_15(player.getName(),
-												targetItem.getItemTemplate().getNameId()));
+								PacketSendUtility.sendPacket(player2, SM_SYSTEM_MESSAGE.STR_MSG_ENCHANT_ITEM_SUCCEEDED_15(
+										player.getName(), targetItem.getItemTemplate().getNameId()));
 							}
 						}
 					}
@@ -113,10 +106,10 @@ public class EnchantItemAction extends AbstractItemAction {
 	 * Check, if the item enchant will be successful
 	 *
 	 * @param player
-	 * @param parentItem     the enchantment-/manastone to insert
-	 * @param targetItem     the current item to enchant
+	 * @param parentItem the enchantment-/manastone to insert
+	 * @param targetItem the current item to enchant
 	 * @param supplementItem the item to increase the enchant chance (if exists)
-	 * @param targetWeapon   the fused weapon (if exists)
+	 * @param targetWeapon the fused weapon (if exists)
 	 * @param currentEnchant current enchant level
 	 * @return true if successful
 	 */

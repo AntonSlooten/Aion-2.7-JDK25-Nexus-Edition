@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -52,14 +52,14 @@ public class CM_ABYSS_RANKING_PLAYERS extends AionClientPacket {
 	protected void readImpl() {
 		raceId = readC();
 		switch (raceId) {
-		case 0:
-			queriedRace = Race.ELYOS;
-			updateType = AbyssRankUpdateType.PLAYER_ELYOS;
-			break;
-		case 1:
-			queriedRace = Race.ASMODIANS;
-			updateType = AbyssRankUpdateType.PLAYER_ASMODIANS;
-			break;
+			case 0:
+				queriedRace = Race.ELYOS;
+				updateType = AbyssRankUpdateType.PLAYER_ELYOS;
+				break;
+			case 1:
+				queriedRace = Race.ASMODIANS;
+				updateType = AbyssRankUpdateType.PLAYER_ASMODIANS;
+				break;
 		}
 	}
 
@@ -70,16 +70,17 @@ public class CM_ABYSS_RANKING_PLAYERS extends AionClientPacket {
 	protected void runImpl() {
 		if (queriedRace != null) {
 			Player player = this.getConnection().getActivePlayer();
-			if (player.isAbyssRankListUpdated(updateType)) {
+			if (player.isAbyssRankListUpdated(updateType)){
 				sendPacket(new SM_ABYSS_RANKING_PLAYERS(AbyssRankingCache.getInstance().getLastUpdate(), queriedRace));
-			} else {
+			}
+			else{
 				List<SM_ABYSS_RANKING_PLAYERS> results = AbyssRankingCache.getInstance().getPlayers(queriedRace);
-				for (SM_ABYSS_RANKING_PLAYERS packet : results) {
+				for (SM_ABYSS_RANKING_PLAYERS packet : results)
 					sendPacket(packet);
-				}
 				player.setAbyssRankListUpdated(updateType);
 			}
-		} else {
+		}
+		else {
 			log.warn("Received invalid raceId: " + raceId);
 		}
 	}

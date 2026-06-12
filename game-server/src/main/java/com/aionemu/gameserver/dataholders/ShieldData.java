@@ -39,7 +39,7 @@ public class ShieldData {
 
 	public int size() {
 		if (shieldTemplates == null) {
-			shieldTemplates = new ArrayList<>();
+			shieldTemplates = new ArrayList<ShieldTemplate>();
 			return 0;
 		}
 		return shieldTemplates.size();
@@ -47,14 +47,14 @@ public class ShieldData {
 
 	public List<ShieldTemplate> getShieldTemplates() {
 		if (shieldTemplates == null) {
-			return new ArrayList<>();
+			return new ArrayList<ShieldTemplate>();
 		}
 		return shieldTemplates;
 	}
 
 	public void addAll(Collection<ShieldTemplate> templates) {
 		if (shieldTemplates == null) {
-			shieldTemplates = new ArrayList<>();
+			shieldTemplates = new ArrayList<ShieldTemplate>();
 		}
 		shieldTemplates.addAll(templates);
 	}

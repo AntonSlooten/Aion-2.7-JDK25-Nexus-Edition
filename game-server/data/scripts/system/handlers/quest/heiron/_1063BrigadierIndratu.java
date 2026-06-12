@@ -61,28 +61,31 @@ public class _1063BrigadierIndratu extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 204500) { // Perento
 				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
-					} else if (var == 2) {
-						return sendQuestDialog(env, 1693);
+					case START_DIALOG: {
+						if (var == 0) {
+							return sendQuestDialog(env, 1011);
+						}
+						else if (var == 2) {
+							return sendQuestDialog(env, 1693);
+						}
+					}
+					case STEP_TO_1: {
+						TeleportService.teleportTo(player, 210040000, 1894.5603f, 2610.174f, 137.6767f, 0);
+						changeQuestStep(env, 0, 1, false); // 1
+						return closeDialogWindow(env);
+					}
+					case SET_REWARD: {
+						return defaultCloseDialog(env, 2, 2, true, false); // reward
 					}
 				}
-				case STEP_TO_1: {
-					TeleportService.teleportTo(player, 210040000, 1894.5603f, 2610.174f, 137.6767f, 0);
-					changeQuestStep(env, 0, 1, false); // 1
-					return closeDialogWindow(env);
-				}
-				case SET_REWARD: {
-					return defaultCloseDialog(env, 2, 2, true, false); // reward
-				}
-				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203700) { // Fasimede
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

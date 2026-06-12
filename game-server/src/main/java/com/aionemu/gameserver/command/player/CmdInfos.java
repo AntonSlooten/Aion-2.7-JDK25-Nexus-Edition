@@ -14,7 +14,6 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public class CmdInfos extends BaseCommand {
 
-	@Override
 	public void execute(Player player, String... params) {
 		NpcDrop npcDrop = null;
 		float rate = 0f;
@@ -61,16 +60,15 @@ public class CmdInfos extends BaseCommand {
 			PacketSendUtility.sendMessage(player, "DropGroup: " + dropGroup.getGroupName());
 			for (Drop drop : dropGroup.getDrop()) {
 
-				if (drop.getChance() < rate) {
+				if (drop.getChance() < rate)
 					continue;
-				}
 
 				// Add chanology baseDrop * droupGroupRateModifier *
 				// playerRate (if not normal mob)
 				float chance = drop.getChance() * dropGroup.getDropModifier()
 						* (npcTemplate.getRating() == NpcRating.NORMAL ? 1 : player.getRates().getDropRate());
 				chance = Math.min(100, chance);
-
+						
 				PacketSendUtility.sendMessage(player, "[item:" + drop.getItemId() + "]" + "  Rate: " + chance);
 				count++;
 			}

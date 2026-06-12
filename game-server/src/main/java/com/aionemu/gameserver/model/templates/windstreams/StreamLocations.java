@@ -11,19 +11,19 @@ import javolution.util.FastList;
 
 /**
  * @author LokiReborn
- *
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "StreamLocations")
-public class StreamLocations {
+public class StreamLocations
+{
 	@XmlElement(required = true)
-	protected List<Location2D> location;
-
-	public List<Location2D> getLocation() {
-		if (location == null) {
+	protected List<Location2D>	location;
+	public List<Location2D> getLocation()
+	{
+		if(location == null)
 			location = FastList.newInstance();
-		}
-
+		
 		return this.location;
 	}
 }

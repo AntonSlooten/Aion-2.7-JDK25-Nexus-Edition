@@ -18,7 +18,7 @@ package com.aionemu.commons.database.dao;
 
 /**
  * This class represents exception that is thrown if DAO implementation was not foud
- *
+ * 
  * @author SoulKeeper
  */
 public class DAONotFoundException extends DAOException {

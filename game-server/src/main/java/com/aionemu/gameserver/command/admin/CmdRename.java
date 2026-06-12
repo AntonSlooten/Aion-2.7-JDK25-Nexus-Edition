@@ -1,5 +1,7 @@
 package com.aionemu.gameserver.command.admin;
 
+import java.util.Iterator;
+
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.gameserver.command.BaseCommand;
 import com.aionemu.gameserver.configs.main.CustomConfig;
@@ -17,14 +19,16 @@ import com.aionemu.gameserver.services.player.PlayerService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.Util;
 
+
 /*No parameters detected.\n" + "Please use //rename <Player name> <rename>\n"
 			+ "or use //rename [target] <rename> */
 public class CmdRename extends BaseCommand {
+	
 
-	@Override
+	
 	public void execute(Player admin, String... params) {
 		if (params.length < 1 || params.length > 2) {
-			showHelp(admin);
+			showHelp(admin); 
 			return;
 		}
 
@@ -40,27 +44,23 @@ public class CmdRename extends BaseCommand {
 				PacketSendUtility.sendMessage(admin, "Could not find a Player by that name.");
 				return;
 			}
-			PlayerCommonData recipientCommonData = DAOManager.getDAO(PlayerDAO.class)
-					.loadPlayerCommonDataByName(recipient);
+			PlayerCommonData recipientCommonData = DAOManager.getDAO(PlayerDAO.class).loadPlayerCommonDataByName(recipient);
 			player = recipientCommonData.getPlayer();
 
-			if (!check(admin, rename)) {
+			if (!check(admin, rename))
 				return;
-			}
 
-			if (!CustomConfig.OLD_NAMES_COMMAND_DISABLED) {
+			if (!CustomConfig.OLD_NAMES_COMMAND_DISABLED)
 				DAOManager.getDAO(OldNamesDAO.class).insertNames(player.getObjectId(), player.getName(), rename);
-			}
 			recipientCommonData.setName(rename);
 			DAOManager.getDAO(PlayerDAO.class).storePlayerName(recipientCommonData);
 			if (recipientCommonData.isOnline()) {
 				PacketSendUtility.sendPacket(player, new SM_PLAYER_INFO(player, false));
-				PacketSendUtility.sendPacket(player,
-						new SM_MOTION(player.getObjectId(), player.getMotions().getActiveMotions()));
+				PacketSendUtility.sendPacket(player, new SM_MOTION(player.getObjectId(), player.getMotions().getActiveMotions()));
 				sendPacket(admin, player, rename, recipient);
-			} else {
-				PacketSendUtility.sendMessage(admin, "Player " + recipient + " has been renamed to " + rename);
 			}
+			else
+				PacketSendUtility.sendMessage(admin, "Player " + recipient + " has been renamed to " + rename);
 		}
 		if (params.length == 1) {
 			rename = Util.convertName(params[0]);
@@ -73,19 +73,17 @@ public class CmdRename extends BaseCommand {
 
 			if (target instanceof Player) {
 				player = (Player) target;
-				if (!check(admin, rename)) {
+				if (!check(admin, rename))
 					return;
-				}
 
-				if (!CustomConfig.OLD_NAMES_COMMAND_DISABLED) {
+				if (!CustomConfig.OLD_NAMES_COMMAND_DISABLED)
 					DAOManager.getDAO(OldNamesDAO.class).insertNames(player.getObjectId(), player.getName(), rename);
-				}
 				player.getCommonData().setName(rename);
 				PacketSendUtility.sendPacket(player, new SM_PLAYER_INFO(player, false));
 				DAOManager.getDAO(PlayerDAO.class).storePlayerName(player.getCommonData());
-			} else {
-				PacketSendUtility.sendMessage(admin, "The command can be applied only on the player.");
 			}
+			else
+				PacketSendUtility.sendMessage(admin, "The command can be applied only on the player.");
 
 			recipient = target.getName();
 			sendPacket(admin, player, rename, recipient);
@@ -97,8 +95,11 @@ public class CmdRename extends BaseCommand {
 			PacketSendUtility.sendPacket(admin, new SM_SYSTEM_MESSAGE(1400151));
 			return false;
 		}
-		if (!PlayerService.isFreeName(rename)
-				|| (!CustomConfig.OLD_NAMES_COMMAND_DISABLED && PlayerService.isOldName(rename))) {
+		if (!PlayerService.isFreeName(rename)) {
+			PacketSendUtility.sendPacket(admin, new SM_SYSTEM_MESSAGE(1400155));
+			return false;
+		}
+		if (!CustomConfig.OLD_NAMES_COMMAND_DISABLED && PlayerService.isOldName(rename)) {
 			PacketSendUtility.sendPacket(admin, new SM_SYSTEM_MESSAGE(1400155));
 			return false;
 		}
@@ -106,7 +107,10 @@ public class CmdRename extends BaseCommand {
 	}
 
 	public void sendPacket(Player admin, Player player, String rename, String recipient) {
-		for (Friend nextObject : player.getFriendList()) {
+		Iterator<Friend> knownFriends = player.getFriendList().iterator();
+
+		while (knownFriends.hasNext()) {
+			Friend nextObject = knownFriends.next();
 			if (nextObject.getPlayer() != null && nextObject.getPlayer().isOnline()) {
 				PacketSendUtility.sendPacket(nextObject.getPlayer(), new SM_PLAYER_INFO(player, false));
 			}
@@ -118,5 +122,5 @@ public class CmdRename extends BaseCommand {
 		PacketSendUtility.sendMessage(player, "You have been renamed to " + rename);
 		PacketSendUtility.sendMessage(admin, "Player " + recipient + " has been renamed to " + rename);
 	}
-
+	
 }

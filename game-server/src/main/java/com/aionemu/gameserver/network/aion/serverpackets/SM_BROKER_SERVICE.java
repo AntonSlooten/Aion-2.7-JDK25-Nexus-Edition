@@ -32,7 +32,11 @@ import com.aionemu.gameserver.network.aion.iteminfo.ItemInfoBlob.ItemBlobType;
 public class SM_BROKER_SERVICE extends AionServerPacket {
 
 	private enum BrokerPacketType {
-		SEARCHED_ITEMS(0), REGISTERED_ITEMS(1), REGISTER_ITEM(3), SHOW_SETTLED_ICON(5), SETTLED_ITEMS(5),
+		SEARCHED_ITEMS(0),
+		REGISTERED_ITEMS(1),
+		REGISTER_ITEM(3),
+		SHOW_SETTLED_ICON(5),
+		SETTLED_ITEMS(5),
 		REMOVE_SETTLED_ICON(6);
 
 		private int id;
@@ -53,7 +57,7 @@ public class SM_BROKER_SERVICE extends AionServerPacket {
 	private int message;
 	private long settled_kinah;
 
-	public SM_BROKER_SERVICE(BrokerItem brokerItem, int message, int itemsCount) {
+	public SM_BROKER_SERVICE(BrokerItem brokerItem, int message , int itemsCount) {
 		this.type = BrokerPacketType.REGISTER_ITEM;
 		this.brokerItems = new BrokerItem[] { brokerItem };
 		this.message = message;
@@ -91,24 +95,24 @@ public class SM_BROKER_SERVICE extends AionServerPacket {
 	@Override
 	protected void writeImpl(AionConnection con) {
 		switch (type) {
-		case SEARCHED_ITEMS:
-			writeSearchedItems();
-			break;
-		case REGISTERED_ITEMS:
-			writeRegisteredItems();
-			break;
-		case REGISTER_ITEM:
-			writeRegisterItem();
-			break;
-		case SHOW_SETTLED_ICON:
-			writeShowSettledIcon();
-			break;
-		case REMOVE_SETTLED_ICON:
-			writeRemoveSettledIcon();
-			break;
-		case SETTLED_ITEMS:
-			writeShowSettledItems();
-			break;
+			case SEARCHED_ITEMS:
+				writeSearchedItems();
+				break;
+			case REGISTERED_ITEMS:
+				writeRegisteredItems();
+				break;
+			case REGISTER_ITEM:
+				writeRegisterItem();
+				break;
+			case SHOW_SETTLED_ICON:
+				writeShowSettledIcon();
+				break;
+			case REMOVE_SETTLED_ICON:
+				writeRemoveSettledIcon();
+				break;
+			case SETTLED_ITEMS:
+				writeShowSettledItems();
+				break;
 		}
 
 	}
@@ -140,7 +144,8 @@ public class SM_BROKER_SERVICE extends AionServerPacket {
 			writeC(itemsCount + 1);
 			BrokerItem itemForRegistration = brokerItems[0];
 			writeRegisteredItemInfo(itemForRegistration);
-		} else {
+		}
+		else {
 			writeB(new byte[107]);
 		}
 	}
@@ -167,22 +172,20 @@ public class SM_BROKER_SERVICE extends AionServerPacket {
 		writeH(brokerItems.length);
 		for (BrokerItem settledItem : brokerItems) {
 			writeD(settledItem.getItemId());
-			if (settledItem.isSold()) {
+			if (settledItem.isSold())
 				writeQ(settledItem.getPrice());
-			} else {
+			else
 				writeQ(0);
-			}
 			writeQ(settledItem.getItemCount());
 			writeQ(settledItem.getItemCount());
 			writeD((int) settledItem.getSettleTime().getTime() / 60000);
 
-			// TODO! thats really odd - looks like getItem() may return null...
+			//TODO! thats really odd - looks like getItem() may return null...
 			Item item = settledItem.getItem();
-			if (item != null) {
+			if(item != null)
 				ItemInfoBlob.newBlobEntry(ItemBlobType.MANA_SOCKETS, null, item).writeThisBlob(getBuf());
-			} else {
+			else
 				writeB(new byte[54]);
-			}
 
 			writeS(settledItem.getItemCreator());
 		}

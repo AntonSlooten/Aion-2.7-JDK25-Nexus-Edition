@@ -25,5 +25,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "skillType")
 @XmlEnum
 public enum SkillType {
-	NONE, PHYSICAL, MAGICAL
+	NONE,
+	PHYSICAL,
+	MAGICAL
 }

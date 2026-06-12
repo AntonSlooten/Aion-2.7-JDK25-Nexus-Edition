@@ -46,8 +46,8 @@ public class ItemSetData {
 	private TIntObjectHashMap<ItemSetTemplate> setItems;
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
-		sets = new TIntObjectHashMap<>();
-		setItems = new TIntObjectHashMap<>();
+		sets = new TIntObjectHashMap<ItemSetTemplate>();
+		setItems = new TIntObjectHashMap<ItemSetTemplate>();
 
 		for (ItemSetTemplate set : itemsetList) {
 			sets.put(set.getId(), set);

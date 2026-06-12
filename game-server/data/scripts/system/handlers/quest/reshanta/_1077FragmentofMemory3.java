@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-engine <aion-engine.com>
  *
  *  aion-engine is free software: you can redistribute it and/or modify
@@ -80,102 +80,101 @@ public class _1077FragmentofMemory3 extends QuestHandler {
 					return sendQuestEndDialog(env);
 			}
 			return false;
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 203704) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-			case STEP_TO_1:
-				if (var == 0) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+				case STEP_TO_1:
+					if (var == 0) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
 			}
-		} else if (targetId == 798154) {
+		}
+		else if (targetId == 798154) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-			case STEP_TO_2:
-				if (var == 1) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+				case STEP_TO_2:
+					if (var == 1) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
 			}
-		} else if (targetId == 204574) {
+		}
+		else if (targetId == 204574) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 2)
-					return sendQuestDialog(env, 1693);
-			case STEP_TO_3:
-				if (var == 2) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
+				case START_DIALOG:
+					if (var == 2)
+						return sendQuestDialog(env, 1693);
+				case STEP_TO_3:
+					if (var == 2) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
 			}
-		} else if (targetId == 204652) {
+		}
+		else if (targetId == 204652) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 3)
-					return sendQuestDialog(env, 2034);
-				else if (var == 6)
-					return sendQuestDialog(env, 3057);
-				else if (var != 3)
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10009));
-			case STEP_TO_10:
-				if (var == 3) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-				}
-				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-				player.setState(CreatureState.FLIGHT_TELEPORT);
-				player.unsetState(CreatureState.ACTIVE);
-				player.setFlightTeleportId(71001);
-				PacketSendUtility.sendPacket(player, new SM_EMOTION(player, EmotionType.START_FLYTELEPORT, 71001, 0));
-				return true;
-			case SET_REWARD:
-				if (var == 6) {
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+				case START_DIALOG:
+					if (var == 3)
+						return sendQuestDialog(env, 2034);
+					else if (var == 6)
+						return sendQuestDialog(env, 3057);
+					else if (var != 3)
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10009));
+				case STEP_TO_10:
+					if (var == 3) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+					}
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+					player.setState(CreatureState.FLIGHT_TELEPORT);
+					player.unsetState(CreatureState.ACTIVE);
+					player.setFlightTeleportId(71001);
+					PacketSendUtility.sendPacket(player, new SM_EMOTION(player, EmotionType.START_FLYTELEPORT, 71001, 0));
 					return true;
-				}
+				case SET_REWARD:
+					if (var == 6) {
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
 			}
-		} else if (targetId == 204653) {
+		}
+		else if (targetId == 204653) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 4)
-					return sendQuestDialog(env, 2375);
-				else if (var != 4)
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10010));
-			case SELECT_ACTION_2376:
-				if (var == 4) {
-					playQuestMovie(env, 421);
-					break;
-				}
-			case STEP_TO_11:
-				if (var == 4) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-				}
-				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-				PacketSendUtility.sendPacket(player, new SM_EMOTION(player, EmotionType.START_FLYTELEPORT, 72001, 0));
-				return true;
+				case START_DIALOG:
+					if (var == 4)
+						return sendQuestDialog(env, 2375);
+					else if (var != 4)
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10010));
+				case SELECT_ACTION_2376:
+					if (var == 4) {
+						playQuestMovie(env, 421);
+						break;
+					}
+				case STEP_TO_11:
+					if (var == 4) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+					}
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+					PacketSendUtility.sendPacket(player, new SM_EMOTION(player, EmotionType.START_FLYTELEPORT, 72001, 0));
+					return true;
 			}
 		}
 		return false;
@@ -186,7 +185,8 @@ public class _1077FragmentofMemory3 extends QuestHandler {
 		if (defaultOnKillEvent(env, 214598, 5, 6)) {
 			playQuestMovie(env, 422);
 			return true;
-		} else
+		}
+		else
 			return false;
 	}
 }

@@ -92,7 +92,8 @@ public class _2008Ascension extends QuestHandler {
 				qs.setQuestVar(qs.getQuestVars().getQuestVars() + 1);
 				updateQuestStatus(env);
 				return true;
-			} else if (var == 54) {
+			}
+			else if (var == 54) {
 				qs.setQuestVar(5);
 				updateQuestStatus(env);
 				Npc mob = (Npc) QuestService.addNewSpawn(320010000, instanceId, 205041, 301f, 259f, 205.5f, (byte) 0);
@@ -139,156 +140,153 @@ public class _2008Ascension extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 203550) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 4)
-						return sendQuestDialog(env, 2375);
-					else if (var == 6)
-						return sendQuestDialog(env, 2716);
-				case SELECT_ACTION_2376:
-					if (var == 4) {
-						playQuestMovie(env, 57);
-						removeQuestItem(env, 182203009, 1);
-						removeQuestItem(env, 182203010, 1);
-						removeQuestItem(env, 182203011, 1);
-						return false;
-					}
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1); // 1
-				case STEP_TO_5:
-					if (var == 4) {
-						qs.setQuestVar(99);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-						// Create instance
-						WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(320010000);
-						InstanceService.registerPlayerWithInstance(newInstance, player);
-						TeleportService.teleportTo(player, 320010000, newInstance.getInstanceId(), 457.65f, 426.8f,
-								230.4f, 3000, true);
-						return true;
-					}
-				case STEP_TO_6:
-					if (var == 6) {
-						PlayerClass playerClass = player.getCommonData().getPlayerClass();
-						if (playerClass == PlayerClass.WARRIOR)
-							return sendQuestDialog(env, 3057);
-						else if (playerClass == PlayerClass.SCOUT)
-							return sendQuestDialog(env, 3398);
-						else if (playerClass == PlayerClass.MAGE)
-							return sendQuestDialog(env, 3739);
-						else if (playerClass == PlayerClass.PRIEST)
-							return sendQuestDialog(env, 4080);
-					}
-				case STEP_TO_7:
-					if (var == 6)
-						return setPlayerClass(env, qs, PlayerClass.GLADIATOR);
-				case STEP_TO_8:
-					if (var == 6)
-						return setPlayerClass(env, qs, PlayerClass.TEMPLAR);
-				case STEP_TO_9:
-					if (var == 6)
-						return setPlayerClass(env, qs, PlayerClass.ASSASSIN);
-				case STEP_TO_10:
-					if (var == 6)
-						return setPlayerClass(env, qs, PlayerClass.RANGER);
-				case STEP_TO_11:
-					if (var == 6)
-						return setPlayerClass(env, qs, PlayerClass.SORCERER);
-				case STEP_TO_12:
-					if (var == 6)
-						return setPlayerClass(env, qs, PlayerClass.SPIRIT_MASTER);
-				case STEP_TO_13:
-					if (var == 6)
-						return setPlayerClass(env, qs, PlayerClass.CHANTER);
-				case STEP_TO_14:
-					if (var == 6)
-						return setPlayerClass(env, qs, PlayerClass.CLERIC);
-				}
-			} else if (targetId == 790003) {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_2:
-					if (var == 1) {
-						if (player.getInventory().getItemCountByItemId(182203009) == 0)
-							if (giveQuestItem(env, 182203009, 1))
-								return true;
-
-						return defaultCloseDialog(env, 1, 2); // 2
-					}
-				}
-			} else if (targetId == 790002) {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 2)
-						return sendQuestDialog(env, 1693);
-				case STEP_TO_3:
-					if (var == 2) {
-						if (player.getInventory().getItemCountByItemId(182203010) == 0)
-							if (!giveQuestItem(env, 182203010, 1))
-								return true;
-						return defaultCloseDialog(env, 2, 3); // 3
-					}
-				}
-			} else if (targetId == 203546) {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 3)
-						return sendQuestDialog(env, 2034);
-				case STEP_TO_4:
-					if (var == 3) {
-						if (player.getInventory().getItemCountByItemId(182203011) == 0)
-							if (!giveQuestItem(env, 182203011, 1))
-								return true;
-
-						return defaultCloseDialog(env, 3, 4); // 4
-					}
-				}
-			} else if (targetId == 205020) {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 99) {
-						player.setState(CreatureState.FLIGHT_TELEPORT);
-						player.unsetState(CreatureState.ACTIVE);
-						player.setFlightTeleportId(3001);
-						player.setCurrentFlypath(DataManager.FLY_PATH.getPathTemplate(3001));
-						PacketSendUtility.sendPacket(player,
-								new SM_EMOTION(player, EmotionType.START_FLYTELEPORT, 3001, 0));
-						SkillEngine.getInstance().applyEffectDirectly(1853, (Creature) player.getTarget(),
-								(Creature) player, 0);
-						qs.setQuestVar(50);
-						updateQuestStatus(env);
-						ThreadPoolManager.getInstance().schedule(new Runnable() {
-
-							@Override
-							public void run() {
-								qs.setQuestVar(51);
-								updateQuestStatus(env);
-								List<Npc> mobs = new ArrayList<Npc>();
-								mobs.add((Npc) QuestService.addNewSpawn(320010000, instanceId, 205040, 294f, 277f, 207f,
-										(byte) 0));
-								mobs.add((Npc) QuestService.addNewSpawn(320010000, instanceId, 205040, 305f, 279f,
-										206.5f, (byte) 0));
-								mobs.add((Npc) QuestService.addNewSpawn(320010000, instanceId, 205040, 298f, 253f,
-										205.7f, (byte) 0));
-								mobs.add((Npc) QuestService.addNewSpawn(320010000, instanceId, 205040, 306f, 251f, 206f,
-										(byte) 0));
-								for (Npc mob : mobs) {
-									mob.getAggroList().addDamage(player, 1000);
-								}
-							}
-						}, 43000);
-						return true;
-					}
-					return false;
-				default:
-					return false;
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+						else if (var == 4)
+							return sendQuestDialog(env, 2375);
+						else if (var == 6)
+							return sendQuestDialog(env, 2716);
+					case SELECT_ACTION_2376:
+						if (var == 4) {
+							playQuestMovie(env, 57);
+							removeQuestItem(env, 182203009, 1);
+							removeQuestItem(env, 182203010, 1);
+							removeQuestItem(env, 182203011, 1);
+							return false;
+						}
+					case STEP_TO_1:
+						return defaultCloseDialog(env, 0, 1); // 1
+					case STEP_TO_5:
+						if (var == 4) {
+							qs.setQuestVar(99);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+							// Create instance
+							WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(320010000);
+							InstanceService.registerPlayerWithInstance(newInstance, player);
+							TeleportService.teleportTo(player, 320010000, newInstance.getInstanceId(), 457.65f, 426.8f, 230.4f, 3000, true);
+							return true;
+						}
+					case STEP_TO_6:
+						if (var == 6) {
+							PlayerClass playerClass = player.getCommonData().getPlayerClass();
+							if (playerClass == PlayerClass.WARRIOR)
+								return sendQuestDialog(env, 3057);
+							else if (playerClass == PlayerClass.SCOUT)
+								return sendQuestDialog(env, 3398);
+							else if (playerClass == PlayerClass.MAGE)
+								return sendQuestDialog(env, 3739);
+							else if (playerClass == PlayerClass.PRIEST)
+								return sendQuestDialog(env, 4080);
+						}
+					case STEP_TO_7:
+						if (var == 6)
+							return setPlayerClass(env, qs, PlayerClass.GLADIATOR);
+					case STEP_TO_8:
+						if (var == 6)
+							return setPlayerClass(env, qs, PlayerClass.TEMPLAR);
+					case STEP_TO_9:
+						if (var == 6)
+							return setPlayerClass(env, qs, PlayerClass.ASSASSIN);
+					case STEP_TO_10:
+						if (var == 6)
+							return setPlayerClass(env, qs, PlayerClass.RANGER);
+					case STEP_TO_11:
+						if (var == 6)
+							return setPlayerClass(env, qs, PlayerClass.SORCERER);
+					case STEP_TO_12:
+						if (var == 6)
+							return setPlayerClass(env, qs, PlayerClass.SPIRIT_MASTER);
+					case STEP_TO_13:
+						if (var == 6)
+							return setPlayerClass(env, qs, PlayerClass.CHANTER);
+					case STEP_TO_14:
+						if (var == 6)
+							return setPlayerClass(env, qs, PlayerClass.CLERIC);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+			else if (targetId == 790003) {
+				switch (env.getDialog()) {
+					case START_DIALOG:
+						if (var == 1)
+							return sendQuestDialog(env, 1352);
+					case STEP_TO_2:
+						if (var == 1) {
+							if (player.getInventory().getItemCountByItemId(182203009) == 0)
+								if (giveQuestItem(env, 182203009, 1))
+									return true;
+
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+				}
+			}
+			else if (targetId == 790002) {
+				switch (env.getDialog()) {
+					case START_DIALOG:
+						if (var == 2)
+							return sendQuestDialog(env, 1693);
+					case STEP_TO_3:
+						if (var == 2) {
+							if (player.getInventory().getItemCountByItemId(182203010) == 0)
+								if (!giveQuestItem(env, 182203010, 1))
+									return true;
+							return defaultCloseDialog(env, 2, 3); // 3
+						}
+				}
+			}
+			else if (targetId == 203546) {
+				switch (env.getDialog()) {
+					case START_DIALOG:
+						if (var == 3)
+							return sendQuestDialog(env, 2034);
+					case STEP_TO_4:
+						if (var == 3) {
+							if (player.getInventory().getItemCountByItemId(182203011) == 0)
+								if (!giveQuestItem(env, 182203011, 1))
+									return true;
+
+							return defaultCloseDialog(env, 3, 4); // 4
+						}
+				}
+			}
+			else if (targetId == 205020) {
+				switch (env.getDialog()) {
+					case START_DIALOG:
+						if (var == 99) {
+							player.setState(CreatureState.FLIGHT_TELEPORT);
+							player.unsetState(CreatureState.ACTIVE);
+							player.setFlightTeleportId(3001);
+							player.setCurrentFlypath(DataManager.FLY_PATH.getPathTemplate(3001));
+							PacketSendUtility.sendPacket(player, new SM_EMOTION(player, EmotionType.START_FLYTELEPORT, 3001, 0));
+							SkillEngine.getInstance().applyEffectDirectly(1853, (Creature) player.getTarget(), (Creature) player, 0);
+							qs.setQuestVar(50);
+							updateQuestStatus(env);
+							ThreadPoolManager.getInstance().schedule(new Runnable() {
+
+								@Override
+								public void run() {
+									qs.setQuestVar(51);
+									updateQuestStatus(env);
+									List<Npc> mobs = new ArrayList<Npc>();
+									mobs.add((Npc) QuestService.addNewSpawn(320010000, instanceId, 205040, 294f, 277f, 207f, (byte) 0));
+									mobs.add((Npc) QuestService.addNewSpawn(320010000, instanceId, 205040, 305f, 279f, 206.5f, (byte) 0));
+									mobs.add((Npc) QuestService.addNewSpawn(320010000, instanceId, 205040, 298f, 253f, 205.7f, (byte) 0));
+									mobs.add((Npc) QuestService.addNewSpawn(320010000, instanceId, 205040, 306f, 251f, 206f, (byte) 0));
+									for (Npc mob : mobs) {
+										mob.getAggroList().addDamage(player, 1000);
+									}
+								}
+							}, 43000);
+							return true;
+						}
+						return false;
+					default:
+						return false;
+				}
+			}
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203550) {
 				return sendQuestEndDialog(env);
 			}
@@ -312,8 +310,9 @@ public class _2008Ascension extends QuestHandler {
 					qs.setQuestVar(4);
 					updateQuestStatus(env);
 					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(SystemMessageId.QUEST_FAILED_$1,
-							DataManager.QUEST_DATA.getQuestById(questId).getName()));
-				} else {
+						DataManager.QUEST_DATA.getQuestById(questId).getName()));
+				}
+				else {
 					PacketSendUtility.sendPacket(player, new SM_ASCENSION_MORPH(1));
 					return true;
 				}
@@ -364,7 +363,7 @@ public class _2008Ascension extends QuestHandler {
 			qs.setQuestVar(4);
 			updateQuestStatus(env);
 			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(SystemMessageId.QUEST_FAILED_$1,
-					DataManager.QUEST_DATA.getQuestById(questId).getName()));
+				DataManager.QUEST_DATA.getQuestById(questId).getName()));
 		}
 		return false;
 	}

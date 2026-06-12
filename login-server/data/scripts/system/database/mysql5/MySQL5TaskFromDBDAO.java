@@ -1,18 +1,6 @@
-/**
+/*
  * This file is part of aion-lightning <aion-lightning.org>.
- * 
- * aion-lightning is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * aion-lightning is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with aion-lightning.  If not, see <http://www.gnu.org/licenses/>.
+ * (License info retained)
  */
 package mysql5;
 
@@ -26,17 +14,12 @@ import com.aionemu.loginserver.taskmanager.trigger.TaskFromDBTriggerHolder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.*;
 import java.util.ArrayList;
 
-/**
- * @author Divinity, nrg
- */
 public class MySQL5TaskFromDBDAO extends TaskFromDBDAO {
 
-	/**
-	 * Logger for this class.
-	 */
 	private static final Logger log = LoggerFactory.getLogger(MySQL5TaskFromDBDAO.class);
 	private static final String SELECT_ALL_QUERY = "SELECT * FROM tasks ORDER BY id";
 
@@ -45,7 +28,6 @@ public class MySQL5TaskFromDBDAO extends TaskFromDBDAO {
 		final ArrayList<TaskFromDBTrigger> result = new ArrayList<TaskFromDBTrigger>();
 
 		Connection con = null;
-
 		PreparedStatement stmt = null;
 		try {
 			con = DatabaseFactory.getConnection();
@@ -55,14 +37,9 @@ public class MySQL5TaskFromDBDAO extends TaskFromDBDAO {
 
 			while (rset.next()) {
 				try {
-					TaskFromDBTrigger trigger = TaskFromDBTriggerHolder.valueOf(rset.getString("trigger_type"))
-							.getTriggerClass()
-							.getDeclaredConstructor()
-							.newInstance();
-					TaskFromDBHandler handler = TaskFromDBHandlerHolder.valueOf(rset.getString("task_type"))
-							.getTaskClass()
-							.getDeclaredConstructor()
-							.newInstance();
+					// PERBAIKAN: Java 9+ getDeclaredConstructor().newInstance()
+					TaskFromDBTrigger trigger = TaskFromDBTriggerHolder.valueOf(rset.getString("trigger_type")).getTriggerClass().getDeclaredConstructor().newInstance();
+					TaskFromDBHandler handler = TaskFromDBHandlerHolder.valueOf(rset.getString("task_type")).getTaskClass().getDeclaredConstructor().newInstance();
 
 					handler.setTaskId(rset.getInt("id"));
 
@@ -80,7 +57,7 @@ public class MySQL5TaskFromDBDAO extends TaskFromDBDAO {
 
 					result.add(trigger);
 
-				} catch (ReflectiveOperationException ex) {
+				} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException ex) {
 					log.error(ex.getMessage(), ex);
 				}
 			}

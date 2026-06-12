@@ -5300,6 +5300,25 @@
 			<item id="152000915" rnd_min="1" rnd_max="5"/>
 		</items>
 	</decomposable>
+	<!-- Red Cap Kobok's Bundle -->
+	<decomposable item_id="188051360">
+		<items chance="10">			<item id="162000064" rnd_min="1" rnd_max="1"/>
+		</items>
+		<items chance="10">			<item id="162000065" rnd_min="1" rnd_max="1"/>
+		</items>
+		<items chance="10">			<item id="162000066" rnd_min="1" rnd_max="1"/>
+		</items>
+		<items chance="20">			<item id="162002001" rnd_min="1" rnd_max="3"/>
+		</items>
+		<items chance="10">			<item id="160010086" rnd_min="1" rnd_max="1"/>
+		</items>
+		<items chance="10">			<item id="160010087" rnd_min="1" rnd_max="1"/>
+		</items>
+		<items chance="10">			<item id="160010088" rnd_min="1" rnd_max="1"/>
+		</items>
+		<items chance="20">			<item id="160001273" rnd_min="1" rnd_max="3"/>
+		</items>
+	</decomposable>
 	<!-- unknow content end of todo list-->
 	<!-- START COIN CHEST -->
 	<decomposable item_id="188050773">

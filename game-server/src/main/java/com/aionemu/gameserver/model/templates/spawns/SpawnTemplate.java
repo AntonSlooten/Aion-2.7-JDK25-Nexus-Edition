@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.model.templates.spawns;
 
+import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 import com.aionemu.gameserver.model.templates.event.EventTemplate;
 import com.aionemu.gameserver.spawnengine.SpawnHandlerType;
 
@@ -23,6 +24,7 @@ import com.aionemu.gameserver.spawnengine.SpawnHandlerType;
  * @author xTz
  * @modified Rolandas
  */
+@SuppressWarnings("deprecation")
 public class SpawnTemplate {
 
 	private float x;
@@ -38,6 +40,8 @@ public class SpawnTemplate {
 	private boolean isUsed;
 	private SpawnGroup2 spawnGroup;
 	private EventTemplate eventTemplate;
+	private TemporarySpawn temporarySpawn;
+	private VisibleObject visibleObject;
 
 	public SpawnTemplate(SpawnGroup2 spawnGroup, SpawnSpotTemplate spot) {
 		this.spawnGroup = spawnGroup;
@@ -51,10 +55,11 @@ public class SpawnTemplate {
 		fly = spot.getFly();
 		anchor = spot.getAnchor();
 		walkerIdx = spot.getWalkerIndex();
+		temporarySpawn = spot.getTemporarySpawn();
 	}
 
 	public SpawnTemplate(SpawnGroup2 spawnGroup, float x, float y, float z, byte heading, int randWalk, String walkerId,
-			int staticId, int fly) {
+		int staticId, int fly) {
 		this.spawnGroup = spawnGroup;
 		this.x = x;
 		this.y = y;
@@ -147,6 +152,10 @@ public class SpawnTemplate {
 		spawnGroup.setRespawnTime(respawnTime);
 	}
 
+	public TemporarySpawn getTemporarySpawn() {
+		return temporarySpawn != null ? temporarySpawn : spawnGroup.geTemporarySpawn();
+	}
+
 	public SpawnTime getSpawnTime() {
 		return spawnGroup.getSpawnTime();
 	}
@@ -178,7 +187,7 @@ public class SpawnTemplate {
 	public void setWalkerId(String walkerId) {
 		this.walkerId = walkerId;
 	}
-
+	
 	public int getWalkerIndex() {
 		return walkerIdx;
 	}
@@ -197,5 +206,13 @@ public class SpawnTemplate {
 
 	public void setEventTemplate(EventTemplate eventTemplate) {
 		this.eventTemplate = eventTemplate;
+	}
+
+	public VisibleObject getVisibleObject() {
+		return visibleObject;
+	}
+
+	public void setVisibleObject(VisibleObject visibleObject) {
+		this.visibleObject = visibleObject;
 	}
 }

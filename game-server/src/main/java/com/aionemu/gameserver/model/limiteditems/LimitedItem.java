@@ -29,7 +29,7 @@ public class LimitedItem {
 	private int defaultSellLimit;
 	private String salesTime;
 
-	private TIntObjectHashMap<Integer> buyCounts = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<Integer> buyCounts = new TIntObjectHashMap<Integer>();
 
 	public LimitedItem() {
 	}
@@ -50,8 +50,10 @@ public class LimitedItem {
 	}
 
 	/**
-	 * @param set playerObjectId.
-	 * @param set count.
+	 * @param set
+	 *          playerObjectId.
+	 * @param set
+	 *          count.
 	 */
 	public void setBuyCount(int playerObjectId, int count) {
 		buyCounts.putIfAbsent(playerObjectId, count);
@@ -65,7 +67,8 @@ public class LimitedItem {
 	}
 
 	/**
-	 * @param set itemId.
+	 * @param set
+	 *          itemId.
 	 */
 	public void setItem(int itemId) {
 		this.itemId = itemId;
@@ -90,8 +93,9 @@ public class LimitedItem {
 		buyCounts.clear();
 	}
 
-	/**
-	 * @param set sellLimit.
+	/** 
+	 * @param set
+	 *          sellLimit.
 	 */
 	public void setSellLimit(int sellLimit) {
 		this.sellLimit = sellLimit;

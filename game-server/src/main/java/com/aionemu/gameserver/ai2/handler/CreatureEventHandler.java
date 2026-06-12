@@ -52,8 +52,13 @@ public class CreatureEventHandler {
 	 */
 	protected static void checkAggro(NpcAI2 ai, Creature creature) {
 		Npc owner = ai.getOwner();
-		if (creature.getLifeStats().isAlreadyDead() || !owner.canSee(creature)
-				|| !GeoService.getInstance().canSee(owner, creature) || !owner.getActiveRegion().isMapRegionActive()) {
+		if (creature.getLifeStats().isAlreadyDead()) {
+			return;
+		}
+		if (!owner.canSee(creature) || !GeoService.getInstance().canSee(owner, creature))
+			return;
+		
+		if (!owner.getActiveRegion().isMapRegionActive()) {
 			return;
 		}
 		if (!ai.isInState(AIState.FIGHT) && MathUtil.isIn3dRange(owner, creature, owner.getAggroRange())) {
@@ -62,9 +67,8 @@ public class CreatureEventHandler {
 			}
 			if (owner.isAggressiveTo(creature)) {
 				if (GeoService.getInstance().canSee(owner, creature)) {
-					if (ai.canThink()) {
-						ai.onCreatureEvent(AIEventType.CREATURE_AGGRO, creature);
-					}
+				if (ai.canThink())
+					ai.onCreatureEvent(AIEventType.CREATURE_AGGRO, creature);
 				}
 			}
 		}

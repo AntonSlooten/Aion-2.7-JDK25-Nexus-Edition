@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.configs.main.GSConfig;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
@@ -47,17 +48,17 @@ public class SM_CHARACTER_SELECT extends AionServerPacket {
 		writeC(type);
 
 		switch (type) {
-		case 0:
-			break;
-		case 1:
-			break;
-		case 2:
-			writeH(messageType); // 0: newpasskey complete, 2: passkey edit complete, 3: passkey input
-			writeC(wrongCount > 0 ? 1 : 0); // 0: right passkey, 1: wrong passkey
-			writeD(wrongCount); // wrong passkey input count
-			writeD(GSConfig.PASSKEY_WRONG_MAXCOUNT); // Enter the number of possible wrong numbers (retail
-			// server default value: 5)
-			break;
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				writeH(messageType); // 0: newpasskey complete, 2: passkey edit complete, 3: passkey input
+				writeC(wrongCount > 0 ? 1 : 0); // 0: right passkey, 1: wrong passkey
+				writeD(wrongCount); // wrong passkey input count
+				writeD(GSConfig.PASSKEY_WRONG_MAXCOUNT); // Enter the number of possible wrong numbers (retail
+				// server default value: 5)
+				break;
 		}
 	}
 }

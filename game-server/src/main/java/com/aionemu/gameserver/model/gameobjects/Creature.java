@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -51,9 +51,8 @@ import com.aionemu.gameserver.world.WorldPosition;
 import com.aionemu.gameserver.world.zone.ZoneName;
 
 /**
- * This class is representing movable objects, its base class for all in game
- * objects that may move
- *
+ * This class is representing movable objects, its base class for all in game objects that may move
+ * 
  * @author -Nemesiss-
  */
 public abstract class Creature extends VisibleObject {
@@ -99,9 +98,8 @@ public abstract class Creature extends VisibleObject {
 	 * @param objectTemplate
 	 * @param position
 	 */
-	@SuppressWarnings("this-escape")
 	public Creature(int objId, CreatureController<? extends Creature> controller, SpawnTemplate spawnTemplate,
-			VisibleObjectTemplate objectTemplate, WorldPosition position) {
+		VisibleObjectTemplate objectTemplate, WorldPosition position) {
 		super(objId, controller, spawnTemplate, objectTemplate, position);
 		this.observeController = new ObserveController();
 		this.aggroList = createAggroList();
@@ -117,7 +115,7 @@ public abstract class Creature extends VisibleObject {
 
 	/**
 	 * Return CreatureController of this Creature object.
-	 *
+	 * 
 	 * @return CreatureController.
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -134,7 +132,8 @@ public abstract class Creature extends VisibleObject {
 	}
 
 	/**
-	 * @param lifeStats the lifeStats to set
+	 * @param lifeStats
+	 *          the lifeStats to set
 	 */
 	public void setLifeStats(CreatureLifeStats<? extends Creature> lifeStats) {
 		this.lifeStats = lifeStats;
@@ -148,7 +147,8 @@ public abstract class Creature extends VisibleObject {
 	}
 
 	/**
-	 * @param gameStats the gameStats to set
+	 * @param gameStats
+	 *          the gameStats to set
 	 */
 	public void setGameStats(CreatureGameStats<? extends Creature> gameStats) {
 		this.gameStats = gameStats;
@@ -164,7 +164,8 @@ public abstract class Creature extends VisibleObject {
 	}
 
 	/**
-	 * @param effectController the effectController to set
+	 * @param effectController
+	 *          the effectController to set
 	 */
 	public void setEffectController(EffectController effectController) {
 		this.effectController = effectController;
@@ -180,7 +181,7 @@ public abstract class Creature extends VisibleObject {
 
 	/**
 	 * Is creature casting some skill
-	 *
+	 * 
 	 * @return
 	 */
 	public boolean isCasting() {
@@ -189,19 +190,18 @@ public abstract class Creature extends VisibleObject {
 
 	/**
 	 * Set current casting skill or null when skill ends
-	 *
+	 * 
 	 * @param castingSkill
 	 */
 	public void setCasting(Skill castingSkill) {
-		if (castingSkill != null) {
+		if (castingSkill != null)
 			skillNumber++;
-		}
 		this.castingSkill = castingSkill;
 	}
 
 	/**
 	 * Current casting skill id
-	 *
+	 * 
 	 * @return
 	 */
 	public int getCastingSkillId() {
@@ -210,7 +210,7 @@ public abstract class Creature extends VisibleObject {
 
 	/**
 	 * Current casting skill
-	 *
+	 * 
 	 * @return
 	 */
 	public Skill getCastingSkill() {
@@ -224,22 +224,22 @@ public abstract class Creature extends VisibleObject {
 	public void setSkillNumber(int skillNumber) {
 		this.skillNumber = skillNumber;
 	}
-
+	
 	public int getAttackedCount() {
 		return this.attackedCount;
 	}
-
+	
 	public void incrementAttackedCount() {
 		this.attackedCount++;
 	}
-
+	
 	public void clearAttackedCount() {
 		attackedCount = 0;
 	}
 
 	/**
 	 * Is using item
-	 *
+	 * 
 	 * @return
 	 */
 	public boolean isUsingItem() {
@@ -248,7 +248,7 @@ public abstract class Creature extends VisibleObject {
 
 	/**
 	 * Set using item
-	 *
+	 * 
 	 * @param usingItem
 	 */
 	public void setUsingItem(Item usingItem) {
@@ -257,7 +257,7 @@ public abstract class Creature extends VisibleObject {
 
 	/**
 	 * get Using ItemId
-	 *
+	 * 
 	 * @return
 	 */
 	public int getUsingItemId() {
@@ -266,7 +266,7 @@ public abstract class Creature extends VisibleObject {
 
 	/**
 	 * Using Item
-	 *
+	 * 
 	 * @return
 	 */
 	public Item getUsingItem() {
@@ -275,7 +275,7 @@ public abstract class Creature extends VisibleObject {
 
 	/**
 	 * All abnormal effects are checked that disable movements
-	 *
+	 * 
 	 * @return
 	 */
 	public boolean canPerformMove() {
@@ -284,12 +284,12 @@ public abstract class Creature extends VisibleObject {
 
 	/**
 	 * All abnormal effects are checked that disable attack
-	 *
+	 * 
 	 * @return
 	 */
 	public boolean canAttack() {
 		return !(getEffectController().isAbnormalState(AbnormalState.CANT_ATTACK_STATE) || isCasting()
-				|| isInState(CreatureState.RESTING) || isInState(CreatureState.PRIVATE_SHOP));
+			|| isInState(CreatureState.RESTING) || isInState(CreatureState.PRIVATE_SHOP));
 	}
 
 	/**
@@ -300,14 +300,16 @@ public abstract class Creature extends VisibleObject {
 	}
 
 	/**
-	 * @param state the state to set
+	 * @param state
+	 *          the state to set
 	 */
 	public void setState(CreatureState state) {
 		this.state |= state.getId();
 	}
 
 	/**
-	 * @param state taken usually from templates
+	 * @param state
+	 *          taken usually from templates
 	 */
 	public void setState(int state) {
 		this.state = state;
@@ -320,13 +322,12 @@ public abstract class Creature extends VisibleObject {
 	public boolean isInState(CreatureState state) {
 		int isState = this.state & state.getId();
 
-		if (isState == state.getId()) {
+		if (isState == state.getId())
 			return true;
-		}
 
 		return false;
 	}
-
+	
 	public boolean isInDeadState() {
 		return isInState(CreatureState.DEAD) || isInState(CreatureState.FLOATING_CORPSE);
 	}
@@ -339,7 +340,8 @@ public abstract class Creature extends VisibleObject {
 	}
 
 	/**
-	 * @param visualState the visualState to set
+	 * @param visualState
+	 *          the visualState to set
 	 */
 	public void setVisualState(CreatureVisualState visualState) {
 		this.visualState |= visualState.getId();
@@ -352,9 +354,8 @@ public abstract class Creature extends VisibleObject {
 	public boolean isInVisualState(CreatureVisualState visualState) {
 		int isVisualState = this.visualState & visualState.getId();
 
-		if (isVisualState == visualState.getId()) {
+		if (isVisualState == visualState.getId())
 			return true;
-		}
 
 		return false;
 	}
@@ -367,7 +368,8 @@ public abstract class Creature extends VisibleObject {
 	}
 
 	/**
-	 * @param seeState the seeState to set
+	 * @param seeState
+	 *          the seeState to set
 	 */
 	public void setSeeState(CreatureSeeState seeState) {
 		this.seeState |= seeState.getId();
@@ -380,9 +382,8 @@ public abstract class Creature extends VisibleObject {
 	public boolean isInSeeState(CreatureSeeState seeState) {
 		int isSeeState = this.seeState & seeState.getId();
 
-		if (isSeeState == seeState.getId()) {
+		if (isSeeState == seeState.getId())
 			return true;
-		}
 
 		return false;
 	}
@@ -395,7 +396,8 @@ public abstract class Creature extends VisibleObject {
 	}
 
 	/**
-	 * @param transformedModelId the transformedModelId to set
+	 * @param transformedModelId
+	 *          the transformedModelId to set
 	 */
 	public void setTransformedModelId(int transformedModelId) {
 		this.transformedModelId = transformedModelId;
@@ -422,22 +424,20 @@ public abstract class Creature extends VisibleObject {
 		PacketBroadcaster.getInstance().add(this);
 
 		// Debug
-		if (log.isDebugEnabled()) {
+		if (log.isDebugEnabled())
 			log.debug("PacketBroadcaster: Packet " + mode.name() + " added to player " + this.getName());
-		}
 	}
 
 	/**
 	 * This is removing broadcast from player.
 	 */
 	public final void removePacketBroadcastMask(BroadcastMode mode) {
-		packetBroadcastMask = (byte) (packetBroadcastMask & ~mode.mask());
+		packetBroadcastMask &= ~mode.mask();
 
 		// Debug
-		if (log.isDebugEnabled()) {
+		if (log.isDebugEnabled())
 			log.debug("PacketBroadcaster: Packet " + mode.name() + " removed from player " + this.getName()); // fix
-																												// ClassCastException
-		}
+																																																				// ClassCastException
 	}
 
 	/**
@@ -456,7 +456,7 @@ public abstract class Creature extends VisibleObject {
 
 	/**
 	 * Double dispatch like method
-	 *
+	 * 
 	 * @param creature
 	 * @return
 	 */
@@ -493,7 +493,7 @@ public abstract class Creature extends VisibleObject {
 
 	/**
 	 * Double dispatch like method
-	 *
+	 * 
 	 * @param creature
 	 * @return
 	 */
@@ -544,9 +544,8 @@ public abstract class Creature extends VisibleObject {
 	 * @return
 	 */
 	public boolean canSee(Creature creature) {
-		if (!creature.isInState(CreatureState.ACTIVE) && !creature.isInState(CreatureState.LOOTING)) {
+		if (!creature.isInState(CreatureState.ACTIVE) && !creature.isInState(CreatureState.LOOTING))
 			return false;
-		}
 
 		return creature.getVisualState() <= getSeeState();
 	}
@@ -563,7 +562,7 @@ public abstract class Creature extends VisibleObject {
 	 * it will return currently acting player.<br>
 	 * This method is used for duel and enemy relations,<br>
 	 * rewards<br>
-	 *
+	 * 
 	 * @return Master of this creature or self
 	 */
 	public Creature getMaster() {
@@ -574,7 +573,7 @@ public abstract class Creature extends VisibleObject {
 	 * For summons it will return summon object and for <br>
 	 * servants - player object.<br>
 	 * Used to find attackable target for npcs.<br>
-	 *
+	 * 
 	 * @return acting master - player in case of servants
 	 */
 	public Creature getActingCreature() {
@@ -587,9 +586,8 @@ public abstract class Creature extends VisibleObject {
 	 */
 	public boolean isSkillDisabled(SkillTemplate template) {
 
-		if (skillCoolDowns == null) {
+		if (skillCoolDowns == null)
 			return false;
-		}
 
 		int cooldownId = template.getCooldownId();
 		Long coolDown = skillCoolDowns.get(cooldownId);
@@ -603,14 +601,12 @@ public abstract class Creature extends VisibleObject {
 		}
 
 		/*
-		 * Some shared cooldown skills have indipendent and different cooldown they must
-		 * not be blocked
+		 * Some shared cooldown skills have indipendent and different cooldown they must not be blocked
 		 */
 		if (skillCoolDownsBase != null && skillCoolDownsBase.get(cooldownId) != null) {
 			if ((template.getDuration() + template.getCooldown() * 100 + skillCoolDownsBase.get(cooldownId)) < System
-					.currentTimeMillis()) {
+				.currentTimeMillis())
 				return false;
-			}
 		}
 
 		return true;
@@ -621,9 +617,8 @@ public abstract class Creature extends VisibleObject {
 	 * @return
 	 */
 	public long getSkillCoolDown(int cooldownId) {
-		if (skillCoolDowns == null || !skillCoolDowns.containsKey(cooldownId)) {
+		if (skillCoolDowns == null || !skillCoolDowns.containsKey(cooldownId))
 			return 0;
-		}
 
 		return skillCoolDowns.get(cooldownId);
 	}
@@ -638,9 +633,8 @@ public abstract class Creature extends VisibleObject {
 			return;
 		}
 
-		if (skillCoolDowns == null) {
+		if (skillCoolDowns == null)
 			skillCoolDowns = new FastMap<Integer, Long>().shared();
-		}
 		skillCoolDowns.put(cooldownId, time);
 	}
 
@@ -655,19 +649,16 @@ public abstract class Creature extends VisibleObject {
 	 * @param cooldownId
 	 */
 	public void removeSkillCoolDown(int cooldownId) {
-		if (skillCoolDowns == null) {
+		if (skillCoolDowns == null)
 			return;
-		}
 		skillCoolDowns.remove(cooldownId);
-		if (skillCoolDownsBase != null) {
+		if (skillCoolDownsBase != null)
 			skillCoolDownsBase.remove(cooldownId);
-		}
 	}
 
 	/**
-	 * This function saves the currentMillis of skill that generated the cooldown of
-	 * an entire cooldownGroup
-	 *
+	 * This function saves the currentMillis of skill that generated the cooldown of an entire cooldownGroup
+	 * 
 	 * @param cooldownId
 	 * @param baseTime
 	 */
@@ -677,9 +668,8 @@ public abstract class Creature extends VisibleObject {
 			return;
 		}
 
-		if (skillCoolDownsBase == null) {
+		if (skillCoolDownsBase == null)
 			skillCoolDownsBase = new FastMap<Integer, Long>().shared();
-		}
 		skillCoolDownsBase.put(cooldownId, baseTime);
 	}
 
@@ -744,8 +734,7 @@ public abstract class Creature extends VisibleObject {
 	 * Creature is flying (FLY or GLIDE states)
 	 */
 	public boolean isFlying() {
-		return (isInState(CreatureState.FLYING) && !isInState(CreatureState.RESTING))
-				|| isInState(CreatureState.GLIDING);
+		return (isInState(CreatureState.FLYING) && !isInState(CreatureState.RESTING)) || isInState(CreatureState.GLIDING);
 	}
 
 	public boolean isInFlyingState() {
@@ -762,15 +751,13 @@ public abstract class Creature extends VisibleObject {
 
 	public void revalidateZones() {
 		MapRegion mapRegion = this.getPosition().getMapRegion();
-		if (mapRegion != null) {
+		if (mapRegion != null)
 			mapRegion.revalidateZones(this);
-		}
 	}
 
 	public boolean isInsideZone(ZoneName zoneName) {
-		if (!isSpawned()) {
+		if (!isSpawned())
 			return false;
-		}
 		return getPosition().getMapRegion().isInsideZone(zoneName, this);
 	}
 

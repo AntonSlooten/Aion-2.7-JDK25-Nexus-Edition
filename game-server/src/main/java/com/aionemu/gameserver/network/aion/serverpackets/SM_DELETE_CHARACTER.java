@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -16,12 +16,13 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * In this packet Server is sending response for CM_DELETE_CHARACTER.
- *
+ * 
  * @author -Nemesiss-
  */
 public class SM_DELETE_CHARACTER extends AionServerPacket {
@@ -46,7 +47,8 @@ public class SM_DELETE_CHARACTER extends AionServerPacket {
 			writeD(0x00);// unk
 			writeD(playerObjId);
 			writeD(deletionTime);
-		} else {
+		}
+		else {
 			writeD(0x10);// unk
 			writeD(0x00);
 			writeD(0x00);

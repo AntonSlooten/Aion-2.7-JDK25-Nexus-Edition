@@ -34,7 +34,7 @@ public class PetAdoptionService {
 
 	/**
 	 * Create a pet for player (with validation)
-	 *
+	 * 
 	 * @param player
 	 * @param eggObjId
 	 * @param petId
@@ -51,7 +51,7 @@ public class PetAdoptionService {
 
 	/**
 	 * Add pet to player
-	 *
+	 * 
 	 * @param player
 	 * @param petId
 	 * @param name
@@ -79,14 +79,14 @@ public class PetAdoptionService {
 
 	/**
 	 * Delete pet
-	 *
+	 * 
 	 * @param player
 	 * @param petId
 	 */
 	public static void surrenderPet(Player player, int petId) {
 		PetCommonData petCommonData = player.getPetList().getPet(petId);
 		if (player.getPet() != null && player.getPet().getPetId() == petCommonData.getPetId()) {
-			petCommonData.setCancelFood(true);
+			petCommonData.setCancelFeed(true);
 			PetSpawnService.dismissPet(player, false);
 		}
 		player.getPetList().deletePet(petCommonData.getPetId());

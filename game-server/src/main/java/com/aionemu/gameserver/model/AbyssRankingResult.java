@@ -37,8 +37,8 @@ public class AbyssRankingResult {
 	private int legionLevel;
 	private int legionMembers;
 
-	public AbyssRankingResult(String playerName, int playerAbyssRank, int playerId, int ap, int title,
-			PlayerClass playerClass, int playerLevel, String legionName, int oldRankPos, int rankPos) {
+	public AbyssRankingResult(String playerName, int playerAbyssRank, int playerId, int ap,
+		int title, PlayerClass playerClass, int playerLevel, String legionName, int oldRankPos, int rankPos) {
 		this.playerName = playerName;
 		this.playerAbyssRank = playerAbyssRank;
 		this.playerId = playerId;
@@ -51,8 +51,7 @@ public class AbyssRankingResult {
 		this.rankPos = rankPos;
 	}
 
-	public AbyssRankingResult(int cp, String legionName, int legionId, int legionLevel, int legionMembers,
-			int oldRankPos, int rankPos) {
+	public AbyssRankingResult(int cp, String legionName, int legionId, int legionLevel, int legionMembers, int oldRankPos, int rankPos) {
 		this.oldRankPos = oldRankPos;
 		this.rankPos = rankPos;
 		this.cp = cp;
@@ -74,13 +73,14 @@ public class AbyssRankingResult {
 		return playerAbyssRank;
 	}
 
+	
 	/**
 	 * @return the oldRankPos
 	 */
 	public int getOldRankPos() {
 		return oldRankPos;
 	}
-
+	
 	public int getRankPos() {
 		return rankPos;
 	}

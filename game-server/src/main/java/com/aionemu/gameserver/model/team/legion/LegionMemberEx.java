@@ -87,9 +87,8 @@ public class LegionMemberEx extends LegionMember {
 	}
 
 	public int getLastOnline() {
-		if (lastOnline == null || isOnline()) {
+		if (lastOnline == null || isOnline())
 			return 0;
-		}
 		return (int) (lastOnline.getTime() / 1000);
 	}
 
@@ -103,16 +102,16 @@ public class LegionMemberEx extends LegionMember {
 
 	/**
 	 * sets the exp value
-	 *
-	 * @param admin : enable decrease level
+	 * 
+	 * @param admin
+	 *          : enable decrease level
 	 */
 	public void setExp(long exp) {
 		// maxLevel is 51 but in game 50 should be shown with full XP bar
 		int maxLevel = DataManager.PLAYER_EXPERIENCE_TABLE.getMaxLevel();
 
-		if (getPlayerClass() != null && getPlayerClass().isStartingClass()) {
+		if (getPlayerClass() != null && getPlayerClass().isStartingClass())
 			maxLevel = 10;
-		}
 
 		long maxExp = DataManager.PLAYER_EXPERIENCE_TABLE.getStartExpForLevel(maxLevel);
 		int level = 1;
@@ -138,7 +137,8 @@ public class LegionMemberEx extends LegionMember {
 	}
 
 	/**
-	 * @param online the online to set
+	 * @param online
+	 *          the online to set
 	 */
 	public void setOnline(boolean online) {
 		this.online = online;
@@ -157,31 +157,41 @@ public class LegionMemberEx extends LegionMember {
 
 	/**
 	 * Checks if a LegionMemberEx is valid or not
-	 *
+	 * 
 	 * @return true if LegionMemberEx is valid
 	 */
 	public boolean isValidLegionMemberEx() {
 		if (getObjectId() < 1) {
 			log.error("[LegionMemberEx] Player Object ID is empty.");
-		} else if (getName() == null) {
+		}
+		else if (getName() == null) {
 			log.error("[LegionMemberEx] Player Name is empty." + getObjectId());
-		} else if (getPlayerClass() == null) {
+		}
+		else if (getPlayerClass() == null) {
 			log.error("[LegionMemberEx] Player Class is empty." + getObjectId());
-		} else if (getLevel() < 1) {
+		}
+		else if (getLevel() < 1) {
 			log.error("[LegionMemberEx] Player Level is empty." + getObjectId());
-		} else if (getLastOnline() == 0) {
+		}
+		else if (getLastOnline() == 0) {
 			log.error("[LegionMemberEx] Last Online is empty." + getObjectId());
-		} else if (getWorldId() < 1) {
+		}
+		else if (getWorldId() < 1) {
 			log.error("[LegionMemberEx] World Id is empty." + getObjectId());
-		} else if (getLegion() == null) {
+		}
+		else if (getLegion() == null) {
 			log.error("[LegionMemberEx] Legion is empty." + getObjectId());
-		} else if (getRank() == null) {
+		}
+		else if (getRank() == null) {
 			log.error("[LegionMemberEx] Rank is empty." + getObjectId());
-		} else if (getNickname() == null) {
+		}
+		else if (getNickname() == null) {
 			log.error("[LegionMemberEx] Nickname is empty." + getObjectId());
-		} else if (getSelfIntro() == null) {
+		}
+		else if (getSelfIntro() == null) {
 			log.error("[LegionMemberEx] Self Intro is empty." + getObjectId());
-		} else {
+		}
+		else {
 			return true;
 		}
 		return false;

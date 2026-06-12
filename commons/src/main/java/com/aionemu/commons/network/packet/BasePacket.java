@@ -20,14 +20,14 @@ package com.aionemu.commons.network.packet;
  * Basic superclass for packets.
  * <p/>
  * Created on: 29.06.2009 17:59:25
- *
+ * 
  * @author Aquanox
  */
 public abstract class BasePacket {
 
 	/**
 	 * Default packet string representation pattern.
-	 *
+	 * 
 	 * @see java.util.Formatter
 	 * @see String#format(String, Object[])
 	 */
@@ -45,9 +45,11 @@ public abstract class BasePacket {
 
 	/**
 	 * Constructs a new packet with specified type and id.
-	 *
-	 * @param packetType Type of packet
-	 * @param opcode     Id of packet
+	 * 
+	 * @param packetType
+	 *          Type of packet
+	 * @param opcode
+	 *          Id of packet
 	 */
 	protected BasePacket(PacketType packetType, int opcode) {
 		this.packetType = packetType;
@@ -57,7 +59,7 @@ public abstract class BasePacket {
 	/**
 	 * Constructs a new packet with given type.<br>
 	 * If this constructor is used, then setOpcode() must be used just after it.
-	 *
+	 * 
 	 * @param packetType
 	 */
 	protected BasePacket(PacketType packetType) {
@@ -67,7 +69,7 @@ public abstract class BasePacket {
 	/**
 	 * Sets opcode of this packet.<br>
 	 * <font color='red'>NOTICE: </font> Use only if BasePacket(PacketType) constructor was use
-	 *
+	 * 
 	 * @param opcode
 	 */
 	protected void setOpcode(int opcode) {
@@ -76,7 +78,7 @@ public abstract class BasePacket {
 
 	/**
 	 * Returns packet opcode.
-	 *
+	 * 
 	 * @return packet id
 	 */
 	public final int getOpcode() {
@@ -85,7 +87,7 @@ public abstract class BasePacket {
 
 	/**
 	 * Returns packet type.
-	 *
+	 * 
 	 * @return type of this packet.
 	 * @see com.aionemu.commons.network.packet.BasePacket.PacketType
 	 */
@@ -97,7 +99,7 @@ public abstract class BasePacket {
 	 * Returns packet name.
 	 * <p/>
 	 * Actually packet name is a simple name of the underlying class.
-	 *
+	 * 
 	 * @return packet name
 	 * @see Class#getSimpleName()
 	 */
@@ -109,14 +111,10 @@ public abstract class BasePacket {
 	 * Enumeration of packet types.
 	 */
 	public static enum PacketType {
-		/**
-		 * Server packet
-		 */
+		/** Server packet */
 		SERVER("S"),
 
-		/**
-		 * Client packet
-		 */
+		/** Client packet */
 		CLIENT("C");
 
 		/**
@@ -126,7 +124,7 @@ public abstract class BasePacket {
 
 		/**
 		 * Constructor.
-		 *
+		 * 
 		 * @param name
 		 */
 		private PacketType(String name) {
@@ -135,7 +133,7 @@ public abstract class BasePacket {
 
 		/**
 		 * Returns packet type name.
-		 *
+		 * 
 		 * @return packet type name.
 		 */
 		public String getName() {
@@ -145,7 +143,7 @@ public abstract class BasePacket {
 
 	/**
 	 * Returns string representation of this packet based on packet type, opcode and name.
-	 *
+	 * 
 	 * @return packet type string
 	 * @see #TYPE_PATTERN
 	 * @see java.util.Formatter

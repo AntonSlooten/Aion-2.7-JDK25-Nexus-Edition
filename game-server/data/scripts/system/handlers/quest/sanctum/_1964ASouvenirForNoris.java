@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-engine <aion-engine.com>
  *
  *  aion-engine is free software: you can redistribute it and/or modify
@@ -51,11 +51,11 @@ public class _1964ASouvenirForNoris extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (env.getTargetId() == 203776) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1, true, false);
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1352);
+					case STEP_TO_1:
+						return defaultCloseDialog(env, 0, 1, true, false);
 				}
 			}
 		}

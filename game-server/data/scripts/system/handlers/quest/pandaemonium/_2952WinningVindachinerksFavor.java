@@ -55,7 +55,8 @@ public class _2952WinningVindachinerksFavor extends QuestHandler {
 			if (targetId == 279006) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
@@ -68,23 +69,24 @@ public class _2952WinningVindachinerksFavor extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 279016: { // Vindachinerk
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 2375);
+				case 279016: { // Vindachinerk
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 0, 0, true, 5, 2716); // reward
+						}
+						case FINISH_DIALOG: {
+							return defaultCloseDialog(env, 0, 0);
+						}
 					}
 				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 0, 0, true, 5, 2716); // reward
-				}
-				case FINISH_DIALOG: {
-					return defaultCloseDialog(env, 0, 0);
-				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD && targetId == 279016) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD && targetId == 279016) {
 			return sendQuestEndDialog(env);
 		}
 		return false;

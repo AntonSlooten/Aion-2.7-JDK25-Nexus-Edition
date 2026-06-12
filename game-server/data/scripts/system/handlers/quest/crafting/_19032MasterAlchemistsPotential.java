@@ -67,45 +67,45 @@ public class _19032MasterAlchemistsPotential extends QuestHandler {
 
 		if (qs != null && qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203787:
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 1011);
-				case STEP_TO_10:
-					if (!giveQuestItem(env, 152202147, 1))
-						return true;
-					if (!giveQuestItem(env, 152020248, 1))
-						return true;
-					qs.setQuestVarById(0, 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				case STEP_TO_20:
-					if (!giveQuestItem(env, 152202148, 1))
-						return true;
-					if (!giveQuestItem(env, 152020248, 1))
-						return true;
-					qs.setQuestVarById(0, 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			case 203786:
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					long itemCount1 = player.getInventory().getItemCountByItemId(182206768);
-					if (itemCount1 > 0) {
-						removeQuestItem(env, 182206768, 1);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 1352);
-					} else
-						return sendQuestDialog(env, 10001);
-				}
+				case 203787:
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							return sendQuestDialog(env, 1011);
+						case STEP_TO_10:
+							if (!giveQuestItem(env, 152202147, 1))
+								return true;
+							if (!giveQuestItem(env, 152020248, 1))
+								return true;
+							qs.setQuestVarById(0, 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						case STEP_TO_20:
+							if (!giveQuestItem(env, 152202148, 1))
+								return true;
+							if (!giveQuestItem(env, 152020248, 1))
+								return true;
+							qs.setQuestVarById(0, 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+					}
+				case 203786:
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							long itemCount1 = player.getInventory().getItemCountByItemId(182206768);
+							if (itemCount1 > 0) {
+								removeQuestItem(env, 182206768, 1);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 1352);
+							}
+							else
+								return sendQuestDialog(env, 10001);
+					}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203786) {
 				if (env.getDialogId() == 34)
 					return sendQuestDialog(env, 5);

@@ -9,6 +9,7 @@ import com.aionemu.gameserver.skillengine.SkillEngine;
 
 import ai.AggressiveNpcAI2;
 
+
 /**
  * @author Kairyu
  */
@@ -22,14 +23,13 @@ public class IsbariyaServantsAI2 extends AggressiveNpcAI2 {
 		super.handleSpawned();
 		int lifetime = (getNpcId() == 281659 ? 20000 : 6000);
 		toDespawn(lifetime);
-		if (getNpcId() == 281659) {
+		if(getNpcId() == 281659){
 			dispelIsba();
 		}
 	}
 
 	private void dispelIsba() {
-		SkillEngine.getInstance().getSkill(getOwner(), 18980, 55, getPosition().getWorldMapInstance().getNpc(216263))
-				.useSkill();
+		SkillEngine.getInstance().getSkill(getOwner(), 18980, 55, getPosition().getWorldMapInstance().getNpc(216263)).useSkill();
 		scheulDispelIsba();
 	}
 

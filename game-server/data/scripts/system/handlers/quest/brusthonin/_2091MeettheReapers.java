@@ -59,19 +59,20 @@ public class _2091MeettheReapers extends QuestHandler {
 			if (env.getDialog() == QuestDialog.START_DIALOG)
 				return sendQuestDialog(env, 10002);
 			else if (env.getDialogId() == 1009 && qs.getStatus() != QuestStatus.COMPLETE
-					&& qs.getStatus() != QuestStatus.NONE) {
+				&& qs.getStatus() != QuestStatus.NONE) {
 				qs.setStatus(QuestStatus.REWARD);
 				qs.setQuestVarById(0, 1);
 				updateQuestStatus(env);
 				return sendQuestDialog(env, 5);
 			}
 			return false;
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (env.getDialogId() == 18) {
 				int[] ids = { 2092, 2093, 2094 };
 				for (int id : ids) {
 					QuestEngine.getInstance().onEnterZoneMissionEnd(
-							new QuestEnv(env.getVisibleObject(), env.getPlayer(), id, env.getDialogId()));
+						new QuestEnv(env.getVisibleObject(), env.getPlayer(), id, env.getDialogId()));
 				}
 			}
 			return sendQuestEndDialog(env);

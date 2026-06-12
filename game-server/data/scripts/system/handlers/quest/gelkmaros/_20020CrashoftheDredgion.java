@@ -64,88 +64,90 @@ public class _20020CrashoftheDredgion extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 799225: { // Richelle
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 799225: { // Richelle
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+					}
+					break;
+				}
+				case 799226: { // Valetta
+					switch (dialog) {
+						case START_DIALOG: {
+							switch (var) {
+								case 1: {
+									return sendQuestDialog(env, 1352);
+								}
+								case 2: {
+									return sendQuestDialog(env, 1693);
+								}
+								case 5: {
+									return sendQuestDialog(env, 2716);
+								}
+								case 7: {
+									return sendQuestDialog(env, 3398);
+								}
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 2, 3, false, 10000, 10001); // 3
+						}
+						case STEP_TO_6: {
+							return defaultCloseDialog(env, 5, 6); // 6
+						}
+						case STEP_TO_8: {
+							return defaultCloseDialog(env, 7, 8); // 8
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
+					}
+					break;
+				}
+				case 799239: { // Vellun
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 3) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case STEP_TO_4: {
+							return defaultCloseDialog(env, 3, 4); // 4
+						}
+					}
+					break;
+				}
+				case 798703: { // Heszti
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 4) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case STEP_TO_5: {
+							return defaultCloseDialog(env, 4, 5, 182207600, 1, 0, 0); // 5
+						}
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-				break;
 			}
-			case 799226: { // Valetta
-				switch (dialog) {
-				case START_DIALOG: {
-					switch (var) {
-					case 1: {
-						return sendQuestDialog(env, 1352);
-					}
-					case 2: {
-						return sendQuestDialog(env, 1693);
-					}
-					case 5: {
-						return sendQuestDialog(env, 2716);
-					}
-					case 7: {
-						return sendQuestDialog(env, 3398);
-					}
-					}
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 2, 3, false, 10000, 10001); // 3
-				}
-				case STEP_TO_6: {
-					return defaultCloseDialog(env, 5, 6); // 6
-				}
-				case STEP_TO_8: {
-					return defaultCloseDialog(env, 7, 8); // 8
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-				break;
-			}
-			case 799239: { // Vellun
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 3) {
-						return sendQuestDialog(env, 2034);
-					}
-				}
-				case STEP_TO_4: {
-					return defaultCloseDialog(env, 3, 4); // 4
-				}
-				}
-				break;
-			}
-			case 798703: { // Heszti
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 4) {
-						return sendQuestDialog(env, 2375);
-					}
-				}
-				case STEP_TO_5: {
-					return defaultCloseDialog(env, 4, 5, 182207600, 1, 0, 0); // 5
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799226) { // Valetta
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					if (var == 7)
 						playQuestMovie(env, 552);
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

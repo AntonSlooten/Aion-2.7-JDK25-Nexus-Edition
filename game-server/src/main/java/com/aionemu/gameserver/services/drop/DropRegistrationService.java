@@ -29,9 +29,14 @@ import org.slf4j.LoggerFactory;
 
 import javolution.util.FastMap;
 
+
+
+
 import com.aionemu.commons.utils.Rnd;
+//import com.aionemu.commons.utils.Rnd;
 import com.aionemu.gameserver.ai2.event.AIEventType;
 import com.aionemu.gameserver.configs.custom.CustomDrop;
+//import com.aionemu.gameserver.configs.custom.CustomDrop;
 import com.aionemu.gameserver.configs.main.DropConfig;
 import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.dataholders.NpcDropData;
@@ -45,8 +50,11 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.stats.container.StatEnum;
 import com.aionemu.gameserver.model.team2.common.legacy.LootGroupRules;
 import com.aionemu.gameserver.model.templates.item.ItemTemplate;
+//import com.aionemu.gameserver.model.templates.item.ItemTemplate;
 import com.aionemu.gameserver.model.templates.npc.NpcTemplate;
+import com.aionemu.gameserver.model.templates.pet.PetFunctionType;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_LOOT_STATUS;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_PET;
 import com.aionemu.gameserver.services.QuestService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.stats.DropRewardEnum;
@@ -84,14 +92,13 @@ public class DropRegistrationService {
 						Drop d = iter.next();
 						for (DropGroup dg2 : drop.getDropGroup()) {
 							for (Drop d2 : dg2.getDrop()) {
-								if (d.getItemId() == d2.getItemId()) {
+								if (d.getItemId() == d2.getItemId())
 									iter.remove();
-								}
 							}
 						}
 					}
 				}
-				List<DropGroup> list = new ArrayList<>();
+				List<DropGroup> list = new ArrayList<DropGroup>();
 				for (DropGroup dg : drop.getDropGroup()) {
 					boolean added = false;
 					for (DropGroup dg2 : currentDrop.getDropGroup()) {
@@ -100,17 +107,17 @@ public class DropRegistrationService {
 							added = true;
 						}
 					}
-					if (!added) {
+					if (!added)
 						list.add(dg);
-					}
 				}
 				if (!list.isEmpty()) {
 					currentDrop.getDropGroup().addAll(list);
 				}
-			} else {
-				npcTemplate.setNpcDrop(drop);
 			}
+			else
+				npcTemplate.setNpcDrop(drop);
 		}
+		log.info("DropRegistration: Custom and Static drops successfully loaded.");
 	}
 
 	/**
@@ -125,13 +132,12 @@ public class DropRegistrationService {
 
 		// Getting all possible drops for this Npc
 		NpcDrop npcDrop = npc.getNpcDrop();
-		Set<DropItem> droppedItems = new HashSet<>();
+		Set<DropItem> droppedItems = new HashSet<DropItem>();
 		int index = 1;
 		int dropChance = 100;
 		boolean isChest = npc.getAi2().getName().equals("chest");
 		if (!DropConfig.DISABLE_DROP_REDUCTION && ((isChest && npc.getLevel() != 1 || !isChest))) {
-			dropChance = DropRewardEnum.dropRewardFrom(npc.getLevel() - heighestLevel); // reduce chance depending on
-																						// level
+			dropChance = DropRewardEnum.dropRewardFrom(npc.getLevel() - heighestLevel); // reduce chance depending on level
 		}
 
 		// Include also Boost Drop Rate skills ONLY for lonely players
@@ -141,68 +147,71 @@ public class DropRegistrationService {
 		}
 
 		float dropRate = player.getRates().getDropRate() * boostDropRate * dropChance / 100F;
-
-		// custom drop
-
-		if (CustomDrop.ENABLED && (!CustomDrop.ONLY_HIGH_LVL || heighestLevel <= npc.getLevel())) {
-			for (Drop drop : CustomDrop.getCustomDrops()) {
-				if (drop != null) {
-					if (Rnd.get() * 100 < drop.getChance()) {
+		
+		//custom drop
+		
+		if(CustomDrop.ENABLED && (!CustomDrop.ONLY_HIGH_LVL || heighestLevel <= npc.getLevel()))
+			for(Drop drop : CustomDrop.getCustomDrops())
+				if(drop != null){
+					if(Rnd.get() * 100 < drop.getChance()){
 						DropItem dropitem = new DropItem(drop);
 						dropitem.calculateCount();
 						dropitem.setIndex(index++);
 						droppedItems.add(dropitem);
 						ItemTemplate itemTemplate = DataManager.ITEM_DATA.getItemTemplate(drop.getItemId());
-						if (itemTemplate == null) {
+						if(itemTemplate == null)
 							log.info("[CustomDrop] invalid itemId");
-						}
 					}
 				}
-			}
-		}
-
+		
+		
 		if (npcDrop != null) {
 			index = npcDrop.dropCalculator(droppedItems, index, dropRate, player.getRace());
 		}
 
+		
+
+		
 		// Updating current dropMap
 		currentDropMap.put(npcObjId, droppedItems);
 
+
+
+		
 		// Distributing drops to players
-		Collection<Player> dropPlayers = new ArrayList<>();
-		Collection<Player> winningPlayers = new ArrayList<>();
+		Collection<Player> dropPlayers = new ArrayList<Player>();
+		Collection<Player> winningPlayers = new ArrayList<Player>();
 		if (player.isInGroup2() || player.isInAlliance2()) {
-			List<Integer> dropMembers = new ArrayList<>();
+			List<Integer> dropMembers = new ArrayList<Integer>();
 			LootGroupRules lootGrouRules = player.getLootGroupRules();
 
 			switch (lootGrouRules.getLootRule()) {
-			case ROUNDROBIN:
-				int size = groupMembers.size();
-				if (size > lootGrouRules.getNrRoundRobin()) {
-					lootGrouRules.setNrRoundRobin(lootGrouRules.getNrRoundRobin() + 1);
-				} else {
-					lootGrouRules.setNrRoundRobin(1);
-				}
+				case ROUNDROBIN:
+					int size = groupMembers.size();
+					if (size > lootGrouRules.getNrRoundRobin())
+						lootGrouRules.setNrRoundRobin(lootGrouRules.getNrRoundRobin() + 1);
+					else
+						lootGrouRules.setNrRoundRobin(1);
 
-				int i = 0;
-				for (Player p : groupMembers) {
-					i++;
-					if (i == lootGrouRules.getNrRoundRobin()) {
-						winningPlayers.add(p);
-						setItemsToWinner(droppedItems, p.getObjectId());
-						break;
+					int i = 0;
+					for (Player p : groupMembers) {
+						i++;
+						if (i == lootGrouRules.getNrRoundRobin()) {
+							winningPlayers.add(p);
+							setItemsToWinner(droppedItems, p.getObjectId());
+							break;
+						}
 					}
-				}
-				break;
-			case FREEFORALL:
-				winningPlayers = groupMembers;
-				break;
-			case LEADER:
-				Player leader = player.isInGroup2() ? player.getPlayerGroup2().getLeaderObject()
-						: player.getPlayerAlliance2().getLeaderObject();
-				winningPlayers.add(leader);
-				setItemsToWinner(droppedItems, leader.getObjectId());
-				break;
+					break;
+				case FREEFORALL:
+					winningPlayers = groupMembers;
+					break;
+				case LEADER:
+					Player leader = player.isInGroup2() ? player.getPlayerGroup2().getLeaderObject()
+							: player.getPlayerAlliance2().getLeaderObject();
+					winningPlayers.add(leader);
+					setItemsToWinner(droppedItems, leader.getObjectId());
+					break;
 			}
 
 			for (Player member : winningPlayers) {
@@ -214,8 +223,9 @@ public class DropRegistrationService {
 			dropNpc.setPlayersObjectId(dropMembers);
 			dropNpc.setInRangePlayers(groupMembers);
 			dropNpc.setGroupSize(groupMembers.size());
-		} else {
-			List<Integer> singlePlayer = new ArrayList<>();
+		}
+		else {
+			List<Integer> singlePlayer = new ArrayList<Integer>();
 			singlePlayer.add(player.getObjectId());
 			dropPlayers.add(player);
 			dropRegistrationMap.put(npcObjId, new DropNpc(npcObjId));
@@ -232,6 +242,26 @@ public class DropRegistrationService {
 
 		for (Player p : dropPlayers) {
 			PacketSendUtility.sendPacket(p, new SM_LOOT_STATUS(npcObjId, 0));
+		}
+		
+		// Add function pet drop
+		if (player.getPet() != null && player.getPet().getPetTemplate().getPetFunction(PetFunctionType.LOOT) != null &&
+				player.getPet().getCommonData().isLooting()) {
+			PacketSendUtility.sendPacket(player, new SM_PET(npcObjId, true));
+			Set<DropItem> drops = geCurrentDropMap().get(npcObjId);
+			if (drops == null || drops.size() == 0) {
+				npc.getController().onDelete();
+			}
+			else {
+				DropItem[] dropItems = drops.toArray(new DropItem[0]);
+				for (int i = 0; i < dropItems.length; i++) {
+					DropService.getInstance().requestDropItem(player, npcObjId, dropItems[i].getIndex(), true);
+				}
+			}
+			PacketSendUtility.sendPacket(player, new SM_PET(npcObjId, false));
+			// if everything was looted, npc is deleted
+			/*if (drops == null || drops.size() == 0)
+				return;*/
 		}
 		DropService.getInstance().scheduleFreeForAll(npcObjId);
 	}
@@ -268,7 +298,6 @@ public class DropRegistrationService {
 		return SingletonHolder.instance;
 	}
 
-	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder {
 
 		protected static final DropRegistrationService instance = new DropRegistrationService();

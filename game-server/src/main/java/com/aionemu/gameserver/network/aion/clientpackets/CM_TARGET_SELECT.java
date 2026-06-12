@@ -30,7 +30,7 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
  * I believe it's the same as mouse click on a character.<br>
  * If client want's to select target - d is object id.<br>
  * If client unselects target - d is 0;
- *
+ * 
  * @author SoulKeeper, Sweetkr, KID
  */
 public class CM_TARGET_SELECT extends AionClientPacket {
@@ -43,7 +43,7 @@ public class CM_TARGET_SELECT extends AionClientPacket {
 
 	/**
 	 * Constructs new client packet instance.
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_TARGET_SELECT(int opcode, State state, State... restStates) {
@@ -67,15 +67,15 @@ public class CM_TARGET_SELECT extends AionClientPacket {
 	protected void runImpl() {
 		Player player = getConnection().getActivePlayer();
 
-		VisibleObject obj = null;
-		if (targetObjectId == player.getObjectId()) {
+		VisibleObject obj = null;;
+		if (targetObjectId == player.getObjectId())
 			obj = player;
-		} else {
+		else {
 			obj = player.getKnownList().getObject(targetObjectId);
 
-			if (obj == null && player.isInTeam()) {
+			if(obj == null && player.isInTeam()){
 				TeamMember<Player> member = player.getCurrentTeam().getMember(targetObjectId);
-				if (member != null) {
+				if(member != null){
 					obj = member.getObject();
 				}
 			}
@@ -83,14 +83,15 @@ public class CM_TARGET_SELECT extends AionClientPacket {
 
 		if (obj != null && obj instanceof VisibleObject) {
 			if (type == 1) {
-				if (obj.getTarget() == null) {
+				if (obj.getTarget() == null)
 					return;
-				}
 				player.setTarget(obj.getTarget());
-			} else {
+			}
+			else {
 				player.setTarget(obj);
 			}
-		} else {
+		}
+		else {
 			player.setTarget(null);
 		}
 		sendPacket(new SM_TARGET_SELECTED(player));

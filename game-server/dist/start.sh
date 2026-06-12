@@ -1,40 +1,14 @@
 #!/bin/bash
 #=====================================================================================
-# Usage:        ./start.sh [jvmArgs] [--debug]
+# Usage:        ./start.sh [jvmArgs]
 # Parameters:   jvmArgs
 #                   additional arguments to the JVM process starting the server
-#               --debug
-#                   Start a remote debug session
-# Description:  Starts the game server and restarts it depending on returned exit code.
+# Description:  Starts the server and restarts it depending on returned exit code.
 #=====================================================================================
-
-jvm_args=()
-
-for arg in "$@"; do
-    case "$arg" in
-        --debug)
-            jvm_args+=("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=localhost:5006")
-            ;;
-        *)
-            jvm_args+=("$arg")
-            ;;
-    esac
-done
-
-
 
 loop() {
   while true; do
-    exec java \
-    -Xms1024m \
-    -Xmx2560m \
-    -javaagent:libs/game-server-1.0.0-SNAPSHOT.jar \
-    -XX:+UseNUMA \
-    -XX:+UseCompactObjectHeaders \
-    "${jvm_args[@]}" \
-    -cp "libs/*" \
-    com.aionemu.gameserver.GameServer
-
+    java -Xms1024m -Xmx2560m -XX:+UseNUMA -XX:+UseCompactObjectHeaders $@ -cp "libs/*" com.aionemu.gameserver.GameServer
     err=$?
     case $err in
       0) # regular shutdown

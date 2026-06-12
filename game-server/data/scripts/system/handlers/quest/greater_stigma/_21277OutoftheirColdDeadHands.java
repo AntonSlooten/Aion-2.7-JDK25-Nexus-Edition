@@ -52,27 +52,30 @@ public class _21277OutoftheirColdDeadHands extends QuestHandler {
 			if (targetId == 799208) {
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 799208: {
-				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2375);
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 0, 0, true, 5, 2716); // reward
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
+				case 799208: {
+					switch (dialog) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 2375);
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 0, 0, true, 5, 2716); // reward
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799208) {
 				return sendQuestEndDialog(env);
 			}

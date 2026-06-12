@@ -46,8 +46,8 @@ public class SummonHomingEffect extends SummonEffect {
 	protected int npcCount;
 	@XmlAttribute(name = "attack_count", required = true)
 	protected int attackCount;
-
-	// TODO homing that uses skills (skillId:629)
+	
+	//TODO homing that uses skills (skillId:629)
 
 	@Override
 	public void applyEffect(Effect effect) {
@@ -62,7 +62,7 @@ public class SummonHomingEffect extends SummonEffect {
 		for (int i = 0; i < npcCount; i++) {
 			SpawnTemplate spawn = SpawnEngine.addNewSingleTimeSpawn(worldId, npcId, x, y, z, heading);
 			final Homing homing = VisibleObjectSpawner.spawnHoming(spawn, instanceId, effector, attackCount,
-					effect.getSkillId(), effect.getSkillLevel());
+				effect.getSkillId(), effect.getSkillLevel());
 
 			if (attackCount > 0) {
 				ActionObserver observer = new ActionObserver(ObserverType.ATTACK) {
@@ -70,9 +70,8 @@ public class SummonHomingEffect extends SummonEffect {
 					@Override
 					public void attack(Creature creature) {
 						homing.setAttackCount(homing.getAttackCount() - 1);
-						if (homing.getAttackCount() <= 0) {
+						if (homing.getAttackCount() <= 0)
 							homing.getController().onDelete();
-						}
 					}
 				};
 
@@ -84,9 +83,8 @@ public class SummonHomingEffect extends SummonEffect {
 
 				@Override
 				public void run() {
-					if ((homing != null) && (homing.isSpawned())) {
+					if ((homing != null) && (homing.isSpawned()))
 						homing.getController().onDelete();
-					}
 				}
 			}, 15 * 1000);
 			homing.getController().addTask(TaskId.DESPAWN, task);

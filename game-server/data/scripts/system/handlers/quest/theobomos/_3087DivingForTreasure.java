@@ -58,11 +58,11 @@ public class _3087DivingForTreasure extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 798201) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				default:
-					return sendQuestStartDialog(env);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
@@ -72,30 +72,31 @@ public class _3087DivingForTreasure extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 700419: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					if (qs.getQuestVarById(0) == 0) {
-						return sendQuestDialog(env, 1352);
-					}
-				}
-				case STEP_TO_1: {
-					if (player.getInventory().getItemCountByItemId(182208063) == 0) {
-						if (!giveQuestItem(env, 182208063, 1)) {
+				case 700419: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							if (qs.getQuestVarById(0) == 0) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_1: {
+							if (player.getInventory().getItemCountByItemId(182208063) == 0) {
+								if (!giveQuestItem(env, 182208063, 1)) {
+									return true;
+								}
+							}
+
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
 							return true;
 						}
 					}
-
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-					return true;
-				}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798144) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

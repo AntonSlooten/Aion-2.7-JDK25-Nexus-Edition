@@ -6,14 +6,13 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_PLAY_MOVIE;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public class CmdMovie extends BaseCommand {
-
-	@Override
+	
 	public void execute(Player admin, String... params) {
 		if (params.length < 1) {
 			showHelp(admin);
-		} else {
-			PacketSendUtility.sendPacket(admin,
-					new SM_PLAY_MOVIE(Integer.parseInt(params[0]), Integer.parseInt(params[1])));
+		}
+		else {
+			PacketSendUtility.sendPacket(admin, new SM_PLAY_MOVIE(Integer.parseInt(params[0]), Integer.parseInt(params[1])));
 		}
 	}
 }

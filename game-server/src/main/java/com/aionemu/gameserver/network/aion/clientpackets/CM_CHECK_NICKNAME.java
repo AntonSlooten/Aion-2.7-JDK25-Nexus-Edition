@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ import com.aionemu.gameserver.services.player.PlayerService;
 
 /**
  * In this packets aion client is asking if given nickname is ok/free?.
- *
+ * 
  * @author -Nemesiss-
  * @modified cura
  */
@@ -40,7 +40,7 @@ public class CM_CHECK_NICKNAME extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_CHECK_NICKNAME </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_CHECK_NICKNAME(int opcode, State state, State... restStates) {
@@ -63,14 +63,15 @@ public class CM_CHECK_NICKNAME extends AionClientPacket {
 		AionConnection client = getConnection();
 
 		if (!PlayerService.isFreeName(nick) || PlayerService.isOldName(nick)) {
-			if (GSConfig.CHARACTER_FACTIONS_MODE == 2) {
+			if (GSConfig.CHARACTER_FACTIONS_MODE == 2)
 				client.sendPacket(new SM_NICKNAME_CHECK_RESPONSE(SM_CREATE_CHARACTER.RESPONSE_NAME_RESERVED));
-			} else {
+			else
 				client.sendPacket(new SM_NICKNAME_CHECK_RESPONSE(SM_CREATE_CHARACTER.RESPONSE_NAME_ALREADY_USED));
-			}
-		} else if (!PlayerService.isValidName(nick)) {
+		}
+		else if (!PlayerService.isValidName(nick)) {
 			client.sendPacket(new SM_NICKNAME_CHECK_RESPONSE(SM_CREATE_CHARACTER.RESPONSE_INVALID_NAME));
-		} else {
+		}
+		else {
 			client.sendPacket(new SM_NICKNAME_CHECK_RESPONSE(SM_CREATE_CHARACTER.RESPONSE_OK));
 		}
 	}

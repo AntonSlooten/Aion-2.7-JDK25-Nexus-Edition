@@ -9,25 +9,26 @@ import com.aionemu.gameserver.services.AnnouncementService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public class CmdAnnouncement extends BaseCommand {
-
-	@Override
-	public void execute(Player admin, String... params) {
-		if (params.length == 1) {
+	
+	public void execute(Player admin, String... params) {		
+		if (params.length == 0) {
 			showHelp(admin);
 			return;
 		}
-
-		if (params[1].equalsIgnoreCase("list")) {
+		
+		if (params[0].equalsIgnoreCase("list")) {
 			Set<Announcement> announces = AnnouncementService.getInstance().getAnnouncements();
 			PacketSendUtility.sendMessage(admin, "ID  |  FACTION  |  CHAT TYPE  |  DELAY  |  MESSAGE");
 			PacketSendUtility.sendMessage(admin, "-------------------------------------------------------------------");
 
-			for (Announcement announce : announces) {
-				PacketSendUtility.sendMessage(admin, announce.getId() + "  |  " + announce.getFaction() + "  |  "
-						+ announce.getType() + "  |  " + announce.getDelay() + "  |  " + announce.getAnnounce());
-			}
-		} else if (params[1].equalsIgnoreCase("add")) {
-			if (params.length < 6) {
+			for (Announcement announce : announces)
+				PacketSendUtility.sendMessage(
+						admin,	announce.getId() + "  |  " + announce.getFaction() + "  |  " + announce.getType() + "  |  "
+					+ announce.getDelay() + "  |  " + announce.getAnnounce());
+		}
+		else if (params[0].equalsIgnoreCase("add")) {
+			// Params format is: 0 = add; 1 = faction; 2 = type; 3 = delay; 4+ = message  
+			if (params.length < 5) {
 				showHelp(admin);
 				return;
 			}
@@ -35,8 +36,9 @@ public class CmdAnnouncement extends BaseCommand {
 			int delay;
 
 			try {
-				delay = ParseInteger(params[4]);
-			} catch (NumberFormatException e) {
+				delay = ParseInteger(params[3]);
+			}
+			catch (NumberFormatException e) {
 				// 15 minutes, default
 				delay = 900;
 			}
@@ -44,15 +46,14 @@ public class CmdAnnouncement extends BaseCommand {
 			String message = "";
 
 			// Add with space
-			for (int i = 5; i < params.length - 1; i++) {
+			for (int i = 4; i < params.length - 1; i++)
 				message += params[i] + " ";
-			}
 
 			// Add the last without the end space
 			message += params[params.length - 1];
 
 			// Create the announce
-			Announcement announce = new Announcement(message, params[2], params[3], delay);
+			Announcement announce = new Announcement(message, params[1], params[2], delay);
 
 			// Add the announce in the database
 			AnnouncementService.getInstance().addAnnouncement(announce);
@@ -61,8 +62,9 @@ public class CmdAnnouncement extends BaseCommand {
 			AnnouncementService.getInstance().reload();
 
 			PacketSendUtility.sendMessage(admin, "The announcement has been created with successful !");
-		} else if (params[1].equalsIgnoreCase("delete")) {
-			if ((params.length < 3)) {
+		}
+		else if (params[0].equalsIgnoreCase("delete")) {
+			if ((params.length < 2)) {
 				showHelp(admin);
 				return;
 			}
@@ -70,22 +72,29 @@ public class CmdAnnouncement extends BaseCommand {
 			int id;
 
 			try {
-				id = ParseInteger(params[2]);
-			} catch (NumberFormatException e) {
+				id = ParseInteger(params[1]);
+			}
+			catch (NumberFormatException e) {
 				PacketSendUtility.sendMessage(admin, "The announcement's ID is wrong !");
 				showHelp(admin);
 				return;
 			}
 
 			// Delete the announcement from the database
-			AnnouncementService.getInstance().delAnnouncement(id);
-
+			// TODO: get delete result to send admin if announcement id exists or not
+			boolean result;
+			result = AnnouncementService.getInstance().delAnnouncement(id);
+			
+			if (result) {
+				// result is currently always true, even if no change is made in database
+			}
+			
 			// Reload all announcements
 			AnnouncementService.getInstance().reload();
 
 			PacketSendUtility.sendMessage(admin, "The announcement has been deleted with successful !");
-		} else {
-			showHelp(admin);
 		}
+		else
+			showHelp(admin);
 	}
 }

@@ -8,14 +8,16 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /*Syntax: //see */
 public class CmdSee extends BaseCommand {
+	
+	
 
-	@Override
 	public void execute(Player admin, String... params) {
 		if (admin.getSeeState() < 2) {
 			admin.setSeeState(CreatureSeeState.SEARCH2);
 			PacketSendUtility.broadcastPacket(admin, new SM_PLAYER_STATE(admin), true);
 			PacketSendUtility.sendMessage(admin, "You got vision.");
-		} else {
+		}
+		else {
 			admin.setSeeState(CreatureSeeState.NORMAL);
 			PacketSendUtility.broadcastPacket(admin, new SM_PLAYER_STATE(admin), true);
 			PacketSendUtility.sendMessage(admin, "You lost vision.");

@@ -55,7 +55,8 @@ public class _1423ExpertAdvice extends QuestHandler {
 			if (targetId == 203983) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -65,20 +66,21 @@ public class _1423ExpertAdvice extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203983: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2375);
-				}
-				case SELECT_REWARD: {
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return sendQuestEndDialog(env);
-				}
+				case 203983: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 2375);
+						}
+						case SELECT_REWARD: {
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return sendQuestEndDialog(env);
+						}
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203983) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

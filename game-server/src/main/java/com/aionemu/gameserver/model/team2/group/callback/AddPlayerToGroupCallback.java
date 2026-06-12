@@ -45,7 +45,7 @@ public abstract class AddPlayerToGroupCallback implements Callback {
 	}
 
 	public abstract void onBeforePlayerAddToGroup(PlayerGroup group, Player player);
-
+	
 	public abstract void onAfterPlayerAddToGroup(PlayerGroup group, Player player);
 
 }

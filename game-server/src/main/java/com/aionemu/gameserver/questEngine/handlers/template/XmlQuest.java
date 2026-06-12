@@ -45,30 +45,24 @@ public class XmlQuest extends QuestHandler {
 			qe.registerQuestNpc(xmlQuestData.getStartNpcId()).addOnQuestStart(getQuestId());
 			qe.registerQuestNpc(xmlQuestData.getStartNpcId()).addOnTalkEvent(getQuestId());
 		}
-		if (xmlQuestData.getEndNpcId() != null) {
+		if (xmlQuestData.getEndNpcId() != null)
 			qe.registerQuestNpc(xmlQuestData.getEndNpcId()).addOnTalkEvent(getQuestId());
-		}
 
-		for (OnTalkEvent talkEvent : xmlQuestData.getOnTalkEvent()) {
-			for (int npcId : talkEvent.getIds()) {
+		for (OnTalkEvent talkEvent : xmlQuestData.getOnTalkEvent())
+			for (int npcId : talkEvent.getIds())
 				qe.registerQuestNpc(npcId).addOnTalkEvent(getQuestId());
-			}
-		}
 
-		for (OnKillEvent killEvent : xmlQuestData.getOnKillEvent()) {
-			for (Monster monster : killEvent.getMonsters()) {
+		for (OnKillEvent killEvent : xmlQuestData.getOnKillEvent())
+			for (Monster monster : killEvent.getMonsters())
 				qe.registerQuestNpc(monster.getNpcId()).addOnKillEvent(getQuestId());
-			}
-		}
 	}
 
 	@Override
 	public boolean onDialogEvent(QuestEnv env) {
 		env.setQuestId(getQuestId());
 		for (OnTalkEvent talkEvent : xmlQuestData.getOnTalkEvent()) {
-			if (talkEvent.operate(env)) {
+			if (talkEvent.operate(env))
 				return true;
-			}
 		}
 
 		final Player player = env.getPlayer();
@@ -76,13 +70,13 @@ public class XmlQuest extends QuestHandler {
 		QuestState qs = player.getQuestStateList().getQuestState(getQuestId());
 		if (qs == null || qs.getStatus() == QuestStatus.NONE || qs.canRepeat()) {
 			if (targetId == xmlQuestData.getStartNpcId()) {
-				if (env.getDialog() == QuestDialog.START_DIALOG) {
+				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 1011);
-				} else {
+				else
 					return sendQuestStartDialog(env);
-				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD && targetId == xmlQuestData.getEndNpcId()) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD && targetId == xmlQuestData.getEndNpcId()) {
 			return sendQuestEndDialog(env);
 		}
 		return false;
@@ -92,9 +86,8 @@ public class XmlQuest extends QuestHandler {
 	public boolean onKillEvent(QuestEnv env) {
 		env.setQuestId(getQuestId());
 		for (OnKillEvent killEvent : xmlQuestData.getOnKillEvent()) {
-			if (killEvent.operate(env)) {
+			if (killEvent.operate(env))
 				return true;
-			}
 		}
 		return false;
 	}

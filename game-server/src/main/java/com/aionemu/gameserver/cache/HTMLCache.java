@@ -64,7 +64,7 @@ public final class HTMLCache {
 		return SingletonHolder.INSTANCE;
 	}
 
-	private FastMap<String, String> cache = new FastMap<>(16000);
+	private FastMap<String, String> cache = new FastMap<String, String>(16000);
 
 	private int loadedFiles;
 	private int size;
@@ -102,15 +102,18 @@ public final class HTMLCache {
 					loadedFiles++;
 					size += html.length();
 				}
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				log.warn("", e);
 
 				reload(true);
 				return;
-			} finally {
+			}
+			finally {
 				IOUtils.closeQuietly(ois);
 			}
-		} else {
+		}
+		else {
 			parseDir(HTML_ROOT);
 		}
 
@@ -118,7 +121,8 @@ public final class HTMLCache {
 
 		if (cacheFile.exists()) {
 			log.info("Cache[HTML]: Compaction skipped!");
-		} else {
+		}
+		else {
 			log.info("Cache[HTML]: Compacting htmls... OK.");
 
 			final StringBuilder sb = new StringBuilder(8192);
@@ -132,7 +136,8 @@ public final class HTMLCache {
 					size += newHtml.length();
 
 					entry.setValue(newHtml);
-				} catch (RuntimeException e) {
+				}
+				catch (RuntimeException e) {
 					log.warn("Cache[HTML]: Error during compaction of " + entry.getKey(), e);
 				}
 			}
@@ -148,9 +153,11 @@ public final class HTMLCache {
 				oos = new ObjectOutputStream(new BufferedOutputStream(new FileOutputStream(getCacheFile())));
 
 				oos.writeObject(cache);
-			} catch (IOException e) {
+			}
+			catch (IOException e) {
 				log.warn("", e);
-			} finally {
+			}
+			finally {
 				IOUtils.closeQuietly(oos);
 			}
 		}
@@ -166,7 +173,7 @@ public final class HTMLCache {
 		// TODO: is there any other tag that should be replaced?
 		final String[] tagsToCompact = { "html", "title", "body", "br", "br1", "p", "table", "tr", "td" };
 
-		final List<String> list = new ArrayList<>();
+		final List<String> list = new ArrayList<String>();
 
 		for (String tag : tagsToCompact) {
 			list.add("<" + tag + ">");
@@ -175,7 +182,7 @@ public final class HTMLCache {
 			list.add("<" + tag + " />");
 		}
 
-		final List<String> list2 = new ArrayList<>();
+		final List<String> list2 = new ArrayList<String>();
 
 		for (String tag : list) {
 			list2.add(tag);
@@ -190,11 +197,9 @@ public final class HTMLCache {
 		sb.setLength(0);
 		sb.append(html);
 
-		for (int i = 0; i < sb.length(); i++) {
-			if (Character.isWhitespace(sb.charAt(i))) {
+		for (int i = 0; i < sb.length(); i++)
+			if (Character.isWhitespace(sb.charAt(i)))
 				sb.setCharAt(i, ' ');
-			}
-		}
 
 		replaceAll(sb, "  ", " ");
 
@@ -212,21 +217,18 @@ public final class HTMLCache {
 		int fromIndex = 0;
 		int toIndex = sb.length();
 
-		while (fromIndex < toIndex && sb.charAt(fromIndex) == ' ') {
+		while (fromIndex < toIndex && sb.charAt(fromIndex) == ' ')
 			fromIndex++;
-		}
 
-		while (fromIndex < toIndex && sb.charAt(toIndex - 1) == ' ') {
+		while (fromIndex < toIndex && sb.charAt(toIndex - 1) == ' ')
 			toIndex--;
-		}
 
 		return sb.substring(fromIndex, toIndex);
 	}
 
 	private void replaceAll(StringBuilder sb, String pattern, String value) {
-		for (int index = 0; (index = sb.indexOf(pattern, index)) != -1;) {
+		for (int index = 0; (index = sb.indexOf(pattern, index)) != -1;)
 			sb.replace(index, index + pattern.length(), value);
-		}
 	}
 
 	public void reloadPath(File f) {
@@ -237,11 +239,10 @@ public final class HTMLCache {
 
 	public void parseDir(File dir) {
 		for (File file : dir.listFiles(HTML_FILTER)) {
-			if (!file.isDirectory()) {
+			if (!file.isDirectory())
 				loadFile(file);
-			} else {
+			else
 				parseDir(file);
-			}
 		}
 	}
 
@@ -259,18 +260,19 @@ public final class HTMLCache {
 				size += content.length();
 
 				String oldContent = cache.get(relpath);
-				if (oldContent == null) {
+				if (oldContent == null)
 					loadedFiles++;
-				} else {
+				else
 					size -= oldContent.length();
-				}
 
 				cache.put(relpath, content);
 
 				return content;
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				log.warn("Problem with htm file:", e);
-			} finally {
+			}
+			finally {
 				IOUtils.closeQuietly(bis);
 			}
 		}
@@ -293,7 +295,7 @@ public final class HTMLCache {
 	@Override
 	public String toString() {
 		return "Cache[HTML]: " + String.format("%.3f", (float) size / 1024) + " kilobytes on " + loadedFiles
-				+ " file(s) loaded.";
+			+ " file(s) loaded.";
 	}
 
 	public static String getRelativePath(File base, File file) {

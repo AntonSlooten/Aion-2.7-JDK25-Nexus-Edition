@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -22,16 +22,15 @@ import com.aionemu.gameserver.network.aion.AionConnection.State;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_MAY_LOGIN_INTO_GAME;
 
 /**
- * In this packets aion client is asking if may login into game [ie start
- * playing].
- *
+ * In this packets aion client is asking if may login into game [ie start playing].
+ * 
  * @author -Nemesiss-
  */
 public class CM_MAY_LOGIN_INTO_GAME extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_MAY_LOGIN_INTO_GAME </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_MAY_LOGIN_INTO_GAME(int opcode, State state, State... restStates) {

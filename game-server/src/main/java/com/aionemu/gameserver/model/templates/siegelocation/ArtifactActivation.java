@@ -50,6 +50,6 @@ public class ArtifactActivation {
 	}
 
 	public long getCd() {
-		return cd * 1000;
+		return (long) (cd * 1000);
 	}
 }

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ import com.aionemu.commons.utils.Rnd;
 
 /**
  * Crypt will encrypt server packet and decrypt client packet.
- *
+ * 
  * @author hack99
  * @author kao
  * @author -Nemesiss-
@@ -47,18 +47,14 @@ public class Crypt {
 	private EncryptionKeyPair packetKey = null;
 
 	/**
-	 * Enable crypt key - generate random key that will be used to encrypt second
-	 * server packet [first one is unencrypted] and decrypt client packets. This
-	 * method is called from SM_KEY server packet, that packet sends key to aion
-	 * client.
-	 *
-	 * @return "false key" that should by used by aion client to encrypt/decrypt
-	 *         packets.
+	 * Enable crypt key - generate random key that will be used to encrypt second server packet [first one is unencrypted]
+	 * and decrypt client packets. This method is called from SM_KEY server packet, that packet sends key to aion client.
+	 * 
+	 * @return "false key" that should by used by aion client to encrypt/decrypt packets.
 	 */
 	public final int enableKey() {
-		if (packetKey != null) {
+		if (packetKey != null)
 			throw new KeyAlreadySetException();
-		}
 
 		/** rnd key - this will be used to encrypt/decrypt packet */
 		int key = Rnd.nextInt();
@@ -73,7 +69,7 @@ public class Crypt {
 
 	/**
 	 * Decrypt client packet from this ByteBuffer.
-	 *
+	 * 
 	 * @param buf
 	 * @return true if decryption was successful.
 	 */
@@ -88,7 +84,7 @@ public class Crypt {
 
 	/**
 	 * Encrypt server packet from this ByteBuffer.
-	 *
+	 * 
 	 * @param buf
 	 */
 	public final void encrypt(ByteBuffer buf) {
@@ -104,7 +100,7 @@ public class Crypt {
 
 	/**
 	 * Server packet opcodec obfuscation.
-	 *
+	 * 
 	 * @param op
 	 * @return obfuscated opcodec
 	 */

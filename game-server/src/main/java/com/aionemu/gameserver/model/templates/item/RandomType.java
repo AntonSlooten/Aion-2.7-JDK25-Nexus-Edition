@@ -18,11 +18,18 @@ package com.aionemu.gameserver.model.templates.item;
 
 import javax.xml.bind.annotation.XmlEnum;
 
+
 /**
  * @author vlog
  */
 @XmlEnum
 public enum RandomType {
 
-	ENCHANTMENT, MANASTONE, ANCIENTITEMS, CHUNK_EARTH, CHUNK_ROCK, CHUNK_SAND, CHUNK_GEMSTONE;
+	ENCHANTMENT,
+	MANASTONE,
+	ANCIENTITEMS,
+	CHUNK_EARTH,
+	CHUNK_ROCK,
+	CHUNK_SAND,
+	CHUNK_GEMSTONE;
 }

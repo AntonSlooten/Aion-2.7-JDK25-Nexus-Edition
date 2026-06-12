@@ -61,11 +61,11 @@ public class _3103KyprosDesire extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 798225) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				default:
-					return sendQuestStartDialog(env);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
@@ -75,24 +75,24 @@ public class _3103KyprosDesire extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798226: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 5);
+				case 798226: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 5);
+						}
+						case SELECT_NO_REWARD: {
+							qs.setStatus(QuestStatus.COMPLETE);
+							qs.setCompleteCount(1);
+							Rewards rewards = DataManager.QUEST_DATA.getQuestById(questId).getRewards().get(0);
+							int rewardExp = rewards.getExp();
+							player.getCommonData().addExp(rewardExp, RewardType.QUEST);
+							PacketSendUtility.sendPacket(player, new SM_QUEST_ACTION(questId, QuestStatus.COMPLETE, 2));
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+							updateQuestStatus(env);
+							return true;
+						}
+					}
 				}
-				case SELECT_NO_REWARD: {
-					qs.setStatus(QuestStatus.COMPLETE);
-					qs.setCompleteCount(1);
-					Rewards rewards = DataManager.QUEST_DATA.getQuestById(questId).getRewards().get(0);
-					int rewardExp = rewards.getExp();
-					player.getCommonData().addExp(rewardExp, RewardType.QUEST);
-					PacketSendUtility.sendPacket(player, new SM_QUEST_ACTION(questId, QuestStatus.COMPLETE, 2));
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-					updateQuestStatus(env);
-					return true;
-				}
-				}
-			}
 			}
 		}
 		return false;

@@ -28,7 +28,8 @@ import com.aionemu.gameserver.skillengine.model.Effect;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /**
- * @author ATracer modified by Sippolo
+ * @author ATracer
+ * modified by Sippolo
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "PetOrderUseUltraSkillEffect")
@@ -40,11 +41,11 @@ public class PetOrderUseUltraSkillEffect extends EffectTemplate {
 	@Override
 	public void applyEffect(Effect effect) {
 		Player effector = (Player) effect.getEffector();
-
-		if (effector.getSummon() == null) {
+		
+		if(effector.getSummon() == null) {
 			return;
 		}
-
+		
 		int effectorId = effector.getSummon().getObjectId();
 
 		int npcId = effector.getSummon().getNpcId();
@@ -52,19 +53,17 @@ public class PetOrderUseUltraSkillEffect extends EffectTemplate {
 
 		int petUseSkillId = DataManager.PET_SKILL_DATA.getPetOrderSkill(orderSkillId, npcId);
 		int targetId = effect.getEffected().getObjectId();
-
+		
 		// Handle automatic release if skill expects so
-		if (release) {
+		if (release)
 			effector.getSummon().getController().setReleaseAfterSkill(petUseSkillId);
-		}
 
 		PacketSendUtility.sendPacket(effector, new SM_SUMMON_USESKILL(effectorId, petUseSkillId, 1, targetId));
 	}
 
 	@Override
 	public void calculate(Effect effect) {
-		if (effect.getEffector() instanceof Player && effect.getEffected() != null) {
+		if (effect.getEffector() instanceof Player && effect.getEffected() != null)
 			super.calculate(effect, null, null);
-		}
 	}
 }

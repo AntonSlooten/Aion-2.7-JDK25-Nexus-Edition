@@ -59,31 +59,35 @@ public class _2484OurManInElysea extends QuestHandler {
 						return sendQuestStartDialog(env);
 					else
 						return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs != null && qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 700267:
-				if (qs.getQuestVarById(0) == 0 && env.getDialog() == QuestDialog.USE_OBJECT) {
-					qs.setQuestVarById(0, 1);
-					updateQuestStatus(env);
-					removeQuestItem(env, 182204205, 1);
-				}
-			case 203331: {
-				if (qs.getQuestVarById(0) == 1) {
-					if (env.getDialogId() == 18)
-						return sendQuestDialog(env, 5);
-					else if (env.getDialog() == QuestDialog.START_DIALOG) {
-						qs.setStatus(QuestStatus.REWARD);
+				case 700267:
+					if (qs.getQuestVarById(0) == 0 && env.getDialog() == QuestDialog.USE_OBJECT) {
+						qs.setQuestVarById(0, 1);
 						updateQuestStatus(env);
-						return sendQuestDialog(env, 5);
-					} else
-						return sendQuestEndDialog(env);
+						removeQuestItem(env, 182204205, 1);
+					}
+				case 203331: {
+					if (qs.getQuestVarById(0) == 1) {
+						if (env.getDialogId() == 18)
+							return sendQuestDialog(env, 5);
+						else if (env.getDialog() == QuestDialog.START_DIALOG) {
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return sendQuestDialog(env, 5);
+						}
+						else
+							return sendQuestEndDialog(env);
+					}
 				}
 			}
-			}
-		} else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203331)
 				return sendQuestEndDialog(env);
 		}

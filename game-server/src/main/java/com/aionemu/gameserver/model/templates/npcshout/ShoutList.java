@@ -22,12 +22,15 @@ import java.util.List;
 import javax.xml.bind.annotation.*;
 
 /**
+ * @author Rolandas
+ */
+
+/**
  * <p>
  * Java class for ShoutList complex type.
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
- *
+ * The following schema fragment specifies the expected content contained within this class.
+ * 
  * <pre>
  * &lt;complexType name="ShoutList">
  *   &lt;complexContent>
@@ -48,23 +51,22 @@ public class ShoutList {
 
 	@XmlElement(name = "shout", required = true)
 	protected List<NpcShout> npcShouts;
-
+	
 	@XmlAttribute(name = "npc_ids", required = true)
 	protected List<Integer> npcIds;
-
+	
 	@XmlAttribute(name = "restrict_world")
 	protected Integer restrictWorld;
 
 	/**
 	 * Gets the value of the npcShouts property.
 	 * <p>
-	 * This accessor method returns a reference to the live list, not a snapshot.
-	 * Therefore any modification you make to the returned list will be present
-	 * inside the JAXB object. This is why there is not a <CODE>set</CODE> method
-	 * for the npcShouts property.
+	 * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+	 * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+	 * the npcShouts property.
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 *
+	 * 
 	 * <pre>
 	 * getNpcShouts().add(newItem);
 	 * </pre>
@@ -73,7 +75,7 @@ public class ShoutList {
 	 */
 	public List<NpcShout> getNpcShouts() {
 		if (npcShouts == null) {
-			npcShouts = new ArrayList<>();
+			npcShouts = new ArrayList<NpcShout>();
 		}
 		return this.npcShouts;
 	}
@@ -81,13 +83,12 @@ public class ShoutList {
 	/**
 	 * Gets the value of the npcIds property.
 	 * <p>
-	 * This accessor method returns a reference to the live list, not a snapshot.
-	 * Therefore any modification you make to the returned list will be present
-	 * inside the JAXB object. This is why there is not a <CODE>set</CODE> method
-	 * for the npcIds property.
+	 * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+	 * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+	 * the npcIds property.
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 *
+	 * 
 	 * <pre>
 	 * getNpcIds().add(newItem);
 	 * </pre>
@@ -96,27 +97,27 @@ public class ShoutList {
 	 */
 	public List<Integer> getNpcIds() {
 		if (npcIds == null) {
-			npcIds = new ArrayList<>();
+			npcIds = new ArrayList<Integer>();
 		}
 		return this.npcIds;
 	}
 
 	/**
 	 * Gets the value of the restrictWorld property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public int getRestrictWorld() {
-		if (restrictWorld == null) {
+		if (restrictWorld == null)
 			return 0;
-		}
 		return restrictWorld;
 	}
-
-	public void makeNull() {
-		this.npcIds = null;
-		this.npcShouts = null;
-		this.restrictWorld = null;
-	}
+	
+  public void makeNull()
+  {
+    this.npcIds = null;
+    this.npcShouts = null;
+    this.restrictWorld = null;
+  }
 
 }

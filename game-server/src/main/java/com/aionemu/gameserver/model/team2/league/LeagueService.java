@@ -43,7 +43,7 @@ public class LeagueService {
 
 	private static final Logger log = LoggerFactory.getLogger(LeagueService.class);
 
-	private static final Map<Integer, League> leagues = new ConcurrentHashMap<>();
+	private static final Map<Integer, League> leagues = new ConcurrentHashMap<Integer, League>();
 
 	static {
 		GlobalCallbackHelper.addCallback(new AllianceDisbandListener());
@@ -54,9 +54,9 @@ public class LeagueService {
 			LeagueInvite invite = new LeagueInvite(inviter, invited);
 			if (invited.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_REQUEST_LEAGUE_INVITE, invite)) {
 				PacketSendUtility.sendPacket(inviter,
-						SM_SYSTEM_MESSAGE.STR_UNION_INVITE_HIM(invited.getName(), invited.getPlayerAlliance2().size()));
-				PacketSendUtility.sendPacket(invited,
-						new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_REQUEST_LEAGUE_INVITE, 0, inviter.getName()));
+					SM_SYSTEM_MESSAGE.STR_UNION_INVITE_HIM(invited.getName(), invited.getPlayerAlliance2().size()));
+				PacketSendUtility.sendPacket(invited, new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_REQUEST_LEAGUE_INVITE, 0,
+					inviter.getName()));
 			}
 		}
 	}
@@ -105,11 +105,10 @@ public class LeagueService {
 		Preconditions.checkNotNull(expelGiver, "ExpelGiver player should not be null");
 		Preconditions.checkArgument(expelGiver.isInLeague(), "Expelled player should be in league");
 		Preconditions.checkArgument(expelledPlayer.isInLeague(), "ExpelGiver should be in league");
-		Preconditions.checkArgument(
-				expelGiver.getPlayerAlliance2().getLeague().isLeader(expelGiver.getPlayerAlliance2()),
-				"ExpelGiver alliance should be the leader of league");
+		Preconditions.checkArgument(expelGiver.getPlayerAlliance2().getLeague().isLeader(expelGiver.getPlayerAlliance2()),
+			"ExpelGiver alliance should be the leader of league");
 		Preconditions.checkArgument(expelGiver.getPlayerAlliance2().isLeader(expelGiver),
-				"ExpelGiver should be the leader of alliance");
+			"ExpelGiver should be the leader of alliance");
 		PlayerAlliance alliance = expelGiver.getPlayerAlliance2();
 		League league = alliance.getLeague();
 		league.onEvent(new LeagueLeftEvent(league, expelledPlayer.getPlayerAlliance2(), LeaveReson.EXPEL));
@@ -138,7 +137,8 @@ public class LeagueService {
 						league.onEvent(new LeagueLeftEvent(league, alliance));
 					}
 				}
-			} catch (Throwable t) {
+			}
+			catch (Throwable t) {
 				log.error("Error during alliance disband listen", t);
 			}
 		}

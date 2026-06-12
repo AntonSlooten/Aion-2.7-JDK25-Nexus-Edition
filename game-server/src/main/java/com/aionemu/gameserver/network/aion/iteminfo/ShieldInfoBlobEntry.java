@@ -23,24 +23,24 @@ import com.aionemu.gameserver.model.items.ItemSlot;
 import com.aionemu.gameserver.network.aion.iteminfo.ItemInfoBlob.ItemBlobType;
 
 /**
- * This blob is sent for shields. It keeps info about slots that shield can be
- * equipped to.
+ * This blob is sent for shields. It keeps info about slots that shield can be equipped to.
  *
  * @author -Nemesiss-
  *
  */
-public class ShieldInfoBlobEntry extends ItemBlobEntry {
+public class ShieldInfoBlobEntry extends ItemBlobEntry{
 
 	ShieldInfoBlobEntry() {
 		super(ItemBlobType.SLOTS_SHIELD);
 	}
 
 	@Override
-	public void writeThisBlob(ByteBuffer buf) {
+	public
+	void writeThisBlob(ByteBuffer buf) {
 		Item item = parent.item;
 
 		writeD(buf, ItemSlot.getSlotsFor(item.getItemTemplate().getItemSlot())[0].getSlotIdMask());
-		writeD(buf, 0);// TODO! secondary slot?
+		writeD(buf, 0);//TODO! secondary slot?
 		writeD(buf, 0);
 	}
 }

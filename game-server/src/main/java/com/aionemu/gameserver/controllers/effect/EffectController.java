@@ -84,52 +84,58 @@ public class EffectController {
 
 		lock.lock();
 		try {
-
+			
 			boolean useEffectId = true;
 			Effect existingEffect = mapToUpdate.get(effect.getStack());
 			if (existingEffect != null) {
 				// check stack level
+				if (existingEffect.getSkillStackLvl() > effect.getSkillStackLvl()){
+					return;
+				}
+				
 				// check skill level (when stack level same)
-				if ((existingEffect.getSkillStackLvl() > effect.getSkillStackLvl())
-						|| (existingEffect.getSkillStackLvl() == effect.getSkillStackLvl()
-								&& existingEffect.getSkillLevel() > effect.getSkillLevel())) {
+				if (existingEffect.getSkillStackLvl() == effect.getSkillStackLvl()
+					&& existingEffect.getSkillLevel() > effect.getSkillLevel()){
 					return;
 				}
 				existingEffect.endEffect();
 				useEffectId = false;
 			}
-
+			
 			Effect conflictedEffect = findConflictedEffect(mapToUpdate, effect);
 			if (conflictedEffect != null) {
 				conflictedEffect.endEffect();
 				useEffectId = false;
 			}
-
+			
 			if (useEffectId) {
-				for (Effect ef : mapToUpdate.values()) {
-					if (ef.getTargetSlot() == effect.getTargetSlot()) {
-						for (EffectTemplate et : ef.getEffectTemplates()) {
-							if (et.getEffectid() == 0) {
+				/**
+				 * idea here is that effects with same effectId shouldnt stack
+				 * effect with higher basiclvl takes priority
+				 */ 
+				Iterator<Effect> iter2 = mapToUpdate.values().iterator();
+				while (iter2.hasNext())	{
+					Effect ef = iter2.next();
+					if (ef.getTargetSlot() == effect.getTargetSlot())	{
+						for (EffectTemplate et : ef.getEffectTemplates())	{
+							if (et.getEffectid() == 0)
 								continue;
-							}
-							for (EffectTemplate et2 : effect.getEffectTemplates()) {
-								if (et2.getEffectid() == 0) {
+							for (EffectTemplate et2 : effect.getEffectTemplates())	{
+								if (et2.getEffectid() == 0)
 									continue;
-								}
 								if (et.getEffectid() == et2.getEffectid()) {
-									if (et.getBasicLvl() > et2.getBasicLvl()) {
+									if (et.getBasicLvl() > et2.getBasicLvl())
 										return;
-									} else {
+									else
 										ef.endEffect();
-									}
 								}
 							}
 						}
 					}
 				}
 			}
-
-			// TODO Gestion MANTRA
+			
+			//TODO Gestion MANTRA
 			if (effect.isToggle() && mapToUpdate.size() >= 3) {
 				Iterator<Effect> iter = mapToUpdate.values().iterator();
 				Effect nextEffect = iter.next();
@@ -138,7 +144,8 @@ public class EffectController {
 			}
 
 			mapToUpdate.put(effect.getStack(), effect);
-		} finally {
+		}
+		finally {
 			lock.unlock();
 		}
 
@@ -157,11 +164,11 @@ public class EffectController {
 	 */
 	private final Effect findConflictedEffect(Map<String, Effect> mapToUpdate, Effect newEffect) {
 		int conflictId = newEffect.getSkillTemplate().getConflictId();
-		if (conflictId == 0) {
+		if(conflictId == 0){
 			return null;
 		}
-		for (Effect effect : mapToUpdate.values()) {
-			if (effect.getSkillTemplate().getConflictId() == conflictId) {
+		for(Effect effect : mapToUpdate.values()){
+			if(effect.getSkillTemplate().getConflictId() == conflictId){
 				return effect;
 			}
 		}
@@ -173,13 +180,11 @@ public class EffectController {
 	 * @return
 	 */
 	private Map<String, Effect> getMapForEffect(Effect effect) {
-		if (effect.isPassive()) {
+		if (effect.isPassive())
 			return passiveEffectMap;
-		}
 
-		if (effect.isToggle()) {
+		if (effect.isToggle())
 			return noshowEffects;
-		}
 
 		return abnormalEffectMap;
 	}
@@ -197,14 +202,16 @@ public class EffectController {
 	 * @return
 	 */
 	public boolean hasAbnormalEffect(int skillId) {
-		for (Effect localEffect : this.abnormalEffectMap.values()) {
-			if (localEffect.getSkillId() == skillId) {
+		Iterator<Effect> localIterator = this.abnormalEffectMap.values().iterator();
+		while (localIterator.hasNext()) {
+			Effect localEffect = localIterator.next();
+			if (localEffect.getSkillId() == skillId)
 				return true;
-			}
 		}
 		return false;
 	}
 
+	
 	public void broadCastEffects() {
 		owner.addPacketBroadcastMask(BroadcastMode.BROAD_CAST_EFFECTS);
 	}
@@ -219,7 +226,7 @@ public class EffectController {
 
 	/**
 	 * Used when player see new player
-	 *
+	 * 
 	 * @param player
 	 */
 	public void sendEffectIconsTo(Player player) {
@@ -238,7 +245,7 @@ public class EffectController {
 
 	/**
 	 * Removes the effect by skillid.
-	 *
+	 * 
 	 * @param skillid
 	 */
 	public void removeEffect(int skillid) {
@@ -266,9 +273,11 @@ public class EffectController {
 
 	/**
 	 * Removes the effect by SkillSetException Number.
-	 *
-	 * @param SkillSetException Number
-	 * @param maxOccur          Number
+	 * 
+	 * @param SkillSetException
+	 *          Number
+	 * @param maxOccur
+	 *          Number
 	 */
 	public void removeEffectBySetNumber(final int setNumber, int maxOccur) {
 		removeEffectBySetNumber(setNumber, maxOccur, 0);
@@ -276,21 +285,22 @@ public class EffectController {
 
 	/**
 	 * Removes the effect by SkillSetException Number.
-	 *
-	 * @param SkillSetException Number
-	 * @param maxOccur          Number
-	 * @param skillId           of the effect that is being applied
+	 * 
+	 * @param SkillSetException
+	 *          Number
+	 * @param maxOccur
+	 *          Number
+	 * @param skillId
+	 *          of the effect that is being applied
 	 */
 	public void removeEffectBySetNumber(final int setNumber, int maxOccur, int skillId) {
 		int i = 0;
 		// Count the occurences of effects of the setNumber.
 		for (Effect effect : abnormalEffectMap.values()) {
-			if ((effect.getSkillSetException() == setNumber) && (effect.getSkillId() != skillId)) {
+			if ((effect.getSkillSetException() == setNumber) && (effect.getSkillId() != skillId))
 				i++;
-			}
 		}
-		// if there are too much occurences of effects of the setNumber then remove the
-		// oldest effect.
+		// if there are too much occurences of effects of the setNumber then remove the oldest effect.
 		if (maxOccur <= i) {
 			for (Effect effect : abnormalEffectMap.values()) {
 				if (effect.getSkillSetException() == setNumber) {
@@ -303,9 +313,8 @@ public class EffectController {
 
 		i = 0;
 		for (Effect effect : passiveEffectMap.values()) {
-			if (effect.getSkillSetException() == setNumber) {
+			if (effect.getSkillSetException() == setNumber)
 				i++;
-			}
 		}
 		if (maxOccur <= i) {
 			for (Effect effect : passiveEffectMap.values()) {
@@ -319,9 +328,8 @@ public class EffectController {
 
 		i = 0;
 		for (Effect effect : noshowEffects.values()) {
-			if (effect.getSkillSetException() == setNumber) {
+			if (effect.getSkillSetException() == setNumber)
 				i++;
-			}
 		}
 		if (maxOccur <= i) {
 			for (Effect effect : noshowEffects.values()) {
@@ -354,10 +362,8 @@ public class EffectController {
 	}
 
 	/**
-	 * Method used to calculate number of effects of given dispelcategory,
-	 * targetslot and dispelLevel used only in DispelBuffCounterAtk, therefore rest
-	 * of cases are skipped
-	 *
+	 * Method used to calculate number of effects of given dispelcategory, targetslot and dispelLevel
+	 * used only in DispelBuffCounterAtk, therefore rest of cases are skipped
 	 * @param dispelCat
 	 * @param targetSlot
 	 * @param dispelLevel
@@ -365,96 +371,85 @@ public class EffectController {
 	 */
 	public int calculateNumberOfEffects(DispelCategoryType dispelCat, SkillTargetSlot targetSlot, int dispelLevel) {
 		int number = 0;
-
+		
 		for (Effect effect : abnormalEffectMap.values()) {
-			// effects with duration 86400000 cant be dispelled
-			// TODO recheck
-			// check for targetslot, effects with target slot higher or equal to 2 cant be
-			// removed (ex. skillId: 11885)
-			if ((effect.getDuration() >= 86400000) || effect.getTargetSlot() != targetSlot.ordinal()
-					|| effect.getTargetSlotLevel() >= 2) {
+			//effects with duration 86400000 cant be dispelled
+			//TODO recheck
+			if (effect.getDuration() >= 86400000)
 				continue;
-			}
+			
+			//check for targetslot, effects with target slot higher or equal to 2 cant be removed (ex. skillId: 11885)
+			if (effect.getTargetSlot() != targetSlot.ordinal() || effect.getTargetSlotLevel() >= 2)
+				continue;
 
 			switch (dispelCat) {
-			case BUFF:// DispelBuffCounterAtkEffect
-				if (effect.getDispelCategory() == DispelCategoryType.BUFF
-						&& effect.getReqDispelLevel() <= dispelLevel) {
-					number++;
-				}
-				break;
+				case BUFF://DispelBuffCounterAtkEffect
+					if (effect.getDispelCategory() == DispelCategoryType.BUFF
+						&& effect.getReqDispelLevel() <= dispelLevel)
+						number++;
+					break;
 			}
 		}
-
+					
 		return number;
 	}
-
-	public void removeEffectByDispelCat(DispelCategoryType dispelCat, SkillTargetSlot targetSlot, int count,
-			int dispelLevel, int power, boolean itemTriggered) {
+	
+	public void removeEffectByDispelCat(DispelCategoryType dispelCat, SkillTargetSlot targetSlot, int count, int dispelLevel, int power, boolean itemTriggered) {
 		for (Effect effect : abnormalEffectMap.values()) {
-			if (count == 0) {
+			if (count == 0)
 				break;
-			}
-			// effects with duration 86400000 cant be dispelled
-			// TODO recheck
+			//effects with duration 86400000 cant be dispelled
+			//TODO recheck
+			if (effect.getDuration() >= 86400000)
+				continue;
+
 			// If dispel is triggered by an item (ex. Healing Potion)
 			// and debuff is unpottable, do not dispel
-			if ((effect.getDuration() >= 86400000)
-					|| ((effect.getSkillTemplate().isUndispellableByPotions()) && itemTriggered)) {
+			if ((effect.getSkillTemplate().isUndispellableByPotions()) && itemTriggered)
+					continue;
+			
+			//check for targetslot, effects with target slot level higher or equal to 2 cant be removed (ex. skillId: 11885)
+			if (effect.getTargetSlot() != targetSlot.ordinal() || effect.getTargetSlotLevel() >= 2)
 				continue;
-			}
-
-			// check for targetslot, effects with target slot level higher or equal to 2
-			// cant be removed (ex. skillId: 11885)
-			if (effect.getTargetSlot() != targetSlot.ordinal() || effect.getTargetSlotLevel() >= 2) {
-				continue;
-			}
 
 			boolean remove = false;
 			switch (dispelCat) {
-			case ALL:// DispelDebuffEffect
-				if ((effect.getDispelCategory() == DispelCategoryType.ALL
+				case ALL://DispelDebuffEffect
+					if ((effect.getDispelCategory() == DispelCategoryType.ALL
 						|| effect.getDispelCategory() == DispelCategoryType.DEBUFF_MENTAL
 						|| effect.getDispelCategory() == DispelCategoryType.DEBUFF_PHYSICAL)
-						&& effect.getReqDispelLevel() <= dispelLevel) {
-					remove = true;
-				}
-				break;
-			case DEBUFF_MENTAL:// DispelDebuffMentalEffect
-				if ((effect.getDispelCategory() == DispelCategoryType.ALL
+						&& effect.getReqDispelLevel() <= dispelLevel)
+						remove = true;
+					break;
+				case DEBUFF_MENTAL://DispelDebuffMentalEffect
+					if ((effect.getDispelCategory() == DispelCategoryType.ALL
 						|| effect.getDispelCategory() == DispelCategoryType.DEBUFF_MENTAL)
-						&& effect.getReqDispelLevel() <= dispelLevel) {
-					remove = true;
-				}
-				break;
-			case DEBUFF_PHYSICAL:// DispelDebuffPhysicalEffect
-				if ((effect.getDispelCategory() == DispelCategoryType.ALL
+						&& effect.getReqDispelLevel() <= dispelLevel)
+						remove = true;
+					break;
+				case DEBUFF_PHYSICAL://DispelDebuffPhysicalEffect
+					if ((effect.getDispelCategory() == DispelCategoryType.ALL
 						|| effect.getDispelCategory() == DispelCategoryType.DEBUFF_PHYSICAL)
-						&& effect.getReqDispelLevel() <= dispelLevel) {
-					remove = true;
-				}
-				break;
-			case BUFF:// DispelBuffEffect or DispelBuffCounterAtkEffect
-				if (effect.getDispelCategory() == DispelCategoryType.BUFF
-						&& effect.getReqDispelLevel() <= dispelLevel) {
-					remove = true;
-				}
-				break;
-			case STUN:
-				if (effect.getDispelCategory() == DispelCategoryType.STUN) {
-					remove = true;
-				}
-				break;
-			case NPC_BUFF:// DispelNpcBuff
-				if (effect.getDispelCategory() == DispelCategoryType.NPC_BUFF) {
-					remove = true;
-				}
-				break;
-			case NPC_DEBUFF_PHYSICAL:// DispelNpcDebuff
-				if (effect.getDispelCategory() == DispelCategoryType.NPC_DEBUFF_PHYSICAL) {
-					remove = true;
-				}
-				break;
+						&& effect.getReqDispelLevel() <= dispelLevel)
+						remove = true;
+					break;
+				case BUFF://DispelBuffEffect or DispelBuffCounterAtkEffect
+					if (effect.getDispelCategory() == DispelCategoryType.BUFF
+						&& effect.getReqDispelLevel() <= dispelLevel)
+						remove = true;
+					break;
+				case STUN:
+					if (effect.getDispelCategory() == DispelCategoryType.STUN)
+						remove = true;
+					break;
+				case NPC_BUFF://DispelNpcBuff
+					if (effect.getDispelCategory() == DispelCategoryType.NPC_BUFF)
+						remove = true;
+					break;
+				case NPC_DEBUFF_PHYSICAL://DispelNpcDebuff
+					if (effect.getDispelCategory() == DispelCategoryType.NPC_DEBUFF_PHYSICAL)
+						remove = true;
+					break;
 			}
 
 			if (remove) {
@@ -466,30 +461,28 @@ public class EffectController {
 			}
 		}
 	}
-
+	
 	public void removeEffectByEffectType(EffectType effectType) {
 		for (Effect effect : abnormalEffectMap.values()) {
 			for (EffectTemplate et : effect.getSuccessEffect()) {
-				if (effectType == et.getEffectType()) {
+				if (effectType == et.getEffectType())
 					effect.endEffect();
-				}
 			}
 		}
 	}
-
+	
 	private boolean removePower(Effect effect, int power) {
 		int effectPower = effect.removePower(power);
-
-		if (effectPower <= 0) {
+		
+		if (effectPower <= 0)
 			return true;
-		} else {
+		else
 			return false;
-		}
 	}
 
 	/**
 	 * Removes the effect by skillid.
-	 *
+	 * 
 	 * @param skillid
 	 */
 	public void removePassiveEffect(int skillid) {
@@ -527,8 +520,7 @@ public class EffectController {
 	}
 
 	/**
-	 * Removes all effects from controllers and ends them appropriately Passive
-	 * effect will not be removed
+	 * Removes all effects from controllers and ends them appropriately Passive effect will not be removed
 	 */
 	public void removeAllEffects() {
 		this.removeAllEffects(false);
@@ -539,7 +531,7 @@ public class EffectController {
 			Iterator<Map.Entry<String, Effect>> it = abnormalEffectMap.entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, Effect> entry = it.next();
-				// TODO recheck - kecimis
+				//TODO recheck - kecimis
 				if (!entry.getValue().getSkillTemplate().isNoRemoveAtDie() && !entry.getValue().isXpBoost()) {
 					entry.getValue().endEffect();
 					it.remove();
@@ -550,8 +542,8 @@ public class EffectController {
 				effect.endEffect();
 			}
 			noshowEffects.clear();
-		} else {
-			// remove all effects on logout
+		}	else {
+			//remove all effects on logout
 			for (Effect effect : abnormalEffectMap.values()) {
 				effect.endEffect();
 			}
@@ -572,34 +564,36 @@ public class EffectController {
 	 */
 	public boolean isAbnormalPresentBySkillId(int skillId) {
 		for (Effect effect : abnormalEffectMap.values()) {
-			if (effect.getSkillId() == skillId) {
+			if (effect.getSkillId() == skillId)
 				return true;
-			}
 		}
 		return false;
 	}
 
 	public boolean isNoshowPresentBySkillId(int skillId) {
 		for (Effect effect : noshowEffects.values()) {
-			if (effect.getSkillId() == skillId) {
+			if (effect.getSkillId() == skillId)
 				return true;
-			}
 		}
 		return false;
 	}
 
 	public boolean isPassivePresentBySkillId(int skillId) {
 		for (Effect effect : passiveEffectMap.values()) {
-			if (effect.getSkillId() == skillId) {
+			if (effect.getSkillId() == skillId)
 				return true;
-			}
 		}
 		return false;
 	}
-
-	public boolean isPresentBySkillId(int skillId) {
-		if (isPassivePresentBySkillId(skillId) || isNoshowPresentBySkillId(skillId)
-				|| isAbnormalPresentBySkillId(skillId)) {
+	
+	public boolean isPresentBySkillId(int skillId){
+		if(isPassivePresentBySkillId(skillId)){
+			return true;
+		}
+		if(isNoshowPresentBySkillId(skillId)){
+			return true;
+		}
+		if(isAbnormalPresentBySkillId(skillId)){
 			return true;
 		}
 		return false;
@@ -622,13 +616,12 @@ public class EffectController {
 	 * @return copy of anbornals list
 	 */
 	public List<Effect> getAbnormalEffects() {
-		List<Effect> effects = new ArrayList<>();
+		List<Effect> effects = new ArrayList<Effect>();
 		Iterator<Effect> iterator = iterator();
 		while (iterator.hasNext()) {
 			Effect effect = iterator.next();
-			if (effect != null) {
+			if (effect != null)
 				effects.add(effect);
-			}
 		}
 		return effects;
 	}
@@ -645,7 +638,7 @@ public class EffectController {
 			}
 		});
 	}
-
+	
 	public Collection<Effect> getAbnormalEffectsWithoutPassive() {
 		return Collections2.filter(abnormalEffectMap.values(), new Predicate<Effect>() {
 
@@ -655,7 +648,7 @@ public class EffectController {
 			}
 		});
 	}
-
+	
 	public Collection<Effect> getChantEffects() {
 		return Collections2.filter(abnormalEffectMap.values(), new Predicate<Effect>() {
 
@@ -672,7 +665,7 @@ public class EffectController {
 
 	public void setAbnormal(int mask) {
 		if ((owner instanceof Player) && ((mask & AbnormalState.CANT_MOVE_STATE.getId()) > 0)
-				&& (!((Player) owner).isInvulnerableWing())) {
+			&& (!((Player) owner).isInvulnerableWing())) {
 			Player player = (Player) owner;
 			player.getFlyController().onStopGliding(true);
 		}
@@ -682,18 +675,16 @@ public class EffectController {
 	public void unsetAbnormal(int mask) {
 		int count = 0;
 		for (Effect effect : abnormalEffectMap.values()) {
-			if ((effect.getAbnormals() & mask) == mask) {
+			if ((effect.getAbnormals() & mask) == mask)
 				count++;
-			}
 		}
-		if (count <= 1) {
+		if (count <= 1)
 			abnormals &= ~mask;
-		}
 	}
 
 	/**
 	 * Used for checking unique abnormal states
-	 *
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -703,7 +694,7 @@ public class EffectController {
 
 	/**
 	 * Used for compound abnormal state checks
-	 *
+	 * 
 	 * @param id
 	 * @return
 	 */
@@ -725,92 +716,97 @@ public class EffectController {
 
 	public boolean checkAvatar() {
 		for (Effect eff : getAbnormalEffects()) {
-			if (eff.isAvatar()) {
+			if (eff.isAvatar())
 				return true;
-			}
 		}
 		return false;
 	}
-
-	public boolean isEmpty() {
+	
+	public boolean isEmpty(){
 		return abnormalEffectMap.isEmpty();
 	}
+	
+	/*******************************************
+	 * 
+	 * 
+	 * 
+	 *******************************************/
+	
 
 	/**
 	 * @param skillId
 	 * @return
 	 */
 	public boolean hasPhycisalAbnormalEffect() {
-		for (Effect localEffect : this.abnormalEffectMap.values()) {
-			if (localEffect == null) {
+		Iterator<Effect> localIterator = this.abnormalEffectMap.values().iterator();
+		while (localIterator.hasNext()) {
+			Effect localEffect = localIterator.next();
+			if(localEffect == null)
 				continue;
-			}
 			AbnormalState abs = AbnormalState.getAbnormalStateById(localEffect.getAbnormals());
-			if (abs != null && abs.isPhysical()) {
+			if(abs != null && abs.isPhysical())
 				return true;
-			}
 		}
 		return false;
 	}
-
-	public void stopMagicalEffect() {
-		for (Effect localEffect : this.abnormalEffectMap.values()) {
-			if (localEffect == null) {
+	
+	public void stopMagicalEffect(){
+		Iterator<Effect> localIterator = this.abnormalEffectMap.values().iterator();
+		while (localIterator.hasNext()) {
+			Effect localEffect = localIterator.next();
+			if(localEffect == null)
 				continue;
-			}
 			AbnormalState abs = AbnormalState.getAbnormalStateById(localEffect.getAbnormals());
-			if (abs != null && abs.isMagical()) {
+			if(abs != null && abs.isMagical())
 				localEffect.endEffect();
-			}
 		}
 	}
-
-	public boolean applyPhysicalAbnormalEffect() {
-		if (hasPhycisalAbnormalEffect()) {
+	public boolean applyPhysicalAbnormalEffect(){
+		if(hasPhycisalAbnormalEffect())
 			return false;
-		}
-		stopMagicalEffect();
+		stopMagicalEffect();	
 		return true;
 	}
-
-	public boolean isUnderPhysicalChocEffect() {
-		return (isAbnormalSet(AbnormalState.STUMBLE) || isAbnormalSet(AbnormalState.CANNOT_MOVE)
-				|| isAbnormalSet(AbnormalState.SPIN) || isAbnormalSet(AbnormalState.OPENAERIAL)
-				|| isAbnormalSet(AbnormalState.STAGGER));
+	
+	public boolean isUnderPhysicalChocEffect(){
+		return (isAbnormalSet(AbnormalState.STUMBLE) || isAbnormalSet(AbnormalState.CANNOT_MOVE) || isAbnormalSet(AbnormalState.SPIN) || isAbnormalSet(AbnormalState.OPENAERIAL) || isAbnormalSet(AbnormalState.STAGGER));
 	}
 
-	public boolean isUnderSameChocEffect(EffectTemplate effectTemplate) {
-		if ((isAbnormalSet(AbnormalState.STUMBLE) && effectTemplate instanceof StumbleEffect)
-				|| (isAbnormalSet(AbnormalState.SPIN) && effectTemplate instanceof SpinEffect)) {
+	public boolean isUnderSameChocEffect(EffectTemplate effectTemplate){
+		if(isAbnormalSet(AbnormalState.STUMBLE) && effectTemplate instanceof StumbleEffect){
 			return true;
 		}
-		if (isAbnormalSet(AbnormalState.OPENAERIAL) && effectTemplate instanceof OpenAerialEffect) {
+		if(isAbnormalSet(AbnormalState.SPIN) && effectTemplate instanceof SpinEffect){
 			return true;
 		}
-		if (isAbnormalSet(AbnormalState.STAGGER) && effectTemplate instanceof StaggerEffect) {
+		if(isAbnormalSet(AbnormalState.OPENAERIAL) && effectTemplate instanceof OpenAerialEffect){
 			return true;
 		}
-		if (isAbnormalSet(AbnormalState.PARALYZE) && effectTemplate instanceof ParalyzeEffect) {
+		if(isAbnormalSet(AbnormalState.STAGGER) && effectTemplate instanceof StaggerEffect){
 			return true;
 		}
-		if (isAbnormalSet(AbnormalState.STUN) && effectTemplate instanceof StunEffect) {
+		if(isAbnormalSet(AbnormalState.PARALYZE) && effectTemplate instanceof ParalyzeEffect){
 			return true;
 		}
-		if (isAbnormalSet(AbnormalState.CANNOT_MOVE) && effectTemplate instanceof PulledEffect) {
+		if(isAbnormalSet(AbnormalState.STUN) && effectTemplate instanceof StunEffect){
+			return true;
+		}
+		if(isAbnormalSet(AbnormalState.CANNOT_MOVE) && effectTemplate instanceof PulledEffect){
 			return true;
 		}
 		return false;
 	}
-
-	public void removeAllMagicalChocEffect() {
-		for (Effect localEffect : this.abnormalEffectMap.values()) {
-			if (localEffect == null) {
+	
+	public void removeAllMagicalChocEffect(){
+		Iterator<Effect> localIterator = this.abnormalEffectMap.values().iterator();
+		while (localIterator.hasNext()) {
+			Effect localEffect = localIterator.next();
+			if(localEffect == null)
 				continue;
-			}
 			AbnormalState abs = AbnormalState.getAbnormalStateById(localEffect.getAbnormals());
-			if (abs == AbnormalState.STUN || abs == AbnormalState.PARALYZE) {
+			if(abs == AbnormalState.STUN || abs == AbnormalState.PARALYZE)
 				localEffect.endEffect();
-			}
 		}
 	}
 }
+

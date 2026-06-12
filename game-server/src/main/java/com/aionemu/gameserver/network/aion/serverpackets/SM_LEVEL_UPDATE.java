@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.smfnew.com>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -15,6 +15,7 @@
  *  along with aion-unique.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
+
 
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;

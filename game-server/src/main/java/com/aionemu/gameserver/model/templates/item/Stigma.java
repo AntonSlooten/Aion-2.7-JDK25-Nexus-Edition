@@ -64,7 +64,7 @@ public class Stigma {
 
 	public List<RequireSkill> getRequireSkill() {
 		if (requireSkill == null) {
-			requireSkill = new ArrayList<>();
+			requireSkill = new ArrayList<RequireSkill>();
 		}
 		return this.requireSkill;
 	}

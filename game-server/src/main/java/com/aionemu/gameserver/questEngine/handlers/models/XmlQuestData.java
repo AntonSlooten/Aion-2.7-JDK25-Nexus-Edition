@@ -49,13 +49,12 @@ public class XmlQuestData extends XMLQuest {
 	/**
 	 * Gets the value of the onTalkEvent property.
 	 * <p>
-	 * This accessor method returns a reference to the live list, not a snapshot.
-	 * Therefore any modification you make to the returned list will be present
-	 * inside the JAXB object. This is why there is not a <CODE>set</CODE> method
-	 * for the onTalkEvent property.
+	 * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+	 * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+	 * the onTalkEvent property.
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 *
+	 * 
 	 * <pre>
 	 * getOnTalkEvent().add(newItem);
 	 * </pre>
@@ -64,7 +63,7 @@ public class XmlQuestData extends XMLQuest {
 	 */
 	public List<OnTalkEvent> getOnTalkEvent() {
 		if (onTalkEvent == null) {
-			onTalkEvent = new ArrayList<>();
+			onTalkEvent = new ArrayList<OnTalkEvent>();
 		}
 		return this.onTalkEvent;
 	}
@@ -72,13 +71,12 @@ public class XmlQuestData extends XMLQuest {
 	/**
 	 * Gets the value of the onKillEvent property.
 	 * <p>
-	 * This accessor method returns a reference to the live list, not a snapshot.
-	 * Therefore any modification you make to the returned list will be present
-	 * inside the JAXB object. This is why there is not a <CODE>set</CODE> method
-	 * for the onKillEvent property.
+	 * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+	 * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+	 * the onKillEvent property.
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 *
+	 * 
 	 * <pre>
 	 * getOnKillEvent().add(newItem);
 	 * </pre>
@@ -87,14 +85,14 @@ public class XmlQuestData extends XMLQuest {
 	 */
 	public List<OnKillEvent> getOnKillEvent() {
 		if (onKillEvent == null) {
-			onKillEvent = new ArrayList<>();
+			onKillEvent = new ArrayList<OnKillEvent>();
 		}
 		return this.onKillEvent;
 	}
 
 	/**
 	 * Gets the value of the startNpcId property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getStartNpcId() {
@@ -103,7 +101,7 @@ public class XmlQuestData extends XMLQuest {
 
 	/**
 	 * Gets the value of the endNpcId property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getEndNpcId() {
@@ -112,10 +110,8 @@ public class XmlQuestData extends XMLQuest {
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see
-	 * com.aionemu.gameserver.questEngine.handlers.models.QuestScriptData#register(
-	 * com.aionemu.gameserver.questEngine .QuestEngine)
+	 * @see com.aionemu.gameserver.questEngine.handlers.models.QuestScriptData#register(com.aionemu.gameserver.questEngine
+	 * .QuestEngine)
 	 */
 	@Override
 	public void register(QuestEngine questEngine) {

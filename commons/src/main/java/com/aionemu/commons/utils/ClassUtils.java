@@ -40,8 +40,10 @@ public class ClassUtils {
 	 * Return true if class a is either equivalent to class b, or if class a is a subclass of class b, i.e. if a either
 	 * "extends" or "implements" b. Note tht either or both "Class" objects may represent interfaces.
 	 *
-	 * @param a class
-	 * @param b class
+	 * @param a
+	 *          class
+	 * @param b
+	 *          class
 	 * @return true if a == b or a extends b or a implements b
 	 */
 	public static boolean isSubclass(Class<?> a, Class<?> b) {
@@ -73,8 +75,10 @@ public class ClassUtils {
 	/**
 	 * Checks if class in member of the package
 	 *
-	 * @param clazz       class to check
-	 * @param packageName package
+	 * @param clazz
+	 *          class to check
+	 * @param packageName
+	 *          package
 	 * @return true if is member
 	 */
 	public static boolean isPackageMember(Class<?> clazz, String packageName) {
@@ -84,8 +88,10 @@ public class ClassUtils {
 	/**
 	 * Checks if classNames belongs to package
 	 *
-	 * @param className   class name
-	 * @param packageName package
+	 * @param className
+	 *          class name
+	 * @param packageName
+	 *          package
 	 * @return true if belongs
 	 */
 	public static boolean isPackageMember(String className, String packageName) {
@@ -102,7 +108,7 @@ public class ClassUtils {
 	 * @param directory folder with class files
 	 * @return Set of fully qualified class names
 	 * @throws IllegalArgumentException if specified file is not directory or does not exists
-	 * @throws NullPointerException     if directory is null
+	 * @throws NullPointerException	 if directory is null
 	 */
 	public static Set<String> getClassNamesFromDirectory(File directory) throws IllegalArgumentException {
 
@@ -118,7 +124,7 @@ public class ClassUtils {
 	 *
 	 * @param directory   The base directory
 	 * @param packageName The package name for classes found inside the base directory
-	 * @param recursive   include subpackages or not
+	 * @param recursive include subpackages or not
 	 * @return The classes
 	 */
 	public static Set<String> getClassNamesFromPackage(File directory, String packageName, boolean recursive) {
@@ -129,8 +135,8 @@ public class ClassUtils {
 		File[] files = directory.listFiles();
 		for (File file : files) {
 			if (file.isDirectory()) {
-
-				if (!recursive) {
+				
+				if(!recursive){
 					continue;
 				}
 
@@ -155,9 +161,9 @@ public class ClassUtils {
 	 *
 	 * @param file jar file
 	 * @return class names from jar file
-	 * @throws IOException              if something went wrong
+	 * @throws IOException			  if something went wrong
 	 * @throws IllegalArgumentException if file doesn't exists or is not jar file
-	 * @throws NullPointerException     if file is null
+	 * @throws NullPointerException	 if file is null
 	 */
 	public static Set<String> getClassNamesFromJarFile(File file) throws IOException {
 

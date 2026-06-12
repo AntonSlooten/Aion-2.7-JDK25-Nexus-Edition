@@ -42,7 +42,7 @@ public class SkillEngine {
 
 	/**
 	 * This method is used for skills that were learned by player
-	 *
+	 * 
 	 * @param player
 	 * @param skillId
 	 * @return Skill
@@ -50,16 +50,15 @@ public class SkillEngine {
 	public Skill getSkillFor(Player player, int skillId, VisibleObject firstTarget) {
 		SkillTemplate template = DataManager.SKILL_DATA.getSkillTemplate(skillId);
 
-		if (template == null) {
+		if (template == null)
 			return null;
-		}
 
 		return getSkillFor(player, template, firstTarget);
 	}
-
+	
 	/**
 	 * This method is used for skills that were learned by player
-	 *
+	 * 
 	 * @param player
 	 * @param template
 	 * @param firstTarget
@@ -68,22 +67,20 @@ public class SkillEngine {
 	public Skill getSkillFor(Player player, SkillTemplate template, VisibleObject firstTarget) {
 		// player doesn't have such skill and ist not provoked
 		if (template.getActivationAttribute() != ActivationAttribute.PROVOKED) {
-			if (!player.getSkillList().isSkillPresent(template.getSkillId())) {
+			if (!player.getSkillList().isSkillPresent(template.getSkillId()))
 				return null;
-			}
 		}
 
 		Creature target = null;
-		if (firstTarget instanceof Creature) {
+		if (firstTarget instanceof Creature)
 			target = (Creature) firstTarget;
-		}
 
 		return new Skill(template, player, target);
 	}
 
 	/**
 	 * This method is used for not learned skills (item skills etc)
-	 *
+	 * 
 	 * @param creature
 	 * @param skillId
 	 * @param skillLevel
@@ -94,29 +91,25 @@ public class SkillEngine {
 	}
 
 	public Skill getSkill(Creature creature, int skillId, int skillLevel, VisibleObject firstTarget,
-			ItemTemplate itemTemplate) {
+		ItemTemplate itemTemplate) {
 		SkillTemplate template = DataManager.SKILL_DATA.getSkillTemplate(skillId);
 
-		if (template == null) {
+		if (template == null)
 			return null;
-		}
 
 		Creature target = null;
-		if (firstTarget instanceof Creature) {
+		if (firstTarget instanceof Creature)
 			target = (Creature) firstTarget;
-		}
 		return new Skill(template, creature, skillLevel, target, itemTemplate);
 	}
 
 	public static SkillEngine getInstance() {
 		return skillEngine;
 	}
-
 	/**
-	 * This method is used to apply directly effect of given skill without checking
-	 * properties, sending packets, etc Should be only used from quest scripts, or
-	 * when you are sure about it
-	 *
+	 * This method is used to apply directly effect of given skill without checking properties, sending packets, etc
+	 * Should be only used from quest scripts, or when you are sure about it
+	 * 
 	 * @param skillId
 	 * @param effector
 	 * @param effected
@@ -126,9 +119,8 @@ public class SkillEngine {
 		SkillTemplate st = DataManager.SKILL_DATA.getSkillTemplate(skillId);
 		final Effect ef = new Effect(effector, effected, st, st.getLvl(), duration);
 		ef.addAllEffectToSucess();
-		if (duration > 0) {
+		if(duration > 0)
 			ef.setForcedDuration(true);
-		}
 		ef.applyEffect();
 	}
 }

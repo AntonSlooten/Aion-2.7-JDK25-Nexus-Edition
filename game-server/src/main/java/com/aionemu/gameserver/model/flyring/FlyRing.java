@@ -38,15 +38,14 @@ public class FlyRing extends VisibleObject {
 	private Point3D p2 = null;
 
 	public FlyRing(FlyRingTemplate template, int instanceId) {
-		super(IDFactory.getInstance().nextId(), new FlyRingController(), null, null,
-				World.getInstance().createPosition(template.getMap(), template.getCenter().getX(),
-						template.getCenter().getY(), template.getCenter().getZ(), (byte) 0, instanceId));
+		super(IDFactory.getInstance().nextId(), new FlyRingController(), null, null, World.getInstance().createPosition(
+			template.getMap(), template.getCenter().getX(), template.getCenter().getY(), template.getCenter().getZ(),
+			(byte) 0, instanceId));
 
 		((FlyRingController) getController()).setOwner(this);
 		this.template = template;
 		this.name = (template.getName() == null) ? "FLY_RING" : template.getName();
-		this.center = new Point3D(template.getCenter().getX(), template.getCenter().getY(),
-				template.getCenter().getZ());
+		this.center = new Point3D(template.getCenter().getX(), template.getCenter().getY(), template.getCenter().getZ());
 		this.p1 = new Point3D(template.getP1().getX(), template.getP1().getY(), template.getP1().getZ());
 		this.p2 = new Point3D(template.getP2().getX(), template.getP2().getY(), template.getP2().getZ());
 		this.plane = new Plane3D(center, p1, p2);

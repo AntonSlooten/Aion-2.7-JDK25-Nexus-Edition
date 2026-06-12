@@ -41,85 +41,92 @@ public class _4074GainOrLose extends QuestHandler {
 				if (dialog == QuestDialog.EXCHANGE_COIN) {
 					if (QuestService.startQuest(env)) {
 						return sendQuestDialog(env, 1011);
-					} else {
+					}
+					else {
 						return sendQuestSelectionDialog(env);
 					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 205181) { // Bonarunerk
 				long kinahAmount = player.getInventory().getKinah();
 				long demonsEye = player.getInventory().getItemCountByItemId(186000038);
 				switch (dialog) {
-				case EXCHANGE_COIN: {
-					return sendQuestDialog(env, 1011);
-				}
-				case SELECT_ACTION_1011: {
-					if (kinahAmount >= 1000 && demonsEye >= 1) {
-						changeQuestStep(env, 0, 0, true);
-						reward = 0;
-						return sendQuestDialog(env, 5);
-					} else {
-						return sendQuestDialog(env, 1009);
+					case EXCHANGE_COIN: {
+						return sendQuestDialog(env, 1011);
 					}
-				}
-				case SELECT_ACTION_1352: {
-					if (kinahAmount >= 5000 && demonsEye >= 1) {
-						changeQuestStep(env, 0, 0, true);
-						reward = 1;
-						return sendQuestDialog(env, 6);
-					} else {
-						return sendQuestDialog(env, 1009);
+					case SELECT_ACTION_1011: {
+						if (kinahAmount >= 1000 && demonsEye >= 1) {
+							changeQuestStep(env, 0, 0, true);
+							reward = 0;
+							return sendQuestDialog(env, 5);
+						}
+						else {
+							return sendQuestDialog(env, 1009);
+						}
 					}
-				}
-				case SELECT_ACTION_1693: {
-					if (kinahAmount >= 25000 && demonsEye >= 1) {
-						changeQuestStep(env, 0, 0, true);
-						reward = 2;
-						return sendQuestDialog(env, 7);
-					} else {
-						return sendQuestDialog(env, 1009);
+					case SELECT_ACTION_1352: {
+						if (kinahAmount >= 5000 && demonsEye >= 1) {
+							changeQuestStep(env, 0, 0, true);
+							reward = 1;
+							return sendQuestDialog(env, 6);
+						}
+						else {
+							return sendQuestDialog(env, 1009);
+						}
 					}
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
+					case SELECT_ACTION_1693: {
+						if (kinahAmount >= 25000 && demonsEye >= 1) {
+							changeQuestStep(env, 0, 0, true);
+							reward = 2;
+							return sendQuestDialog(env, 7);
+						}
+						else {
+							return sendQuestDialog(env, 1009);
+						}
+					}
+					case FINISH_DIALOG: {
+						return sendQuestSelectionDialog(env);
+					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 205181) { // Bonarunerk
 				if (dialog == QuestDialog.SELECT_NO_REWARD) {
 					switch (reward) {
-					case 0: {
-						if (QuestService.finishQuest(env, 0)) {
-							player.getInventory().decreaseKinah(1000);
-							removeQuestItem(env, 186000038, 1);
-							ItemService.addItem(player, 186000010, 1);
-							reward = -1;
-							break;
+						case 0: {
+							if (QuestService.finishQuest(env, 0)) {
+								player.getInventory().decreaseKinah(1000);
+								removeQuestItem(env, 186000038, 1);
+								ItemService.addItem(player, 186000010, 1);
+								reward = -1;
+								break;
+							}
 						}
-					}
-					case 1: {
-						if (QuestService.finishQuest(env, 1)) {
-							player.getInventory().decreaseKinah(5000);
-							removeQuestItem(env, 186000038, 1);
-							ItemService.addItem(player, 186000010, Rnd.get(1, 3));
-							reward = -1;
-							break;
+						case 1: {
+							if (QuestService.finishQuest(env, 1)) {
+								player.getInventory().decreaseKinah(5000);
+								removeQuestItem(env, 186000038, 1);
+								ItemService.addItem(player, 186000010, Rnd.get(1, 3));
+								reward = -1;
+								break;
+							}
 						}
-					}
-					case 2: {
-						if (QuestService.finishQuest(env, 2)) {
-							player.getInventory().decreaseKinah(25000);
-							removeQuestItem(env, 186000038, 1);
-							ItemService.addItem(player, 186000010, Rnd.get(1, 6));
-							reward = -1;
-							break;
+						case 2: {
+							if (QuestService.finishQuest(env, 2)) {
+								player.getInventory().decreaseKinah(25000);
+								removeQuestItem(env, 186000038, 1);
+								ItemService.addItem(player, 186000010, Rnd.get(1, 6));
+								reward = -1;
+								break;
+							}
 						}
-					}
 					}
 					return closeDialogWindow(env);
-				} else {
+				}
+				else {
 					QuestService.abandonQuest(player, questId);
 				}
 			}

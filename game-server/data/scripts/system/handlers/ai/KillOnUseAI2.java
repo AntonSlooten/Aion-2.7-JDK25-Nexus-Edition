@@ -7,7 +7,6 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 
 /**
  * TO DO REMOVE BAD IDEA
- * 
  * @author Luzien trigger onNpcGroupKillEvent on use
  */
 @AIName("killonuse")

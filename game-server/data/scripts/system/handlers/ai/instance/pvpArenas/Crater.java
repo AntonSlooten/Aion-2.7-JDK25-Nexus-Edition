@@ -34,21 +34,21 @@ import com.aionemu.gameserver.skillengine.SkillEngine;
 public class Crater extends AggressiveNpcAI2 {
 	private boolean isActive = false;
 	private static final int timer = 60000;
-
+	
 	@Override
 	protected AIAnswer pollInstance(AIQuestion question) {
 		switch (question) {
-		case SHOULD_DECAY:
-			return AIAnswers.NEGATIVE;
-		case SHOULD_RESPAWN:
-			return AIAnswers.POSITIVE;
-		case SHOULD_REWARD:
-			return AIAnswers.NEGATIVE;
-		default:
-			return AIAnswers.NEGATIVE;
+			case SHOULD_DECAY:
+				return AIAnswers.NEGATIVE;
+			case SHOULD_RESPAWN:
+				return AIAnswers.POSITIVE;
+			case SHOULD_REWARD:
+				return AIAnswers.NEGATIVE;
+			default:
+				return AIAnswers.NEGATIVE;
 		}
 	}
-
+	
 	@Override
 	public AttackIntention chooseAttackIntention() {
 		return AttackIntention.SKILL_ATTACK;
@@ -58,7 +58,7 @@ public class Crater extends AggressiveNpcAI2 {
 	protected void handleSpawned() {
 		super.handleSpawned();
 		isActive = true;
-		// scheduleEruption();
+		//scheduleEruption();
 	}
 
 	@Override
@@ -66,8 +66,8 @@ public class Crater extends AggressiveNpcAI2 {
 		super.handleDespawned();
 		isActive = false;
 	}
-
-	// TODO What is this unused private method ?!
+	
+	//TODO What is this unused private method ?!
 	@SuppressWarnings("unused")
 	private void scheduleEruption() {
 		if (!isActive) {

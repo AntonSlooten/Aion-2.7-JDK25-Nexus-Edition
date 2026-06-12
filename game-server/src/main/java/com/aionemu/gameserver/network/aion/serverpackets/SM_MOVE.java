@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * This packet is displaying movement of players etc.
- *
+ * 
  * @author -Nemesiss-
  */
 public class SM_MOVE extends AionServerPacket {
@@ -57,7 +57,8 @@ public class SM_MOVE extends AionServerPacket {
 					writeF(playermoveData.vectorX);
 					writeF(playermoveData.vectorY);
 					writeF(playermoveData.vectorZ);
-				} else {
+				}
+				else {
 					writeF(moveData.getTargetX2());
 					writeF(moveData.getTargetY2());
 					writeF(moveData.getTargetZ2());
@@ -73,7 +74,8 @@ public class SM_MOVE extends AionServerPacket {
 				writeF(playermoveData.vectorY);
 				writeF(playermoveData.vectorZ);
 			}
-		} else {
+		}
+		else {
 			if ((moveData.getMovementMask() & MovementMask.STARTMOVE) == MovementMask.STARTMOVE) {
 				writeF(moveData.getTargetX2());
 				writeF(moveData.getTargetY2());

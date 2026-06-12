@@ -30,6 +30,7 @@ public class _3210RescueHaorunerk extends QuestHandler {
 		qe.registerQuestNpc(215080).addOnKillEvent(questId);
 	}
 
+
 	@Override
 	public boolean onDialogEvent(QuestEnv env) {
 		final Player player = env.getPlayer();
@@ -37,62 +38,74 @@ public class _3210RescueHaorunerk extends QuestHandler {
 		QuestDialog dialog = env.getDialog();
 
 		int targetId = 0;
-		if (env.getVisibleObject() instanceof Npc)
-			targetId = ((Npc) env.getVisibleObject()).getNpcId();
+		if (env.getVisibleObject() instanceof Npc) targetId = ((Npc) env.getVisibleObject()).getNpcId();
 
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 798318) {
 				switch (dialog) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 4762);
-				case ASK_ACCEPTION:
-					return sendQuestDialog(env, 4);
-				case REFUSE_QUEST:
-					return sendQuestDialog(env, 1004);
-				case ACCEPT_QUEST:
-					return sendQuestStartDialog(env);
+					case START_DIALOG:
+						return sendQuestDialog(env, 4762);
+					case ASK_ACCEPTION:
+						return sendQuestDialog(env, 4);
+					case REFUSE_QUEST:
+						return sendQuestDialog(env, 1004);
+					case ACCEPT_QUEST:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
 		/*
-		 * if (qs != null && qs.getStatus() == QuestStatus.START) { if (targetId ==
-		 * 798332 && qs.getQuestVarById(0) == 0) { switch (dialog) { case USE_OBJECT:
-		 * return sendQuestDialog(env, 1011); case SELECT_ACTION_1012: return
-		 * sendQuestDialog(env, 1012); case STEP_TO_1: qs.setQuestVarById(0, 1);
-		 * updateQuestStatus(env); PacketSendUtility.sendPacket(player, new
-		 * SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10)); return true; } }
-		 * }
-		 * 
-		 * if (targetId == 798331) { if (qs != null || qs.getStatus() ==
-		 * QuestStatus.START) { if (env.getDialog() == QuestDialog.START_DIALOG) {
-		 * return sendQuestDialog(env, 10002); } if (env.getDialog() ==
-		 * QuestDialog.SELECT_REWARD && qs.getQuestVarById(1) == 1 &&
-		 * qs.getQuestVarById(2) == 1) { qs.setStatus(QuestStatus.REWARD);
-		 * updateQuestStatus(env); return sendQuestDialog(env, 5); } } return
-		 * sendQuestEndDialog(env); } return false;
-		 */
-
 		if (qs != null && qs.getStatus() == QuestStatus.START) {
 			if (targetId == 798332 && qs.getQuestVarById(0) == 0) {
 				switch (dialog) {
-				case USE_OBJECT:
-					return sendQuestDialog(env, 1011);
-				case SELECT_ACTION_1012:
-					return sendQuestDialog(env, 1012);
-				case STEP_TO_1:
-					qs.setQuestVarById(0, 1);
+					case USE_OBJECT:
+						return sendQuestDialog(env, 1011);
+					case SELECT_ACTION_1012:
+						return sendQuestDialog(env, 1012);
+					case STEP_TO_1: 
+						qs.setQuestVarById(0, 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+				}
+			}
+		}
+
+		if (targetId == 798331) {
+			if (qs != null || qs.getStatus() == QuestStatus.START) {
+				if (env.getDialog() == QuestDialog.START_DIALOG) {
+					return sendQuestDialog(env, 10002);
+				}
+				if (env.getDialog() == QuestDialog.SELECT_REWARD && qs.getQuestVarById(1) == 1 && qs.getQuestVarById(2) == 1) {
+					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
+					return sendQuestDialog(env, 5);
+				}
+			}
+			return sendQuestEndDialog(env);
+		}
+		return false;
+		*/
+		
+		if (qs != null && qs.getStatus() == QuestStatus.START) {
+			if (targetId == 798332 && qs.getQuestVarById(0) == 0) {
+				switch (dialog) {
+					case USE_OBJECT:
+						return sendQuestDialog(env, 1011);
+					case SELECT_ACTION_1012:
+						return sendQuestDialog(env, 1012);
+					case STEP_TO_1: 
+						qs.setQuestVarById(0, 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
 				}
 			}
 			if (targetId == 798331) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 10002);
 				}
-				if (env.getDialog() == QuestDialog.SELECT_REWARD && qs.getQuestVarById(1) == 1
-						&& qs.getQuestVarById(2) == 1) {
+				if (env.getDialog() == QuestDialog.SELECT_REWARD && qs.getQuestVarById(1) == 1 && qs.getQuestVarById(2) == 1) {
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
 					return sendQuestDialog(env, 5);
@@ -101,7 +114,7 @@ public class _3210RescueHaorunerk extends QuestHandler {
 			}
 		}
 		return false;
-
+		
 	}
 
 	@Override

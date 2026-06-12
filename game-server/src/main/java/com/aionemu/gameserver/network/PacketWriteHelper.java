@@ -18,6 +18,7 @@ package com.aionemu.gameserver.network;
 
 import java.nio.ByteBuffer;
 
+
 /**
  * @author -Nemesiss-
  *
@@ -28,7 +29,7 @@ public abstract class PacketWriteHelper {
 
 	/**
 	 * Write int to buffer.
-	 *
+	 * 
 	 * @param buf
 	 * @param value
 	 */
@@ -38,7 +39,7 @@ public abstract class PacketWriteHelper {
 
 	/**
 	 * Write short to buffer.
-	 *
+	 * 
 	 * @param buf
 	 * @param value
 	 */
@@ -48,7 +49,7 @@ public abstract class PacketWriteHelper {
 
 	/**
 	 * Write byte to buffer.
-	 *
+	 * 
 	 * @param buf
 	 * @param value
 	 */
@@ -58,7 +59,7 @@ public abstract class PacketWriteHelper {
 
 	/**
 	 * Write double to buffer.
-	 *
+	 * 
 	 * @param buf
 	 * @param value
 	 */
@@ -68,7 +69,7 @@ public abstract class PacketWriteHelper {
 
 	/**
 	 * Write float to buffer.
-	 *
+	 * 
 	 * @param buf
 	 * @param value
 	 */
@@ -78,7 +79,7 @@ public abstract class PacketWriteHelper {
 
 	/**
 	 * Write long to buffer.
-	 *
+	 * 
 	 * @param buf
 	 * @param value
 	 */
@@ -88,25 +89,25 @@ public abstract class PacketWriteHelper {
 
 	/**
 	 * Write String to buffer
-	 *
+	 * 
 	 * @param buf
 	 * @param text
 	 */
 	protected final void writeS(ByteBuffer buf, String text) {
 		if (text == null) {
 			buf.putChar('\000');
-		} else {
+		}
+		else {
 			final int len = text.length();
-			for (int i = 0; i < len; i++) {
+			for (int i = 0; i < len; i++)
 				buf.putChar(text.charAt(i));
-			}
 			buf.putChar('\000');
 		}
 	}
 
 	/**
 	 * Write byte array to buffer.
-	 *
+	 * 
 	 * @param buf
 	 * @param data
 	 */
@@ -116,11 +117,12 @@ public abstract class PacketWriteHelper {
 
 	/**
 	 * Skip specified amount of bytes
-	 *
+	 * 
 	 * @param buf
 	 * @param bytes
 	 */
-	protected final void skip(ByteBuffer buf, int bytes) {
+	protected final void skip(ByteBuffer buf, int bytes)
+	{
 		buf.put(new byte[bytes]);
 	}
 }

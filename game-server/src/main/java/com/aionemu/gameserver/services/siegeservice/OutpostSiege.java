@@ -20,7 +20,8 @@ public class OutpostSiege extends Siege<OutpostLocation> {
 	/**
 	 * TODO: This should be removed
 	 */
-	public static final String OUTPOST_SIEGE_BOSS_AI = "siege_raceprotector";
+	@Deprecated
+	public static final String SIEGE_BOSS_AI_NAME = "siege_raceprotector";
 
 	public OutpostSiege(OutpostLocation siegeLocation) {
 		super(siegeLocation);
@@ -34,15 +35,14 @@ public class OutpostSiege extends Siege<OutpostLocation> {
 		getSiegeLocation().setVulnerable(true);
 
 		SiegeService.getInstance().spawnProtectors(getSiegeLocationId(), getSiegeLocation().getRace());
-		initSiegeBoss(Collections.singleton(OUTPOST_SIEGE_BOSS_AI));
+		initSiegeBoss(Collections.singleton(SIEGE_BOSS_AI_NAME));
 
 		// TODO: Refactor me
 		World.getInstance().doOnAllPlayers(new Visitor<Player>() {
 
 			@Override
 			public void visit(Player player) {
-				PacketSendUtility.sendPacket(player,
-						new SM_SYSTEM_MESSAGE(getSiegeLocationId() == 2111 ? 1400317 : 1400318));
+				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(getSiegeLocationId() == 2111 ? 1400317 : 1400318));
 			}
 		});
 
@@ -78,13 +78,13 @@ public class OutpostSiege extends Siege<OutpostLocation> {
 					}
 				});
 			}
-		} else {
+		}
+		else {
 			World.getInstance().doOnAllPlayers(new Visitor<Player>() {
 
 				@Override
 				public void visit(Player player) {
-					PacketSendUtility.sendPacket(player,
-							new SM_SYSTEM_MESSAGE(getSiegeLocationId() == 2111 ? 1400319 : 1400320));
+					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(getSiegeLocationId() == 2111 ? 1400319 : 1400320));
 				}
 			});
 		}
@@ -94,7 +94,7 @@ public class OutpostSiege extends Siege<OutpostLocation> {
 
 	/**
 	 * Returns 2 hours (7200 seconds)
-	 *
+	 * 
 	 * @return 7200 seconds
 	 */
 	@Override

@@ -21,7 +21,7 @@ import java.nio.ByteBuffer;
 
 /**
  * Base class for every Server Packet
- *
+ * 
  * @author -Nemesiss-
  */
 public abstract class BaseServerPacket extends BasePacket {
@@ -33,8 +33,9 @@ public abstract class BaseServerPacket extends BasePacket {
 
 	/**
 	 * Constructs a new server packet with specified id.
-	 *
-	 * @param opcode packet opcode.
+	 * 
+	 * @param opcode
+	 *          packet opcode.
 	 */
 	protected BaseServerPacket(int opcode) {
 		super(PacketType.SERVER, opcode);
@@ -49,15 +50,16 @@ public abstract class BaseServerPacket extends BasePacket {
 	}
 
 	/**
-	 * @param buf the buf to set
+	 * @param buf
+	 *          the buf to set
 	 */
 	public void setBuf(ByteBuffer buf) {
 		this.buf = buf;
 	}
-
+	
 	/**
 	 * Write int to buffer.
-	 *
+	 * 
 	 * @param buf
 	 * @param value
 	 */
@@ -67,7 +69,7 @@ public abstract class BaseServerPacket extends BasePacket {
 
 	/**
 	 * Write short to buffer.
-	 *
+	 * 
 	 * @param buf
 	 * @param value
 	 */
@@ -77,7 +79,7 @@ public abstract class BaseServerPacket extends BasePacket {
 
 	/**
 	 * Write byte to buffer.
-	 *
+	 * 
 	 * @param buf
 	 * @param value
 	 */
@@ -87,7 +89,7 @@ public abstract class BaseServerPacket extends BasePacket {
 
 	/**
 	 * Write double to buffer.
-	 *
+	 * 
 	 * @param buf
 	 * @param value
 	 */
@@ -97,7 +99,7 @@ public abstract class BaseServerPacket extends BasePacket {
 
 	/**
 	 * Write float to buffer.
-	 *
+	 * 
 	 * @param buf
 	 * @param value
 	 */
@@ -107,7 +109,7 @@ public abstract class BaseServerPacket extends BasePacket {
 
 	/**
 	 * Write long to buffer.
-	 *
+	 * 
 	 * @param buf
 	 * @param value
 	 */
@@ -117,14 +119,15 @@ public abstract class BaseServerPacket extends BasePacket {
 
 	/**
 	 * Write String to buffer
-	 *
+	 * 
 	 * @param buf
 	 * @param text
 	 */
 	protected final void writeS(String text) {
 		if (text == null) {
 			buf.putChar('\000');
-		} else {
+		}
+		else {
 			final int len = text.length();
 			for (int i = 0; i < len; i++)
 				buf.putChar(text.charAt(i));
@@ -134,7 +137,7 @@ public abstract class BaseServerPacket extends BasePacket {
 
 	/**
 	 * Write byte array to buffer.
-	 *
+	 * 
 	 * @param buf
 	 * @param data
 	 */

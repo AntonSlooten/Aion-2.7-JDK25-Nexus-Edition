@@ -19,7 +19,7 @@ package com.aionemu.gameserver.utils.idfactory;
 
 /**
  * This error is thrown by id factory
- *
+ * 
  * @author SoulKeeper
  */
 @SuppressWarnings("serial")

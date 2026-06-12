@@ -40,7 +40,7 @@ public class StaticDoorData {
 	private List<StaticDoorWorld> staticDorWorlds;
 
 	/** A map containing all door templates */
-	private TIntObjectHashMap<StaticDoorWorld> staticDoorData = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<StaticDoorWorld> staticDoorData = new TIntObjectHashMap<StaticDoorWorld>();
 
 	/**
 	 * @param u

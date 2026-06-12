@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-engine <aion-engine.com>
  *
  *  aion-engine is free software: you can redistribute it and/or modify
@@ -61,7 +61,8 @@ public class _11107ComfortisaBox extends QuestHandler {
 						return sendQuestStartDialog(env);
 					else
 						return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -78,57 +79,57 @@ public class _11107ComfortisaBox extends QuestHandler {
 				else
 					return sendQuestEndDialog(env);
 			}
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 296489) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1352);
-			case STEP_TO_1:
-				if (var == 0) {
-					removeQuestItem(env, 182206859, 1);
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1352);
+				case STEP_TO_1:
+					if (var == 0) {
+						removeQuestItem(env, 182206859, 1);
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
 			}
-		} else if (targetId == 296490) {
+		}
+		else if (targetId == 296490) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1693);
-			case STEP_TO_2:
-				if (var == 1) {
-					removeQuestItem(env, 182206859, 1);
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1693);
+				case STEP_TO_2:
+					if (var == 1) {
+						removeQuestItem(env, 182206859, 1);
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
 			}
-		} else if (targetId == 296491) {
+		}
+		else if (targetId == 296491) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 2)
-					return sendQuestDialog(env, 2034);
-			case STEP_TO_3:
-				if (var == 2) {
-					removeQuestItem(env, 182206859, 1);
-					qs.setQuestVarById(0, var + 1);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
+				case START_DIALOG:
+					if (var == 2)
+						return sendQuestDialog(env, 2034);
+				case STEP_TO_3:
+					if (var == 2) {
+						removeQuestItem(env, 182206859, 1);
+						qs.setQuestVarById(0, var + 1);
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
 			}
 		}
 		return false;

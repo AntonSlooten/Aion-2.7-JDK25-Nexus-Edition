@@ -60,60 +60,63 @@ public class _2122AshestoAshes extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		if (targetId == 0) {
 			switch (env.getDialog()) {
-			case ACCEPT_QUEST:
-				QuestService.startQuest(env);
-				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
-				return true;
-			case REFUSE_QUEST:
-				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
-				return true;
+				case ACCEPT_QUEST:
+					QuestService.startQuest(env);
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
+					return true;
+				case REFUSE_QUEST:
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
+					return true;
 			}
-		} else if (targetId == 203551) {
+		}
+		else if (targetId == 203551) {
 			if (qs == null)
 				return false;
 			else if (qs.getStatus() == QuestStatus.START) {
 				int var = qs.getQuestVarById(0);
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					break;
-				case SELECT_ACTION_1012:
-					if (var == 0)
-						removeQuestItem(env, 182203120, 1);
-					break;
-				case STEP_TO_1:
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+						break;
+					case SELECT_ACTION_1012:
+						if (var == 0)
+							removeQuestItem(env, 182203120, 1);
+						break;
+					case STEP_TO_1:
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
 				}
-			} else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
+			}
+			else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT)
 					return sendQuestDialog(env, 2375);
 				else
 					return sendQuestEndDialog(env);
 			}
-		} else if (targetId == 700148) {
+		}
+		else if (targetId == 700148) {
 			if (qs != null && qs.getStatus() == QuestStatus.START)
 				return true;
-		} else if (targetId == 730029) {
+		}
+		else if (targetId == 730029) {
 			if (qs != null && qs.getStatus() == QuestStatus.START) {
 				switch (env.getDialog()) {
-				case USE_OBJECT:
-					if (player.getInventory().getItemCountByItemId(182203133) < 3) {
-						sendQuestDialog(env, 1693);
+					case USE_OBJECT:
+						if (player.getInventory().getItemCountByItemId(182203133) < 3) {
+							sendQuestDialog(env, 1693);
+							return false;
+						}
+						sendQuestDialog(env, 1352);
 						return false;
-					}
-					sendQuestDialog(env, 1352);
-					return false;
-				case STEP_TO_2:
-					removeQuestItem(env, 182203133, 3);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
-					return true;
+					case STEP_TO_2:
+						removeQuestItem(env, 182203133, 3);
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
+						return true;
 				}
 
 			}
@@ -131,7 +134,7 @@ public class _2122AshestoAshes extends QuestHandler {
 		if (id != 182203120)
 			return HandlerResult.UNKNOWN;
 		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 20, 1, 0), true);
+			new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 20, 1, 0), true);
 		if (qs == null || qs.getStatus() == QuestStatus.NONE)
 			sendQuestDialog(env, 4);
 		return HandlerResult.SUCCESS;

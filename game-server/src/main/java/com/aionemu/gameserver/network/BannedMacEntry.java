@@ -3,7 +3,7 @@ package com.aionemu.gameserver.network;
 import java.sql.Timestamp;
 
 /**
- *
+ * 
  * @author KID
  *
  */

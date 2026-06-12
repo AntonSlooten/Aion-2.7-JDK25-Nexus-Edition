@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -16,13 +16,12 @@
  */
 package com.aionemu.loginserver.service;
 
-import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
+import javolution.util.FastList;
+import javolution.util.FastMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.loginserver.GameServerInfo;
 import com.aionemu.loginserver.GameServerTable;
@@ -48,8 +47,8 @@ public class PlayerTransferService {
 		return instance;
 	}
 	
-	private Map<Integer, PlayerTransferRequest> transfers = new ConcurrentHashMap<>();
-	private Map<Integer, PlayerTransferTask> tasks = new ConcurrentHashMap<>();
+	private Map<Integer, PlayerTransferRequest> transfers = FastMap.newInstance();
+	private Map<Integer, PlayerTransferTask> tasks = FastMap.newInstance();
 	private Future<?> veryfyTask;
 	private PlayerTransferDAO dao;
 	
@@ -67,7 +66,7 @@ public class PlayerTransferService {
 	 * first init. getting values from sql
 	 */
 	protected void verifyNewTasks() {
-		List<PlayerTransferTask> tasksNew = this.dao.getNew();
+		FastList<PlayerTransferTask> tasksNew = this.dao.getNew();
 		log.info("PlayerTransfer perform task init. "+tasks.size()+" new tasks.");
 		for(PlayerTransferTask task : tasksNew) {
 			GameServerInfo server = GameServerTable.getGameServerInfo(task.sourceServerId);

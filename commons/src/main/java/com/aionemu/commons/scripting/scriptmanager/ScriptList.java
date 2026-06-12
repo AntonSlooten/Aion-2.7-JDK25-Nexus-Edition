@@ -16,15 +16,16 @@
  */
 package com.aionemu.commons.scripting.scriptmanager;
 
+import java.util.Set;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Set;
 
 /**
  * Root element for script descriptors
- *
+ * 
  * @author SoulKeeper
  */
 @XmlRootElement(name = "scriptlist")
@@ -39,7 +40,7 @@ public class ScriptList {
 
 	/**
 	 * Returns list of script descriptors
-	 *
+	 * 
 	 * @return list of script descriptors
 	 */
 	public Set<ScriptInfo> getScriptInfos() {
@@ -48,16 +49,15 @@ public class ScriptList {
 
 	/**
 	 * Sets list of script descriptors
-	 *
-	 * @param scriptInfos lisft of script descriptors
+	 * 
+	 * @param scriptInfos
+	 *          lisft of script descriptors
 	 */
 	public void setScriptInfos(Set<ScriptInfo> scriptInfos) {
 		this.scriptInfos = scriptInfos;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();

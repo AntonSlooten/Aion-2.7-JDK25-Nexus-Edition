@@ -79,24 +79,27 @@ public class _1607MappingTheRevolutionaries extends QuestHandler {
 			int var4 = qs.getQuestVarById(4);
 			if (targetId == 204578) { // Kuobe
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					case STEP_TO_1: {
+						return defaultCloseDialog(env, 0, 1); // 1
+					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-			} else if (targetId == 204574) { // Finn
+			}
+			else if (targetId == 204574) { // Finn
 				if (dialog == QuestDialog.START_DIALOG) {
 					if (var == 1 && var1 == 1 && var2 == 1 && var3 == 1 && var4 == 1) {
 						return sendQuestDialog(env, 10002);
 					}
-				} else if (dialog == QuestDialog.SELECT_REWARD) {
+				}
+				else if (dialog == QuestDialog.SELECT_REWARD) {
 					changeQuestStep(env, 1, 1, true);
 					return sendQuestDialog(env, 5);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204574) { // Finn
 				return sendQuestEndDialog(env);
 			}
@@ -118,34 +121,34 @@ public class _1607MappingTheRevolutionaries extends QuestHandler {
 			int var4 = qs.getQuestVarById(4);
 			if (var == 1) {
 				switch (zoneName) {
-				case MUDTHORN_EXPERIMENT_LAB_210040000: {
-					if (var1 == 0) {
-						changeQuestStep(env, 0, 1, false, 1); // 1: 1
-						return true;
+					case MUDTHORN_EXPERIMENT_LAB_210040000: {
+						if (var1 == 0) {
+							changeQuestStep(env, 0, 1, false, 1); // 1: 1
+							return true;
+						}
+						break;
 					}
-					break;
-				}
-				case ROTRON_EXPERIMENT_LAB_210040000: {
-					if (var2 == 0) {
-						changeQuestStep(env, 0, 1, false, 2); // 2: 1
-						return true;
+					case ROTRON_EXPERIMENT_LAB_210040000: {
+						if (var2 == 0) {
+							changeQuestStep(env, 0, 1, false, 2); // 2: 1
+							return true;
+						}
+						break;
 					}
-					break;
-				}
-				case PRETOR_EXPERIMENT_LAB_210040000: {
-					if (var3 == 0) {
-						changeQuestStep(env, 0, 1, false, 3); // 3: 1
-						return true;
+					case PRETOR_EXPERIMENT_LAB_210040000: {
+						if (var3 == 0) {
+							changeQuestStep(env, 0, 1, false, 3); // 3: 1
+							return true;
+						}
+						break;
 					}
-					break;
-				}
-				case POISON_EXTRACTION_LAB_210040000: {
-					if (var4 == 0) {
-						changeQuestStep(env, 0, 1, false, 4); // 4: 1
-						return true;
+					case POISON_EXTRACTION_LAB_210040000: {
+						if (var4 == 0) {
+							changeQuestStep(env, 0, 1, false, 4); // 4: 1
+							return true;
+						}
+						break;
 					}
-					break;
-				}
 				}
 			}
 		}

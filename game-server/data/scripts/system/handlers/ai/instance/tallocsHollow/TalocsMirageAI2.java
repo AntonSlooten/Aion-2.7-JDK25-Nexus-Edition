@@ -22,7 +22,8 @@ import ai.PortalDialogAI2;
 
 /**
  * @author xTz
- * @edited vlog comment: it should work without overriding. it's standard dialog
+ * @edited vlog
+ *	comment: it should work without overriding. it's standard dialog
  */
 @AIName("talocsmirage")
 public class TalocsMirageAI2 extends PortalDialogAI2 {

@@ -10,8 +10,8 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
  * @author Pan
  */
 public class CmdEnemy extends BaseCommand {
-
-	@Override
+	
+	
 	public void execute(Player admin, String... params) {
 		if (params.length != 2) {
 			showHelp(admin);
@@ -25,23 +25,26 @@ public class CmdEnemy extends BaseCommand {
 		if (params[1].equals("all")) {
 			admin.setAdminEnmity(3);
 			admin.setAdminNeutral(0);
-		} else if (params[1].equals("players")) {
+		}
+		else if (params[1].equals("players")) {
 			admin.setAdminEnmity(2);
-			if (neutralType > 1) {
+			if (neutralType > 1)
 				admin.setAdminNeutral(0);
-			}
-		} else if (params[1].equals("npcs")) {
+		}
+		else if (params[1].equals("npcs")) {
 			admin.setAdminEnmity(1);
-			if (neutralType == 1 || neutralType == 3) {
+			if (neutralType == 1 || neutralType == 3)
 				admin.setAdminNeutral(0);
-			}
-		} else if (params[1].equals("cancel")) {
+		}
+		else if (params[1].equals("cancel")) {
 			admin.setAdminEnmity(0);
 			output = "You appear regular to both Players and Npcs.";
-		} else if (params[1].equals("help")) {
+		}
+		else if (params[1].equals("help")) {
 			showHelp(admin);
 			return;
-		} else {
+		}
+		else {
 			showHelp(admin);
 			return;
 		}
@@ -53,3 +56,4 @@ public class CmdEnemy extends BaseCommand {
 		admin.updateKnownlist();
 	}
 }
+

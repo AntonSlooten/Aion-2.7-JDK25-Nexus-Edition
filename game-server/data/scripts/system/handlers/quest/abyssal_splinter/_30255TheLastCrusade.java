@@ -38,31 +38,34 @@ public class _30255TheLastCrusade extends QuestHandler {
 			if (targetId == 260264) { // Aratus
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			if (targetId == 700856) { // Artifact of Protection
 				switch (dialog) {
-				case USE_OBJECT: {
-					if (var == 1) {
-						return useQuestObject(env, 1, 1, true, false);
+					case USE_OBJECT: {
+						if (var == 1) {
+							return useQuestObject(env, 1, 1, true, false);
+						}
+						break;
 					}
-					break;
-				}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 278501) { // Michalis
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 10002);
-				}
-				default: {
-					return sendQuestEndDialog(env);
-				}
+					case START_DIALOG: {
+						return sendQuestDialog(env, 10002);
+					}
+					default: {
+						return sendQuestEndDialog(env);
+					}
 				}
 			}
 		}

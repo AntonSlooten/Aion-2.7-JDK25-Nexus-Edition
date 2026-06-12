@@ -23,6 +23,7 @@ import com.aionemu.gameserver.questEngine.model.QuestEnv;
 import com.aionemu.gameserver.questEngine.model.QuestState;
 import com.aionemu.gameserver.questEngine.model.QuestStatus;
 
+
 /**
  * @author zhkchi
  *
@@ -47,46 +48,48 @@ public class _21053DramataDrama extends QuestHandler {
 		QuestState qs = player.getQuestStateList().getQuestState(questId);
 		QuestDialog dialog = env.getDialog();
 		int targetId = env.getTargetId();
-
-		if (qs == null || qs.getStatus() == QuestStatus.NONE || qs.canRepeat()) {
+		
+		if(qs == null || qs.getStatus() == QuestStatus.NONE || qs.canRepeat()){
 			if (targetId == 799320) {
 				switch (dialog) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 1011);
-				case SELECT_ACTION_1012: {
-					return sendQuestDialog(env, 1012);
-				}
-				case ASK_ACCEPTION: {
-					return sendQuestDialog(env, 4);
-				}
-				case ACCEPT_QUEST: {
-					return sendQuestStartDialog(env);
-				}
-				case REFUSE_QUEST: {
-					return sendQuestDialog(env, 1004);
-				}
+					case START_DIALOG:
+						return sendQuestDialog(env, 1011);
+					case SELECT_ACTION_1012: {
+						return sendQuestDialog(env, 1012);
+					}
+					case ASK_ACCEPTION: {
+						return sendQuestDialog(env, 4);
+					}
+					case ACCEPT_QUEST: {
+						return sendQuestStartDialog(env);
+					}
+					case REFUSE_QUEST: {
+						return sendQuestDialog(env, 1004);
+					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			if (targetId == 799320) {
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2375);
-				}
-				case SELECT_ACTION_2034: {
-					return sendQuestDialog(env, 2034);
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, var, var, true, 5, 2716);
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-
+					case START_DIALOG: {
+						return sendQuestDialog(env, 2375);
+					}
+					case SELECT_ACTION_2034: {
+						return sendQuestDialog(env, 2034);
+					}
+					case CHECK_COLLECTED_ITEMS: {
+						return checkQuestItems(env, var, var, true, 5, 2716);
+					}
+					case FINISH_DIALOG: {
+						return sendQuestSelectionDialog(env);
+					}
+					
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799320) {
 				return sendQuestEndDialog(env);
 			}

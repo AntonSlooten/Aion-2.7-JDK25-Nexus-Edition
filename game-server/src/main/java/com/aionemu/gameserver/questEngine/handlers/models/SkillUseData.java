@@ -45,7 +45,7 @@ public class SkillUseData extends XMLQuest {
 
 	@Override
 	public void register(QuestEngine questEngine) {
-		FastMap<Integer, QuestSkillData> questSkills = new FastMap<>();
+		FastMap<Integer, QuestSkillData> questSkills = new FastMap<Integer, QuestSkillData>();
 		for (QuestSkillData qsd : skills) {
 			questSkills.put(qsd.getSkillId(), qsd);
 		}

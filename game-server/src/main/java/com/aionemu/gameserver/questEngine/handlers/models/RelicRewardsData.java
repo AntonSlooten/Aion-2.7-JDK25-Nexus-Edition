@@ -15,7 +15,7 @@
  * along with aion-lightning. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package com.aionemu.gameserver.questEngine.handlers.models;
+ package com.aionemu.gameserver.questEngine.handlers.models;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -48,8 +48,7 @@ public class RelicRewardsData extends XMLQuest {
 
 	@Override
 	public void register(QuestEngine questEngine) {
-		RelicRewards template = new RelicRewards(id, startNpcId, relicVar1, relicVar2, relicVar3, relicVar4,
-				relicCount);
+		RelicRewards template = new RelicRewards(id, startNpcId, relicVar1, relicVar2, relicVar3, relicVar4, relicCount);
 		questEngine.addQuestHandler(template);
 	}
 

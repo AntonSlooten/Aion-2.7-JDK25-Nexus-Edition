@@ -40,7 +40,7 @@ public class DredgionService2 {
 
 	private static final Logger log = LoggerFactory.getLogger(DredgionService2.class);
 	private boolean registerAvailable;
-	private FastList<Integer> playersWithCooldown = new FastList<>();
+	private FastList<Integer> playersWithCooldown = new FastList<Integer>();
 
 	public DredgionService2() {
 	}
@@ -55,8 +55,7 @@ public class DredgionService2 {
 			}
 
 		}, DredgionConfig.DREDGION_TIMES);
-		log.info("Scheduled Dredgion: based on cron expression: " + times + " Duration: "
-				+ DredgionConfig.DREDGION_TIMER + " in minutes");
+		log.info("Scheduled Dredgion: based on cron expression: " + times + " Duration: " + DredgionConfig.DREDGION_TIMER + " in minutes");
 	}
 
 	private void startUregisterDredgionTask() {
@@ -97,11 +96,10 @@ public class DredgionService2 {
 					continue;
 				}
 				PacketSendUtility.sendPacket(player, new SM_AUTO_GROUP(instanceMaskId, 6));
-				if (player.getCommonData().getLevel() > 50) {
+				if (player.getCommonData().getLevel() > 50)
 					PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_INSTANCE_OPEN_IDDREADGION_02);
-				} else {
+				else
 					PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_INSTANCE_OPEN_IDAB1_DREADGION);
-				}
 			}
 		}
 	}
@@ -113,8 +111,9 @@ public class DredgionService2 {
 	public byte getInstanceMaskId(Player player) {
 		int level = player.getLevel();
 		if (level > 45 && level < 51) {
-			return 1;
-		} else if (level > 50 && level < 56) {
+			return 1 ;
+		}
+		else if (level > 50 && level< 56) {
 			return 2;
 		}
 		return 0;

@@ -36,7 +36,7 @@ import java.util.concurrent.Future;
  */
 public class RespawnService {
 	private static final int IMMEDIATE_DECAY = 5 * 1000;
-	private static final int WITHOUT_DROP_DECAY = (int) (1.5 * 60 * 1000);
+	private static final int WITHOUT_DROP_DECAY = (int)(1.5 * 60 * 1000);
 	private static final int WITH_DROP_DECAY = 5 * 60 * 1000;
 
 	/**
@@ -47,13 +47,12 @@ public class RespawnService {
 		int decayInterval;
 		Set<DropItem> drop = DropRegistrationService.getInstance().geCurrentDropMap().get(npc.getObjectId());
 
-		if (drop == null) {
+		if(drop == null)
 			decayInterval = IMMEDIATE_DECAY;
-		} else if (drop.isEmpty()) {
+		else if(drop.isEmpty())
 			decayInterval = WITHOUT_DROP_DECAY;
-		} else {
+		else
 			decayInterval = WITH_DROP_DECAY;
-		}
 
 		return scheduleDecayTask(npc, decayInterval);
 	}
@@ -79,9 +78,8 @@ public class RespawnService {
 	private static final VisibleObject respawn(SpawnTemplate spawnTemplate, final int instanceId) {
 		SpawnTime spawnTime = spawnTemplate.getSpawnTime();
 		DayTime dayTime = GameTimeManager.getGameTime().getDayTime();
-		if (!spawnTime.isAllowedDuring(dayTime)) {
+		if (!spawnTime.isAllowedDuring(dayTime))
 			return null;
-		}
 
 		int worldId = spawnTemplate.getWorldId();
 		boolean instanceExists = InstanceService.isInstanceExist(worldId, instanceId);

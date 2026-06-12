@@ -28,18 +28,20 @@ import com.aionemu.gameserver.services.item.ItemService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.World;
 
+
 /**
  * @author
  */
 
 public class WeddingService {
 
-	private Map<Integer, Wedding> weddings = new HashMap<>();
+	private Map<Integer, Wedding> weddings = new HashMap<Integer, Wedding>();
 
 	public static final WeddingService getInstance() {
 		return SingletonHolder.instance;
 	}
 
+        
 	public void registerOffer(Player partner1, Player partner2, Player priest) {
 		if (!canRegister(partner1, partner2)) {
 			PacketSendUtility.sendMessage(priest, "One of players already married.");
@@ -50,8 +52,8 @@ public class WeddingService {
 	}
 
 	private boolean canRegister(Player partner1, Player partner2) {
-		return (getWedding(partner1) == null && getWedding(partner2) == null && !partner1.isMarried()
-				&& !partner2.isMarried());
+		return (getWedding(partner1) == null && getWedding(partner2) == null && !partner1.isMarried() && !partner2
+			.isMarried());
 	}
 
 	public void acceptWedding(Player player) {
@@ -63,7 +65,8 @@ public class WeddingService {
 		if (partnersWedding.isAccepted()) {
 			if (!checkConditions(player, partner)) {
 				cleanWedding(player, partner);
-			} else {
+			}
+			else {
 				doWedding(player, partner);
 				if (WeddingsConfig.WEDDINGS_GIFT_ENABLE) {
 					giveGifts(player, partner);
@@ -81,8 +84,8 @@ public class WeddingService {
 		partner.setPartnerId(player.getObjectId());
 		PacketSendUtility.sendMessage(player, "You had married on " + partner.getName() + ".");
 		PacketSendUtility.sendMessage(partner, "You had married on " + player.getName() + ".");
-		PacketSendUtility.sendMessage(getPriest(player),
-				"You had married" + player.getName() + " and " + partner.getName() + ".");
+		PacketSendUtility.sendMessage(getPriest(player), "You had married" + player.getName() + " and " + partner.getName()
+			+ ".");
 		cleanWedding(player, partner);
 	}
 
@@ -106,9 +109,11 @@ public class WeddingService {
 						success2 = true;
 					}
 				}
-			} catch (NumberFormatException e) {
+			}
+			catch (NumberFormatException e) {
 				e.printStackTrace();
-			} finally {
+			}
+			finally {
 				if (!success1 || !success2) {
 					PacketSendUtility.sendMessage(player, "One of players not have required suit.");
 					PacketSendUtility.sendMessage(partner, "One of players not equip required suit.");
@@ -126,7 +131,7 @@ public class WeddingService {
 		}
 
 		if (!player.havePermission(WeddingsConfig.WEDDINGS_MEMBERSHIP)
-				|| !partner.havePermission(WeddingsConfig.WEDDINGS_MEMBERSHIP)) {
+			|| !partner.havePermission(WeddingsConfig.WEDDINGS_MEMBERSHIP)) {
 			PacketSendUtility.sendMessage(player, "One of players not have required membership.");
 			PacketSendUtility.sendMessage(partner, "One of players not have required membership.");
 			PacketSendUtility.sendMessage(getPriest(player), "One of players not have required membership.");
@@ -134,7 +139,7 @@ public class WeddingService {
 		}
 
 		if (!WeddingsConfig.WEDDINGS_SAME_SEX
-				&& player.getCommonData().getGender().equals(partner.getCommonData().getGender())) {
+			&& player.getCommonData().getGender().equals(partner.getCommonData().getGender())) {
 			PacketSendUtility.sendMessage(player, "Same-sex weddings prohibited.");
 			PacketSendUtility.sendMessage(partner, "Same-sex weddings prohibited.");
 			PacketSendUtility.sendMessage(getPriest(player), "Same-sex weddings prohibited.");
@@ -142,7 +147,7 @@ public class WeddingService {
 		}
 
 		if (!WeddingsConfig.WEDDINGS_DIFF_RACES
-				&& !player.getCommonData().getRace().equals(partner.getCommonData().getRace())) {
+			&& !player.getCommonData().getRace().equals(partner.getCommonData().getRace())) {
 			PacketSendUtility.sendMessage(player, "Weddings between different races prohibited.");
 			PacketSendUtility.sendMessage(partner, "Weddings between different races prohibited.");
 			PacketSendUtility.sendMessage(getPriest(player), "Weddings between different races prohibited.");
@@ -151,7 +156,7 @@ public class WeddingService {
 
 		if (WeddingsConfig.WEDDINGS_KINAH != 0) {
 			if (!player.getInventory().tryDecreaseKinah(WeddingsConfig.WEDDINGS_KINAH)
-					|| !partner.getInventory().tryDecreaseKinah(WeddingsConfig.WEDDINGS_KINAH)) {
+				|| !partner.getInventory().tryDecreaseKinah(WeddingsConfig.WEDDINGS_KINAH)) {
 				PacketSendUtility.sendMessage(player, "One of players not have required kinah count.");
 				PacketSendUtility.sendMessage(partner, "One of players not have required kinah count.");
 				PacketSendUtility.sendMessage(getPriest(player), "One of players not have required kinah count.");

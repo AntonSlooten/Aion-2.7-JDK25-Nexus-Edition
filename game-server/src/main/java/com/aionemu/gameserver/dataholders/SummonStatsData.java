@@ -38,9 +38,9 @@ import com.aionemu.gameserver.model.templates.stats.SummonStatsTemplate;
 public class SummonStatsData {
 
 	@XmlElement(name = "summon_stats", required = true)
-	private List<SummonStatsType> summonTemplatesList = new ArrayList<>();
+	private List<SummonStatsType> summonTemplatesList = new ArrayList<SummonStatsType>();
 
-	private final TIntObjectHashMap<SummonStatsTemplate> summonTemplates = new TIntObjectHashMap<>();
+	private final TIntObjectHashMap<SummonStatsTemplate> summonTemplates = new TIntObjectHashMap<SummonStatsTemplate>();
 
 	/**
 	 * @param u
@@ -62,15 +62,14 @@ public class SummonStatsData {
 	 */
 	public SummonStatsTemplate getSummonTemplate(int npcId, int level) {
 		SummonStatsTemplate template = summonTemplates.get(makeHash(npcId, level));
-		if (template == null) {
+		if (template == null)
 			template = summonTemplates.get(makeHash(201022, 10));// TEMP till all templates are done
-		}
 		return template;
 	}
 
 	/**
 	 * Size of summon templates
-	 *
+	 * 
 	 * @return
 	 */
 	public int size() {
@@ -110,7 +109,7 @@ public class SummonStatsData {
 	/**
 	 * Note:<br>
 	 * max level is 255
-	 *
+	 * 
 	 * @param npcId
 	 * @param level
 	 * @return

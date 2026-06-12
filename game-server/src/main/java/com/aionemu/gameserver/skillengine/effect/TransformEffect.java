@@ -29,7 +29,6 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_TRANSFORM;
 import com.aionemu.gameserver.skillengine.model.Effect;
 import com.aionemu.gameserver.skillengine.model.TransformType;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.skillengine.effect.TransformEffect;
 
 /**
  * @author Sweetkr, kecimis
@@ -58,75 +57,87 @@ public abstract class TransformEffect extends EffectTemplate {
 		int newModel = 0;
 		int newpanel = 0;
 		if (effected instanceof Player) {
-
-			for (Effect tmp : effected.getEffectController().getAbnormalEffects()) {
+			
+			for (Effect tmp : effected.getEffectController().getAbnormalEffects())	{
 				for (EffectTemplate template : tmp.getEffectTemplates()) {
 					if (template instanceof TransformEffect) {
-						if (((TransformEffect) template).getTransformId() == model) {
+						if (((TransformEffect)template).getTransformId() == model)
 							continue;
-						}
-						newModel = ((TransformEffect) template).getTransformId();
-						newpanel = ((TransformEffect) template).getPanelId();
+						newModel = ((TransformEffect)template).getTransformId();
+						newpanel = ((TransformEffect)template).getPanelId();
 						break;
 					}
 				}
 			}
 			effected.setTransformedModelId(newModel);
-		} else if (effected instanceof Summon) {
+		}
+		else if (effected instanceof Summon) {
 			effected.setTransformedModelId(0);
-		} else if (effected instanceof Npc) {
+		}
+		else if (effected instanceof Npc) {
 			effected.setTransformedModelId(effected.getObjectTemplate().getTemplateId());
 		}
-
+		
 		PacketSendUtility.broadcastPacketAndReceive(effected, new SM_TRANSFORM(effected, panelid, false));
-		if (newModel == 0) {
-			if (state != null) {
+		if(newModel == 0){
+			if (state != null)
 				effected.getEffectController().unsetAbnormal(state.getId());
-			}
 
-			if (effected instanceof Player) {
+			if (effected instanceof Player)
 				((Player) effected).setTransformed(false);
-			}
-		} else {
-			PacketSendUtility.broadcastPacketAndReceive(effected, new SM_TRANSFORM(effected, newpanel, true));
 		}
+		else
+			PacketSendUtility.broadcastPacketAndReceive(effected, new SM_TRANSFORM(effected, newpanel, true));
 
 	}
 
-	/*
-	 * public void endEffect(Effect effect) { final Creature effected =
-	 * effect.getEffected();
-	 * 
-	 * if (state != null)
-	 * effected.getEffectController().unsetAbnormal(state.getId());
-	 * 
-	 * if (effected instanceof Player) { int newModel = 0; TransformType
-	 * transformType = TransformType.PC; for (Effect tmp :
-	 * effected.getEffectController().getAbnormalEffects()) { for (EffectTemplate
-	 * template : tmp.getEffectTemplates()) { if (template instanceof
-	 * TransformEffect) { if (((TransformEffect)template).getTransformId() == model)
-	 * continue; newModel = ((TransformEffect)template).getTransformId();
-	 * transformType = ((TransformEffect)template).getTransformType(); break; } } }
-	 * effected.getTransformModel().setModelId(newModel);
-	 * effected.getTransformModel().setTransformType(transformType); } else if
-	 * (effected instanceof Summon) { effected.getTransformModel().setModelId(0); }
-	 * else if (effected instanceof Npc) {
-	 * effected.getTransformModel().setModelId(effected.getObjectTemplate().
-	 * getTemplateId()); } effected.getTransformModel().setPanelId(0);
-	 * PacketSendUtility.broadcastPacketAndReceive(effected, new
-	 * SM_TRANSFORM(effected, 0, false));
-	 * 
-	 * if (effected instanceof Player) ((Player) effected).setTransformed(false); }
-	 */
 
-	public void startEffect(Effect effect, AbnormalState effectId) {
+	/*
+	public void endEffect(Effect effect) {
 		final Creature effected = effect.getEffected();
 
+		if (state != null)
+			effected.getEffectController().unsetAbnormal(state.getId());
+		
+		if (effected instanceof Player) {
+			int newModel = 0;
+			TransformType transformType = TransformType.PC;
+			for (Effect tmp : effected.getEffectController().getAbnormalEffects())	{
+				for (EffectTemplate template : tmp.getEffectTemplates()) {
+					if (template instanceof TransformEffect) {
+						if (((TransformEffect)template).getTransformId() == model)
+							continue;
+						newModel = ((TransformEffect)template).getTransformId();
+						transformType = ((TransformEffect)template).getTransformType();
+						break;
+					}
+				}
+			}
+			effected.getTransformModel().setModelId(newModel);
+			effected.getTransformModel().setTransformType(transformType);
+		}
+		else if (effected instanceof Summon) {
+			effected.getTransformModel().setModelId(0);
+		}
+		else if (effected instanceof Npc) {
+			effected.getTransformModel().setModelId(effected.getObjectTemplate().getTemplateId());
+		}
+		effected.getTransformModel().setPanelId(0);
+		PacketSendUtility.broadcastPacketAndReceive(effected, new SM_TRANSFORM(effected, 0, false));
+
+		if (effected instanceof Player)
+			((Player) effected).setTransformed(false);
+	}
+	*/
+	
+	public void startEffect(Effect effect, AbnormalState effectId) {
+		final Creature effected = effect.getEffected();
+		
 		if (effectId != null) {
 			effect.setAbnormal(effectId.getId());
 			effected.getEffectController().setAbnormal(effectId.getId());
 		}
-
+		
 		effected.setTransformedModelId(model);
 		PacketSendUtility.broadcastPacketAndReceive(effected, new SM_TRANSFORM(effected, panelid, true));
 
@@ -138,12 +149,12 @@ public abstract class TransformEffect extends EffectTemplate {
 	public TransformType getTransformType() {
 		return type;
 	}
-
-	public int getTransformId() {
+	
+	public int getTransformId()	{
 		return model;
 	}
 
-	public int getPanelId() {
+	public int getPanelId()	{
 		return panelid;
 	}
 }

@@ -43,12 +43,11 @@ public class SM_ABYSS_ARTIFACT_INFO3 extends AionServerPacket {
 	@Override
 	protected void writeImpl(AionConnection con) {
 		if (locations != null) {
-			FastList<ArtifactLocation> validLocations = new FastList<>();
+			FastList<ArtifactLocation> validLocations = new FastList<ArtifactLocation>();
 			for (SiegeLocation loc : locations) {
 				if ((loc.getLocationId() >= 1011) && (loc.getLocationId() < 2000)) {
-					if (loc instanceof ArtifactLocation) {
+					if (loc instanceof ArtifactLocation)
 						validLocations.add((ArtifactLocation) loc);
-					}
 				}
 			}
 			writeH(validLocations.size());
@@ -57,7 +56,8 @@ public class SM_ABYSS_ARTIFACT_INFO3 extends AionServerPacket {
 				writeC(0);
 				writeD(0);
 			}
-		} else {
+		}
+		else {
 			writeH(1);
 			writeD(loc * 10 + 1);
 			writeC(state);

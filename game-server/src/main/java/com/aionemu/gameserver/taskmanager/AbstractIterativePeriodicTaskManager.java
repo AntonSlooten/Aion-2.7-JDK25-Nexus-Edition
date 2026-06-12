@@ -27,10 +27,10 @@ import com.aionemu.commons.utils.concurrent.RunnableStatsManager;
  */
 public abstract class AbstractIterativePeriodicTaskManager<T> extends AbstractPeriodicTaskManager {
 
-	private final Set<T> startList = new FastSet<>();
-	private final Set<T> stopList = new FastSet<>();
+	private final Set<T> startList = new FastSet<T>();
+	private final Set<T> stopList = new FastSet<T>();
 
-	private final FastSet<T> activeTasks = new FastSet<>();
+	private final FastSet<T> activeTasks = new FastSet<T>();
 
 	protected AbstractIterativePeriodicTaskManager(int period) {
 		super(period);
@@ -39,12 +39,12 @@ public abstract class AbstractIterativePeriodicTaskManager<T> extends AbstractPe
 	public boolean hasTask(T task) {
 		readLock();
 		try {
-			if (stopList.contains(task)) {
+			if (stopList.contains(task))
 				return false;
-			}
 
 			return activeTasks.contains(task) || startList.contains(task);
-		} finally {
+		}
+		finally {
 			readUnlock();
 		}
 	}
@@ -55,7 +55,8 @@ public abstract class AbstractIterativePeriodicTaskManager<T> extends AbstractPe
 			startList.add(task);
 
 			stopList.remove(task);
-		} finally {
+		}
+		finally {
 			writeUnlock();
 		}
 	}
@@ -66,7 +67,8 @@ public abstract class AbstractIterativePeriodicTaskManager<T> extends AbstractPe
 			stopList.add(task);
 
 			startList.remove(task);
-		} finally {
+		}
+		finally {
 			writeUnlock();
 		}
 	}
@@ -80,7 +82,8 @@ public abstract class AbstractIterativePeriodicTaskManager<T> extends AbstractPe
 
 			startList.clear();
 			stopList.clear();
-		} finally {
+		}
+		finally {
 			writeUnlock();
 		}
 
@@ -90,9 +93,11 @@ public abstract class AbstractIterativePeriodicTaskManager<T> extends AbstractPe
 
 			try {
 				callTask(task);
-			} catch (RuntimeException e) {
+			}
+			catch (RuntimeException e) {
 				log.warn("", e);
-			} finally {
+			}
+			finally {
 				RunnableStatsManager.handleStats(task.getClass(), getCalledMethodName(), System.nanoTime() - begin);
 			}
 		}

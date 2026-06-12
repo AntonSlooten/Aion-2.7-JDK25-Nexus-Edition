@@ -66,74 +66,77 @@ public class _3933ClassPreceptorConsent extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			// 1 - Receive the signature of Boreas on the recommendation letter.
-			case 203704:
-				switch (dialog) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 1011);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1);
-				}
-				// 2 - Receive the signature of Jumentis on the recommendation letter.
-			case 203705:
-				if (var == 1) {
+				// 1 - Receive the signature of Boreas on the recommendation letter.
+				case 203704:
 					switch (dialog) {
-					case START_DIALOG:
-						return sendQuestDialog(env, 1352);
-					case STEP_TO_2:
-						return defaultCloseDialog(env, 1, 2);
+						case START_DIALOG:
+							return sendQuestDialog(env, 1011);
+						case STEP_TO_1:
+							return defaultCloseDialog(env, 0, 1);
 					}
-				}
-				// 3 - Receive the signature of Charna on the recommendation letter.
-			case 203706:
-				if (var == 2) {
+					// 2 - Receive the signature of Jumentis on the recommendation letter.
+				case 203705:
+					if (var == 1) {
+						switch (dialog) {
+							case START_DIALOG:
+								return sendQuestDialog(env, 1352);
+							case STEP_TO_2:
+								return defaultCloseDialog(env, 1, 2);
+						}
+					}
+					// 3 - Receive the signature of Charna on the recommendation letter.
+				case 203706:
+					if (var == 2) {
+						switch (dialog) {
+							case START_DIALOG:
+								return sendQuestDialog(env, 1693);
+							case STEP_TO_3:
+								return defaultCloseDialog(env, 2, 3);
+						}
+					}
+					// 4 - Receive the signature of Thrasymedes on the recommendation letter.
+				case 203707:
+					if (var == 3) {
+						switch (dialog) {
+							case START_DIALOG:
+								return sendQuestDialog(env, 2034);
+							case STEP_TO_4:
+								return defaultCloseDialog(env, 3, 4);
+						}
+					}
+					// 5 - Report the result to Lavirintos with the Oath Stone
+				case 203752:
 					switch (dialog) {
-					case START_DIALOG:
-						return sendQuestDialog(env, 1693);
-					case STEP_TO_3:
-						return defaultCloseDialog(env, 2, 3);
+						case START_DIALOG: {
+							if (var == 4) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case SET_REWARD: {
+							if (player.getInventory().getItemCountByItemId(186000080) >= 1) {
+								removeQuestItem(env, 186000080, 1);
+								return defaultCloseDialog(env, 4, 4, true, false, 0);
+							}
+							else {
+								return sendQuestDialog(env, 2461);
+							}
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
 					}
-				}
-				// 4 - Receive the signature of Thrasymedes on the recommendation letter.
-			case 203707:
-				if (var == 3) {
-					switch (dialog) {
-					case START_DIALOG:
-						return sendQuestDialog(env, 2034);
-					case STEP_TO_4:
-						return defaultCloseDialog(env, 3, 4);
-					}
-				}
-				// 5 - Report the result to Lavirintos with the Oath Stone
-			case 203752:
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 4) {
-						return sendQuestDialog(env, 2375);
-					}
-				}
-				case SET_REWARD: {
-					if (player.getInventory().getItemCountByItemId(186000080) >= 1) {
-						removeQuestItem(env, 186000080, 1);
-						return defaultCloseDialog(env, 4, 4, true, false, 0);
-					} else {
-						return sendQuestDialog(env, 2461);
-					}
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-				break;
-			// No match
-			default:
-				return sendQuestStartDialog(env);
+					break;
+					// No match
+				default:
+					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203701) {
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

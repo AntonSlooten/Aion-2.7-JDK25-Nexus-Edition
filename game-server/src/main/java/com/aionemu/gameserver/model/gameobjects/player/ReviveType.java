@@ -47,7 +47,7 @@ public enum ReviveType {
 
 	/**
 	 * Constructor.
-	 *
+	 * 
 	 * @param typeId
 	 */
 	private ReviveType(int typeId) {
@@ -60,9 +60,8 @@ public enum ReviveType {
 
 	public static ReviveType getReviveTypeById(int id) {
 		for (ReviveType rt : values()) {
-			if (rt.typeId == id) {
+			if (rt.typeId == id)
 				return rt;
-			}
 		}
 		throw new IllegalArgumentException("Unsupported revive type: " + id);
 	}

@@ -84,6 +84,8 @@ public class _80018EventSockItToEm extends QuestHandler {
 						return sendQuestDialog(env, 2375);
 				case CHECK_COLLECTED_ITEMS:
 					return checkQuestItems(env, 0, 1, true, 5, 2716);
+				default:
+					break;
 				}
 			}
 		}

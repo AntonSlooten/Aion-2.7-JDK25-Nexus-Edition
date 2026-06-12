@@ -25,10 +25,9 @@ import com.aionemu.gameserver.questEngine.model.QuestStatus;
 import com.aionemu.gameserver.world.zone.ZoneName;
 
 /**
- * Talk with Loriniah (203605). Scout the MuMu Farmland
- * (MUMU_FARMLAND_220030000). Scouting completed! Talk with Loriniah. Burn the
- * MuMu Carts (700096) in the MuMu Farmland (3). Talk with Loriniah. Defeat the
- * Skurvs and Mau and bring the evidence to Loriniah.
+ * Talk with Loriniah (203605). Scout the MuMu Farmland (MUMU_FARMLAND_220030000). Scouting completed! Talk with
+ * Loriniah. Burn the MuMu Carts (700096) in the MuMu Farmland (3). Talk with Loriniah. Defeat the Skurvs and Mau and
+ * bring the evidence to Loriniah.
  * 
  * @author Mr. Poke
  * @reworked vlog, Gigi
@@ -64,43 +63,45 @@ public class _2013ADangerousCrop extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203605: { // Loriniah
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 2)
-						return sendQuestDialog(env, 1352);
-					else if (var == 8)
-						return sendQuestDialog(env, 1693);
-					else if (var == 9)
-						return sendQuestDialog(env, 2034);
-				case SELECT_ACTION_1354:
-					playQuestMovie(env, 61);
-					return sendQuestDialog(env, 1354);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1); // 1
-				case STEP_TO_2:
-					return defaultCloseDialog(env, 2, 3, 182203012, 1, 0, 0); // 3
-				case STEP_TO_3:
-					return defaultCloseDialog(env, 8, 9, 0, 0, 182203012, 1); // 9
-				case CHECK_COLLECTED_ITEMS:
-					return checkQuestItems(env, 9, 9, true, 5, 2120); // reward
-				}
-			}
-			case 700096: { // MuMu Cart
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					if (var >= 3 && var < 5) {
-						return useQuestObject(env, var, var + 1, false, true); // 4,5
-					} else if (var == 5) {
-						return useQuestObject(env, 5, 8, false, true); // 8
+				case 203605: { // Loriniah
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+							else if (var == 2)
+								return sendQuestDialog(env, 1352);
+							else if (var == 8)
+								return sendQuestDialog(env, 1693);
+							else if (var == 9)
+								return sendQuestDialog(env, 2034);
+						case SELECT_ACTION_1354:
+							playQuestMovie(env, 61);
+							return sendQuestDialog(env, 1354);
+						case STEP_TO_1:
+							return defaultCloseDialog(env, 0, 1); // 1
+						case STEP_TO_2:
+							return defaultCloseDialog(env, 2, 3, 182203012, 1, 0, 0); // 3
+						case STEP_TO_3:
+							return defaultCloseDialog(env, 8, 9, 0, 0, 182203012, 1); // 9
+						case CHECK_COLLECTED_ITEMS:
+							return checkQuestItems(env, 9, 9, true, 5, 2120); // reward
 					}
 				}
+				case 700096: { // MuMu Cart
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							if (var >= 3 && var < 5) {
+								return useQuestObject(env, var, var + 1, false, true); // 4,5
+							}
+							else if (var == 5) {
+								return useQuestObject(env, 5, 8, false, true); // 8
+							}
+						}
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203605) // Loriniah
 				return sendQuestEndDialog(env);
 		}

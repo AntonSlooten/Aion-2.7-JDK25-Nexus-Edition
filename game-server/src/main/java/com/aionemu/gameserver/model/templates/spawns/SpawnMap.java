@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.model.templates.spawns;
 
+
 import com.aionemu.gameserver.model.templates.spawns.siegespawns.SiegeSpawn;
 
 import java.util.ArrayList;
@@ -36,16 +37,16 @@ public class SpawnMap {
 
 	@XmlElement(name = "spawn")
 	private List<Spawn> spawns;
-
+	
 	@XmlElement(name = "siege_spawn")
 	private List<SiegeSpawn> siegeSpawns;
-
+	
 	@XmlAttribute(name = "map_id")
 	private int mapId;
-
+	
 	public SpawnMap() {
 	}
-
+	
 	public SpawnMap(int mapId) {
 		this.mapId = mapId;
 	}
@@ -55,28 +56,26 @@ public class SpawnMap {
 	}
 
 	public List<Spawn> getSpawns() {
-		if (spawns == null) {
-			spawns = new ArrayList<>();
-		}
+		if (spawns == null)
+			spawns = new ArrayList<Spawn>();
 		return spawns;
 	}
-
+	
 	public void addSpawns(Spawn spawns) {
 		getSpawns().add(spawns);
 	}
-
+	
 	public void removeSpawns(Spawn spawns) {
 		getSpawns().remove(spawns);
 	}
 
 	public List<SiegeSpawn> getSiegeSpawns() {
-		if (siegeSpawns == null) {
-			siegeSpawns = new ArrayList<>();
-		}
+		if (siegeSpawns == null)
+			siegeSpawns = new ArrayList<SiegeSpawn>();
 		return siegeSpawns;
 	}
-
+	
 	public void addSiegeSpawns(SiegeSpawn spawns) {
 		getSiegeSpawns().add(spawns);
-	}
+	}	
 }

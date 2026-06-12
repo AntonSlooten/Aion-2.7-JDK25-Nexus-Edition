@@ -33,9 +33,8 @@ public class FallEffect extends EffectTemplate {
 	@Override
 	public void calculate(Effect effect) {
 		// Affects only players (for now as we dont have flying Npc's)
-		if (effect.getEffected() instanceof Player) {
+		if (effect.getEffected() instanceof Player)
 			super.calculate(effect, null, null);
-		}
 	}
 
 	@Override

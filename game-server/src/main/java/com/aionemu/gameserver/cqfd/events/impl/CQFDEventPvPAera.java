@@ -15,39 +15,61 @@ import com.aionemu.gameserver.cqfd.events.step.CQFDTeamCounter;
 import com.aionemu.gameserver.cqfd.events.task.impl.CQFDEventAnnounce;
 import com.aionemu.gameserver.cqfd.events.task.impl.CQFDEventReward;
 
-public class CQFDEventPvPAera extends CQFDEvent {
+public class CQFDEventPvPAera extends CQFDEvent{
+	///////////////////////////////////////////////////////////////////////////////
+	//
+	//	DATA
+	//
+	///////////////////////////////////////////////////////////////////////////////
 
-	private final static ArrayList<CQFDEventPlayer> SPAWNS = new ArrayList<>(Arrays.asList(
-			// new CQFDEventPlayer(instance, worldId, instanceId, x,y,z,h),
-			new CQFDEventPlayer(0, 0, 0, 0, 0, (byte) 0)));
-
-	protected static int[][][] REWARDS = { { // REWARD_LOSE
-			{ 57, 1 }, { 57, 1 } },
-			{ // REWARD_WIN
-					{ 57, 2 }, { 57, 2 } } };
-	public static CQFDEventPvPAera instance = new CQFDEventPvPAera();
-
-	private CQFDEventPvPAera() {
-		super(SPAWNS, REWARDS, 10, -1);
-	}
-
-	public static void openPvPAera() {
-		if (instance.getEventStat() == CQFDEventStat.IDLE) {
-
+	private final static ArrayList<CQFDEventPlayer> SPAWNS = new ArrayList<CQFDEventPlayer>(
+			Arrays.asList(
+					//new CQFDEventPlayer(instance, worldId, instanceId, x,y,z,h),
+					new CQFDEventPlayer(0, 0, 0,0,0,(byte)0)
+					));
+	
+	protected static int[][][] REWARDS = {
+		{// REWARD_LOSE
+			{57 , 1},
+			{57 , 1}
+		},
+		{// REWARD_WIN
+			{57 , 2},
+			{57 , 2}
 		}
-		instance.start();
+	};
+	public static CQFDEventPvPAera instance = new CQFDEventPvPAera();
+	///////////////////////////////////////////////////////////////////////////////
+	//
+	//	CODE
+	//
+	///////////////////////////////////////////////////////////////////////////////
 
+	
+	private CQFDEventPvPAera(){
+		super(SPAWNS,REWARDS,10,-1);
 	}
-
+	
+	public static void openPvPAera(){
+		if(instance.getEventStat() == CQFDEventStat.IDLE);
+			instance.start();
+		
+	}
+	
+	///////////////////////////////////////////////////////////////////////////////
+	//
+	//	ABSTRACT
+	//
+	///////////////////////////////////////////////////////////////////////////////
+	
+	
 	@Override
 	public void init() {
-		// announce
+		//announce
 		registerStep(new CQFDEventAnnounce(getTeams().values(), this, "PvP Aera Open", 1), 0);
-		// start kill counter
-		// registerStep(getTeams().values(), CQFDListenerType.PLAYER_KILL_PLAYER ,
-		// CQFDORDER.INC, CQFDCOUNTERTYPE.PERSISTENT, -1, 0);
-		registerStep(getTeams().values(), CQFDListenerType.PLAYER_KILL_PLAYER, CQFDEventReward.class, 1, CQFDORDER.INC,
-				CQFDCOUNTERTYPE.PERSISTENT, -1, 0);
+		//start kill counter
+		//registerStep(getTeams().values(), CQFDListenerType.PLAYER_KILL_PLAYER , CQFDORDER.INC, CQFDCOUNTERTYPE.PERSISTENT, -1, 0);		
+		registerStep(getTeams().values(), CQFDListenerType.PLAYER_KILL_PLAYER , CQFDEventReward.class, 1, CQFDORDER.INC, CQFDCOUNTERTYPE.PERSISTENT, -1, 0);		
 
 	}
 
@@ -55,45 +77,50 @@ public class CQFDEventPvPAera extends CQFDEvent {
 	public void stepResult(CQFDTeamCounter counter) {
 		final int stepId = getStepId();
 		incStepId();
-		switch (stepId) {
-		// register
-		case 0:
+		switch(stepId){
+			//	register
+			case 0: 
 			// kill step
-		case 1:
-			System.out.println("[] someone win with" + counter.getCount() + " kill");
-			break;
+			case 1: 
+				System.out.println("[] someone win with"+ counter.getCount() + " kill");
+				break;
 		}
 	}
 
 	@Override
 	public void counterOnTimeOut(final HashMap<CQFDCOUNTERTYPE, ArrayList<CQFDTeamCounter>> finalCounters) {
 		final ArrayList<CQFDTeamCounter> infiniteCounters = finalCounters.get(CQFDCOUNTERTYPE.INFINITE);
-		// reward player here
+		//reward player here
 		long bestScore = 0;
-		final ArrayList<CQFDEventTeam> winners = new ArrayList<>(2);
-		final ArrayList<CQFDEventTeam> losers = new ArrayList<>();
-
-		// give reward to all team
-		for (CQFDTeamCounter ts : infiniteCounters) {
-			if (ts.getCount() == bestScore) {
+		final ArrayList<CQFDEventTeam> winners = new ArrayList<CQFDEventTeam>(2);
+		final ArrayList<CQFDEventTeam> losers = new ArrayList<CQFDEventTeam>();
+		
+		//give reward to all team
+		for(CQFDTeamCounter ts : infiniteCounters){
+			if(ts.getCount() == bestScore)
 				winners.add(ts.getTeam());
-			} else if (ts.getCount() > bestScore) {
+			else if(ts.getCount() > bestScore){
 				bestScore = ts.getCount();
 				losers.addAll(winners);
 				winners.clear();
 				winners.add(ts.getTeam());
 			}
-
+			
 		}
-		// winner
-		for (CQFDEventTeam team : winners) {
+		//winner
+		for(CQFDEventTeam team : winners)
 			team.rewardAllPlayer(0);
-		}
-		for (CQFDEventTeam team : losers) {
+		for(CQFDEventTeam team : losers)
 			team.rewardAllPlayer(1);
-		}
-
-		System.out.println("[Event] counterOnTimeOut bestScore -> " + bestScore);
+		
+		System.out.println("[Event] counterOnTimeOut bestScore -> "+ bestScore);
 	}
+	
+	/////////////////////////////////////////////////////////////
+	//
+	//	SUBFOUNC
+	//
+	/////////////////////////////////////////////////////////////
 
 }
+

@@ -37,7 +37,7 @@ public class Friend {
 
 	/**
 	 * Returns the status of this player
-	 *
+	 * 
 	 * @return Friend's status
 	 */
 	public Status getStatus() {
@@ -50,7 +50,7 @@ public class Friend {
 
 	/**
 	 * Returns this friend's name
-	 *
+	 * 
 	 * @return Friend's name
 	 */
 	public String getName() {
@@ -82,13 +82,12 @@ public class Friend {
 	/**
 	 * Gets the last time this player was online as a unix timestamp<br />
 	 * Returns 0 if the player is online now
-	 *
+	 * 
 	 * @return Unix timestamp the player was last online
 	 */
 	public int getLastOnlineTime() {
-		if (pcd.getLastOnline() == null || isOnline()) {
+		if (pcd.getLastOnline() == null || isOnline())
 			return 0;
-		}
 
 		return (int) (pcd.getLastOnline().getTime() / 1000); // Convert to int, unix time format (ms -> seconds)
 	}

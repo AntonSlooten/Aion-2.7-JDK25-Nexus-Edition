@@ -66,10 +66,10 @@ public class InstancePlayerReward {
 	}
 
 	public void addPvPKillToPlayer() {
-		playerPvPKills++;
+		playerPvPKills ++;
 	}
 
 	public void addMonsterKillToPlayer() {
-		playerMonsterKills++;
+		playerMonsterKills ++;
 	}
 }

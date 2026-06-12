@@ -35,9 +35,8 @@ public class ZoneLevelService {
 		World world = World.getInstance();
 		float z = player.getZ();
 
-		if (player.getLifeStats().isAlreadyDead()) {
+		if (player.getLifeStats().isAlreadyDead())
 			return;
-		}
 
 		if (z < world.getWorldMap(player.getWorldId()).getDeathLevel()) {
 			player.getController().die();
@@ -46,29 +45,26 @@ public class ZoneLevelService {
 
 		// TODO need fix character height
 		float playerheight = player.getPlayerAppearance().getHeight() * 1.6f;
-		if (z < world.getWorldMap(player.getWorldId()).getWaterLevel() - playerheight) {
+		if (z < world.getWorldMap(player.getWorldId()).getWaterLevel() - playerheight)
 			startDrowning(player);
-		} else {
+		else
 			stopDrowning(player);
-		}
 	}
 
 	/**
 	 * @param player
 	 */
 	private static void startDrowning(Player player) {
-		if (!isDrowning(player)) {
+		if (!isDrowning(player))
 			scheduleDrowningTask(player);
-		}
 	}
 
 	/**
 	 * @param player
 	 */
 	private static void stopDrowning(Player player) {
-		if (isDrowning(player)) {
+		if (isDrowning(player))
 			player.getController().cancelTask(TaskId.DROWN);
-		}
 
 	}
 
@@ -84,22 +80,21 @@ public class ZoneLevelService {
 	 * @param player
 	 */
 	private static void scheduleDrowningTask(final Player player) {
-		player.getController().addTask(TaskId.DROWN,
-				ThreadPoolManager.getInstance().scheduleAtFixedRate(new Runnable() {
+		player.getController().addTask(TaskId.DROWN, ThreadPoolManager.getInstance().scheduleAtFixedRate(new Runnable() {
 
-					@Override
-					public void run() {
-						int value = Math.round(player.getLifeStats().getMaxHp() / 10);
-						// TODO retail emotion, attack_status packets sending
-						if (!player.getLifeStats().isAlreadyDead()) {
-							if (!player.isInvul()) {
-								player.getLifeStats().reduceHp(value, null);
-								player.getLifeStats().sendHpPacketUpdate();
-							}
-						} else {
-							stopDrowning(player);
-						}
+			@Override
+			public void run() {
+				int value = Math.round(player.getLifeStats().getMaxHp() / 10);
+				// TODO retail emotion, attack_status packets sending
+				if (!player.getLifeStats().isAlreadyDead()) {
+					if (!player.isInvul()) {
+						player.getLifeStats().reduceHp(value, player);
+						player.getLifeStats().sendHpPacketUpdate();
 					}
-				}, 0, DROWN_PERIOD));
+				}
+				else
+					stopDrowning(player);
+			}
+		}, 0, DROWN_PERIOD));
 	}
 }

@@ -25,7 +25,7 @@ import java.util.concurrent.Executor;
 
 /**
  * This is implementation of <code>Dispatcher</code> that may accept connections, read and write data.
- *
+ * 
  * @author -Nemesiss-
  * @see com.aionemu.commons.network.Dispatcher
  * @see java.nio.channels.Selector
@@ -35,11 +35,11 @@ public class AcceptReadWriteDispatcherImpl extends Dispatcher {
 	/**
 	 * List of connections that should be closed by this <code>Dispatcher</code> as soon as possible.
 	 */
-	private final List<AConnection> pendingClose = new ArrayList<>();
+	private final List<AConnection> pendingClose = new ArrayList<AConnection>();
 
 	/**
 	 * Constructor that accept <code>String</code> name and <code>DisconnectionThreadPool</code> dcPool as parameter.
-	 *
+	 * 
 	 * @param name
 	 * @param dcPool
 	 * @throws IOException
@@ -51,7 +51,7 @@ public class AcceptReadWriteDispatcherImpl extends Dispatcher {
 
 	/**
 	 * Process Pending Close connections and then dispatch <code>Selector</code> selected-key set.
-	 *
+	 * 
 	 * @see com.aionemu.commons.network.Dispatcher#dispatch()
 	 */
 	@Override
@@ -93,7 +93,7 @@ public class AcceptReadWriteDispatcherImpl extends Dispatcher {
 	/**
 	 * Add connection to pendingClose list, so this connection will be closed by this <code>Dispatcher</code> as soon as
 	 * possible.
-	 *
+	 * 
 	 * @see com.aionemu.commons.network.Dispatcher#closeConnection(com.aionemu.commons.network.AConnection)
 	 */
 	@Override

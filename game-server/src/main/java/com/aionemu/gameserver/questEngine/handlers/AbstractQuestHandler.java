@@ -27,7 +27,7 @@ import com.aionemu.gameserver.world.zone.ZoneName;
 
 /**
  * The methods will be overridden in concrete quest handlers
- *
+ * 
  * @author vlog
  */
 public abstract class AbstractQuestHandler {
@@ -121,15 +121,15 @@ public abstract class AbstractQuestHandler {
 	public boolean onEquipItemEvent(QuestEnv env, int itemId) {
 		return false;
 	}
-
+	
 	public boolean onCanAct(QuestEnv env, QuestActionType questEventType, Object... objects) {
 		return false;
 	}
-
+	
 	public boolean onDredgionRewardEvent(QuestEnv env) {
 		return false;
 	}
-
+	
 	public HandlerResult onBonusApplyEvent(QuestEnv env, BonusType bonusType, List<QuestItems> rewardItems) {
 		return HandlerResult.UNKNOWN;
 	}

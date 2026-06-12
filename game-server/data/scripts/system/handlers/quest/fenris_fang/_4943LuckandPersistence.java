@@ -67,88 +67,92 @@ public class _4943LuckandPersistence extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			// 1 - Talk with Latatusk
-			case 204096:
-				if (var == 0) {
-					switch (dialog) {
-					case START_DIALOG:
-						return sendQuestDialog(env, 1011);
-					case STEP_TO_1:
-						return defaultCloseDialog(env, 0, 1);
-					}
-				}
-				if (var == 2) {
-					switch (dialog) {
-					case START_DIALOG:
-						return sendQuestDialog(env, 1693);
-					case CHECK_COLLECTED_ITEMS:
-						if (player.getInventory().getItemCountByItemId(182207124) >= 20) {
-							removeQuestItem(env, 182207124, 20);
-							removeQuestItem(env, 182207123, 1);
-							changeQuestStep(env, 2, 3, false);
-							return sendQuestDialog(env, 10000);
-						} else
-							return sendQuestDialog(env, 10001);
-					}
-				}
-				break;
-			// 2 - Talk with Relir.
-			case 204097:
-				if (var == 1) {
-					switch (dialog) {
-					case START_DIALOG:
-						return sendQuestDialog(env, 1352);
-					case SELECT_ACTION_1354:
-						if (player.getInventory().tryDecreaseKinah(3400000)) {
-							if (player.getInventory().getItemCountByItemId(182207123) == 0) {
-								if (!giveQuestItem(env, 182207123, 1))
-									return true;
-							}
-							changeQuestStep(env, 1, 2, false);
-							return sendQuestDialog(env, 1354);
-						} else {
-							return sendQuestDialog(env, 1438);
+				// 1 - Talk with Latatusk
+				case 204096:
+					if (var == 0) {
+						switch (dialog) {
+							case START_DIALOG:
+								return sendQuestDialog(env, 1011);
+							case STEP_TO_1:
+								return defaultCloseDialog(env, 0, 1);
 						}
 					}
-				}
-				break;
-			case 700538:
-				if (dialog == QuestDialog.USE_OBJECT && var == 2) {
-					return useQuestObject(env, 2, 2, false, 0);
-				}
-				break;
-			// 4 - Better purify yourself! Take Glossy Holy Water and visit High Priest
-			// Balder
-			case 204075:
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 3) {
-						return sendQuestDialog(env, 2034);
+					if (var == 2) {
+						switch (dialog) {
+							case START_DIALOG:
+								return sendQuestDialog(env, 1693);
+							case CHECK_COLLECTED_ITEMS:
+								if (player.getInventory().getItemCountByItemId(182207124) >= 20) {
+									removeQuestItem(env, 182207124, 20);
+									removeQuestItem(env, 182207123, 1);
+									changeQuestStep(env, 2, 3, false);
+									return sendQuestDialog(env, 10000);
+								}
+								else
+									return sendQuestDialog(env, 10001);
+						}
 					}
-				}
-				case SET_REWARD: {
-					if (player.getInventory().getItemCountByItemId(186000084) >= 1) {
-						removeQuestItem(env, 186000084, 1);
-						return defaultCloseDialog(env, 3, 3, true, false, 0);
-					} else {
-						return sendQuestDialog(env, 2120);
+					break;
+				// 2 - Talk with Relir.
+				case 204097:
+					if (var == 1) {
+						switch (dialog) {
+							case START_DIALOG:
+								return sendQuestDialog(env, 1352);
+							case SELECT_ACTION_1354:
+								if (player.getInventory().tryDecreaseKinah(3400000)) {
+									if (player.getInventory().getItemCountByItemId(182207123) == 0) {
+										if (!giveQuestItem(env, 182207123, 1))
+											return true;
+									}
+									changeQuestStep(env, 1, 2, false);
+									return sendQuestDialog(env, 1354);
+								}
+								else {
+									return sendQuestDialog(env, 1438);
+								}
+						}
 					}
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-				break;
-			// No match
-			default:
-				return sendQuestStartDialog(env);
+					break;
+				case 700538:
+					if (dialog == QuestDialog.USE_OBJECT && var == 2) {
+						return useQuestObject(env, 2, 2, false, 0);
+					}
+					break;
+				// 4 - Better purify yourself! Take Glossy Holy Water and visit High Priest Balder
+				case 204075:
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 3) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case SET_REWARD: {
+							if (player.getInventory().getItemCountByItemId(186000084) >= 1) {
+								removeQuestItem(env, 186000084, 1);
+								return defaultCloseDialog(env, 3, 3, true, false, 0);
+							}
+							else {
+								return sendQuestDialog(env, 2120);
+							}
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
+					}
+					break;
+				// No match
+				default:
+					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			// 5 - Talk with Kvasir
 			if (targetId == 204053) {
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

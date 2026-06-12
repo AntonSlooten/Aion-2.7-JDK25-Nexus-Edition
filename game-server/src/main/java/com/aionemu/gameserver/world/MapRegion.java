@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import javolution.util.FastMap;
 import javolution.util.FastMap.Entry;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +40,7 @@ import com.aionemu.gameserver.world.zone.ZoneName;
 
 /**
  * Just some part of map.
- *
+ * 
  * @author -Nemesiss-
  */
 public class MapRegion {
@@ -75,7 +75,7 @@ public class MapRegion {
 
 	/**
 	 * Constructor.
-	 *
+	 * 
 	 * @param id
 	 * @param parent
 	 */
@@ -88,7 +88,7 @@ public class MapRegion {
 
 	/**
 	 * Return World map id.
-	 *
+	 * 
 	 * @return world map id
 	 */
 	public Integer getMapId() {
@@ -96,8 +96,7 @@ public class MapRegion {
 	}
 
 	/**
-	 * Return an instance of {@link World}, which keeps map, to which belongs this
-	 * region
+	 * Return an instance of {@link World}, which keeps map, to which belongs this region
 	 */
 	public World getWorld() {
 		return getParent().getWorld();
@@ -105,7 +104,7 @@ public class MapRegion {
 
 	/**
 	 * Returns region id of this map region. [NOT WORLD ID!]
-	 *
+	 * 
 	 * @return region id.
 	 */
 	public int getRegionId() {
@@ -114,7 +113,7 @@ public class MapRegion {
 
 	/**
 	 * Returns WorldMapInstance witch is parent of this instance
-	 *
+	 * 
 	 * @return parent
 	 */
 	public WorldMapInstance getParent() {
@@ -123,7 +122,7 @@ public class MapRegion {
 
 	/**
 	 * Returns iterator over AionObjects on this region
-	 *
+	 * 
 	 * @return objects iterator
 	 */
 	public FastMap<Integer, VisibleObject> getObjects() {
@@ -139,16 +138,16 @@ public class MapRegion {
 
 	/**
 	 * Add neighbour region to this region neighbours list.
-	 *
+	 * 
 	 * @param neighbour
 	 */
 	void addNeighbourRegion(MapRegion neighbour) {
-	    neighbours = ArrayUtils.add(neighbours, neighbour);
+		neighbours = (MapRegion[]) ArrayUtils.add(neighbours, neighbour);
 	}
 
 	/**
 	 * Add AionObject to this region objects list.
-	 *
+	 * 
 	 * @param object
 	 */
 	void add(VisibleObject object) {
@@ -161,21 +160,21 @@ public class MapRegion {
 
 	/**
 	 * Remove AionObject from region objects list.
-	 *
+	 * 
 	 * @param object
 	 */
 	void remove(VisibleObject object) {
-		if (objects.remove(object.getObjectId()) != null) {
+		if (objects.remove(object.getObjectId()) != null)
 			if (object instanceof Player) {
 				checkActiveness(playerCount.decrementAndGet() > 0);
 			}
-		}
 	}
 
 	final void checkActiveness(boolean active) {
 		if (active && regionActive.compareAndSet(false, true)) {
 			startActivation();
-		} else if (!active) {
+		}
+		else if (!active) {
 			startDeactivation();
 		}
 	}
@@ -250,17 +249,16 @@ public class MapRegion {
 	}
 
 	boolean isNeighboursActive() {
-		for (MapRegion r : neighbours) {
-			if (r != null && r.regionActive.get() && r.playerCount.get() > 0) {
+		for (int i = 0; i < neighbours.length; i++) {
+			MapRegion r = neighbours[i];
+			if (r != null && r.regionActive.get() && r.playerCount.get() > 0)
 				return true;
-			}
 		}
 		return false;
 	}
 
 	public void revalidateZones(Creature creature) {
-		for (Entry<Integer, TreeSet<ZoneInstance>> e = zoneMap.head(),
-				mapEnd = zoneMap.tail(); (e = e.getNext()) != mapEnd;) {
+		for (Entry<Integer, TreeSet<ZoneInstance>> e = zoneMap.head(), mapEnd = zoneMap.tail(); (e = e.getNext()) != mapEnd;) {
 			boolean foundZone = false;
 			int category = e.getKey();
 			TreeSet<ZoneInstance> zones = e.getValue();
@@ -283,9 +281,8 @@ public class MapRegion {
 	}
 
 	public List<ZoneInstance> getZones(Creature creature) {
-		List<ZoneInstance> z = new ArrayList<>();
-		for (Entry<Integer, TreeSet<ZoneInstance>> e = zoneMap.head(),
-				mapEnd = zoneMap.tail(); (e = e.getNext()) != mapEnd;) {
+		List<ZoneInstance> z = new ArrayList<ZoneInstance>();
+		for (Entry<Integer, TreeSet<ZoneInstance>> e = zoneMap.head(), mapEnd = zoneMap.tail(); (e = e.getNext()) != mapEnd;) {
 			TreeSet<ZoneInstance> zones = e.getValue();
 			for (ZoneInstance zone : zones) {
 				if (zone.isInsideCreature(creature)) {
@@ -296,15 +293,13 @@ public class MapRegion {
 		return z;
 	}
 
-	public boolean onDie(Creature attacker, Creature target) {
-		for (Entry<Integer, TreeSet<ZoneInstance>> e = zoneMap.head(),
-				mapEnd = zoneMap.tail(); (e = e.getNext()) != mapEnd;) {
+	public boolean onDie(Creature attacker, Creature target){
+		for (Entry<Integer, TreeSet<ZoneInstance>> e = zoneMap.head(), mapEnd = zoneMap.tail(); (e = e.getNext()) != mapEnd;) {
 			TreeSet<ZoneInstance> zones = e.getValue();
 			for (ZoneInstance zone : zones) {
 				if (zone.isInsideCreature(target)) {
-					if (zone.onDie(attacker, target)) {
+					if (zone.onDie(attacker, target))
 						return true;
-					}
 				}
 			}
 		}
@@ -312,13 +307,11 @@ public class MapRegion {
 	}
 
 	public boolean isInsideZone(ZoneName zoneName, float x, float y, float z) {
-		for (Entry<Integer, TreeSet<ZoneInstance>> e = zoneMap.head(),
-				mapEnd = zoneMap.tail(); (e = e.getNext()) != mapEnd;) {
+		for (Entry<Integer, TreeSet<ZoneInstance>> e = zoneMap.head(), mapEnd = zoneMap.tail(); (e = e.getNext()) != mapEnd;) {
 			TreeSet<ZoneInstance> zones = e.getValue();
 			for (ZoneInstance zone : zones) {
-				if (zone.getZoneTemplate().getName() != zoneName) {
+				if (zone.getZoneTemplate().getName() != zoneName)
 					continue;
-				}
 				return zone.isInsideCordinate(x, y, z);
 			}
 		}
@@ -326,13 +319,11 @@ public class MapRegion {
 	}
 
 	public boolean isInsideZone(ZoneName zoneName, Creature creature) {
-		for (Entry<Integer, TreeSet<ZoneInstance>> e = zoneMap.head(),
-				mapEnd = zoneMap.tail(); (e = e.getNext()) != mapEnd;) {
+		for (Entry<Integer, TreeSet<ZoneInstance>> e = zoneMap.head(), mapEnd = zoneMap.tail(); (e = e.getNext()) != mapEnd;) {
 			TreeSet<ZoneInstance> zones = e.getValue();
 			for (ZoneInstance zone : zones) {
-				if (zone.getZoneTemplate().getName() != zoneName) {
+				if (zone.getZoneTemplate().getName() != zoneName)
 					continue;
-				}
 				return zone.isInsideCreature(creature);
 			}
 		}
@@ -340,15 +331,16 @@ public class MapRegion {
 	}
 
 	private void createZoneMap(ZoneInstance[] zones) {
-		zoneMap = new FastMap<>();
-		for (ZoneInstance zone : zones) {
+		zoneMap = new FastMap<Integer, TreeSet<ZoneInstance>>();
+		for (int i = 0; i < zones.length; i++) {
+			ZoneInstance zone = zones[i];
 			int category = -1;
 			if (zone.getZoneTemplate().getPriority() != 0) {
 				category = zone.getZoneTemplate().getZoneType().ordinal();
 			}
 			TreeSet<ZoneInstance> zoneCategory = zoneMap.get(category);
 			if (zoneCategory == null) {
-				zoneCategory = new TreeSet<>();
+				zoneCategory = new TreeSet<ZoneInstance>();
 				zoneMap.put(category, zoneCategory);
 			}
 			zoneCategory.add(zone);

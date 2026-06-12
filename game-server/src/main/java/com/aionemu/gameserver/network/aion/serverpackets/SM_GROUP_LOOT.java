@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.com>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -35,10 +35,10 @@ public class SM_GROUP_LOOT extends AionServerPacket {
 	private long unk4;
 
 	/**
-	 * @param Player Id must be 0 to start the Roll Options
+	 * @param Player
+	 *          Id must be 0 to start the Roll Options
 	 */
-	public SM_GROUP_LOOT(int groupId, int playerId, int itemId, int lootCorpseId, int distributionId, long unk4,
-			int index) {
+	public SM_GROUP_LOOT(int groupId, int playerId, int itemId, int lootCorpseId, int distributionId, long unk4, int index) {
 		this.groupId = groupId;
 		this.index = index;
 		this.unk2 = 1;

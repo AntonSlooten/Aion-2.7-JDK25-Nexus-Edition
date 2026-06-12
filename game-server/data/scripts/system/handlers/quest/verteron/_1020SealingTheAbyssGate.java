@@ -28,8 +28,7 @@ import com.aionemu.gameserver.services.teleport.TeleportService;
 /**
  * Talk with Spatalos (203098).<br>
  * Enter the Sealed Space via the Abyss Gate in Kraka's Den.<br>
- * Obtain the Seal of Kuninasha (182200024) and destroy the Abyss
- * Gate(700141).<br>
+ * Obtain the Seal of Kuninasha (182200024) and destroy the Abyss Gate(700141).<br>
  * Report to Spatalos.
  * 
  * @author Atomics
@@ -69,34 +68,36 @@ public class _1020SealingTheAbyssGate extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203098: { // Spatalos
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 203098: { // Spatalos
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							TeleportService.teleportTo(player, 210030000, 2683.2085f, 1068.8977f, 199.375f, 0);
+							changeQuestStep(env, 0, 1, false); // 1
+							return closeDialogWindow(env);
+						}
+					}
+					break;
+				}
+				case 700142: { // Abyss Gate Guardian Stone
+					if (dialog == QuestDialog.USE_OBJECT) {
+						if (QuestService.collectItemCheck(env, true)) {
+							return playQuestMovie(env, 153);
+						}
 					}
 				}
-				case STEP_TO_1: {
-					TeleportService.teleportTo(player, 210030000, 2683.2085f, 1068.8977f, 199.375f, 0);
-					changeQuestStep(env, 0, 1, false); // 1
-					return closeDialogWindow(env);
-				}
-				}
-				break;
 			}
-			case 700142: { // Abyss Gate Guardian Stone
-				if (dialog == QuestDialog.USE_OBJECT) {
-					if (QuestService.collectItemCheck(env, true)) {
-						return playQuestMovie(env, 153);
-					}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203098) { // Spatalos
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 1352);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
@@ -131,10 +132,11 @@ public class _1020SealingTheAbyssGate extends QuestHandler {
 				changeQuestStep(env, 2, 1, false);
 				removeQuestItem(env, 182200024, 1);
 				return true;
-			} else if (var == 1 && player.getWorldId() == 310030000) {
+			}
+			else if (var == 1 && player.getWorldId() == 310030000) {
 				changeQuestStep(env, 1, 2, false); // 2
-				QuestService.addNewSpawn(310030000, player.getInstanceId(), 210753, (float) 258.89917,
-						(float) 237.20166, (float) 217.06035, (byte) 0);
+				QuestService.addNewSpawn(310030000, player.getInstanceId(), 210753, (float) 258.89917, (float) 237.20166,
+					(float) 217.06035, (byte) 0);
 				return true;
 			}
 		}

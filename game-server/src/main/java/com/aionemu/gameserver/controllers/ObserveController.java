@@ -42,7 +42,7 @@ import com.aionemu.gameserver.skillengine.model.Skill;
  * Notes:<br>
  * 1) There should be locking against onceUsedObservers<br>
  * 2) Check observers size before iteration to minimize memory allocations
- *
+ * 
  * @author ATracer
  * @author Cura
  */
@@ -50,13 +50,12 @@ public class ObserveController {
 
 	private ReentrantLock lock = new ReentrantLock();
 	protected Collection<ActionObserver> observers = new FastList<ActionObserver>(0).shared();
-	protected FastList<ActionObserver> onceUsedObservers = new FastList<>(0);
+	protected FastList<ActionObserver> onceUsedObservers = new FastList<ActionObserver>(0);
 	protected Collection<AttackCalcObserver> attackCalcObservers = new FastList<AttackCalcObserver>(0).shared();
 
 	/**
-	 * Once used observer add to observerController. If observer notify will be
-	 * removed.
-	 *
+	 * Once used observer add to observerController. If observer notify will be removed.
+	 * 
 	 * @param observer
 	 */
 	public void attach(ActionObserver observer) {
@@ -64,7 +63,8 @@ public class ObserveController {
 		lock.lock();
 		try {
 			onceUsedObservers.add(observer);
-		} finally {
+		}
+		finally {
 			lock.unlock();
 		}
 	}
@@ -91,7 +91,8 @@ public class ObserveController {
 		lock.lock();
 		try {
 			onceUsedObservers.remove(observer);
-		} finally {
+		}
+		finally {
 			lock.unlock();
 		}
 	}
@@ -111,7 +112,7 @@ public class ObserveController {
 		lock.lock();
 		try {
 			if (onceUsedObservers.size() > 0) {
-				tempOnceused = new ArrayList<>();
+				tempOnceused = new ArrayList<ActionObserver>();
 				Iterator<ActionObserver> iterator = onceUsedObservers.iterator();
 				while (iterator.hasNext()) {
 					ActionObserver observer = iterator.next();
@@ -123,7 +124,8 @@ public class ObserveController {
 					}
 				}
 			}
-		} finally {
+		}
+		finally {
 			lock.unlock();
 		}
 
@@ -143,36 +145,36 @@ public class ObserveController {
 
 	private void notifyAction(ObserverType type, ActionObserver observer, Object... object) {
 		switch (type) {
-		case ATTACK:
-			observer.attack((Creature) object[0]);
-			break;
-		case ATTACKED:
-			observer.attacked((Creature) object[0]);
-			break;
-		case DEATH:
-			observer.died((Creature) object[0]);
-			break;
-		case EQUIP:
-			observer.equip((Item) object[0], (Player) object[1]);
-			break;
-		case UNEQUIP:
-			observer.unequip((Item) object[0], (Player) object[1]);
-			break;
-		case MOVE:
-			observer.moved();
-			break;
-		case SKILLUSE:
-			observer.skilluse((Skill) object[0]);
-			break;
-		case DOT_ATTACKED:
-			observer.dotattacked((Creature) object[0], (Effect) object[1]);
-			break;
-		case ITEMUSE:
-			observer.itemused((Item) object[0]);
-			break;
-		case NPCDIALOGREQUEST:
-			observer.npcdialogrequested((Npc) object[0]);
-			break;
+			case ATTACK:
+				observer.attack((Creature) object[0]);
+				break;
+			case ATTACKED:
+				observer.attacked((Creature) object[0]);
+				break;
+			case DEATH:
+				observer.died((Creature) object[0]);
+				break;
+			case EQUIP:
+				observer.equip((Item) object[0], (Player) object[1]);
+				break;
+			case UNEQUIP:
+				observer.unequip((Item) object[0], (Player) object[1]);
+				break;
+			case MOVE:
+				observer.moved();
+				break;
+			case SKILLUSE:
+				observer.skilluse((Skill) object[0]);
+				break;
+			case DOT_ATTACKED:
+				observer.dotattacked((Creature) object[0], (Effect) object[1]);
+				break;
+			case ITEMUSE:
+				observer.itemused((Item) object[0]);
+				break;
+			case NPCDIALOGREQUEST:
+				observer.npcdialogrequested((Npc) object[0]);
+				break;
 		}
 	}
 
@@ -192,8 +194,7 @@ public class ObserveController {
 
 	/**
 	 * notify that creature attacking
-	 *
-	 * @param damage
+	 * @param damage 
 	 */
 	public void notifyAttackObservers(Creature creature) {
 		notifyObservers(ObserverType.ATTACK, creature);
@@ -235,14 +236,14 @@ public class ObserveController {
 	public void notifyItemUnEquip(Item item, Player owner) {
 		notifyObservers(ObserverType.UNEQUIP, item, owner);
 	}
-
+	
 	/**
 	 * notify that player used an item
 	 */
 	public void notifyItemuseObservers(Item item) {
 		notifyObservers(ObserverType.ITEMUSE, item);
 	}
-
+	
 	/**
 	 * notify that player requested dialog with npc
 	 */
@@ -318,7 +319,8 @@ public class ObserveController {
 		lock.lock();
 		try {
 			onceUsedObservers.clear();
-		} finally {
+		}
+		finally {
 			lock.unlock();
 		}
 		observers.clear();

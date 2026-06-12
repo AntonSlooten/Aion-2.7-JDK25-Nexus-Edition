@@ -18,16 +18,22 @@ package com.aionemu.gameserver.dataholders;
 
 import gnu.trove.map.hash.TIntObjectHashMap;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.aionemu.gameserver.model.items.ItemMask;
+import com.aionemu.gameserver.model.templates.item.ItemCategory;
 import com.aionemu.gameserver.model.templates.item.ItemTemplate;
+import com.aionemu.gameserver.model.templates.item.actions.AdoptPetAction;
 import com.aionemu.gameserver.model.templates.restriction.ItemCleanupTemplate;
 
 /**
@@ -40,19 +46,38 @@ public class ItemData {
 	@XmlElement(name = "item_template")
 	private List<ItemTemplate> its;
 
+	@XmlTransient
 	private TIntObjectHashMap<ItemTemplate> items;
+	
+	@XmlTransient
+	private TIntObjectHashMap<ItemTemplate> petEggs = new TIntObjectHashMap<ItemTemplate>();
+	
+	@XmlTransient
+	Map<Integer, List<ItemTemplate>> manastones = new HashMap<Integer, List<ItemTemplate>>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
-		items = new TIntObjectHashMap<>();
+		items = new TIntObjectHashMap<ItemTemplate>();
 		for (ItemTemplate it : its) {
 			items.put(it.getTemplateId(), it);
+			if (it.getCategory().equals(ItemCategory.MANASTONE)) {
+				int level = it.getLevel();
+				if (!manastones.containsKey(level)) {
+					manastones.put(level, new ArrayList<ItemTemplate>());
+				}
+				manastones.get(level).add(it);
+			}
+			if (it.getActions() == null)
+				continue;
+			AdoptPetAction adoptAction = it.getActions().getAdoptPetAction();
+			if (adoptAction != null) {
+				petEggs.put(adoptAction.getPetId(), it);
+			}
 		}
-
 		its = null;
 	}
-
+	
 	public void cleanup() {
-		for (ItemCleanupTemplate ict : DataManager.ITEM_CLEAN_UP.getList()) {
+		for(ItemCleanupTemplate ict : DataManager.ITEM_CLEAN_UP.getList()) {
 			ItemTemplate template = items.get(ict.getId());
 			applyCleanup(template, ict.resultTrade(), ItemMask.TRADEABLE);
 			applyCleanup(template, ict.resultSell(), ItemMask.SELLABLE);
@@ -61,16 +86,16 @@ public class ItemData {
 			applyCleanup(template, ict.resultLegionWH(), ItemMask.STORABLE_IN_LWH);
 		}
 	}
-
+	
 	private void applyCleanup(ItemTemplate item, byte result, int mask) {
-		if (result != -1) {
-			switch (result) {
-			case 1:
-				item.modifyMask(true, mask);
-				break;
-			case 0:
-				item.modifyMask(false, mask);
-				break;
+		if(result != -1) {
+			switch(result) {
+				case 1:
+					item.modifyMask(true, mask);
+					break;
+				case 0:
+					item.modifyMask(false, mask);
+					break;
 			}
 		}
 	}
@@ -84,5 +109,9 @@ public class ItemData {
 	 */
 	public int size() {
 		return items.size();
+	}
+
+	public ItemTemplate getPetEggTemplate(int petId) {
+		return petEggs.get(petId);
 	}
 }

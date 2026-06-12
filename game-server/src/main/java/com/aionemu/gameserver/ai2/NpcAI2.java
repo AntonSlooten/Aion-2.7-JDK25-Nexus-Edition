@@ -137,18 +137,16 @@ public class NpcAI2 extends AITemplate {
 
 	@Override
 	protected void handleDespawned() {
-		if (poll(AIQuestion.CAN_SHOUT)) {
+		if (poll(AIQuestion.CAN_SHOUT))
 			ShoutEventHandler.onBeforeDespawn(this);
-		}
 		SpawnEventHandler.onDespawn(this);
 	}
 
 	@Override
-	public List<Player> getClosePlayer(int range) {
-		List<Player> players = new ArrayList<>();
+	public List<Player> getClosePlayer(int range){
+		List<Player> players = new ArrayList<Player>();
 		for (Player player : getPosition().getWorldMapInstance().getPlayersInside()) {
-			if (!player.getLifeStats().isAlreadyDead() && MathUtil.isIn3dRange(player, getOwner(), range)
-					&& (!player.isGM() || NetworkConfig.GAMESERVER_ID == 100)) {
+			if (!player.getLifeStats().isAlreadyDead() && MathUtil.isIn3dRange(player, getOwner(), range) && (!player.isGM() || NetworkConfig.GAMESERVER_ID == 100)) {
 				players.add(player);
 			}
 		}
@@ -162,43 +160,40 @@ public class NpcAI2 extends AITemplate {
 
 	@Override
 	protected void handleMoveArrived() {
-		if (!poll(AIQuestion.CAN_SHOUT) || getSpawnTemplate().getWalkerId() == null) {
+		if (!poll(AIQuestion.CAN_SHOUT) || getSpawnTemplate().getWalkerId() == null)
 			return;
-		}
 		ShoutEventHandler.onReachedWalkPoint(this);
 	}
 
 	@Override
 	protected void handleTargetChanged(Creature creature) {
 		super.handleMoveArrived();
-		if (!poll(AIQuestion.CAN_SHOUT)) {
+		if (!poll(AIQuestion.CAN_SHOUT))
 			return;
-		}
 		ShoutEventHandler.onSwitchedTarget(this, creature);
 	}
 
 	@Override
 	protected AIAnswer pollInstance(AIQuestion question) {
 		switch (question) {
-		case SHOULD_DECAY:
-			return NpcAIPolls.shouldDecay(this);
-		case SHOULD_RESPAWN:
-			return NpcAIPolls.shouldRespawn(this);
-		case SHOULD_REWARD:
-			return AIAnswers.POSITIVE;
-		case CAN_SHOUT:
-			return isMayShout() ? AIAnswers.POSITIVE : AIAnswers.NEGATIVE;
-		default:
-			return null;
+			case SHOULD_DECAY:
+				return NpcAIPolls.shouldDecay(this);
+			case SHOULD_RESPAWN:
+				return NpcAIPolls.shouldRespawn(this);
+			case SHOULD_REWARD:
+				return AIAnswers.POSITIVE;
+			case CAN_SHOUT:
+				return isMayShout() ? AIAnswers.POSITIVE : AIAnswers.NEGATIVE;
+			default:
+				return null;
 		}
 	}
 
 	@Override
 	public boolean isMayShout() {
 		// temp fix, we shouldn't rely on it because of inheritance
-		if (AIConfig.SHOUTS_ENABLE) {
+		if (AIConfig.SHOUTS_ENABLE)
 			return getOwner().mayShout(0);
-		}
 		return false;
 	}
 

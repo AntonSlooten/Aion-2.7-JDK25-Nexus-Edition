@@ -38,13 +38,12 @@ public class DecomposableItemsData {
 
 	@XmlElement(name = "decomposable")
 	private List<DecomposableItemInfo> decomposableItemsTemplates;
-	private TIntObjectHashMap<List<ExtractedItemsCollection>> decomposableItemsInfo = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<List<ExtractedItemsCollection>> decomposableItemsInfo = new TIntObjectHashMap<List<ExtractedItemsCollection>>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		decomposableItemsInfo.clear();
-		for (DecomposableItemInfo template : decomposableItemsTemplates) {
+		for (DecomposableItemInfo template : decomposableItemsTemplates)
 			decomposableItemsInfo.put(template.getItemId(), template.getItemsCollections());
-		}
 	}
 
 	public int size() {

@@ -38,9 +38,8 @@ public class DPTransferEffect extends EffectTemplate {
 
 	@Override
 	public void calculate(Effect effect) {
-		if (!super.calculate(effect, null, null)) {
+		if (!super.calculate(effect, null, null))
 			return;
-		}
 		effect.setReserved1(-getCurrentStatValue(effect));
 	}
 

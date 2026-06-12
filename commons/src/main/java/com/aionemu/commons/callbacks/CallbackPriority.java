@@ -25,15 +25,15 @@ package com.aionemu.commons.callbacks;
  * @author SoulKeeper
  */
 public interface CallbackPriority {
-	/**
-	 * Returns default priority of callback
-	 */
-	public static final int DEFAULT_PRIORITY = 0;
+    /**
+     * Returns default priority of callback
+     */
+    public static final int DEFAULT_PRIORITY = 0;
 
-	/**
-	 * Returns callbacks priority
-	 *
-	 * @return priority of callback
-	 */
-	public int getPriority();
+    /**
+     * Returns callbacks priority
+     *
+     * @return priority of callback
+     */
+    public int getPriority();
 }

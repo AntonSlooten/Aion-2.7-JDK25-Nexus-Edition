@@ -43,8 +43,8 @@ public class DispelBuffEffect extends EffectTemplate {
 	public void applyEffect(Effect effect) {
 		int count = value + delta * effect.getSkillLevel();
 		int finalPower = power + dpower * effect.getSkillLevel();
-
-		effect.getEffected().getEffectController().removeEffectByDispelCat(DispelCategoryType.BUFF,
-				SkillTargetSlot.BUFF, count, dispelLevel, finalPower, false);
+		
+		effect.getEffected().getEffectController()
+		.removeEffectByDispelCat(DispelCategoryType.BUFF, SkillTargetSlot.BUFF, count, dispelLevel, finalPower, false);
 	}
 }

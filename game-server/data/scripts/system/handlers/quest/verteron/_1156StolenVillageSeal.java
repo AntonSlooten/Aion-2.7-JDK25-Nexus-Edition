@@ -54,36 +54,41 @@ public class _1156StolenVillageSeal extends QuestHandler {
 			if (targetId == 203128) { // Santenius
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 700003: { // Item Stack
-				if (dialog == QuestDialog.USE_OBJECT) {
-					if (var == 0) {
-						return sendQuestDialog(env, 1352);
+				case 700003: { // Item Stack
+					if (dialog == QuestDialog.USE_OBJECT) {
+						if (var == 0) {
+							return sendQuestDialog(env, 1352);
+						}
 					}
-				} else if (dialog == QuestDialog.STEP_TO_1) {
-					changeQuestStep(env, 0, 1, false); // 1
-					return closeDialogWindow(env);
-				}
-				break;
-			}
-			case 798003: { // Gaphyrk
-				if (dialog == QuestDialog.USE_OBJECT) {
-					if (var == 1) {
-						return sendQuestDialog(env, 2375);
+					else if (dialog == QuestDialog.STEP_TO_1) {
+						changeQuestStep(env, 0, 1, false); // 1
+						return closeDialogWindow(env);
 					}
-				} else if (dialog == QuestDialog.SELECT_REWARD) {
-					changeQuestStep(env, 1, 1, true); // reward
-					return sendQuestDialog(env, 5);
+					break;
+				}
+				case 798003: { // Gaphyrk
+					if (dialog == QuestDialog.USE_OBJECT) {
+						if (var == 1) {
+							return sendQuestDialog(env, 2375);
+						}
+					}
+					else if (dialog == QuestDialog.SELECT_REWARD) {
+						changeQuestStep(env, 1, 1, true); // reward
+						return sendQuestDialog(env, 5);
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798003) { // Gaphyrk
 				return sendQuestEndDialog(env);
 			}

@@ -66,21 +66,17 @@ public class WalkerTemplate {
 	}
 
 	void beforeMarshal(Marshaller marshaller) {
-		if (!isReversed) {
+		if (isReversed == false)
 			isReversed = null;
-		}
-		if (formation == WalkerGroupType.POINT) {
+		if (formation == WalkerGroupType.POINT)
 			formation = null;
-		}
 	}
 
 	void afterMarshal(Marshaller marshaller) {
-		if (isReversed == null) {
+		if (isReversed == null)
 			isReversed = false;
-		}
-		if (formation == null) {
+		if (formation == null)
 			formation = WalkerGroupType.POINT;
-		}
 	}
 
 	/**
@@ -105,14 +101,15 @@ public class WalkerTemplate {
 			formation = WalkerGroupType.SQUARE;
 			rows = new int[1];
 			rows[0] = 2;
-		} else if (formation == WalkerGroupType.SQUARE) {
+		}
+		else if (formation == WalkerGroupType.SQUARE) {
 			if (rowValues != null) {
 				String[] values = rowValues.split(",");
 				rows = new int[values.length];
-				for (int i = 0; i < values.length; i++) {
+				for (int i = 0; i < values.length; i++)
 					rows[i] = Integer.parseInt(values[i]);
-				}
-			} else {
+			}
+			else {
 				formation = WalkerGroupType.POINT;
 			}
 		}

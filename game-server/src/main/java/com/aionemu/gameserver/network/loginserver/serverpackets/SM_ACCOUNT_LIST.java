@@ -25,7 +25,7 @@ import com.aionemu.gameserver.network.loginserver.LsServerPacket;
 
 /**
  * GameServer packet that sends list of logged in accounts
- *
+ * 
  * @author SoulKeeper
  */
 public class SM_ACCOUNT_LIST extends LsServerPacket {

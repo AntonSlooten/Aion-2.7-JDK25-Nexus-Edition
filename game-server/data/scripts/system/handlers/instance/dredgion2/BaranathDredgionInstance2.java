@@ -41,39 +41,40 @@ public class BaranathDredgionInstance2 extends DredgionInstance2 {
 		}
 		Race race = mostPlayerDamage.getRace();
 		switch (npc.getNpcId()) {
-		case 214823:
-			updateScore(mostPlayerDamage, npc, 1000, false);
-			stopInstance(race);
-			if (race == Race.ELYOS) {
-				sendMsgByRace(1400230, Race.ELYOS, 0);
-			} else {
-				sendMsgByRace(1400231, Race.ASMODIANS, 0);
-			}
-			return;
-		case 700508:
-			switch (race) {
-			case ELYOS:
-				spawn(700502, 520.88f, 493.40f, 395.34f, (byte) 28, 16);
-				sendMsgByRace(1400226, Race.ELYOS, 0);
-				break;
-			case ASMODIANS:
-				spawn(700502, 448.39f, 493.64f, 395.04f, (byte) 108, 12);
-				sendMsgByRace(1400227, Race.ASMODIANS, 0);
-				break;
-			}
-			return;
-		case 700506:
-			switch (race) {
-			case ELYOS:
-				spawn(730214, 567.59f, 175.20f, 432.28f, (byte) 33);
-				sendMsgByRace(1400228, Race.ELYOS, 0);
-				break;
-			case ASMODIANS:
-				spawn(730214, 402.33f, 175.12f, 432.28f, (byte) 41);
-				sendMsgByRace(1400229, Race.ASMODIANS, 0);
-				break;
-			}
-			return;
+			case 214823:
+				updateScore(mostPlayerDamage, npc, 1000, false);
+				stopInstance(race);
+				if (race == Race.ELYOS) {
+					sendMsgByRace(1400230, Race.ELYOS, 0);
+				}
+				else {
+					sendMsgByRace(1400231, Race.ASMODIANS, 0);
+				}
+				return;
+			case 700508:
+				switch (race) {
+					case ELYOS:
+						spawn(700502, 520.88f, 493.40f, 395.34f, (byte) 28, 16);
+						sendMsgByRace(1400226, Race.ELYOS, 0);
+						break;
+					case ASMODIANS:
+						spawn(700502, 448.39f, 493.64f, 395.04f, (byte) 108, 12);
+						sendMsgByRace(1400227, Race.ASMODIANS, 0);
+						break;
+				}
+				return;
+			case 700506:
+				switch (race) {
+					case ELYOS:
+						spawn(730214, 567.59f, 175.20f, 432.28f, (byte) 33);
+						sendMsgByRace(1400228, Race.ELYOS, 0);
+						break;
+					case ASMODIANS:
+						spawn(730214, 402.33f, 175.12f, 432.28f, (byte) 41);
+						sendMsgByRace(1400229, Race.ASMODIANS, 0);
+						break;
+				}
+				return;
 		}
 		super.onDie(npc);
 	}

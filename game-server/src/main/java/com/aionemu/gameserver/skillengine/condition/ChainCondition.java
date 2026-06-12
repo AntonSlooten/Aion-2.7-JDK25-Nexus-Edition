@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.XmlType;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.skillengine.model.Skill;
 
+
 /**
  * @author ATracer
  */
@@ -40,19 +41,19 @@ public class ChainCondition extends Condition {
 
 	@Override
 	public boolean validate(Skill env) {
-
-		if (env.getEffector() instanceof Player && precategory != null) {
-			Player pl = (Player) env.getEffector();
+		
+		if (env.getEffector() instanceof Player && precategory != null)
+		{
+			Player pl = (Player)env.getEffector();
 			if (precategory.equals(pl.getChainCategory())) {
-				if ((pl.getLastChainSkillTime() + time) < System.currentTimeMillis()) {
-					// TODO: log for catching cheaters?
+				if ((pl.getLastChainSkillTime() + time) < System.currentTimeMillis())
+					//TODO: log for catching cheaters?
 					return false;
-				}
-			} else {
-				return false;
 			}
+			else
+				return false;
 		}
-
+		
 		env.setChainCategory(category);
 		return true;
 	}

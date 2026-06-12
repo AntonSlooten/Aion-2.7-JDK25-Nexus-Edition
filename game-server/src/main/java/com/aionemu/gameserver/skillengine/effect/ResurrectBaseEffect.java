@@ -42,15 +42,14 @@ public class ResurrectBaseEffect extends BufEffect {
 				public void died(Creature creature) {
 					if (creature instanceof Player) {
 						Player effected = (Player) effect.getEffected();
-						if (effected.isInInstance()) {
+						if (effected.isInInstance())
 							PlayerReviveService.instanceRevive(effected);
-							/*
-							 * else if (effected.getKisk() != null)
-							 * PlayerReviveService.kiskRevive(effected);
-							 */
-						} else {
+						/*
+						else if (effected.getKisk() != null)
+							PlayerReviveService.kiskRevive(effected);
+						*/
+						else
 							PlayerReviveService.bindRevive(effected);
-						}
 					}
 				}
 			};

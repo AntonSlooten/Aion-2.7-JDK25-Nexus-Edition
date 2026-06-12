@@ -41,27 +41,26 @@ public class AntiAirCraftGunAI2 extends ActionItemNpcAI2 {
 	@Override
 	protected void handleUseItemFinish(Player player) {
 		Npc owner = getOwner();
-		TeleportService.teleportTo(player, owner.getWorldId(), owner.getInstanceId(), owner.getX(), owner.getY(),
-				owner.getZ(), owner.getHeading(), 3000, true);
+		TeleportService.teleportTo(player, owner.getWorldId(), owner.getInstanceId(), owner.getX(), owner.getY(), owner.getZ(), owner.getHeading(), 3000, true);
 		player.getController().stopProtectionActiveTask();
 		int morphSkillId = 0;
 		int level = 0;
-		switch (getNpcId()) {
-		case 701185: // 46 lvl morph 218803
-		case 701321:
-			morphSkillId = 20048;
-			level = 46;
-			break;
-		case 701199: // 51 lvl morph 218804
-		case 701322:
-			morphSkillId = 20049;
-			level = 51;
-			break;
-		case 701213: // 56 lvl morph 218805
-		case 701323:
-			morphSkillId = 20050;
-			level = 56;
-			break;
+		switch(getNpcId()) {
+			case 701185: // 46 lvl morph 218803
+			case 701321:
+				morphSkillId = 20048;
+				level = 46;
+				break;
+			case 701199: // 51 lvl morph 218804
+			case 701322:
+				morphSkillId = 20049;
+				level = 51;
+				break;
+			case 701213: // 56 lvl morph 218805
+			case 701323:
+				morphSkillId = 20050;
+				level = 56;
+				break;
 		}
 		AI2Actions.deleteOwner(this);
 		SkillEngine.getInstance().getSkill(player, morphSkillId, level, player).useSkill();

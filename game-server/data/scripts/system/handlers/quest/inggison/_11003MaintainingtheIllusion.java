@@ -61,24 +61,26 @@ public class _11003MaintainingtheIllusion extends QuestHandler {
 
 		else if (qs != null && qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798942: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(182206701);
-					long itemCount2 = player.getInventory().getItemCountByItemId(182206702);
-					if (itemCount1 > 11 && itemCount2 > 9) {
-						removeQuestItem(env, 182206701, 12);
-						removeQuestItem(env, 182206702, 10);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 2375);
-					} else
-						return sendQuestDialog(env, 2716);
-				}
+				case 798942: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182206701);
+							long itemCount2 = player.getInventory().getItemCountByItemId(182206702);
+							if (itemCount1 > 11 && itemCount2 > 9) {
+								removeQuestItem(env, 182206701, 12);
+								removeQuestItem(env, 182206702, 10);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 2375);
+							}
+							else
+								return sendQuestDialog(env, 2716);
+						}
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798942) {
 				if (env.getDialogId() == 34)
 					return sendQuestDialog(env, 5);

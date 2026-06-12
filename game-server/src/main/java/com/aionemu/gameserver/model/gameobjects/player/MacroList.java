@@ -13,7 +13,7 @@ import org.slf4j.Logger;
  * Player macrosses collection, contains all player macrosses.
  * <p/>
  * Created on: 13.07.2009 16:28:23
- *
+ * 
  * @author Aquanox, nrg
  */
 public class MacroList {
@@ -32,12 +32,12 @@ public class MacroList {
 	 * Creates an empty macro list
 	 */
 	public MacroList() {
-		this.macrosses = new HashMap<>(12);
+		this.macrosses = new HashMap<Integer, String>(12);
 	}
 
 	/**
 	 * Create new instance of <tt>MacroList</tt>.
-	 *
+	 * 
 	 * @param arg
 	 */
 	public MacroList(Map<Integer, String> arg) {
@@ -46,7 +46,7 @@ public class MacroList {
 
 	/**
 	 * Returns map with all macrosses
-	 *
+	 * 
 	 * @return all macrosses
 	 */
 	public Map<Integer, String> getMacrosses() {
@@ -55,11 +55,13 @@ public class MacroList {
 
 	/**
 	 * Add macro to the collection.
-	 *
-	 * @param macroPosition Macro order.
-	 * @param macroXML      Macro Xml contents.
-	 * @return <tt>true</tt> if macro addition was successful, and it can be stored
-	 *         into database. Otherwise <tt>false</tt>.
+	 * 
+	 * @param macroPosition
+	 *          Macro order.
+	 * @param macroXML
+	 *          Macro Xml contents.
+	 * @return <tt>true</tt> if macro addition was successful, and it can be stored into database. Otherwise
+	 *         <tt>false</tt>.
 	 */
 	public synchronized boolean addMacro(int macroPosition, String macroXML) {
 		if (macrosses.containsKey(macroPosition)) {
@@ -74,10 +76,10 @@ public class MacroList {
 
 	/**
 	 * Remove macro from the list.
-	 *
+	 * 
 	 * @param macroPosition
-	 * @return <tt>true</tt> if macro deletion was successful, and changes can be
-	 *         stored into database. Otherwise <tt>false</tt>.
+	 * @return <tt>true</tt> if macro deletion was successful, and changes can be stored into database. Otherwise
+	 *         <tt>false</tt>.
 	 */
 	public synchronized boolean removeMacro(int macroPosition) {
 		String m = macrosses.remove(macroPosition);
@@ -95,11 +97,11 @@ public class MacroList {
 	public int getSize() {
 		return macrosses.size();
 	}
-
+	
 	/**
-	 * Returns an entry set of macro id to macro contents.
-	 */
-	public Set<Entry<Integer, String>> entrySet() {
+     * Returns an entry set of macro id to macro contents.
+     */
+    public Set<Entry<Integer, String>> entrySet() {
 		return Collections.unmodifiableSet(getMacrosses().entrySet());
 	}
 }

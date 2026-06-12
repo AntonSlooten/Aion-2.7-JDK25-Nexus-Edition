@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -23,7 +23,7 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * I have no idea wtf is this
- *
+ * 
  * @author -Nemesiss-
  */
 public class SM_TIME_CHECK extends AionServerPacket {

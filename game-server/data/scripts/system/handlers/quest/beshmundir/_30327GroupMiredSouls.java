@@ -55,12 +55,13 @@ public class _30327GroupMiredSouls extends QuestHandler {
 		QuestState qs = player.getQuestStateList().getQuestState(questId);
 		int targetId = env.getTargetId();
 		QuestDialog dialog = env.getDialog();
-
+			
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 799244) {
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
@@ -71,43 +72,44 @@ public class _30327GroupMiredSouls extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 799521: {
-				switch (dialog) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 0) {
-						return sendQuestDialog(env, 1011);
+				case 799521: {
+					switch (dialog) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: 
+							return defaultCloseDialog(env, 0, 1);
 					}
 				}
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1);
+				case 799517: {
+					switch (dialog) {
+						case STEP_TO_1: {
+							QuestService.questTimerStart(env, 300);
+							return true;
+						}
+					}
 				}
 			}
-			case 799517: {
-				switch (dialog) {
-				case STEP_TO_1: {
-					QuestService.questTimerStart(env, 300);
-					return true;
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799244) {
 				switch (dialog) {
-				case USE_OBJECT: {
-					return sendQuestDialog(env, 10002);
-				}
-				case SELECT_REWARD: {
-					return sendQuestDialog(env, 5);
-				}
-				default:
-					return sendQuestEndDialog(env);
+					case USE_OBJECT: {
+						return sendQuestDialog(env, 10002);
+					}
+					case SELECT_REWARD: {
+						return sendQuestDialog(env, 5);
+					}
+					default:
+						return sendQuestEndDialog(env);
 				}
 			}
 		}
 		return false;
 	}
-
+	
 	@Override
 	public boolean onQuestTimerEndEvent(QuestEnv env) {
 		final Player player = env.getPlayer();
@@ -142,25 +144,25 @@ public class _30327GroupMiredSouls extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 
 		switch (targetId) {
-		case 216586:
-			if (qs.getQuestVarById(0) == 1) {
-				QuestService.questTimerEnd(env);
-				qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-				updateQuestStatus(env);
-				playQuestMovie(env, 445);
-				return true;
-			}
-			break;
-		case 216735:
-		case 216734:
-		case 216737:
-		case 216245:
-			if (qs.getQuestVarById(0) == 2) {
-				qs.setStatus(QuestStatus.REWARD);
-				updateQuestStatus(env);
-				return true;
-			}
-			break;
+			case 216586:
+				if (qs.getQuestVarById(0) == 1) {
+					QuestService.questTimerEnd(env);
+					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+					updateQuestStatus(env);
+					playQuestMovie(env, 445);
+					return true;
+				}
+				break;
+			case 216735:
+			case 216734:
+			case 216737:
+			case 216245:
+				if (qs.getQuestVarById(0) == 2) {
+					qs.setStatus(QuestStatus.REWARD);
+					updateQuestStatus(env);
+					return true;
+				}
+				break;
 		}
 		return false;
 	}

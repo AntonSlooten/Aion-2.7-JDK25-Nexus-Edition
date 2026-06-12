@@ -3,12 +3,12 @@
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>.
  */
@@ -76,19 +76,16 @@ public final class FloodManager {
 				_lastTick = currentTick;
 				Arrays.fill(_ticks, (short) 0);
 			} else if (_lastTick > currentTick) {
-				log.warn("The current tick (" + currentTick + ") is smaller than the last (" + _lastTick + ")!",
-						new IllegalStateException());
+				log.warn("The current tick (" + currentTick + ") is smaller than the last (" + _lastTick + ")!", new IllegalStateException());
 				_lastTick = currentTick;
-			} else {
+			} else
 				while (currentTick != _lastTick) {
 					_lastTick++;
 					_ticks[_lastTick % _ticks.length] = 0;
 				}
-			}
 
-			if (increment) {
+			if (increment)
 				_ticks[_lastTick % _ticks.length]++;
-			}
 
 			for (FloodFilter filter : _filters) {
 				int previousSum = 0;
@@ -97,22 +94,18 @@ public final class FloodManager {
 				for (int i = 0; i <= filter.getTickLimit(); i++) {
 					int value = _ticks[(_lastTick - i) % _ticks.length];
 
-					if (i != 0) {
+					if (i != 0)
 						previousSum += value;
-					}
 
-					if (i != filter.getTickLimit()) {
+					if (i != filter.getTickLimit())
 						currentSum += value;
-					}
 				}
 
-				if (previousSum > filter.getRejectLimit() || currentSum > filter.getRejectLimit()) {
+				if (previousSum > filter.getRejectLimit() || currentSum > filter.getRejectLimit())
 					return Result.REJECTED;
-				}
 
-				if (previousSum > filter.getWarnLimit() || currentSum > filter.getWarnLimit()) {
+				if (previousSum > filter.getWarnLimit() || currentSum > filter.getWarnLimit())
 					return Result.WARNED;
-				}
 			}
 
 			return Result.ACCEPTED;
@@ -123,9 +116,8 @@ public final class FloodManager {
 		ACCEPTED, WARNED, REJECTED;
 
 		public static Result max(final Result r1, final Result r2) {
-			if (r1.ordinal() > r2.ordinal()) {
+			if (r1.ordinal() > r2.ordinal())
 				return r1;
-			}
 
 			return r2;
 		}
@@ -135,7 +127,7 @@ public final class FloodManager {
 
 	private static final long ZERO = System.currentTimeMillis() - TimeUnit.DAYS.toMillis(1);
 
-	private final Map<String, LogEntry> _entries = new HashMap<>();
+	private final Map<String, LogEntry> _entries = new HashMap<String, LogEntry>();
 	private final ReentrantLock _lock = new ReentrantLock();
 
 	private final int _tickLength;
@@ -150,9 +142,8 @@ public final class FloodManager {
 
 		int max = 1;
 
-		for (FloodFilter filter : _filters) {
+		for (FloodFilter filter : _filters)
 			max = Math.max(filter.getTickLimit() + 1, max);
-		}
 
 		_tickAmount = max;
 
@@ -168,9 +159,8 @@ public final class FloodManager {
 		_lock.lock();
 		try {
 			for (Iterator<LogEntry> it = _entries.values().iterator(); it.hasNext();) {
-				if (it.next().isActive()) {
+				if (it.next().isActive())
 					continue;
-				}
 
 				it.remove();
 			}
@@ -180,9 +170,8 @@ public final class FloodManager {
 	}
 
 	public Result isFlooding(final String key, final boolean increment) {
-		if (key == null || key.isEmpty()) {
+		if (key == null || key.isEmpty())
 			return Result.REJECTED;
-		}
 
 		_lock.lock();
 		try {

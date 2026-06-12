@@ -43,19 +43,19 @@ public class CheckAllianceReadyEvent extends AlwaysTrueTeamEvent implements Pred
 	public void handleEvent() {
 		int readyStatus = alliance.getAllianceReadyStatus();
 		switch (eventCode) {
-		case ALLIANCE_CHECKREADY_CANCEL:
-			readyStatus = 0;
-			break;
-		case ALLIANCE_CHECKREADY_START:
-			readyStatus = alliance.onlineMembers() - 1;
-			break;
-		case ALLIANCE_CHECKREADY_AUTOCANCEL:
-			readyStatus = 0;
-			break;
-		case ALLIANCE_CHECKREADY_READY:
-		case ALLIANCE_CHECKREADY_NOTREADY:
-			readyStatus -= 1;
-			break;
+			case ALLIANCE_CHECKREADY_CANCEL:
+				readyStatus = 0;
+				break;
+			case ALLIANCE_CHECKREADY_START:
+				readyStatus = alliance.onlineMembers() - 1;
+				break;
+			case ALLIANCE_CHECKREADY_AUTOCANCEL:
+				readyStatus = 0;
+				break;
+			case ALLIANCE_CHECKREADY_READY:
+			case ALLIANCE_CHECKREADY_NOTREADY:
+				readyStatus -= 1;
+				break;
 		}
 		alliance.setAllianceReadyStatus(readyStatus);
 		alliance.applyOnMembers(this);
@@ -64,28 +64,28 @@ public class CheckAllianceReadyEvent extends AlwaysTrueTeamEvent implements Pred
 	@Override
 	public boolean apply(Player member) {
 		switch (eventCode) {
-		case ALLIANCE_CHECKREADY_CANCEL:
-			PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(player.getObjectId(), 0));
-			break;
-		case ALLIANCE_CHECKREADY_START:
-			PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(player.getObjectId(), 5));
-			PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(player.getObjectId(), 1));
-			break;
-		case ALLIANCE_CHECKREADY_AUTOCANCEL:
-			PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(player.getObjectId(), 2));
-			break;
-		case ALLIANCE_CHECKREADY_READY:
-			PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(player.getObjectId(), 5));
-			if (alliance.getAllianceReadyStatus() == 0) {
-				PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(0, 3));
-			}
-			break;
-		case ALLIANCE_CHECKREADY_NOTREADY:
-			PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(player.getObjectId(), 4));
-			if (alliance.getAllianceReadyStatus() == 0) {
-				PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(0, 3));
-			}
-			break;
+			case ALLIANCE_CHECKREADY_CANCEL:
+				PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(player.getObjectId(), 0));
+				break;
+			case ALLIANCE_CHECKREADY_START:
+				PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(player.getObjectId(), 5));
+				PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(player.getObjectId(), 1));
+				break;
+			case ALLIANCE_CHECKREADY_AUTOCANCEL:
+				PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(player.getObjectId(), 2));
+				break;
+			case ALLIANCE_CHECKREADY_READY:
+				PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(player.getObjectId(), 5));
+				if (alliance.getAllianceReadyStatus() == 0) {
+					PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(0, 3));
+				}
+				break;
+			case ALLIANCE_CHECKREADY_NOTREADY:
+				PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(player.getObjectId(), 4));
+				if (alliance.getAllianceReadyStatus() == 0) {
+					PacketSendUtility.sendPacket(member, new SM_ALLIANCE_READY_CHECK(0, 3));
+				}
+				break;
 		}
 		return true;
 	}

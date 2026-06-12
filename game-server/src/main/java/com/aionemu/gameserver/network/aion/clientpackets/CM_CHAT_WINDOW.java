@@ -31,9 +31,8 @@ public class CM_CHAT_WINDOW extends AionClientPacket {
 		Player player = getConnection().getActivePlayer();
 		Player target = World.getInstance().findPlayer(playerName);
 
-		if (target == null) {
+		if (target == null)
 			return;
-		}
 
 		PacketSendUtility.sendPacket(player, new SM_CHAT_WINDOW(target));
 	}

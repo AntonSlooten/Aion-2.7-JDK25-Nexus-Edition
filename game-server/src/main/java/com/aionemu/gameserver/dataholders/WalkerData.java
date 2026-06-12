@@ -34,12 +34,12 @@ import com.aionemu.gameserver.model.templates.walker.WalkerTemplate;
 public class WalkerData {
 
 	private static final Logger log = LoggerFactory.getLogger(WalkerData.class);
-
+	
 	@XmlElement(name = "walker_template")
 	private List<WalkerTemplate> walkerlist;
 
 	@XmlTransient
-	private FastMap<String, WalkerTemplate> walkerlistData = new FastMap<>();
+	private FastMap<String, WalkerTemplate> walkerlistData = new FastMap<String, WalkerTemplate>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (WalkerTemplate route : walkerlist) {
@@ -58,16 +58,14 @@ public class WalkerData {
 	}
 
 	public WalkerTemplate getWalkerTemplate(String routeId) {
-		if (routeId == null) {
+		if (routeId == null)
 			return null;
-		}
 		return walkerlistData.get(routeId);
 	}
 
 	public void AddTemplate(WalkerTemplate newTemplate) {
-		if (walkerlist == null) {
-			walkerlist = new ArrayList<>();
-		}
+		if (walkerlist == null)
+			walkerlist = new ArrayList<WalkerTemplate>();
 		walkerlist.add(newTemplate);
 	}
 
@@ -77,7 +75,8 @@ public class WalkerData {
 
 		try {
 			schema = sf.newSchema(new File("./data/static_data/npc_walker.xsd"));
-		} catch (SAXException e1) {
+		}
+		catch (SAXException e1) {
 			log.error("Error while saving data: " + e1.getMessage(), e1.getCause());
 			return;
 		}
@@ -91,10 +90,12 @@ public class WalkerData {
 			marshaller.setSchema(schema);
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			marshaller.marshal(this, xml);
-		} catch (JAXBException e) {
+		}
+		catch (JAXBException e) {
 			log.error("Error while saving data: " + e.getMessage(), e.getCause());
 			return;
-		} finally {
+		}
+		finally {
 			if (walkerlist != null) {
 				walkerlist.clear();
 				walkerlist = null;

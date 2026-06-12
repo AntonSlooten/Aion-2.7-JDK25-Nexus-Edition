@@ -45,7 +45,8 @@ public class PlayerGroupInvite extends RequestResponseHandler {
 			PlayerGroup group = inviter.getPlayerGroup2();
 			if (group != null) {
 				PlayerGroupService.addPlayer(group, invited);
-			} else {
+			}
+			else {
 				PlayerGroupService.createGroup(inviter, invited);
 			}
 		}

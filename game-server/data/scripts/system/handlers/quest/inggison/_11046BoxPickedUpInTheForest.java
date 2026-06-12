@@ -57,26 +57,29 @@ public class _11046BoxPickedUpInTheForest extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		if (targetId == 0) {
 			switch (env.getDialog()) {
-			case ACCEPT_QUEST:
-				QuestService.startQuest(env);
-				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
-				return true;
-			case REFUSE_QUEST:
-				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
-				return true;
+				case ACCEPT_QUEST:
+					QuestService.startQuest(env);
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
+					return true;
+				case REFUSE_QUEST:
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
+					return true;
 			}
-		} else if (targetId == 798954) {
+		}
+		else if (targetId == 798954) {
 			if (qs != null) {
 				if (env.getDialog() == QuestDialog.START_DIALOG && qs.getStatus() == QuestStatus.START) {
 					return sendQuestDialog(env, 2375);
-				} else if (env.getDialogId() == 1009 && qs.getStatus() != QuestStatus.COMPLETE
-						&& qs.getStatus() != QuestStatus.NONE) {
+				}
+				else if (env.getDialogId() == 1009 && qs.getStatus() != QuestStatus.COMPLETE
+					&& qs.getStatus() != QuestStatus.NONE) {
 					removeQuestItem(env, 182206745, 1);
 					qs.setQuestVar(1);
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
 					return sendQuestEndDialog(env);
-				} else
+				}
+				else
 					return sendQuestEndDialog(env);
 			}
 		}
@@ -93,7 +96,7 @@ public class _11046BoxPickedUpInTheForest extends QuestHandler {
 		if (id != 182206745)
 			return HandlerResult.UNKNOWN;
 		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 20, 1, 0), true);
+			new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 20, 1, 0), true);
 		if (qs == null || qs.getStatus() == QuestStatus.NONE)
 			sendQuestDialog(env, 4);
 		return HandlerResult.SUCCESS;

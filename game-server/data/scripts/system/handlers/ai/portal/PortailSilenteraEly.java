@@ -17,14 +17,13 @@ import ai.PortalAI2;
 public class PortailSilenteraEly extends PortalAI2 {
 	@Override
 	protected void handleDialogStart(Player player) {
-		if (player.getRace() != Race.ELYOS) {
+		if(player.getRace() != Race.ELYOS){
 			return;
 		}
-
-		if (SiegeService.getInstance().getFortress(2011).getRace() == SiegeRace.ELYOS
-				|| SiegeService.getInstance().getFortress(2021).getRace() == SiegeRace.ELYOS) {
+		
+		if(SiegeService.getInstance().getFortress(2011).getRace() == SiegeRace.ELYOS || SiegeService.getInstance().getFortress(2021).getRace() == SiegeRace.ELYOS){
 			super.handleDialogStart(player);
-		} else {
+		}else{
 			TeleportService.teleportTo(player, 220070000, 1603, 1499, 415, 0);
 		}
 	}

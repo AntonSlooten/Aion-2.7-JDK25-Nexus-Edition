@@ -54,7 +54,7 @@ public class Fixit extends AggressiveNpcAI2 {
 		scheduleHeal(delay);
 	}
 
-	private void cancel() {
+	private void cancel(){
 		if (skillHeal != null && !skillHeal.isCancelled()) {
 			skillHeal.cancel(true);
 		}

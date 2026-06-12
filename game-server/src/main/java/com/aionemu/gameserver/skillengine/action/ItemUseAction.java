@@ -44,9 +44,8 @@ public class ItemUseAction extends Action {
 			Player player = (Player) skill.getEffector();
 			Storage inventory = player.getInventory();
 
-			if (!inventory.decreaseByItemId(itemid, count)) {
+			if (!inventory.decreaseByItemId(itemid, count))
 				return;
-			}
 		}
 	}
 

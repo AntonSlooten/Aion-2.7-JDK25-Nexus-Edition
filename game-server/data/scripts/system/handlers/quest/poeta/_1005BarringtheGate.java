@@ -64,92 +64,101 @@ public class _1005BarringtheGate extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 203067) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-				case STEP_TO_1:
-					if (var == 0) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						sendQuestSelectionDialog(env);
-						return true;
-					}
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+					case STEP_TO_1:
+						if (var == 0) {
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							sendQuestSelectionDialog(env);
+							return true;
+						}
 				}
-			} else if (targetId == 203081) {
+			}
+			else if (targetId == 203081) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_2:
-					if (var == 1) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						sendQuestSelectionDialog(env);
-						return true;
-					}
+					case START_DIALOG:
+						if (var == 1)
+							return sendQuestDialog(env, 1352);
+					case STEP_TO_2:
+						if (var == 1) {
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							sendQuestSelectionDialog(env);
+							return true;
+						}
 				}
-			} else if (targetId == 790001) {
+			}
+			else if (targetId == 790001) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 2)
-						return sendQuestDialog(env, 1693);
-				case STEP_TO_3:
-					if (var == 2) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						sendQuestSelectionDialog(env);
-						return true;
-					}
+					case START_DIALOG:
+						if (var == 2)
+							return sendQuestDialog(env, 1693);
+					case STEP_TO_3:
+						if (var == 2) {
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							sendQuestSelectionDialog(env);
+							return true;
+						}
 				}
-			} else if (targetId == 203085) {
+			}
+			else if (targetId == 203085) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 3)
-						return sendQuestDialog(env, 2034);
-				case STEP_TO_4:
-					if (var == 3) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						sendQuestSelectionDialog(env);
-						return true;
-					}
+					case START_DIALOG:
+						if (var == 3)
+							return sendQuestDialog(env, 2034);
+					case STEP_TO_4:
+						if (var == 3) {
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							sendQuestSelectionDialog(env);
+							return true;
+						}
 				}
-			} else if (targetId == 203086) {
+			}
+			else if (targetId == 203086) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 4)
-						return sendQuestDialog(env, 2375);
-				case STEP_TO_5:
-					if (var == 4) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						sendQuestSelectionDialog(env);
-						return true;
-					}
+					case START_DIALOG:
+						if (var == 4)
+							return sendQuestDialog(env, 2375);
+					case STEP_TO_5:
+						if (var == 4) {
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							sendQuestSelectionDialog(env);
+							return true;
+						}
 				}
-			} else if (targetId == 700081) {
+			}
+			else if (targetId == 700081) {
 				if (var == 5) {
 					destroy(6, env);
 					return false;
 				}
-			} else if (targetId == 700082) {
+			}
+			else if (targetId == 700082) {
 				if (var == 6) {
 					destroy(7, env);
 					return false;
 				}
-			} else if (targetId == 700083) {
+			}
+			else if (targetId == 700083) {
 				if (var == 7) {
 					destroy(8, env);
 					return false;
 				}
-			} else if (targetId == 700080) {
+			}
+			else if (targetId == 700080) {
 				if (var == 8) {
 					destroy(-1, env);
 					return false;
 				}
 			}
 
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203067) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT)
 					return sendQuestDialog(env, 2716);
@@ -178,10 +187,8 @@ public class _1005BarringtheGate extends QuestHandler {
 		final int targetObjectId = env.getVisibleObject().getObjectId();
 
 		final Player player = env.getPlayer();
-		// PacketSendUtility.sendPacket(player, new SM_USE_OBJECT(player.getObjectId(),
-		// targetObjectId, 3000, 1));
-		// PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player,
-		// EmotionType.NEUTRALMODE2, 0, targetObjectId), true);
+		// PacketSendUtility.sendPacket(player, new SM_USE_OBJECT(player.getObjectId(), targetObjectId, 3000, 1));
+		// PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.NEUTRALMODE2, 0, targetObjectId), true);
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
@@ -189,8 +196,8 @@ public class _1005BarringtheGate extends QuestHandler {
 				if (player.getTarget() == null || player.getTarget().getObjectId() != targetObjectId)
 					return;
 				PacketSendUtility.sendPacket(player, new SM_USE_OBJECT(player.getObjectId(), targetObjectId, 3000, 0));
-				PacketSendUtility.broadcastPacket(player,
-						new SM_EMOTION(player, EmotionType.START_LOOT, 0, targetObjectId), true);
+				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.START_LOOT, 0, targetObjectId),
+					true);
 				// sendEmotion(env, player, EmotionId.STAND, true);
 				QuestState qs = player.getQuestStateList().getQuestState(questId);
 				if (var != -1)

@@ -36,13 +36,12 @@ public class SleepEffect extends EffectTemplate {
 	@Override
 	public void applyEffect(Effect effect) {
 		final Creature effected = effect.getEffected();
-
-		// if player is in gliding close wings
-		if (effected instanceof Player) {
+		
+		//if player is in gliding close wings
+		if(effected instanceof Player){
 			Player activeChar = (Player) effected;
-			if (activeChar.isInState(CreatureState.GLIDING)) {
+			if(activeChar.isInState(CreatureState.GLIDING))
 				activeChar.getFlyController().onStopGliding(true);
-			}
 		}
 		effect.addToEffectedController();
 	}

@@ -78,7 +78,7 @@ public class League extends GeneralTeam<PlayerAlliance, LeagueMember> {
 	public void sendPacket(AionServerPacket packet, Predicate<PlayerAlliance> predicate) {
 		for (PlayerAlliance alliance : getMembers()) {
 			if (predicate.apply(alliance)) {
-				alliance.sendPacket(packet, Predicates.<Player>alwaysTrue());
+				alliance.sendPacket(packet, Predicates.<Player> alwaysTrue());
 			}
 		}
 	}
@@ -117,7 +117,7 @@ public class League extends GeneralTeam<PlayerAlliance, LeagueMember> {
 
 	/**
 	 * Search for player member in all alliances
-	 *
+	 * 
 	 * @return player object
 	 */
 	public Player getPlayerMember(Integer playerObjId) {

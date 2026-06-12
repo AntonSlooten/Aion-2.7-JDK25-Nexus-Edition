@@ -33,7 +33,7 @@ public class PetList {
 	private final Player player;
 	private int lastUsedPetId;
 
-	private FastMap<Integer, PetCommonData> pets = new FastMap<>();
+	private FastMap<Integer, PetCommonData> pets = new FastMap<Integer, PetCommonData>();
 
 	PetList(Player player) {
 		this.player = player;
@@ -45,14 +45,12 @@ public class PetList {
 		PetCommonData lastUsedPet = null;
 		for (PetCommonData pet : playerPets) {
 			pets.put(pet.getPetId(), pet);
-			if (lastUsedPet == null || pet.getDespawnTime().after(lastUsedPet.getDespawnTime())) {
+			if (lastUsedPet == null || pet.getDespawnTime().after(lastUsedPet.getDespawnTime()))
 				lastUsedPet = pet;
-			}
 		}
 
-		if (lastUsedPet != null) {
+		if(lastUsedPet != null)
 			lastUsedPetId = lastUsedPet.getPetId();
-		}
 	}
 
 	public Collection<PetCommonData> getPets() {
@@ -71,7 +69,7 @@ public class PetList {
 		return getPet(lastUsedPetId);
 	}
 
-	public void setLastUsedPetId(int lastUsedPetId) {
+	public void setLastUsedPetId(int lastUsedPetId){
 		this.lastUsedPetId = lastUsedPetId;
 	}
 

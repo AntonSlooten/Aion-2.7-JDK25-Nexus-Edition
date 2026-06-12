@@ -63,42 +63,44 @@ public class _2021KnowYourEnemy extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203669:
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 2) {
-						player.setTransformedModelId(0);
-						PacketSendUtility.broadcastPacketAndReceive(player, new SM_TRANSFORM(player, false));
-						return sendQuestDialog(env, 1352);
-					} else if (var == 6)
-						return sendQuestDialog(env, 1693);
-					break;
-				case STEP_TO_1:
-					if (var == 0) {
-						player.setTransformedModelId(202501);
-						PacketSendUtility.broadcastPacketAndReceive(player, new SM_TRANSFORM(player, true));
-						ThreadPoolManager.getInstance().schedule(new Runnable() {
-
-							@Override
-							public void run() {
-								if (player == null || player.getTransformedModelId() == 0)
-									return;
+				case 203669:
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+							else if (var == 2) {
 								player.setTransformedModelId(0);
 								PacketSendUtility.broadcastPacketAndReceive(player, new SM_TRANSFORM(player, false));
+								return sendQuestDialog(env, 1352);
 							}
-						}, 300000);
-						return defaultCloseDialog(env, 0, 1); // 1
+							else if (var == 6)
+								return sendQuestDialog(env, 1693);
+							break;
+						case STEP_TO_1:
+							if (var == 0) {
+								player.setTransformedModelId(202501);
+								PacketSendUtility.broadcastPacketAndReceive(player, new SM_TRANSFORM(player, true));
+								ThreadPoolManager.getInstance().schedule(new Runnable() {
+
+									@Override
+									public void run() {
+										if (player == null || player.getTransformedModelId() == 0)
+											return;
+										player.setTransformedModelId(0);
+										PacketSendUtility.broadcastPacketAndReceive(player, new SM_TRANSFORM(player, false));
+									}
+								}, 300000);
+								return defaultCloseDialog(env, 0, 1); // 1
+							}
+							break;
+						case STEP_TO_2:
+							return defaultCloseDialog(env, 2, 3); // 3
+						case STEP_TO_3:
+							return defaultCloseDialog(env, 6, 6, true, false); // reward
 					}
-					break;
-				case STEP_TO_2:
-					return defaultCloseDialog(env, 2, 3); // 3
-				case STEP_TO_3:
-					return defaultCloseDialog(env, 6, 6, true, false); // reward
-				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203557) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT)
 					return sendQuestDialog(env, 2034);

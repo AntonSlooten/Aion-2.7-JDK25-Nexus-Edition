@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <www.aion-unique.com>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -17,7 +17,6 @@
 package com.aionemu.gameserver.network.aion.clientpackets;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,9 +80,8 @@ public class CM_USE_ITEM extends AionClientPacket {
 			return;
 		}
 
-		if (targetItem == null) {
+		if (targetItem == null)
 			targetItem = player.getEquipment().getEquippedItemByObjId(targetItemId);
-		}
 
 		if (item.getItemTemplate().getTemplateId() == 165000001 && targetItem.getItemTemplate().canExtract()) {
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_ITEM_COLOR_ERROR);
@@ -99,53 +97,46 @@ public class CM_USE_ITEM extends AionClientPacket {
 			// return;
 		}
 
-		if (!RestrictionsManager.canUseItem(player, item)) {
+		if (!RestrictionsManager.canUseItem(player, item))
 			return;
-		}
-
-		if (item.getItemTemplate().getRace() != Race.PC_ALL && item.getItemTemplate().getRace() != player.getRace()) {
+		
+		if(item.getItemTemplate().getRace() != Race.PC_ALL && item.getItemTemplate().getRace() != player.getRace()) {
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CANNOT_USE_ITEM_INVALID_RACE);
 			return;
 		}
 
 		int requiredLevel = item.getItemTemplate().getRequiredLevel(player.getCommonData().getPlayerClass());
-		if (requiredLevel == -1) {
+		if (requiredLevel == -1){
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CANNOT_USE_ITEM_INVALID_CLASS);
 			return;
 		}
 
-		if (requiredLevel > player.getLevel()) {
-			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE
-					.STR_CANNOT_USE_ITEM_TOO_LOW_LEVEL_MUST_BE_THIS_LEVEL(item.getNameID(), requiredLevel));
+		if ( requiredLevel > player.getLevel()) {
+			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CANNOT_USE_ITEM_TOO_LOW_LEVEL_MUST_BE_THIS_LEVEL(item.getNameID(), requiredLevel));
 			return;
 		}
 
 		HandlerResult result = QuestEngine.getInstance().onItemUseEvent(new QuestEnv(null, player, 0, 0), item);
-		if (result == HandlerResult.FAILED) {
+		if (result == HandlerResult.FAILED)
 			return; // don't remove item
-		}
 
 		ItemActions itemActions = item.getItemTemplate().getActions();
-		List<AbstractItemAction> actions = new ArrayList<>();
+		ArrayList<AbstractItemAction> actions = new ArrayList<AbstractItemAction>();
 
-		if (itemActions == null) {
+		if (itemActions == null)
 			return;
-		}
 
 		for (AbstractItemAction itemAction : itemActions.getItemActions()) {
 			// check if the item can be used before placing it on the cooldown list.
-			if (itemAction.canAct(player, item, targetItem)) {
+			if (itemAction.canAct(player, item, targetItem))
 				actions.add(itemAction);
-			}
 		}
 
-		if (actions.size() == 0) {
+		if (actions.size() == 0)
 			return;
-		}
 
 		// Store Item CD in server Player variable.
-		// Prevents potion spamming, and relogging to use kisks/aether jelly/long CD
-		// items.
+		// Prevents potion spamming, and relogging to use kisks/aether jelly/long CD items.
 		if (player.isItemUseDisabled(item.getItemTemplate().getDelayId())) {
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_ITEM_CANT_USE_UNTIL_DELAY_TIME);
 			return;
@@ -154,12 +145,12 @@ public class CM_USE_ITEM extends AionClientPacket {
 		int useDelay = player.getItemCooldown(item.getItemTemplate());
 		if (useDelay > 0) {
 			player.addItemCoolDown(item.getItemTemplate().getDelayId(), System.currentTimeMillis() + useDelay,
-					useDelay / 1000);
+				useDelay / 1000);
 		}
 
-		// notify item use observer
+		//notify item use observer
 		player.getObserveController().notifyItemuseObservers(item);
-
+		
 		for (AbstractItemAction itemAction : actions) {
 			itemAction.act(player, item, targetItem);
 		}

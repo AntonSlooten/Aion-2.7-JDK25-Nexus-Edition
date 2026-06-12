@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -21,9 +21,8 @@ import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionConnection.State;
 
 /**
- * In this packets aion client is notify quit. ie after this packet client will
- * close connection.
- *
+ * In this packets aion client is notify quit. ie after this packet client will close connection.
+ * 
  * @author -Nemesiss-
  */
 public class CM_DISCONNECT extends AionClientPacket {
@@ -32,7 +31,7 @@ public class CM_DISCONNECT extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_DISCONNECT </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_DISCONNECT(int opcode, State state, State... restStates) {

@@ -43,7 +43,7 @@ public class KiskService {
 
 	/**
 	 * Remove kisk references and containers.
-	 *
+	 * 
 	 * @param kisk
 	 */
 	public static void removeKisk(Kisk kisk) {
@@ -51,9 +51,8 @@ public class KiskService {
 			kiskContainer.remove(member);
 			PacketSendUtility.sendPacket(member, new SM_SET_BIND_POINT(0, 0f, 0f, 0f, member));
 			member.setKisk(null);
-			if (member.getLifeStats().isAlreadyDead()) {
+			if (member.getLifeStats().isAlreadyDead())
 				member.getController().sendDie();
-			}
 		}
 	}
 
@@ -62,10 +61,10 @@ public class KiskService {
 	 * @param player
 	 */
 	public static void onBind(Kisk kisk, Player player) {
-		if (kisk.isInsideZoneType(ZoneType.SIEGE)) {
+		if(kisk.isInsideZoneType(ZoneType.SIEGE)){
 			return;
 		}
-
+		
 		if (player.getKisk() != null) {
 			kiskContainer.remove(player);
 			player.getKisk().removePlayer(player);
@@ -81,8 +80,8 @@ public class KiskService {
 		PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_BINDSTONE_REGISTER);
 
 		// Send Animated Bind Flash
-		PacketSendUtility.broadcastPacket(player,
-				new SM_LEVEL_UPDATE(player.getObjectId(), 2, player.getCommonData().getLevel()), true);
+		PacketSendUtility.broadcastPacket(player, new SM_LEVEL_UPDATE(player.getObjectId(), 2, player.getCommonData()
+			.getLevel()), true);
 	}
 
 	/**
@@ -90,9 +89,8 @@ public class KiskService {
 	 */
 	public static void onLogin(Player player) {
 		Kisk kisk = kiskContainer.get(player);
-		if (kisk != null) {
+		if (kisk != null)
 			kisk.reAddPlayer(player);
-		}
 	}
 
 }

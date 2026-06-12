@@ -25,9 +25,8 @@ import javolution.util.FastList;
 
 public class SM_FORTRESS_STATUS extends AionServerPacket {
 
-	@Override
 	protected void writeImpl(AionConnection con) {
-		FastList<FortressLocation> fortresses = new FastList<>();
+		FastList<FortressLocation> fortresses = new FastList<FortressLocation>();
 
 		writeC(1);
 		writeD(SiegeService.getInstance().getSecondsBeforeHourEnd());

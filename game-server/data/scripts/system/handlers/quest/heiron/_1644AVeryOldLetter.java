@@ -69,45 +69,47 @@ public class _1644AVeryOldLetter extends QuestHandler {
 
 		if (qs != null && qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204545: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 0) {
-						return sendQuestDialog(env, 1352);
-					} else if (qs.getQuestVarById(0) == 2) {
-						return sendQuestDialog(env, 2034);
+				case 204545: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 0) {
+								return sendQuestDialog(env, 1352);
+							}
+							else if (qs.getQuestVarById(0) == 2) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1);
+						}
+						case STEP_TO_3: {
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return defaultCloseDialog(env, 2, 3);
+						}
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1);
-				}
-				case STEP_TO_3: {
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return defaultCloseDialog(env, 2, 3);
-				}
-				}
-			}
-			case 204537: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1693);
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2, 0, 0, 182201765, 1);
-				}
+				case 204537: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 1693);
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2, 0, 0, 182201765, 1);
+						}
+					}
 				}
 			}
-			}
-		} else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204546) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2375);
-				}
-				default: {
-					return sendQuestEndDialog(env);
-				}
+					case START_DIALOG: {
+						return sendQuestDialog(env, 2375);
+					}
+					default: {
+						return sendQuestEndDialog(env);
+					}
 				}
 			}
 		}
@@ -132,14 +134,14 @@ public class _1644AVeryOldLetter extends QuestHandler {
 			}
 		}
 
-		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0, 0), true);
+		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0,
+			0), true);
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
-				PacketSendUtility.broadcastPacket(player,
-						new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+				PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+					1, 0), true);
 				sendQuestDialog(env, 4);
 			}
 		}, 3000);

@@ -69,7 +69,8 @@ public class FlyRingObserver extends ActionObserver {
 				if (distance < ring.getTemplate().getRadius()) {
 					passedThrough = true;
 				}
-			} else {
+			}
+			else {
 				if (MathUtil.isIn3dRange(ring, player, ring.getTemplate().getRadius())) {
 					passedThrough = true;
 				}
@@ -99,9 +100,8 @@ public class FlyRingObserver extends ActionObserver {
 		int questId = player.getRace() == Race.ASMODIANS ? 2042 : 1044;
 		QuestState qs = player.getQuestStateList().getQuestState(questId);
 
-		if (qs == null) {
+		if (qs == null)
 			return false;
-		}
 
 		return qs.getStatus() == QuestStatus.START && qs.getQuestVarById(0) >= 2 && qs.getQuestVarById(0) <= 8;
 	}

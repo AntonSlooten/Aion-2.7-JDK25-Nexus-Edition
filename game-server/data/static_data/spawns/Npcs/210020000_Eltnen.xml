@@ -424,6 +424,7 @@
 		</spawn>
 		<!-- Pendaon -->
 		<spawn npc_id="798362" respawn_time="295">
+			<temporary_spawn spawn_time="6.*.*" despawn_time="8.*.*"/>
 			<spot x="270.403" y="410.339" z="16.6274" h="89"/>
 		</spawn>
 		<!-- Simunai -->

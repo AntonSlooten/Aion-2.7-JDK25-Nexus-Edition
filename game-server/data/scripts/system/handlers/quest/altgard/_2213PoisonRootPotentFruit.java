@@ -59,28 +59,31 @@ public class _2213PoisonRootPotentFruit extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 700057: {
-				if (env.getDialog() == QuestDialog.USE_OBJECT) {
-					return true; // loot
+				case 700057: {
+					if (env.getDialog() == QuestDialog.USE_OBJECT) {
+						return true; // loot
+					}
+				}
+				case 203604: {
+					if (qs.getQuestVarById(0) == 1) {
+						if (env.getDialog() == QuestDialog.START_DIALOG)
+							return sendQuestDialog(env, 2375);
+						else if (env.getDialogId() == 1009) {
+							removeQuestItem(env, 182203208, 1);
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return sendQuestEndDialog(env);
+						}
+						else
+							return sendQuestEndDialog(env);
+					}
 				}
 			}
-			case 203604: {
-				if (qs.getQuestVarById(0) == 1) {
-					if (env.getDialog() == QuestDialog.START_DIALOG)
-						return sendQuestDialog(env, 2375);
-					else if (env.getDialogId() == 1009) {
-						removeQuestItem(env, 182203208, 1);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestEndDialog(env);
-					} else
-						return sendQuestEndDialog(env);
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203604)
 				return sendQuestEndDialog(env);
 		}

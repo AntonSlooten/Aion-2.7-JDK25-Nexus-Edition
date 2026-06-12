@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.templates.teleport.TeleporterTemplate;
@@ -50,7 +51,8 @@ public class SM_TELEPORT_MAP extends AionServerPacket {
 		if ((teleport != null) && (teleport.getNpcId() != 0) && (teleport.getTeleportId() != 0)) {
 			writeD(targetObjectId);
 			writeH(teleport.getTeleportId());
-		} else {
+		}
+		else {
 			PacketSendUtility.sendMessage(player, "Missing info at npc_teleporter.xml with npcid: " + npc.getNpcId());
 			log.info(String.format("Missing teleport info with npcid: %d", npc.getNpcId()));
 		}

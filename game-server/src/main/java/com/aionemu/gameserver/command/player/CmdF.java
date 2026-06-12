@@ -10,7 +10,7 @@ import com.aionemu.gameserver.services.player.PlayerChatService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.World;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 /*"syntax .f <message> */
 
@@ -19,7 +19,7 @@ import org.apache.commons.lang3.StringUtils;
  */
 public class CmdF extends BaseCommand {
 
-	@Override
+
 	public void execute(Player player, String... params) {
 		Storage sender = player.getInventory();
 
@@ -36,15 +36,16 @@ public class CmdF extends BaseCommand {
 		if (player.getWorldId() == 510010000 || player.getWorldId() == 520010000) {
 			PacketSendUtility.sendMessage(player, "You can't talk in Prison.");
 			return;
-		} else if (player.isGagged()) {
+		}
+		else if (player.isGagged()) {
 			PacketSendUtility.sendMessage(player, "You are gaged, you can't talk.");
 			return;
 		}
 
 		if (!CustomConfig.FACTION_FREE_USE) {
-			if (sender.getKinah() > CustomConfig.FACTION_USE_PRICE) {
+			if (sender.getKinah() > CustomConfig.FACTION_USE_PRICE)
 				sender.decreaseKinah(CustomConfig.FACTION_USE_PRICE);
-			} else {
+			else {
 				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_NOT_ENOUGH_MONEY);
 				return;
 			}
@@ -55,11 +56,10 @@ public class CmdF extends BaseCommand {
 		if (!PlayerChatService.isFlooding(player)) {
 			message = player.getName() + ": " + message;
 			for (Player a : World.getInstance().getAllPlayers()) {
-				if (a.getAccessLevel() >= 2) {
+				if (a.getAccessLevel() >= 2)
 					PacketSendUtility.sendMessage(a, (player.getRace() == Race.ASMODIANS ? "[A] " : "[E] ") + message);
-				} else if (a.getRace() == player.getRace()) {
+				else if (a.getRace() == player.getRace())
 					PacketSendUtility.sendMessage(a, message);
-				}
 			}
 		}
 

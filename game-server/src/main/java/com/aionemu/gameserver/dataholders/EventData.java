@@ -39,9 +39,8 @@ import com.aionemu.gameserver.model.templates.event.EventTemplate;
  * <p>
  * Java class for EventData complex type.
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
- *
+ * The following schema fragment specifies the expected content contained within this class.
+ * 
  * <pre>
  * &lt;complexType name="EventData">
  *   &lt;complexContent>
@@ -75,24 +74,23 @@ public class EventData {
 	protected List<EventTemplate> events;
 
 	@XmlTransient
-	private THashMap<String, EventTemplate> activeEvents = new THashMap<>();
+	private THashMap<String, EventTemplate> activeEvents = new THashMap<String, EventTemplate>();
 
 	@XmlTransient
-	private THashMap<String, EventTemplate> allEvents = new THashMap<>();
+	private THashMap<String, EventTemplate> allEvents = new THashMap<String, EventTemplate>();
 
 	@XmlTransient
 	private int counter = 0;
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
-		if (active == null || events == null) {
+		if (active == null || events == null)
 			return;
-		}
 
 		counter = 0;
 		allEvents.clear();
 		activeEvents.clear();
 
-		Set<String> ae = new HashSet<>();
+		Set<String> ae = new HashSet<String>();
 		Collections.addAll(ae, active.split(";"));
 
 		for (EventTemplate ev : events) {
@@ -117,7 +115,7 @@ public class EventData {
 	}
 
 	public List<EventTemplate> getAllEvents() {
-		List<EventTemplate> result = new ArrayList<>();
+		List<EventTemplate> result = new ArrayList<EventTemplate>();
 		synchronized (allEvents) {
 			result.addAll(allEvents.values());
 		}
@@ -126,25 +124,23 @@ public class EventData {
 	}
 
 	public void setAllEvents(List<EventTemplate> events, String active) {
-		if (events == null) {
-			events = new ArrayList<>();
-		}
+		if (events == null)
+			events = new ArrayList<EventTemplate>();
 		this.events = events;
 		this.active = active;
 
 		for (EventTemplate et : this.events) {
 			if (allEvents.containsKey(et.getName())) {
 				EventTemplate oldEvent = allEvents.get(et.getName());
-				if (oldEvent.isActive() && oldEvent.isStarted()) {
+				if (oldEvent.isActive() && oldEvent.isStarted())
 					et.setStarted();
-				}
 			}
 		}
 		afterUnmarshal(null, null);
 	}
 
 	public List<EventTemplate> getActiveEvents() {
-		List<EventTemplate> result = new ArrayList<>();
+		List<EventTemplate> result = new ArrayList<EventTemplate>();
 		synchronized (activeEvents) {
 			result.addAll(activeEvents.values());
 		}

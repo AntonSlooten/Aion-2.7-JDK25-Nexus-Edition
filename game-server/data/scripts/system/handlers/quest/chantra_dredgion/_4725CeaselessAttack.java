@@ -55,11 +55,13 @@ public class _4725CeaselessAttack extends QuestHandler {
 			if (targetId == 799403) { // Yorgen
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var1 = qs.getQuestVarById(1);
 			int var2 = qs.getQuestVarById(2);
 			if (targetId == 799226) { // Valetta
@@ -67,13 +69,15 @@ public class _4725CeaselessAttack extends QuestHandler {
 					if (var1 == 6 && var2 == 15) {
 						return sendQuestDialog(env, 10002);
 					}
-				} else if (dialog == QuestDialog.SELECT_REWARD) {
+				}
+				else if (dialog == QuestDialog.SELECT_REWARD) {
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
 					return sendQuestDialog(env, 5);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799226) { // Valetta
 				return sendQuestEndDialog(env);
 			}

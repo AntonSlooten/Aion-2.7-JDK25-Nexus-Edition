@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Material")
-public class Material implements Comparable<Material> {
+public class Material implements Comparable<Material>{
 
 	@XmlAttribute
 	protected String name;
@@ -39,7 +39,7 @@ public class Material implements Comparable<Material> {
 
 	/**
 	 * Gets the value of the name property.
-	 *
+	 * 
 	 * @return possible object is {@link String }
 	 */
 	public String getName() {
@@ -55,7 +55,7 @@ public class Material implements Comparable<Material> {
 
 	/**
 	 * Gets the value of the nameid property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public int getNameid() {
@@ -64,7 +64,7 @@ public class Material implements Comparable<Material> {
 
 	/**
 	 * Gets the value of the rate property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public int getRate() {
@@ -73,7 +73,7 @@ public class Material implements Comparable<Material> {
 
 	@Override
 	public int compareTo(Material o) {
-		return o.rate - rate;
+		return o.rate-rate;
 	}
-
+	
 }

@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.services.abyss;
 
+
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_ABYSS_RANKING_PLAYER
 import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.world.knownlist.Visitor;
 
+
 /**
  * @author VladimirZ
  */
@@ -41,15 +44,15 @@ public class AbyssRankingCache {
 
 	private static final Logger log = LoggerFactory.getLogger(AbyssRankingCache.class);
 	private int lastUpdate;
-	private final FastMap<Race, List<SM_ABYSS_RANKING_PLAYERS>> players = new FastMap<>();
-	private final FastMap<Race, SM_ABYSS_RANKING_LEGIONS> legions = new FastMap<>();
+	private final FastMap<Race, List<SM_ABYSS_RANKING_PLAYERS>> players = new FastMap<Race, List<SM_ABYSS_RANKING_PLAYERS>>();
+	private final FastMap<Race, SM_ABYSS_RANKING_LEGIONS> legions = new FastMap<Race,  SM_ABYSS_RANKING_LEGIONS>();
 
 	public void reloadRankings() {
 		log.info("Updating abyss ranking cache");
-		this.lastUpdate = (int) (System.currentTimeMillis() / 1000);
+		this.lastUpdate = (int)(System.currentTimeMillis()/1000);
 		getDAO().updateRankList();
-
-		// delete not before new list is created
+		
+		//delete not before new list is created
 		List<SM_ABYSS_RANKING_PLAYERS> newlyCalculated;
 		newlyCalculated = generatePacketsForRace(Race.ASMODIANS);
 		players.remove(Race.ASMODIANS);
@@ -59,31 +62,29 @@ public class AbyssRankingCache {
 		players.put(Race.ELYOS, newlyCalculated);
 
 		legions.clear();
-		legions.put(Race.ELYOS,
-				new SM_ABYSS_RANKING_LEGIONS(lastUpdate, getDAO().getAbyssRankingLegions(Race.ELYOS), Race.ELYOS));
-		legions.put(Race.ASMODIANS, new SM_ABYSS_RANKING_LEGIONS(lastUpdate,
-				getDAO().getAbyssRankingLegions(Race.ASMODIANS), Race.ASMODIANS));
-
+		legions.put(Race.ELYOS, new SM_ABYSS_RANKING_LEGIONS(lastUpdate, getDAO().getAbyssRankingLegions(Race.ELYOS), Race.ELYOS));
+		legions.put(Race.ASMODIANS, new SM_ABYSS_RANKING_LEGIONS(lastUpdate, getDAO().getAbyssRankingLegions(Race.ASMODIANS), Race.ASMODIANS));
+		
 		World.getInstance().doOnAllPlayers(new Visitor<Player>() {
 
 			@Override
 			public void visit(Player player) {
-				player.resetAbyssRankListUpdated();
+					player.resetAbyssRankListUpdated();
 			}
 		});
 	}
-
+	
 	private List<SM_ABYSS_RANKING_PLAYERS> generatePacketsForRace(Race race) {
-		// players orderd by ap
+		//players orderd by ap
 		ArrayList<AbyssRankingResult> list = getDAO().getAbyssRankingPlayers(race);
 		int page = 1;
-		List<SM_ABYSS_RANKING_PLAYERS> playerPackets = new ArrayList<>();
-		for (int i = 0; i < list.size(); i += 46) {
-			if (list.size() > i + 46) {
-				playerPackets.add(new SM_ABYSS_RANKING_PLAYERS(lastUpdate, list.subList(i, i + 46), race, page, false));
-			} else {
-				playerPackets
-						.add(new SM_ABYSS_RANKING_PLAYERS(lastUpdate, list.subList(i, list.size()), race, page, true));
+		List<SM_ABYSS_RANKING_PLAYERS> playerPackets = new ArrayList<SM_ABYSS_RANKING_PLAYERS>();
+		for (int i = 0; i< list.size(); i+= 46){
+			if (list.size() > i+46){
+				playerPackets.add(new SM_ABYSS_RANKING_PLAYERS(lastUpdate, list.subList(i, i+46), race, page, false));
+			}
+			else{
+				playerPackets.add(new SM_ABYSS_RANKING_PLAYERS(lastUpdate, list.subList(i, list.size()), race, page, true));
 			}
 			page++;
 		}
@@ -104,6 +105,7 @@ public class AbyssRankingCache {
 		return legions.get(race);
 	}
 
+	
 	/**
 	 * @return the lastUpdate
 	 */

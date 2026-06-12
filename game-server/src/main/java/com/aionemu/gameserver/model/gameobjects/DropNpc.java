@@ -27,9 +27,9 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
  */
 public class DropNpc {
 
-	private Collection<Integer> allowedList = new ArrayList<>();
-	private Collection<Player> inRangePlayers = new ArrayList<>();
-	private Collection<Player> playerStatus = new ArrayList<>();
+	private Collection<Integer> allowedList = new ArrayList<Integer>();
+	private Collection<Player> inRangePlayers = new ArrayList<Player>();
+	private Collection<Player> playerStatus = new ArrayList<Player>();
 	private Player lootingPlayer = null;
 	private int distributionId = 0;
 	private boolean distributionType;
@@ -66,7 +66,8 @@ public class DropNpc {
 	}
 
 	/**
-	 * @param player the lootingPlayer to set
+	 * @param player
+	 *          the lootingPlayer to set
 	 */
 	public void setBeingLooted(Player player) {
 		this.lootingPlayer = player;

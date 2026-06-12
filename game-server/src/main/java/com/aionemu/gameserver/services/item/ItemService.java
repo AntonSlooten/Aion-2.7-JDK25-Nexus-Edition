@@ -77,13 +77,8 @@ public class ItemService {
 		Preconditions.checkNotNull(predicate, "Predicate is not supplied");
 
 		if (LoggingConfig.LOG_ITEM) {
-			log.info(
-					"[ITEM] ID/Count"
-							+ (LoggingConfig.ENABLE_ADVANCED_LOGGING
-									? "/Item Name - " + itemTemplate.getTemplateId() + "/" + count + "/"
-											+ itemTemplate.getName()
-									: " - " + itemTemplate.getTemplateId() + "/" + count)
-							+ " to player " + player.getName());
+			log.info("[ITEM] ID/Count" + (LoggingConfig.ENABLE_ADVANCED_LOGGING ? "/Item Name - " + itemTemplate.getTemplateId() + "/" + count + "/" + itemTemplate.getName() : " - " + itemTemplate.getTemplateId() + "/" + count) + 
+			" to player " + player.getName());
 		}
 
 		Storage inventory = player.getInventory();
@@ -94,7 +89,8 @@ public class ItemService {
 
 		if (itemTemplate.isStackable()) {
 			count = addStackableItem(player, itemTemplate, count, predicate);
-		} else {
+		}
+		else {
 			count = addNonStackableItem(player, itemTemplate, count, sourceItem, predicate);
 		}
 
@@ -108,7 +104,7 @@ public class ItemService {
 	 * Add non-stackable item to inventory
 	 */
 	private static long addNonStackableItem(Player player, ItemTemplate itemTemplate, long count, Item sourceItem,
-			Predicate<Item> predicate) {
+		Predicate<Item> predicate) {
 		Storage inventory = player.getInventory();
 		while (!inventory.isFull() && count > 0) {
 			Item newItem = ItemFactory.newItem(itemTemplate.getTemplateId());
@@ -150,8 +146,7 @@ public class ItemService {
 	/**
 	 * Add stackable item to inventory
 	 */
-	private static long addStackableItem(Player player, ItemTemplate itemTemplate, long count,
-			ItemAddPredicate predicate) {
+	private static long addStackableItem(Player player, ItemTemplate itemTemplate, long count, ItemAddPredicate predicate) {
 		Storage inventory = player.getInventory();
 		Collection<Item> items = inventory.getItemsByItemId(itemTemplate.getTemplateId());
 		for (Item item : items) {
@@ -161,8 +156,8 @@ public class ItemService {
 			count = inventory.increaseItemCount(item, count, predicate.getUpdateType(item));
 		}
 
-		// dirty & hacky check for arrows and shards...
-		if (itemTemplate.getArmorType() == ArmorType.SHARD || itemTemplate.getArmorType() == ArmorType.ARROW) {
+		//dirty & hacky check for arrows and shards...
+		if(itemTemplate.getArmorType() == ArmorType.SHARD || itemTemplate.getArmorType() == ArmorType.ARROW) {
 			Equipment equipement = player.getEquipment();
 			items = equipement.getEquippedItemsByItemId(itemTemplate.getTemplateId());
 			for (Item item : items) {
@@ -183,28 +178,22 @@ public class ItemService {
 
 	public static boolean addQuestItems(Player player, List<QuestItems> questItems) {
 		int needSlot = 0;
-
 		for (QuestItems qi : questItems) {
-			if (qi.getItemId() == ItemId.KINAH.value() || qi.getCount() == 0) {
-				continue;
+			if (qi.getItemId() != ItemId.KINAH.value() && qi.getCount() != 0) {
+				long stackCount = DataManager.ITEM_DATA.getItemTemplate(qi.getItemId()).getMaxStackCount();
+				long count = qi.getCount() / stackCount;
+				if (qi.getCount() % stackCount != 0)
+					count++;
+				needSlot += count;
 			}
-
-			long stackCount = DataManager.ITEM_DATA.getItemTemplate(qi.getItemId()).getMaxStackCount();
-			long itemCount = qi.getCount();
-
-			int requiredSlots = Math.toIntExact((itemCount + stackCount - 1) / stackCount);
-			needSlot = Math.addExact(needSlot, requiredSlots);
 		}
-
 		if (needSlot > player.getInventory().getFreeSlots()) {
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_FULL_INVENTORY);
 			return false;
 		}
-
 		for (QuestItems qi : questItems) {
 			addItem(player, qi.getItemId(), qi.getCount());
 		}
-
 		return true;
 	}
 

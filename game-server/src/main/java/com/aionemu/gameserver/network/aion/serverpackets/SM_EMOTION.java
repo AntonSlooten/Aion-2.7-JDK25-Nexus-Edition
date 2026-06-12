@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.model.EmotionType;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -25,7 +26,7 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * Emotion packet
- *
+ * 
  * @author SoulKeeper
  */
 public class SM_EMOTION extends AionServerPacket {
@@ -68,7 +69,7 @@ public class SM_EMOTION extends AionServerPacket {
 
 	/**
 	 * This constructor should be used when emotion and targetid is 0
-	 *
+	 * 
 	 * @param creature
 	 * @param emotionType
 	 */
@@ -78,11 +79,15 @@ public class SM_EMOTION extends AionServerPacket {
 
 	/**
 	 * Constructs new server packet with specified opcode
-	 *
-	 * @param senderObjectId who sended emotion
-	 * @param unknown        Dunno what it is, can be 0x10 or 0x11
-	 * @param emotionId      emotion to play
-	 * @param emotionId      who target emotion
+	 * 
+	 * @param senderObjectId
+	 *          who sended emotion
+	 * @param unknown
+	 *          Dunno what it is, can be 0x10 or 0x11
+	 * @param emotionId
+	 *          emotion to play
+	 * @param emotionId
+	 *          who target emotion
 	 */
 	public SM_EMOTION(Creature creature, EmotionType emotionType, int emotion, int targetObjectId) {
 		this.senderObjectId = creature.getObjectId();
@@ -104,17 +109,16 @@ public class SM_EMOTION extends AionServerPacket {
 		this.senderObjectId = Objid;
 		this.emotionType = emotionType;
 	}
-
-	public SM_EMOTION(int doorId) {
-		this.senderObjectId = doorId;
-		this.emotionType = EmotionType.OPEN_DOOR;
-	}
+        
+       public SM_EMOTION(int doorId) {
+        this.senderObjectId = doorId;
+        this.emotionType = EmotionType.OPEN_DOOR;
+       }
 
 	/**
 	 * New
 	 */
-	public SM_EMOTION(Player player, EmotionType emotionType, int emotion, float x, float y, float z, byte heading,
-			int targetObjectId) {
+	public SM_EMOTION(Player player, EmotionType emotionType, int emotion, float x, float y, float z, byte heading, int targetObjectId) {
 		this.senderObjectId = player.getObjectId();
 		this.emotionType = emotionType;
 		this.emotion = emotion;
@@ -141,86 +145,86 @@ public class SM_EMOTION extends AionServerPacket {
 		writeH(state);
 		writeF(speed);
 		switch (emotionType) {
-		case LAND_FLYTELEPORT: // fly teleport (land)
-		case FLY: // toggle flight mode
-		case LAND: // toggle land mode
-		case SELECT_TARGET: // select target
-		case JUMP:
-		case SIT: // sit
-		case STAND: // stand
-		case ATTACKMODE: // toggle attack mode
-		case NEUTRALMODE: // toggle normal mode
-		case WALK: // toggle walk
-		case RUN: // toggle run
-		case OPEN_PRIVATESHOP: // private shop open
-		case CLOSE_PRIVATESHOP: // private shop close
-		case POWERSHARD_ON: // powershard on
-		case POWERSHARD_OFF: // powershard off
-		case ATTACKMODE2: // toggle attack mode
-		case NEUTRALMODE2: // toggle normal mode
-		case START_FEEDING:
-		case END_FEEDING:
-		case WINDSTREAM_BOOST:
-		case WINDSTREAM_END_BOOST:
-		case WINDSTREAM_END:
-		case WINDSTREAM_EXIT:
-		case OPEN_DOOR:
-		case CLOSE_DOOR:
-			break;
-		case DIE: // die
-		case START_LOOT: // looting start
-		case END_LOOT: // looting end
-		case START_QUESTLOOT: // looting start (quest)
-		case END_QUESTLOOT: // looting end (quest);
-			writeD(targetObjectId);
-			break;
-		case CHAIR_SIT: // sit (chair)
-		case CHAIR_UP: // stand (chair)
-			writeF(x);
-			writeF(y);
-			writeF(z);
-			writeC(heading);
-			break;
-		case START_FLYTELEPORT:
-			// fly teleport (start)
-			writeD(emotion); // teleport Id
-			break;
-		case WINDSTREAM:
-			// entering windstream
-			writeD(emotion); // teleport Id
-			writeD(targetObjectId); // distance
-			break;
-		case RIDE:
-		case RIDE_END:
-			if (targetObjectId != 0) {
-				writeD(targetObjectId);// rideId
-			}
-			writeH(0);// emotion?
-			writeC(0);// type
-			writeD(0x3F);// unk
-			writeD(0x3F);// unk
-			writeC(0x40);// unk
-			break;
-		case RESURRECT:
-			// resurrect
-			writeD(0);
-			break;
-		case EMOTE:
-			// emote
-			writeD(targetObjectId);
-			writeH(emotion);
-			writeC(1);
-			break;
-		case START_EMOTE2:
-			// emote startloop
-			writeH(baseAttackSpeed);
-			writeH(currentAttackSpeed);
-			writeC(0);// new 4.0
-			break;
-		default:
-			if (targetObjectId != 0) {
+			case LAND_FLYTELEPORT: // fly teleport (land)
+			case FLY: // toggle flight mode
+			case LAND: // toggle land mode
+			case SELECT_TARGET: // select target
+			case JUMP:
+			case SIT: // sit
+			case STAND: // stand
+			case ATTACKMODE: // toggle attack mode
+			case NEUTRALMODE: // toggle normal mode	
+			case WALK: // toggle walk
+			case RUN: // toggle run
+			case OPEN_PRIVATESHOP: // private shop open
+			case CLOSE_PRIVATESHOP:	// private shop close
+			case POWERSHARD_ON: // powershard on
+			case POWERSHARD_OFF: // powershard off
+			case ATTACKMODE2: // toggle attack mode
+			case NEUTRALMODE2: // toggle normal mode
+			case START_FEEDING:
+			case END_FEEDING:
+			case WINDSTREAM_BOOST:
+			case WINDSTREAM_END_BOOST:
+			case WINDSTREAM_END:
+			case WINDSTREAM_EXIT:
+			case OPEN_DOOR:
+			case CLOSE_DOOR:
+				break;
+			case DIE: // die
+			case START_LOOT: // looting start
+			case END_LOOT: // looting end
+			case START_QUESTLOOT: // looting start (quest)
+			case END_QUESTLOOT: // looting end (quest);
 				writeD(targetObjectId);
-			}
+				break;
+			case CHAIR_SIT: // sit (chair)
+			case CHAIR_UP: // stand (chair)
+				writeF(x);
+				writeF(y);
+				writeF(z);
+				writeC(heading);
+				break;
+			case START_FLYTELEPORT:
+				// fly teleport (start)
+				writeD(emotion); // teleport Id
+				break;
+			case WINDSTREAM:
+				// entering windstream
+				writeD(emotion); // teleport Id
+				writeD(targetObjectId); // distance
+				break;
+			case RIDE:
+			case RIDE_END:
+				if (targetObjectId != 0) {
+					writeD(targetObjectId);//rideId
+				}
+				writeH(0);//emotion?
+				writeC(0);//type
+				writeD(0x3F);//unk
+				writeD(0x3F);//unk
+				writeC(0x40);//unk
+				break;
+			case RESURRECT:
+				// resurrect
+				writeD(0);
+				break;
+			case EMOTE:
+				// emote
+				writeD(targetObjectId);
+				writeH(emotion);
+				writeC(1);
+				break;
+			case START_EMOTE2:
+				// emote startloop
+				writeH(baseAttackSpeed);
+				writeH(currentAttackSpeed);
+				writeC(0);//new 4.0
+				break;
+			default:
+				if (targetObjectId != 0) {
+					writeD(targetObjectId);
+				}
 		}
 	}
 }

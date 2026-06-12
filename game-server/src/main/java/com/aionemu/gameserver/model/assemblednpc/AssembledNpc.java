@@ -24,17 +24,17 @@ import javolution.util.FastList;
  */
 public class AssembledNpc {
 
-	private FastList<AssembledNpcPart> assembledPatrs = new FastList<>();
+	private FastList<AssembledNpcPart> assembledPatrs = new FastList<AssembledNpcPart>();
 	private long spawnTime = System.currentTimeMillis();
 	private int routeId;
 	private int mapId;
-	// private int liveTime;
+	//private int liveTime;
 
 	public AssembledNpc(int routeId, int mapId, int liveTime, FastList<AssembledNpcPart> assembledPatrs) {
 		this.assembledPatrs = assembledPatrs;
 		this.routeId = routeId;
 		this.mapId = mapId;
-		// this.liveTime = liveTime;
+		//this.liveTime = liveTime;
 	}
 
 	public FastList<AssembledNpcPart> getAssembledParts() {
@@ -50,6 +50,6 @@ public class AssembledNpc {
 	}
 
 	public long getTimeOnMap() {
-		return System.currentTimeMillis() - spawnTime;
+		return  System.currentTimeMillis() - spawnTime;
 	}
 }

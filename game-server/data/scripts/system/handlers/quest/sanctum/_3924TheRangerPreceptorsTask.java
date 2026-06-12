@@ -23,11 +23,12 @@ import com.aionemu.gameserver.questEngine.model.QuestEnv;
 import com.aionemu.gameserver.questEngine.model.QuestState;
 import com.aionemu.gameserver.questEngine.model.QuestStatus;
 
+
 /**
  * @author zhkchi
  *
  */
-public class _3924TheRangerPreceptorsTask extends QuestHandler {
+public class _3924TheRangerPreceptorsTask  extends QuestHandler {
 
 	private final static int questId = 3924;
 
@@ -56,7 +57,8 @@ public class _3924TheRangerPreceptorsTask extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			return sendQuestEndDialog(env);
 		}
 		return false;
@@ -78,7 +80,8 @@ public class _3924TheRangerPreceptorsTask extends QuestHandler {
 			if (var >= 0 && var < 9) {
 				changeQuestStep(env, var, var + 1, false);
 				return true;
-			} else if (var == 9) {
+			}
+			else if (var == 9) {
 				changeQuestStep(env, var, var + 1, true);
 				return true;
 			}

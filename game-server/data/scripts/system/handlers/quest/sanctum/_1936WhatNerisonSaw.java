@@ -61,17 +61,19 @@ public class _1936WhatNerisonSaw extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (targetId == 204573) {
+		}
+		else if (targetId == 204573) {
 			if (qs != null) {
 				if (env.getDialog() == QuestDialog.START_DIALOG && qs.getStatus() == QuestStatus.START)
 					return sendQuestDialog(env, 2375);
 				else if (env.getDialogId() == 1009 && qs.getStatus() != QuestStatus.COMPLETE
-						&& qs.getStatus() != QuestStatus.NONE) {
+					&& qs.getStatus() != QuestStatus.NONE) {
 					qs.setQuestVar(1);
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
 					return sendQuestEndDialog(env);
-				} else
+				}
+				else
 					return sendQuestEndDialog(env);
 			}
 		}

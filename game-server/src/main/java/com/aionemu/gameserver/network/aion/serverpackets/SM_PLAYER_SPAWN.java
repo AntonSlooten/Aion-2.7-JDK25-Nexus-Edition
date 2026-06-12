@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -16,13 +16,14 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * This packet is notify client what map should be loaded.
- *
+ * 
  * @author -Nemesiss-
  */
 public class SM_PLAYER_SPAWN extends AionServerPacket {
@@ -34,7 +35,7 @@ public class SM_PLAYER_SPAWN extends AionServerPacket {
 
 	/**
 	 * Constructor.
-	 *
+	 * 
 	 * @param player
 	 */
 	public SM_PLAYER_SPAWN(Player player) {
@@ -55,8 +56,8 @@ public class SM_PLAYER_SPAWN extends AionServerPacket {
 		writeF(player.getY());// y
 		writeF(player.getZ());// z
 		writeC(player.getHeading());// heading
-		writeD(0); // new 2.5
-		writeD(0); // new 2.5
-		writeD(0); // new 2.7
+		writeD(0); //new 2.5
+		writeD(0); //new 2.5
+		writeD(0); //new 2.7
 	}
 }

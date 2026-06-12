@@ -121,7 +121,7 @@ public class GeneralNpcAI2 extends NpcAI2 {
 		super.handleMoveArrived();
 		MoveEventHandler.onMoveArrived(this);
 	}
-
+	
 	@Override
 	protected void handleDespawned() {
 		super.handleDespawned();

@@ -123,78 +123,85 @@ public class _10001BoundOfInggison extends QuestHandler {
 				else if (env.getDialog() == QuestDialog.STEP_TO_1) {
 					qs.setQuestVar(++var);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
-			} else if (targetId == 798513 && var == 1) {
+			}
+			else if (targetId == 798513 && var == 1) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 1352);
 				else if (env.getDialog() == QuestDialog.STEP_TO_2) {
 					qs.setQuestVar(++var);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
-			} else if (targetId == 203760 && var == 2) {
+			}
+			else if (targetId == 203760 && var == 2) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 1693);
 				else if (env.getDialog() == QuestDialog.STEP_TO_3) {
 					qs.setQuestVar(++var);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
-			} else if (targetId == 203782 && var == 3) {
+			}
+			else if (targetId == 203782 && var == 3) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 2034);
 				else if (env.getDialog() == QuestDialog.STEP_TO_4) {
 					qs.setQuestVar(++var);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
-			} else if (targetId == 798408 && var == 4) {
+			}
+			else if (targetId == 798408 && var == 4) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 2375);
 				else if (env.getDialogId() == 10004) {
 					qs.setQuestVar(++var);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
-			} else if (targetId == 203709 && var == 5) {
+			}
+			else if (targetId == 203709 && var == 5) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 2716);
 				else if (env.getDialogId() == 10005) {
 					qs.setQuestVar(++var);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
-			} else if (targetId == 798408 && var == 6) {
+			}
+			else if (targetId == 798408 && var == 6) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 3057);
 				else if (env.getDialogId() == 10006) {
 					qs.setQuestVar(++var);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
-			} else if (targetId == 798408 && var == 7) {
+			}
+			else if (targetId == 798408 && var == 7) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 3398);
 				else if (env.getDialogId() == 10255) {
@@ -202,16 +209,17 @@ public class _10001BoundOfInggison extends QuestHandler {
 					return true;
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798926) {
 				if (env.getDialogId() == -3)
 					return sendQuestDialog(env, 3399);
 				return sendQuestEndDialog(env);
-			} else if (targetId == 798408) {
-				if (env.getDialogId() == 10009) {
+			}else if(targetId == 798408){
+				if(env.getDialogId() == 10009){
 					TeleportService.teleportTo(player, 210050000, 1, 1313, 256, 592, (byte) 20, 3000, true);
 					return true;
-				} else {
+				}else{
 					return sendQuestDialog(env, 3399);
 				}
 			}

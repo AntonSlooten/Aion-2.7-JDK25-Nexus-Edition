@@ -72,64 +72,67 @@ public class _1038TheShadowsCommand extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 700162: { // Underground Temple Artifact
-				if (dialog == QuestDialog.USE_OBJECT) {
-					return useQuestObject(env, 0, 1, false, 0, 34); // 1 + movie
-				}
-				break;
-			}
-			case 203933: { // Actaeon
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					} else if (var == 3) {
-						return sendQuestDialog(env, 1694);
-					} else if (var == 4) {
-						return sendQuestDialog(env, 2034);
-					}
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 4, 5, false, 2035, 2120); // 5
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				case STEP_TO_3: {
-					return defaultCloseDialog(env, 3, 4, 0, 0, 182201007, 1); // 4
-				}
-				case STEP_TO_4: {
-					return defaultCloseDialog(env, 5, 6); // 6
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-				break;
-			}
-			case 700172: { // Philipemos's Corpse
-				if (var == 2) {
+				case 700162: { // Underground Temple Artifact
 					if (dialog == QuestDialog.USE_OBJECT) {
-						return true; // loot
+						return useQuestObject(env, 0, 1, false, 0, 34); // 1 + movie
+					}
+					break;
+				}
+				case 203933: { // Actaeon
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+							else if (var == 3) {
+								return sendQuestDialog(env, 1694);
+							}
+							else if (var == 4) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 4, 5, false, 2035, 2120); // 5
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+						case STEP_TO_3: {
+							return defaultCloseDialog(env, 3, 4, 0, 0, 182201007, 1); // 4
+						}
+						case STEP_TO_4: {
+							return defaultCloseDialog(env, 5, 6); // 6
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
+					}
+					break;
+				}
+				case 700172: { // Philipemos's Corpse
+					if (var == 2) {
+						if (dialog == QuestDialog.USE_OBJECT) {
+							return true; // loot
+						}
+					}
+					break;
+				}
+				case 203991: { // Dionera
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 6) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case STEP_TO_5: {
+							playQuestMovie(env, 35);
+							return defaultCloseDialog(env, 6, 7); // 7
+						}
 					}
 				}
-				break;
 			}
-			case 203991: { // Dionera
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 6) {
-						return sendQuestDialog(env, 2375);
-					}
-				}
-				case STEP_TO_5: {
-					playQuestMovie(env, 35);
-					return defaultCloseDialog(env, 6, 7); // 7
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203991) { // Dionera
 				return sendQuestEndDialog(env);
 			}
@@ -160,8 +163,7 @@ public class _1038TheShadowsCommand extends QuestHandler {
 	public boolean onMovieEndEvent(QuestEnv env, int movieId) {
 		if (movieId == 35) {
 			QuestService.questTimerStart(env, 180);
-			QuestService.addNewSpawn(210020000, 1, 204005, (float) 1758.2948, (float) 919.5599, (float) 421.8659,
-					(byte) 116);
+			QuestService.addNewSpawn(210020000, 1, 204005, (float) 1758.2948, (float) 919.5599, (float) 421.8659, (byte) 116);
 			return true;
 		}
 		return false;

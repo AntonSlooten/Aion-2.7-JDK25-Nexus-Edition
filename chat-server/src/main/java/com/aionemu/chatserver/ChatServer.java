@@ -31,7 +31,7 @@ public final class ChatServer {
 
 			long bootTime = System.currentTimeMillis() - startTime;
             log.info("============================================================");
-            log.info("[✓] NEXUS CONNECT LOGIN SERVER IS ONLINE AND READY TO PLAY! ");
+            log.info("[✓] NEXUS CONNECT CHAT SERVER IS ONLINE AND READY TO PLAY! ");
 			log.info("[✓] Boot Time: {} ms", bootTime);
             log.info("=======================================================================");
             log.info("  _   _                           ____                            _    ");

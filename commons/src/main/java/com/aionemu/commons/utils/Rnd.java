@@ -16,77 +16,76 @@
  */
 package com.aionemu.commons.utils;
 
-import java.util.List;
-
 /**
  * @author Balancer
  */
-public class Rnd
-{
-  private static final MTRandom rnd = new MTRandom();
+public class Rnd {
 
-  public static float get()
-  {
-    return rnd.nextFloat();
-  }
+	private static final MTRandom rnd = new MTRandom();
 
-  public static int get(int n)
-  {
-    return (int)Math.floor(rnd.nextDouble() * n);
-  }
+	/**
+	 * @return rnd
+	 */
+	public static float get() // get random number from 0 to 1
+	{
+		return rnd.nextFloat();
+	}
 
-  public static int get(int min, int max)
-  {
-    return min + (int)Math.floor(rnd.nextDouble() * (max - min + 1));
-  }
+	/**
+	 * Gets a random number from 0(inclusive) to n(exclusive)
+	 * 
+	 * @param n
+	 *          The superior limit (exclusive)
+	 * @return A number from 0 to n-1
+	 */
+	public static int get(int n) {
+		return (int) Math.floor(rnd.nextDouble() * n);
+	}
 
-  public static boolean chance(int chance)
-  {
-    return (chance >= 1) && ((chance > 99) || (nextInt(99) + 1 <= chance));
-  }
+	/**
+	 * @param min
+	 * @param max
+	 * @return value
+	 */
+	public static int get(int min, int max) // get random number from
+	// min to max (not max-1 !)
+	{
+		return min + (int) Math.floor(rnd.nextDouble() * (max - min + 1));
+	}
 
-  public static boolean chance(double chance)
-  {
-    return nextDouble() <= chance / 100.0D;
-  }
+	/**
+	 * @param n
+	 * @return n
+	 */
+	public static int nextInt(int n) {
+		return (int) Math.floor(rnd.nextDouble() * n);
+	}
 
-  public static <E> E get(E[] list)
-  {
-    return list[get(list.length)];
-  }
+	/**
+	 * @return int
+	 */
+	public static int nextInt() {
+		return rnd.nextInt();
+	}
 
-  public static int get(int[] list)
-  {
-    return list[get(list.length)];
-  }
+	/**
+	 * @return double
+	 */
+	public static double nextDouble() {
+		return rnd.nextDouble();
+	}
 
-  public static <E> E get(List<E> list)
-  {
-    return list.get(get(list.size()));
-  }
+	/**
+	 * @return double
+	 */
+	public static double nextGaussian() {
+		return rnd.nextGaussian();
+	}
 
-  public static int nextInt(int n)
-  {
-    return (int)Math.floor(rnd.nextDouble() * n);
-  }
-
-  public static int nextInt()
-  {
-    return rnd.nextInt();
-  }
-
-  public static double nextDouble()
-  {
-    return rnd.nextDouble();
-  }
-
-  public static double nextGaussian()
-  {
-    return rnd.nextGaussian();
-  }
-
-  public static boolean nextBoolean()
-  {
-    return rnd.nextBoolean();
-  }
+	/**
+	 * @return double
+	 */
+	public static boolean nextBoolean() {
+		return rnd.nextBoolean();
+	}
 }

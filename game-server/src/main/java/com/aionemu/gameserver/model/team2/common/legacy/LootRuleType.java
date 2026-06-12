@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.org>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -21,7 +21,9 @@ package com.aionemu.gameserver.model.team2.common.legacy;
  */
 public enum LootRuleType {
 
-	FREEFORALL(0), ROUNDROBIN(1), LEADER(2);
+	FREEFORALL(0),
+	ROUNDROBIN(1),
+	LEADER(2);
 
 	private int id;
 

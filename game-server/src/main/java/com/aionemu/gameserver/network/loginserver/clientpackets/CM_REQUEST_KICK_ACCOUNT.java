@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -21,7 +21,7 @@ import com.aionemu.gameserver.network.loginserver.LsClientPacket;
 
 /**
  * This packet is request kicking player.
- *
+ * 
  * @author -Nemesiss-
  */
 public class CM_REQUEST_KICK_ACCOUNT extends LsClientPacket {

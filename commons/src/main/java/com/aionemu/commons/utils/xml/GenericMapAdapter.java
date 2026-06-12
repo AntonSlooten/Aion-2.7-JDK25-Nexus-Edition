@@ -9,9 +9,13 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.*;
 
 /**
- * @param <K> Map Key
- * @param <V> Map Value
+ * 
  * @author Oleh_Faizulin
+ * 
+ * @param <K>
+ *            Map Key
+ * @param <V>
+ *            Map Value
  */
 public class GenericMapAdapter<K, V> extends XmlAdapter<GenericMapAdapter.KeyValuePairContainer<K, V>, Map<K, V>> {
 
@@ -29,7 +33,7 @@ public class GenericMapAdapter<K, V> extends XmlAdapter<GenericMapAdapter.KeyVal
 	}
 
 	@Override
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings({ "unchecked" })
 	public Map<K, V> unmarshal(KeyValuePairContainer<K, V> v) throws Exception {
 		Map<K, V> result = new HashMap<K, V>();
 		for (KeyValuePair<K, V> kvp : v.getValues()) {

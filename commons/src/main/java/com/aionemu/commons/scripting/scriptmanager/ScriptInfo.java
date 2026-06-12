@@ -24,7 +24,7 @@ import java.util.List;
  * Simple class that represents script info.<br>
  * <br>
  * It contains Script root, list of libraries and list of child contexes
- *
+ * 
  * @author SoulKeeper
  */
 @XmlRootElement(name = "scriptinfo")
@@ -57,7 +57,7 @@ public class ScriptInfo {
 
 	/**
 	 * Returns root of script context
-	 *
+	 * 
 	 * @return root of script context
 	 */
 	public File getRoot() {
@@ -66,8 +66,9 @@ public class ScriptInfo {
 
 	/**
 	 * Sets root for script context
-	 *
-	 * @param root root for script context
+	 * 
+	 * @param root
+	 *          root for script context
 	 */
 	public void setRoot(File root) {
 		this.root = root;
@@ -75,7 +76,7 @@ public class ScriptInfo {
 
 	/**
 	 * Returns list of libraries that will be used byscript context and it's children
-	 *
+	 * 
 	 * @return lib of libraries
 	 */
 	public List<File> getLibraries() {
@@ -84,8 +85,9 @@ public class ScriptInfo {
 
 	/**
 	 * Sets list of libraries that will be used by script context and it's children
-	 *
-	 * @param libraries sets list of libraries
+	 * 
+	 * @param libraries
+	 *          sets list of libraries
 	 */
 	public void setLibraries(List<File> libraries) {
 		this.libraries = libraries;
@@ -93,7 +95,7 @@ public class ScriptInfo {
 
 	/**
 	 * Return list of child context descriptors
-	 *
+	 * 
 	 * @return list of child context descriptors
 	 */
 	public List<ScriptInfo> getScriptInfos() {
@@ -102,8 +104,9 @@ public class ScriptInfo {
 
 	/**
 	 * Sets list of child context descriptors
-	 *
-	 * @param scriptInfos list of child context descriptors
+	 * 
+	 * @param scriptInfos
+	 *          list of child context descriptors
 	 */
 	public void setScriptInfos(List<ScriptInfo> scriptInfos) {
 		this.scriptInfos = scriptInfos;
@@ -111,7 +114,7 @@ public class ScriptInfo {
 
 	/**
 	 * Returns compiler class name
-	 *
+	 * 
 	 * @return name of compiler class
 	 */
 	public String getCompilerClass() {
@@ -120,8 +123,9 @@ public class ScriptInfo {
 
 	/**
 	 * Sets compiler class name
-	 *
-	 * @param compilerClass name of compiler class
+	 * 
+	 * @param compilerClass
+	 *          name of compiler class
 	 */
 	public void setCompilerClass(String compilerClass) {
 		this.compilerClass = compilerClass;
@@ -129,8 +133,9 @@ public class ScriptInfo {
 
 	/**
 	 * Returns true if roots are quals
-	 *
-	 * @param o object to compare with
+	 * 
+	 * @param o
+	 *          object to compare with
 	 * @return true if this ScriptInfo and anothers ScriptInfo has same root
 	 */
 	@Override
@@ -148,7 +153,7 @@ public class ScriptInfo {
 
 	/**
 	 * Returns hashcode of root
-	 *
+	 * 
 	 * @return hashcode of root
 	 */
 	@Override
@@ -156,9 +161,7 @@ public class ScriptInfo {
 		return root.hashCode();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	/** {@inheritDoc} */
 	@Override
 	public String toString() {
 		final StringBuilder sb = new StringBuilder();

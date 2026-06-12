@@ -37,7 +37,7 @@ import com.aionemu.gameserver.utils.MathUtil;
 public class HealCastorOnTargetDeadEffect extends EffectTemplate {
 
 	@XmlAttribute
-	protected HealType type;// unhandled for now
+	protected HealType type;//unhandled for now
 	@XmlAttribute
 	protected float range;
 	@XmlAttribute
@@ -50,9 +50,8 @@ public class HealCastorOnTargetDeadEffect extends EffectTemplate {
 
 	@Override
 	public void calculate(Effect effect) {
-		if (effect.getEffected() instanceof Player) {
+		if (effect.getEffected() instanceof Player)
 			super.calculate(effect, null, null);
-		}
 	}
 
 	@Override
@@ -67,28 +66,27 @@ public class HealCastorOnTargetDeadEffect extends EffectTemplate {
 			@Override
 			public void died(Creature creature) {
 				// Heal Caster first
-				if (MathUtil.isIn3dRange(effect.getEffected(), player, range)) {
+				if (MathUtil.isIn3dRange(effect.getEffected(), player, range))
 					player.getController().onRestore(HealType.HP, valueWithDelta);
-				}
 				// Then check for party if healparty parameter is set
-				if (healparty) {
+				if (healparty)
+				{
 					if (player.getPlayerGroup2() != null) {
 						for (Player p : player.getPlayerGroup2().getMembers()) {
-							if (p == player) {
+							if (p == player)
 								continue;
-							}
-							if (MathUtil.isIn3dRange(effect.getEffected(), p, range)) {
+							if (MathUtil.isIn3dRange(effect.getEffected(), p, range))
 								p.getController().onRestore(HealType.HP, valueWithDelta);
-							}
 						}
-					} else if (player.isInAlliance2()) {
+					}
+					else if (player.isInAlliance2()) {
 						for (Player p : player.getPlayerAllianceGroup2().getMembers()) {
-							if (!p.isOnline() || p.equals(player)) {
+							if (!p.isOnline())
 								continue;
-							}
-							if (MathUtil.isIn3dRange(effect.getEffected(), p, range)) {
+							if (p.equals(player))
+								continue;
+							if (MathUtil.isIn3dRange(effect.getEffected(), p, range))
 								p.getController().onRestore(HealType.HP, valueWithDelta);
-							}
 						}
 					}
 				}
@@ -103,8 +101,7 @@ public class HealCastorOnTargetDeadEffect extends EffectTemplate {
 	public void endEffect(Effect effect) {
 		super.endEffect(effect);
 		ActionObserver observer = effect.getActionObserver(position);
-		if ((!effect.getEffected().getLifeStats().isAlreadyDead()) && (observer != null)) {
+		if ((!effect.getEffected().getLifeStats().isAlreadyDead()) && (observer != null))
 			effect.getEffected().getObserveController().removeObserver(observer);
-		}
 	}
 }

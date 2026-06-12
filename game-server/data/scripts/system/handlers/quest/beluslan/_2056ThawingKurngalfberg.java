@@ -87,82 +87,87 @@ public class _2056ThawingKurngalfberg extends QuestHandler {
 					return sendQuestEndDialog(env);
 			}
 			return false;
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 204753) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-				else if (var == 1)
-					return sendQuestDialog(env, 2375);
-			case SELECT_ACTION_1012:
-				playQuestMovie(env, 242);
-				break;
-			case SELECT_ACTION_2376:
-				if (QuestService.collectItemCheck(env, false))
-					return sendQuestDialog(env, 2376);
-				else
-					return sendQuestDialog(env, 2461);
-			case STEP_TO_1:
-				if (var == 0) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			case STEP_TO_5:
-				if (var == 1) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			}
-		} else if (targetId == 790016) {
-			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 2034);
-			case SELECT_ACTION_2035:
-				if (var == 1 && player.getInventory().getItemCountByItemId(182204315) != 1) {
-					if (giveQuestItem(env, 182204315, 1))
-						return sendQuestDialog(env, 2035);
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+					else if (var == 1)
+						return sendQuestDialog(env, 2375);
+				case SELECT_ACTION_1012:
+					playQuestMovie(env, 242);
+					break;
+				case SELECT_ACTION_2376:
+					if (QuestService.collectItemCheck(env, false))
+						return sendQuestDialog(env, 2376);
 					else
+						return sendQuestDialog(env, 2461);
+				case STEP_TO_1:
+					if (var == 0) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 						return true;
-				} else
-					return sendQuestDialog(env, 2120);
+					}
+				case STEP_TO_5:
+					if (var == 1) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
 			}
-		} else if (targetId == 730036) {
+		}
+		else if (targetId == 790016) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-			case SELECT_ACTION_1353:
-				if (var == 1 && player.getInventory().getItemCountByItemId(182204313) != 1) {
-					if (giveQuestItem(env, 182204313, 1))
-						return sendQuestDialog(env, 1353);
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 2034);
+				case SELECT_ACTION_2035:
+					if (var == 1 && player.getInventory().getItemCountByItemId(182204315) != 1) {
+						if (giveQuestItem(env, 182204315, 1))
+							return sendQuestDialog(env, 2035);
+						else
+							return true;
+					}
 					else
-						return true;
-				} else
-					return sendQuestDialog(env, 1438);
+						return sendQuestDialog(env, 2120);
 			}
-		} else if (targetId == 279000) {
+		}
+		else if (targetId == 730036) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1693);
-			case SELECT_ACTION_1694:
-				if (var == 1 && player.getInventory().getItemCountByItemId(182204314) != 1) {
-					if (giveQuestItem(env, 182204314, 1))
-						return sendQuestDialog(env, 1694);
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+				case SELECT_ACTION_1353:
+					if (var == 1 && player.getInventory().getItemCountByItemId(182204313) != 1) {
+						if (giveQuestItem(env, 182204313, 1))
+							return sendQuestDialog(env, 1353);
+						else
+							return true;
+					}
 					else
-						return true;
-				} else
-					return sendQuestDialog(env, 1779);
+						return sendQuestDialog(env, 1438);
+			}
+		}
+		else if (targetId == 279000) {
+			switch (env.getDialog()) {
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1693);
+				case SELECT_ACTION_1694:
+					if (var == 1 && player.getInventory().getItemCountByItemId(182204314) != 1) {
+						if (giveQuestItem(env, 182204314, 1))
+							return sendQuestDialog(env, 1694);
+						else
+							return true;
+					}
+					else
+						return sendQuestDialog(env, 1779);
 			}
 		}
 		return false;
@@ -179,29 +184,31 @@ public class _2056ThawingKurngalfberg extends QuestHandler {
 			return HandlerResult.FAILED;
 
 		if (id != 182204313 && qs.getQuestVarById(0) == 2 || id != 182204314 && qs.getQuestVarById(0) == 3
-				|| id != 182204315 && qs.getQuestVarById(0) == 4)
+			|| id != 182204315 && qs.getQuestVarById(0) == 4)
 			return HandlerResult.UNKNOWN;
 
-		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 2000, 0, 0), true);
+		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 2000, 0,
+			0), true);
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
-				PacketSendUtility.broadcastPacket(player,
-						new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+				PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+					1, 0), true);
 				if (qs.getQuestVarById(0) == 2) {
 					playQuestMovie(env, 243);
 					removeQuestItem(env, id, 1);
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					updateQuestStatus(env);
-				} else if (qs.getQuestVarById(0) == 3) {
+				}
+				else if (qs.getQuestVarById(0) == 3) {
 					playQuestMovie(env, 244);
 					removeQuestItem(env, id, 1);
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					updateQuestStatus(env);
-				} else if (qs.getQuestVarById(0) == 4 && qs.getStatus() != QuestStatus.COMPLETE
-						&& qs.getStatus() != QuestStatus.NONE) {
+				}
+				else if (qs.getQuestVarById(0) == 4 && qs.getStatus() != QuestStatus.COMPLETE
+					&& qs.getStatus() != QuestStatus.NONE) {
 					removeQuestItem(env, id, 1);
 					playQuestMovie(env, 245);
 					qs.setStatus(QuestStatus.REWARD);

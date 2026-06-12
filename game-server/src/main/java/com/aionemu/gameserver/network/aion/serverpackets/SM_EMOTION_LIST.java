@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -15,6 +15,7 @@
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
+
 
 import java.util.Collection;
 
@@ -45,13 +46,15 @@ public class SM_EMOTION_LIST extends AionServerPacket {
 				writeH(64 + i);
 				writeD(0x00);
 			}
-		} else if (emotions == null || emotions.isEmpty()) {
+		}
+		else if (emotions == null || emotions.isEmpty()) {
 			writeH(0);
-		} else {
+		}
+		else {
 			writeH(emotions.size());
 			for (Emotion emotion : emotions) {
 				writeH(emotion.getId());
-				writeD(emotion.getRemainingTime());// remaining time
+				writeD(emotion.getRemainingTime());//remaining time
 			}
 		}
 	}

@@ -35,9 +35,9 @@ public class ProtectEffect extends ShieldEffect {
 	public void startEffect(final Effect effect) {
 		super.startEffect(effect);
 
-		AttackShieldObserver asObserver = new AttackShieldObserver(value, radius, percent, effect, this.hitType,
-				this.getType(), this.hitTypeProb);
-
+		AttackShieldObserver asObserver = new AttackShieldObserver(value,
+			radius, percent, effect, this.hitType, this.getType(), this.hitTypeProb);
+		
 		effect.getEffected().getObserveController().addAttackCalcObserver(asObserver);
 		effect.setAttackShieldObserver(asObserver, position);
 	}
@@ -45,14 +45,15 @@ public class ProtectEffect extends ShieldEffect {
 	@Override
 	public void endEffect(Effect effect) {
 		AttackCalcObserver acObserver = effect.getAttackShieldObserver(position);
-		if (acObserver != null) {
+		if (acObserver != null)
 			effect.getEffected().getObserveController().removeAttackCalcObserver(acObserver);
-		}
 	}
-
+	
 	/**
-	 * shieldType 1:reflector 2: normal shield 8: protec
-	 *
+	 * shieldType
+	 * 1:reflector
+	 * 2: normal shield
+	 * 8: protec
 	 * @return
 	 */
 	@Override

@@ -54,44 +54,47 @@ public class _19000ExpertEssencetappersTest extends QuestHandler {
 			if (targetId == 203780) { // Cornelius
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 203781: { // Sabotes
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 203781: { // Sabotes
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							giveQuestItem(env, 122001250, 1);
+							return sendQuestSelectionDialog(env);
+						}
+					}
+					break;
+				}
+				case 203780: { // Cornelius
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 1, 1, true, 5, 10001); // reward
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
 					}
 				}
-				case STEP_TO_1: {
-					giveQuestItem(env, 122001250, 1);
-					return sendQuestSelectionDialog(env);
-				}
-				}
-				break;
 			}
-			case 203780: { // Cornelius
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					}
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 1, 1, true, 5, 10001); // reward
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203780) { // Cornelius
 				return sendQuestEndDialog(env);
 			}

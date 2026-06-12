@@ -24,7 +24,7 @@ import com.aionemu.gameserver.model.team.legion.LegionMemberEx;
 
 /**
  * Class that is responsible for storing/loading legion data
- *
+ * 
  * @author Simple
  */
 
@@ -32,29 +32,30 @@ public abstract class LegionMemberDAO implements IDFactoryAwareDAO {
 
 	/**
 	 * Returns true if name is used, false in other case
-	 *
-	 * @param name name to check
+	 * 
+	 * @param name
+	 *          name to check
 	 * @return true if name is used, false in other case
 	 */
 	public abstract boolean isIdUsed(int playerObjId);
 
 	/**
 	 * Creates legion member in DB
-	 *
+	 * 
 	 * @param legionMember
 	 */
 	public abstract boolean saveNewLegionMember(LegionMember legionMember);
 
 	/**
 	 * Stores legion member to DB
-	 *
+	 * 
 	 * @param player
 	 */
 	public abstract void storeLegionMember(int playerObjId, LegionMember legionMember);
 
 	/**
 	 * Loads a legion member
-	 *
+	 * 
 	 * @param playerObjId
 	 * @param legionService
 	 * @return LegionMember
@@ -63,7 +64,7 @@ public abstract class LegionMemberDAO implements IDFactoryAwareDAO {
 
 	/**
 	 * Loads an off line legion member by id
-	 *
+	 * 
 	 * @param playerObjId
 	 * @param legionService
 	 * @return LegionMemberEx
@@ -72,7 +73,7 @@ public abstract class LegionMemberDAO implements IDFactoryAwareDAO {
 
 	/**
 	 * Loads an off line legion member by name
-	 *
+	 * 
 	 * @param playerName
 	 * @param legionService
 	 * @return LegionMemberEx
@@ -81,7 +82,7 @@ public abstract class LegionMemberDAO implements IDFactoryAwareDAO {
 
 	/**
 	 * Loads all legion members of a legion
-	 *
+	 * 
 	 * @param legionId
 	 * @return ArrayList<Integer>
 	 */
@@ -89,14 +90,15 @@ public abstract class LegionMemberDAO implements IDFactoryAwareDAO {
 
 	/**
 	 * Removes legion member and all related data (Done by CASCADE DELETION)
-	 *
-	 * @param playerId legion member to delete
+	 * 
+	 * @param playerId
+	 *          legion member to delete
 	 */
 	public abstract void deleteLegionMember(int playerObjId);
 
 	/**
 	 * Identifier name for all LegionDAO classes
-	 *
+	 * 
 	 * @return LegionDAO.class.getName()
 	 */
 	@Override

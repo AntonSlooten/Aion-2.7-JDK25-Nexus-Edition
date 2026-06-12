@@ -35,7 +35,7 @@ import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
 
 /**
  * Created on: 31.07.2009 14:20:03
- *
+ * 
  * @author Aquanox
  */
 @XmlRootElement(name = "player_stats_templates")
@@ -43,22 +43,22 @@ import com.aionemu.gameserver.model.templates.stats.PlayerStatsTemplate;
 public class PlayerStatsData {
 
 	@XmlElement(name = "player_stats", required = true)
-	private List<PlayerStatsType> templatesList = new ArrayList<>();
+	private List<PlayerStatsType> templatesList = new ArrayList<PlayerStatsType>();
 
-	private final TIntObjectHashMap<PlayerStatsTemplate> playerTemplates = new TIntObjectHashMap<>();
+	private final TIntObjectHashMap<PlayerStatsTemplate> playerTemplates = new TIntObjectHashMap<PlayerStatsTemplate>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (PlayerStatsType pt : templatesList) {
 			int code = makeHash(pt.getRequiredPlayerClass(), pt.getRequiredLevel());
 			PlayerStatsTemplate template = pt.getTemplate();
-			// TODO move to DP
-			template.setMaxMp(Math.round(template.getMaxMp() * 100f / template.getWill()));
-			template.setMaxHp(Math.round(template.getMaxHp() * 100f / template.getHealth()));
+			//TODO move to DP
+			template.setMaxMp(Math.round(template.getMaxMp()*100f/template.getWill()));
+			template.setMaxHp(Math.round(template.getMaxHp()*100f/template.getHealth()));
 			int agility = template.getAgility();
-			agility = (agility - 100);
-			template.setEvasion(Math.round(template.getEvasion() - template.getEvasion() * agility * 0.003f));
-			template.setBlock(Math.round(template.getBlock() - template.getBlock() * agility * 0.0025f));
-			template.setParry(Math.round(template.getParry() - template.getParry() * agility * 0.0025f));
+			agility = (agility-100);
+			template.setEvasion(Math.round(template.getEvasion() - template.getEvasion()*agility*0.003f));
+			template.setBlock(Math.round(template.getBlock() - template.getBlock()*agility*0.0025f));
+			template.setParry(Math.round(template.getParry() - template.getParry()*agility*0.0025f));
 			playerTemplates.put(code, pt.getTemplate());
 		}
 
@@ -67,15 +67,14 @@ public class PlayerStatsData {
 		playerTemplates.put(makeHash(PlayerClass.ASSASSIN, 0), new CalculatedPlayerStatsTemplate(PlayerClass.ASSASSIN));
 		playerTemplates.put(makeHash(PlayerClass.CHANTER, 0), new CalculatedPlayerStatsTemplate(PlayerClass.CHANTER));
 		playerTemplates.put(makeHash(PlayerClass.CLERIC, 0), new CalculatedPlayerStatsTemplate(PlayerClass.CLERIC));
-		playerTemplates.put(makeHash(PlayerClass.GLADIATOR, 0),
-				new CalculatedPlayerStatsTemplate(PlayerClass.GLADIATOR));
+		playerTemplates.put(makeHash(PlayerClass.GLADIATOR, 0), new CalculatedPlayerStatsTemplate(PlayerClass.GLADIATOR));
 		playerTemplates.put(makeHash(PlayerClass.MAGE, 0), new CalculatedPlayerStatsTemplate(PlayerClass.MAGE));
 		playerTemplates.put(makeHash(PlayerClass.PRIEST, 0), new CalculatedPlayerStatsTemplate(PlayerClass.PRIEST));
 		playerTemplates.put(makeHash(PlayerClass.RANGER, 0), new CalculatedPlayerStatsTemplate(PlayerClass.RANGER));
 		playerTemplates.put(makeHash(PlayerClass.SCOUT, 0), new CalculatedPlayerStatsTemplate(PlayerClass.SCOUT));
 		playerTemplates.put(makeHash(PlayerClass.SORCERER, 0), new CalculatedPlayerStatsTemplate(PlayerClass.SORCERER));
-		playerTemplates.put(makeHash(PlayerClass.SPIRIT_MASTER, 0),
-				new CalculatedPlayerStatsTemplate(PlayerClass.SPIRIT_MASTER));
+		playerTemplates.put(makeHash(PlayerClass.SPIRIT_MASTER, 0), new CalculatedPlayerStatsTemplate(
+			PlayerClass.SPIRIT_MASTER));
 		playerTemplates.put(makeHash(PlayerClass.TEMPLAR, 0), new CalculatedPlayerStatsTemplate(PlayerClass.TEMPLAR));
 
 		templatesList.clear();
@@ -88,9 +87,8 @@ public class PlayerStatsData {
 	 */
 	public PlayerStatsTemplate getTemplate(Player player) {
 		PlayerStatsTemplate template = getTemplate(player.getCommonData().getPlayerClass(), player.getLevel());
-		if (template == null) {
+		if (template == null)
 			template = getTemplate(player.getCommonData().getPlayerClass(), 0);
-		}
 		return template;
 	}
 
@@ -101,15 +99,14 @@ public class PlayerStatsData {
 	 */
 	public PlayerStatsTemplate getTemplate(PlayerClass playerClass, int level) {
 		PlayerStatsTemplate template = playerTemplates.get(makeHash(playerClass, level));
-		if (template == null) {
+		if (template == null)
 			template = getTemplate(playerClass, 0);
-		}
 		return template;
 	}
 
 	/**
 	 * Size of player templates
-	 *
+	 * 
 	 * @return
 	 */
 	public int size() {

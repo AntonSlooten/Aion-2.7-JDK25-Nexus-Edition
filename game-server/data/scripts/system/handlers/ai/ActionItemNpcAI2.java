@@ -47,8 +47,7 @@ public class ActionItemNpcAI2 extends NpcAI2 {
 
 	@Override
 	protected void handleDialogStart(Player player) {
-		// if (!QuestEngine.getInstance().onCanAct(new QuestEnv(getOwner(), player, 0,
-		// 0),
+		// if (!QuestEngine.getInstance().onCanAct(new QuestEnv(getOwner(), player, 0, 0),
 		// getObjectTemplate().getTemplateId(), QuestActionType.ACTION_ITEM_USE))
 		// return;
 		player.getActionItemNpc().setCondition(1, 0, getTalkDelay());

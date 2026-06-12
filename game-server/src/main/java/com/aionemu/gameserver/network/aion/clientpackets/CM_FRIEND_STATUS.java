@@ -26,7 +26,7 @@ import com.aionemu.gameserver.network.aion.AionConnection.State;
 
 /**
  * Packet received when a user changes his buddylist status
- *
+ * 
  * @author Ben
  */
 public class CM_FRIEND_STATUS extends AionClientPacket {
@@ -55,7 +55,7 @@ public class CM_FRIEND_STATUS extends AionClientPacket {
 		Player activePlayer = getConnection().getActivePlayer();
 		Status statusEnum = Status.getByValue(status);
 		if (statusEnum == null) {
-			log.warn("received unknown status id " + status);
+			log.warn("received unknown status id "+status);
 			statusEnum = Status.ONLINE;
 		}
 		activePlayer.getFriendList().setStatus(statusEnum);

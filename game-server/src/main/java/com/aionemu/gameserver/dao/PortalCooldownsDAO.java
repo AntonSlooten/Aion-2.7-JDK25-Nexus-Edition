@@ -7,7 +7,7 @@ public abstract class PortalCooldownsDAO implements DAO {
 
 	/**
 	 * Returns unique identifier for PortalCooldownsDAO
-	 *
+	 * 
 	 * @return unique identifier for PortalCooldownsDAO
 	 */
 	@Override

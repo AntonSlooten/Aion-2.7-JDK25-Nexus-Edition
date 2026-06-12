@@ -44,8 +44,7 @@ public class SM_WAREHOUSE_UPDATE_ITEM extends AionServerPacket {
 		itemInfoBlob.addBlobEntry(ItemBlobType.GENERAL_INFO);
 		itemInfoBlob.writeMe(getBuf());
 
-		if (updateType.isSendable()) {
+		if (updateType.isSendable())
 			writeH(updateType.getMask());
-		}
 	}
 }

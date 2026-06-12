@@ -16,7 +16,8 @@
  */
 package instance.pvparenas;
 
-import java.util.Comparator;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sort;
 
 import java.util.List;
 
@@ -74,10 +75,9 @@ public class PvPArenaInstance extends GeneralInstanceHandler {
 	protected int killBonus;
 	protected int relicTime = 40;
 	protected int deathFine;
-	protected FastMap<Integer, Integer> ticketRemoved = new FastMap<Integer, Integer>();
+	protected FastMap<Integer, Integer> ticketRemoved = new FastMap<Integer, Integer>(); 
 	protected FastMap<Integer, PvpArenaObserver> observed = new FastMap<Integer, PvpArenaObserver>().shared();
-	// protected FastMap<Integer, PvparenaSkillObserver> observedSkills = new
-	// FastMap<Integer, PvparenaSkillObserver>().shared();
+	//protected FastMap<Integer, PvparenaSkillObserver> observedSkills = new FastMap<Integer, PvparenaSkillObserver>().shared();
 	protected static final Logger log = LoggerFactory.getLogger(PvPArenaInstance.class);
 
 	@Override
@@ -99,7 +99,8 @@ public class PvPArenaInstance extends GeneralInstanceHandler {
 			PvPArenaPlayerReward reward = getPlayerReward(winner);
 			reward.addPvPKillToPlayer();
 			/*
-			 * reward.endBoostMoraleEffect(winner); reward.applyBoostMoraleEffect(winner);
+			 * reward.endBoostMoraleEffect(winner);
+			 * reward.applyBoostMoraleEffect(winner);
 			 */
 
 			// notify Kill-Quests
@@ -146,7 +147,7 @@ public class PvPArenaInstance extends GeneralInstanceHandler {
 			if (master instanceof Player) {
 				Player attaker = (Player) master;
 				int rewardPoints = 0;
-				if (victim.getAggroList().getTotalDamage() != 0) {
+				if(victim.getAggroList().getTotalDamage() != 0){
 					rewardPoints = (victim instanceof Player && instanceReward.getRound() == 3 && rank == 0 ? bonus * 3
 							: bonus) * damager.getDamage() / victim.getAggroList().getTotalDamage();
 				}
@@ -284,7 +285,7 @@ public class PvPArenaInstance extends GeneralInstanceHandler {
 
 	@Override
 	public void onPlayerLogOut(Player player) {
-		PacketSendUtility.sendMessage(player, "onPlayerLogOut " + player.getName());
+		PacketSendUtility.sendMessage(player, "onPlayerLogOut "+player.getName());
 		checkStarted(player);
 		getPlayerReward(player).updateLogOutTime();
 	}
@@ -300,7 +301,7 @@ public class PvPArenaInstance extends GeneralInstanceHandler {
 		instanceReward = new PvPArenaReward(mapId, instanceId, instance);
 		instanceReward.setInstanceScoreType(InstanceScoreType.PREPARING);
 		instanceReward.setInstanceStartTime();
-
+		
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
 			public void run() {
@@ -444,10 +445,13 @@ public class PvPArenaInstance extends GeneralInstanceHandler {
 		}
 
 		// TODO STOP ARENA IF 1 player left
-		/*
-		 * if (isArenaStarted()) { log.info("continue !!!"); canContinue(); } else {
-		 * log.info("start !!!"); canStart(); }
-		 */
+		/*if (isArenaStarted()) {
+			log.info("continue !!!");
+			canContinue();
+		} else {
+			log.info("start !!!");
+			canStart();
+		}*/
 	}
 
 	protected void checkStarted(Player player) {
@@ -462,7 +466,7 @@ public class PvPArenaInstance extends GeneralInstanceHandler {
 		int itemId = getIdEnteringItem();
 
 		List<Item> items = player.getInventory().getItemsByItemId(itemId);
-		items.sort(Comparator.comparing(Item::getExpireTime));
+		items = sort(items, on(Item.class).getExpireTime());
 		for (Item item : items) {
 			ticketRemoved.put(player.getObjectId(), 1);
 			player.getInventory().decreaseItemCount(item, size);
@@ -520,10 +524,8 @@ public class PvPArenaInstance extends GeneralInstanceHandler {
 
 	protected void reward() {
 		for (Player player : instance.getPlayersInside()) {
-			/*
-			 * if (player.getLifeStats().isAlreadyDead())
-			 * PlayerReviveService.duelRevive(player);
-			 */
+			/*if (player.getLifeStats().isAlreadyDead())
+				PlayerReviveService.duelRevive(player);*/
 			PvPArenaPlayerReward reward = getPlayerReward(player);
 			if (!reward.isRewarded()) {
 				reward.setRewarded();
@@ -602,7 +604,7 @@ public class PvPArenaInstance extends GeneralInstanceHandler {
 		if (skill != 0) {
 			useSkill(npc, player, skill >> 8, skill & 0xFF);
 		}
-
+		
 		getPlayerReward(player).addPoints(rewardetPoints);
 		sendSystemMsg(player, npc, rewardetPoints);
 		sendPacket();
@@ -616,6 +618,6 @@ public class PvPArenaInstance extends GeneralInstanceHandler {
 		return false;
 	}
 
-	protected void spawnOnStart() {
+	protected void spawnOnStart(){
 	}
 }

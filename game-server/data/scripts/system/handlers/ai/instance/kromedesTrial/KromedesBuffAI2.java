@@ -40,24 +40,24 @@ public class KromedesBuffAI2 extends ActionItemNpcAI2 {
 	@Override
 	protected void handleUseItemFinish(Player player) {
 		switch (getNpcId()) {
-		case 730336:
-			SkillEngine.getInstance().getSkill(player, 19216, 1, player).useSkill();
-			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400655));
-			break;
-		case 730337:
-			SkillEngine.getInstance().getSkill(player, 19217, 1, player).useSkill();
-			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400656));
-			AI2Actions.deleteOwner(this);
-			break;
-		case 730338:
-			SkillEngine.getInstance().getSkill(player, 19218, 1, player).useSkill();
-			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400657));
-			AI2Actions.deleteOwner(this);
-			break;
-		case 730339:
-			SkillEngine.getInstance().getSkill(player, 19219, 1, player).useSkill();
-			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400658));
-			break;
+			case 730336:
+				SkillEngine.getInstance().getSkill(player, 19216, 1, player).useSkill();
+				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400655));
+				break;
+			case 730337:
+				SkillEngine.getInstance().getSkill(player, 19217, 1, player).useSkill();
+				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400656));
+				AI2Actions.deleteOwner(this);
+				break;
+			case 730338:
+				SkillEngine.getInstance().getSkill(player, 19218, 1, player).useSkill();
+				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400657));
+				AI2Actions.deleteOwner(this);
+				break;
+			case 730339:
+				SkillEngine.getInstance().getSkill(player, 19219, 1, player).useSkill();
+				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400658));
+				break;
 		}
 	}
 }

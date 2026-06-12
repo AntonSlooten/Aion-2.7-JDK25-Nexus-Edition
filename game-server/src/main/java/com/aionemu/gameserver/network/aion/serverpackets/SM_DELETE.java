@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -16,13 +16,14 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.model.gameobjects.AionObject;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * This packet is informing client that some AionObject is no longer visible.
- *
+ * 
  * @author -Nemesiss-
  */
 public class SM_DELETE extends AionServerPacket {
@@ -35,7 +36,7 @@ public class SM_DELETE extends AionServerPacket {
 
 	/**
 	 * Constructor.
-	 *
+	 * 
 	 * @param object
 	 */
 

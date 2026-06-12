@@ -46,21 +46,18 @@ public class OnKillEvent extends QuestEvent {
 
 	public List<Monster> getMonsters() {
 		if (monster == null) {
-			monster = new ArrayList<>();
+			monster = new ArrayList<Monster>();
 		}
 		return this.monster;
 	}
 
-	@Override
 	public boolean operate(QuestEnv env) {
-		if (monster == null || !(env.getVisibleObject() instanceof Npc)) {
+		if (monster == null || !(env.getVisibleObject() instanceof Npc))
 			return false;
-		}
 
 		QuestState qs = env.getPlayer().getQuestStateList().getQuestState(env.getQuestId());
-		if (qs == null) {
+		if (qs == null)
 			return false;
-		}
 
 		Npc npc = (Npc) env.getVisibleObject();
 		for (Monster m : monster) {
@@ -68,17 +65,16 @@ public class OnKillEvent extends QuestEvent {
 				int var = qs.getQuestVarById(m.getVar());
 				if (var >= (m.getStartVar() == null ? 0 : m.getStartVar()) && var < m.getEndVar()) {
 					qs.setQuestVarById(m.getVar(), var + 1);
-					PacketSendUtility.sendPacket(env.getPlayer(),
-							new SM_QUEST_ACTION(env.getQuestId(), qs.getStatus(), qs.getQuestVars().getQuestVars()));
+					PacketSendUtility.sendPacket(env.getPlayer(), new SM_QUEST_ACTION(env.getQuestId(), qs.getStatus(), qs
+						.getQuestVars().getQuestVars()));
 				}
 			}
 		}
 
 		if (complite != null) {
 			for (Monster m : monster) {
-				if (qs.getQuestVarById(m.getVar()) != qs.getQuestVarById(m.getVar())) {
+				if (qs.getQuestVarById(m.getVar()) != qs.getQuestVarById(m.getVar()))
 					return false;
-				}
 			}
 			complite.operate(env);
 		}

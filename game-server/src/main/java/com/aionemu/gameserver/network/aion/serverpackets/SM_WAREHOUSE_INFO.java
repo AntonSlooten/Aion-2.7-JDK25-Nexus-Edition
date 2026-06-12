@@ -38,16 +38,14 @@ public class SM_WAREHOUSE_INFO extends AionServerPacket {
 	private int expandLvl;
 	private Player player;
 
-	public SM_WAREHOUSE_INFO(Collection<Item> items, int warehouseType, int expandLvl, boolean firstPacket,
-			Player player) {
+	public SM_WAREHOUSE_INFO(Collection<Item> items, int warehouseType, int expandLvl, boolean firstPacket, Player player) {
 		this.warehouseType = warehouseType;
 		this.expandLvl = expandLvl;
 		this.firstPacket = firstPacket;
-		if (items == null) {
+		if (items == null)
 			this.itemList = Collections.emptyList();
-		} else {
+		else
 			this.itemList = items;
-		}
 		this.player = player;
 	}
 
@@ -58,9 +56,8 @@ public class SM_WAREHOUSE_INFO extends AionServerPacket {
 		writeC(expandLvl); // warehouse expand (0 - 9)
 		writeH(0);
 		writeH(itemList.size());
-		for (Item item : itemList) {
+		for (Item item : itemList)
 			writeItemInfo(item);
-		}
 	}
 
 	private void writeItemInfo(Item item) {

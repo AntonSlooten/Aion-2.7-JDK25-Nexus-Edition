@@ -18,7 +18,7 @@ package com.aionemu.gameserver.network.aion.serverpackets;
 
 import java.util.Collection;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.aionemu.gameserver.model.team2.alliance.PlayerAlliance;
 import com.aionemu.gameserver.model.team2.common.legacy.LootGroupRules;
@@ -37,7 +37,7 @@ public class SM_ALLIANCE_INFO extends AionServerPacket {
 	private int groupid;
 	private final int messageId;
 	private final String message;
-
+	
 	public static final int VICECAPTAIN_PROMOTE = 1300984;
 	public static final int VICECAPTAIN_DEMOTE = 1300985;
 	public static final int LEAGUE_ENTERED = 1400560;
@@ -48,7 +48,7 @@ public class SM_ALLIANCE_INFO extends AionServerPacket {
 	public SM_ALLIANCE_INFO(PlayerAlliance alliance) {
 		this(alliance, 0, StringUtils.EMPTY);
 	}
-
+	
 	public SM_ALLIANCE_INFO(PlayerAlliance alliance, int messageId, String message) {
 		this.alliance = alliance;
 		groupid = alliance.getObjectId();

@@ -144,7 +144,7 @@ public abstract class AITemplate extends AbstractAI {
 	@Override
 	protected void handleDropRegistered() {
 	}
-
+	
 	@Override
 	public boolean isMayShout() {
 		return false;

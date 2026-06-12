@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
@@ -30,7 +31,7 @@ public class SM_SKILL_ACTIVATION extends AionServerPacket {
 
 	/**
 	 * For toggle skills
-	 *
+	 * 
 	 * @param skillId
 	 * @param isActive
 	 */
@@ -42,7 +43,7 @@ public class SM_SKILL_ACTIVATION extends AionServerPacket {
 
 	/**
 	 * For stigma remove should work in 1.5.1.15
-	 *
+	 * 
 	 * @param skillId
 	 */
 	public SM_SKILL_ACTIVATION(int skillId) {

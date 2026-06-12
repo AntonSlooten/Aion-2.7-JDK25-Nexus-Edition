@@ -64,11 +64,11 @@ public class _3096ExamineTheExtractionDevices extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE || qs.getStatus() == QuestStatus.COMPLETE) {
 			if (targetId == 798225) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				default:
-					return sendQuestStartDialog(env);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
@@ -78,72 +78,72 @@ public class _3096ExamineTheExtractionDevices extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798225: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(182208067);
-					long itemCount2 = player.getInventory().getItemCountByItemId(182208068);
-					long itemCount3 = player.getInventory().getItemCountByItemId(182208069);
-					long itemCount4 = player.getInventory().getItemCountByItemId(182208070);
-					if (itemCount1 >= 1 && itemCount2 >= 1 && itemCount3 >= 1 && itemCount4 >= 1) {
-						return sendQuestDialog(env, 5);
+				case 798225: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182208067);
+							long itemCount2 = player.getInventory().getItemCountByItemId(182208068);
+							long itemCount3 = player.getInventory().getItemCountByItemId(182208069);
+							long itemCount4 = player.getInventory().getItemCountByItemId(182208070);
+							if (itemCount1 >= 1 && itemCount2 >= 1 && itemCount3 >= 1 && itemCount4 >= 1) {
+								return sendQuestDialog(env, 5);
+							}
+						}
+						case SELECT_NO_REWARD: {
+							qs.setStatus(QuestStatus.COMPLETE);
+							qs.setCompleteCount(qs.getCompleteCount() + 1);
+							removeQuestItem(env, 182208067, 1);
+							removeQuestItem(env, 182208068, 1);
+							removeQuestItem(env, 182208069, 1);
+							removeQuestItem(env, 182208070, 1);
+							Rewards rewards = DataManager.QUEST_DATA.getQuestById(questId).getRewards().get(0);
+							int rewardExp = rewards.getExp();
+							int rewardKinah = (int) (player.getRates().getQuestKinahRate() * rewards.getGold());
+							giveQuestItem(env, 182400001, rewardKinah);
+							player.getCommonData().addExp(rewardExp, RewardType.QUEST);
+							PacketSendUtility.sendPacket(player, new SM_QUEST_ACTION(questId, QuestStatus.COMPLETE, 2));
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+							updateQuestStatus(env);
+							return true;
+						}
 					}
 				}
-				case SELECT_NO_REWARD: {
-					qs.setStatus(QuestStatus.COMPLETE);
-					qs.setCompleteCount(qs.getCompleteCount() + 1);
-					removeQuestItem(env, 182208067, 1);
-					removeQuestItem(env, 182208068, 1);
-					removeQuestItem(env, 182208069, 1);
-					removeQuestItem(env, 182208070, 1);
-					Rewards rewards = DataManager.QUEST_DATA.getQuestById(questId).getRewards().get(0);
-					int rewardExp = rewards.getExp();
-					int rewardKinah = (int) (player.getRates().getQuestKinahRate() * rewards.getGold());
-					giveQuestItem(env, 182400001, rewardKinah);
-					player.getCommonData().addExp(rewardExp, RewardType.QUEST);
-					PacketSendUtility.sendPacket(player, new SM_QUEST_ACTION(questId, QuestStatus.COMPLETE, 2));
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-					updateQuestStatus(env);
-					return true;
-				}
-				}
-			}
-			case 700423: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					if (player.getInventory().getItemCountByItemId(182208067) < 1) {
-						return true;
+				case 700423: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							if (player.getInventory().getItemCountByItemId(182208067) < 1) {
+								return true;
+							}
+						}
 					}
 				}
-				}
-			}
-			case 700424: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					if (player.getInventory().getItemCountByItemId(182208068) < 1) {
-						return true;
+				case 700424: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							if (player.getInventory().getItemCountByItemId(182208068) < 1) {
+								return true;
+							}
+						}
 					}
 				}
-				}
-			}
-			case 700425: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					if (player.getInventory().getItemCountByItemId(182208069) < 1) {
-						return true;
+				case 700425: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							if (player.getInventory().getItemCountByItemId(182208069) < 1) {
+								return true;
+							}
+						}
 					}
 				}
-				}
-			}
-			case 700426: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					if (player.getInventory().getItemCountByItemId(182208070) < 1) {
-						return true;
+				case 700426: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							if (player.getInventory().getItemCountByItemId(182208070) < 1) {
+								return true;
+							}
+						}
 					}
 				}
-				}
-			}
 			}
 		}
 		return false;

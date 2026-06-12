@@ -79,33 +79,35 @@ public class _4936SecretOfTheGreaterStigma extends QuestHandler {
 				return sendQuestEndDialog(env);
 			}
 			return false;
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 
 			if (targetId == 204051 && var == 1)// Vergelmir
 			{
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 2375);
-				case CHECK_COLLECTED_ITEMS:
-					if (QuestService.collectItemCheck(env, true)) {
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 5);
-					} else
-						return sendQuestDialog(env, 2716);
+					case START_DIALOG:
+						return sendQuestDialog(env, 2375);
+					case CHECK_COLLECTED_ITEMS:
+						if (QuestService.collectItemCheck(env, true)) {
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return sendQuestDialog(env, 5);
+						}
+						else
+							return sendQuestDialog(env, 2716);
 				}
 
-			} else if (targetId == 204837 && var == 0)// Hresvelgr
+			}
+			else if (targetId == 204837 && var == 0)// Hresvelgr
 			{
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 1352);
-				case STEP_TO_1:
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					return true;
+					case START_DIALOG:
+						return sendQuestDialog(env, 1352);
+					case STEP_TO_1:
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						return true;
 				}
 			}
 

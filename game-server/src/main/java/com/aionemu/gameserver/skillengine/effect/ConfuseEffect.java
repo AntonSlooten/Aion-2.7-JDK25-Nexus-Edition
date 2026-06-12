@@ -39,7 +39,7 @@ public class ConfuseEffect extends EffectTemplate {
 	public void calculate(Effect effect) {
 		super.calculate(effect, StatEnum.CONFUSE_RESISTANCE, null);
 	}
-
+	
 	@Override
 	public void startEffect(Effect effect) {
 		super.startEffect(effect);

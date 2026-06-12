@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-engine <aion-engine.com>
  *
  *  aion-engine is free software: you can redistribute it and/or modify
@@ -46,20 +46,21 @@ public class _2230AFriendlyWager extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (env.getTargetId() == 203621) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 1011);
-				case ASK_ACCEPTION:
-					return sendQuestDialog(env, 4);
-				case ACCEPT_QUEST:
-					return sendQuestDialog(env, 1003);
-				case REFUSE_QUEST:
-					return sendQuestDialog(env, 1004);
-				case STEP_TO_1:
-					if (QuestService.startQuest(env)) {
-						QuestService.questTimerStart(env, 1800);
-						return true;
-					} else
-						return false;
+					case START_DIALOG:
+						return sendQuestDialog(env, 1011);
+					case ASK_ACCEPTION:
+						return sendQuestDialog(env, 4);
+					case ACCEPT_QUEST:
+						return sendQuestDialog(env, 1003);
+					case REFUSE_QUEST:
+						return sendQuestDialog(env, 1004);
+					case STEP_TO_1:
+						if (QuestService.startQuest(env)) {
+							QuestService.questTimerStart(env, 1800);
+							return true;
+						}
+						else
+							return false;
 				}
 			}
 		}
@@ -69,19 +70,20 @@ public class _2230AFriendlyWager extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (env.getTargetId() == 203621) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 2375);
-				case CHECK_COLLECTED_ITEMS:
-					if (var == 0) {
-						if (QuestService.collectItemCheck(env, true)) {
-							qs.setStatus(QuestStatus.REWARD);
-							updateQuestStatus(env);
-							QuestService.questTimerEnd(env);
-							return sendQuestDialog(env, 5);
-						} else
-							return sendQuestDialog(env, 2716);
-					}
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 2375);
+					case CHECK_COLLECTED_ITEMS:
+						if (var == 0) {
+							if (QuestService.collectItemCheck(env, true)) {
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								QuestService.questTimerEnd(env);
+								return sendQuestDialog(env, 5);
+							}
+							else
+								return sendQuestDialog(env, 2716);
+						}
 				}
 			}
 		}

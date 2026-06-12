@@ -22,12 +22,12 @@ import java.util.List;
 /**
  * @author Source
  *
- *         These bosses only appear when an faction conquer all balaurea
- *         fortress... If Elyos conquer all fortress the Enraged Mastarius
- *         appear on Ancient City of Marayas If Asmodians conquer all fortress
- *         the Enraged Veille appear on Inggison Outpost He/She still active for
- *         2 hours after that he/she disappear and respawn again next day on the
- *         end of Siege (if the faction owns all fortress)
+ * These bosses only appear when an faction conquer all balaurea fortress... If
+ * Elyos conquer all fortress the Enraged Mastarius appear on Ancient City of
+ * Marayas If Asmodians conquer all fortress the Enraged Veille appear on
+ * Inggison Outpost He/She still active for 2 hours after that he/she disappear
+ * and respawn again next day on the end of Siege (if the faction owns all
+ * fortress)
  */
 public class OutpostLocation extends SiegeLocation {
 
@@ -44,19 +44,18 @@ public class OutpostLocation extends SiegeLocation {
 	}
 
 	/**
-	 * @ deprecated Should be configured from datapack
-	 *
+	 *@ deprecated Should be configured from datapack
 	 * @return Outpost Location Race
 	 */
 	// @Deprecated
 	public SiegeRace getLocationRace() {
 		switch (getLocationId()) {
-		case 3111:
-			return SiegeRace.ASMODIANS;
-		case 2111:
-			return SiegeRace.ELYOS;
-		default:
-			throw new RuntimeException("Please move this to datapack");
+			case 3111:
+				return SiegeRace.ASMODIANS;
+			case 2111:
+				return SiegeRace.ELYOS;
+			default:
+				throw new RuntimeException("Please move this to datapack");
 		}
 	}
 

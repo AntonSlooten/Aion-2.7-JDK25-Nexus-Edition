@@ -25,9 +25,8 @@ import com.aionemu.gameserver.questEngine.model.QuestStatus;
 import com.aionemu.gameserver.utils.stats.AbyssRankEnum;
 
 /**
- * [Group] Confront Asmodian Generals Defeat Asmodian Generals and win (3). ->
- * Asmodian Army General Report the result to Michalis (278501).
- * minlevel_permitted="40" cannot_share="true" race_permitted="ELYOS"
+ * [Group] Confront Asmodian Generals Defeat Asmodian Generals and win (3). -> Asmodian Army General Report the result
+ * to Michalis (278501). minlevel_permitted="40" cannot_share="true" race_permitted="ELYOS"
  * 
  * @author vlog
  */
@@ -63,7 +62,8 @@ public class _1720ConfrontAsmodianGenerals extends QuestHandler {
 					return sendQuestDialog(env, 1011);
 				else
 					return sendQuestStartDialog(env);
-			} else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
+			}
+			else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 1352);
 				else

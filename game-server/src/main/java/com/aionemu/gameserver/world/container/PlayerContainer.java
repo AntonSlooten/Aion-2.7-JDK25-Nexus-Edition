@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -30,7 +30,7 @@ import com.aionemu.gameserver.world.knownlist.Visitor;
 
 /**
  * Container for storing Players by objectId and name.
- *
+ * 
  * @author -Nemesiss-
  */
 public class PlayerContainer implements Iterable<Player> {
@@ -48,19 +48,19 @@ public class PlayerContainer implements Iterable<Player> {
 
 	/**
 	 * Add Player to this Container.
-	 *
+	 * 
 	 * @param player
 	 */
 	public void add(Player player) {
-		if ((playersById.put(player.getObjectId(), player) != null)
-				|| (playersByName.put(player.getName(), player) != null)) {
+		if (playersById.put(player.getObjectId(), player) != null)
 			throw new DuplicateAionObjectException();
-		}
+		if (playersByName.put(player.getName(), player) != null)
+			throw new DuplicateAionObjectException();
 	}
 
 	/**
 	 * Remove Player from this Container.
-	 *
+	 * 
 	 * @param player
 	 */
 	public void remove(Player player) {
@@ -70,10 +70,10 @@ public class PlayerContainer implements Iterable<Player> {
 
 	/**
 	 * Get Player object by objectId.
-	 *
-	 * @param objectId - ObjectId of player.
-	 * @return Player with given ojectId or null if Player with given objectId is
-	 *         not logged.
+	 * 
+	 * @param objectId
+	 *          - ObjectId of player.
+	 * @return Player with given ojectId or null if Player with given objectId is not logged.
 	 */
 	public Player get(int objectId) {
 		return playersById.get(objectId);
@@ -81,10 +81,10 @@ public class PlayerContainer implements Iterable<Player> {
 
 	/**
 	 * Get Player object by name.
-	 *
-	 * @param name - name of player
-	 * @return Player with given name or null if Player with given name is not
-	 *         logged.
+	 * 
+	 * @param name
+	 *          - name of player
+	 * @return Player with given name or null if Player with given name is not logged.
 	 */
 	public Player get(String name) {
 		return playersByName.get(name);
@@ -100,14 +100,14 @@ public class PlayerContainer implements Iterable<Player> {
 	 */
 	public void doOnAllPlayers(Visitor<Player> visitor) {
 		try {
-			for (FastMap.Entry<Integer, Player> e = playersById.head(),
-					mapEnd = playersById.tail(); (e = e.getNext()) != mapEnd;) {
+			for (FastMap.Entry<Integer, Player> e = playersById.head(), mapEnd = playersById.tail(); (e = e.getNext()) != mapEnd;) {
 				Player player = e.getValue();
 				if (player != null) {
 					visitor.visit(player);
 				}
 			}
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			log.error("Exception when running visitor on all players" + ex);
 		}
 	}
@@ -115,7 +115,7 @@ public class PlayerContainer implements Iterable<Player> {
 	public Collection<Player> getAllPlayers() {
 		return playersById.values();
 	}
-
+	
 	public int countAllPlayers() {
 		return playersById.size();
 	}

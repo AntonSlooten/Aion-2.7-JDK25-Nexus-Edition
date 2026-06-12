@@ -52,13 +52,13 @@ public class DyeAction extends AbstractItemAction {
 
 	@Override
 	public void act(Player player, Item parentItem, Item targetItem) {
-		if (!player.getInventory().decreaseByObjectId(parentItem.getObjectId(), 1)) {
+		if (!player.getInventory().decreaseByObjectId(parentItem.getObjectId(), 1))
 			return;
-		}
 		if (targetItem.getItemTemplate().isItemDyePermitted()) {
 			if (color.equals("no")) {
 				targetItem.setItemColor(0);
-			} else {
+			}
+			else {
 				int rgb = Integer.parseInt(color, 16);
 				int bgra = 0xFF | ((rgb & 0xFF) << 24) | ((rgb & 0xFF00) << 8) | ((rgb & 0xFF0000) >>> 8);
 				targetItem.setItemColor(bgra);
@@ -66,12 +66,14 @@ public class DyeAction extends AbstractItemAction {
 
 			// item is equipped, so need broadcast packet
 			if (player.getEquipment().getEquippedItemByObjId(targetItem.getObjectId()) != null) {
-				PacketSendUtility.broadcastPacket(player, new SM_UPDATE_PLAYER_APPEARANCE(player.getObjectId(),
-						player.getEquipment().getEquippedItemsWithoutStigma()), true);
+				PacketSendUtility.broadcastPacket(player, new SM_UPDATE_PLAYER_APPEARANCE(player.getObjectId(), player
+					.getEquipment().getEquippedItemsWithoutStigma()), true);
 				player.getEquipment().setPersistentState(PersistentState.UPDATE_REQUIRED);
-			} else { // item is not equipped
-				player.getInventory().setPersistentState(PersistentState.UPDATE_REQUIRED);
 			}
+
+			// item is not equipped
+			else
+				player.getInventory().setPersistentState(PersistentState.UPDATE_REQUIRED);
 
 			ItemPacketService.updateItemAfterInfoChange(player, targetItem);
 		}

@@ -24,6 +24,7 @@ import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.stats.container.StatEnum;
 import com.aionemu.gameserver.skillengine.model.Effect;
 
+
 /**
  * @author kecimis
  *
@@ -52,9 +53,8 @@ public class DiseaseEffect extends EffectTemplate {
 
 	@Override
 	public void endEffect(Effect effect) {
-		if (effect.getEffected().getEffectController().isAbnormalSet(AbnormalState.DISEASE)) {
+		if (effect.getEffected().getEffectController().isAbnormalSet(AbnormalState.DISEASE))
 			effect.getEffected().getEffectController().unsetAbnormal(AbnormalState.DISEASE.getId());
-		}
 	}
 
 }

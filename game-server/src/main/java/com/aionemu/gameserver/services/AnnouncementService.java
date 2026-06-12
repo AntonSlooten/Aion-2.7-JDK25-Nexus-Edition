@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.org>.
  *
  * aion-unique is free software: you can redistribute it and/or modify
@@ -40,7 +40,7 @@ import com.aionemu.gameserver.world.World;
 
 /**
  * Automatic Announcement System
- *
+ * 
  * @author Divinity
  */
 public class AnnouncementService {
@@ -51,7 +51,7 @@ public class AnnouncementService {
 	private static final Logger log = LoggerFactory.getLogger(AnnouncementService.class);
 
 	private Collection<Announcement> announcements;
-	private List<Future<?>> delays = new ArrayList<>();
+	private List<Future<?>> delays = new ArrayList<Future<?>>();
 
 	private AnnouncementService() {
 		this.load();
@@ -66,11 +66,9 @@ public class AnnouncementService {
 	 */
 	public void reload() {
 		// Cancel all tasks
-		if (delays != null && delays.size() > 0) {
-			for (Future<?> delay : delays) {
+		if (delays != null && delays.size() > 0)
+			for (Future<?> delay : delays)
 				delay.cancel(false);
-			}
-		}
 
 		// Clear all announcements
 		announcements.clear();
@@ -83,7 +81,7 @@ public class AnnouncementService {
 	 * Load the announcements system
 	 */
 	private void load() {
-		announcements = new FastSet<>(getDAO().getAnnouncements()).shared();
+		announcements = new FastSet<Announcement>(getDAO().getAnnouncements()).shared();
 
 		for (final Announcement announce : announcements) {
 			delays.add(ThreadPoolManager.getInstance().scheduleAtFixedRate(new Runnable() {
@@ -94,33 +92,23 @@ public class AnnouncementService {
 					while (iter.hasNext()) {
 						Player player = iter.next();
 
-						if (announce.getFaction().equalsIgnoreCase("ALL")) {
-							if (announce.getChatType() == ChatType.SHOUT
-									|| announce.getChatType() == ChatType.GROUP_LEADER) {
-								PacketSendUtility.sendPacket(player, new SM_MESSAGE(1, "Aion Phenix",
-										announce.getAnnounce(), announce.getChatType()));
-							} else {
-								PacketSendUtility.sendPacket(player, new SM_MESSAGE(1, "Announcement",
-										"Info :" + announce.getAnnounce(), announce.getChatType()));
-							}
-						} else if (announce.getFactionEnum() == player.getRace()) {
-							if (announce.getChatType() == ChatType.SHOUT
-									|| announce.getChatType() == ChatType.GROUP_LEADER) {
-								PacketSendUtility.sendPacket(player,
-										new SM_MESSAGE(1,
-												(announce.getFaction().equalsIgnoreCase("ELYOS") ? "Elyos" : "Asmodian")
-														+ " Info",
-												announce.getAnnounce(), announce.getChatType()));
-							} else {
-								PacketSendUtility.sendPacket(player,
-										new SM_MESSAGE(1,
-												(announce.getFaction().equalsIgnoreCase("ELYOS") ? "Elyos" : "Asmodian")
-														+ " Info",
-												(announce.getFaction().equalsIgnoreCase("ELYOS") ? "Elyos" : "Asmodian")
-														+ " Info : " + announce.getAnnounce(),
-												announce.getChatType()));
-							}
-						}
+						if (announce.getFaction().equalsIgnoreCase("ALL"))
+							if (announce.getChatType() == ChatType.SHOUT || announce.getChatType() == ChatType.GROUP_LEADER)
+								PacketSendUtility.sendPacket(player, new SM_MESSAGE(1, "Aion Phenix", announce.getAnnounce(),
+									announce.getChatType()));
+							else
+								PacketSendUtility.sendPacket(player, new SM_MESSAGE(1, "Announcement", "Info :"
+									+ announce.getAnnounce(), announce.getChatType()));
+						else if (announce.getFactionEnum() == player.getRace())
+							if (announce.getChatType() == ChatType.SHOUT || announce.getChatType() == ChatType.GROUP_LEADER)
+								PacketSendUtility.sendPacket(player, new SM_MESSAGE(1,
+									(announce.getFaction().equalsIgnoreCase("ELYOS") ? "Elyos" : "Asmodian") + " Info",
+									announce.getAnnounce(), announce.getChatType()));
+							else
+								PacketSendUtility.sendPacket(player, new SM_MESSAGE(1,
+									(announce.getFaction().equalsIgnoreCase("ELYOS") ? "Elyos" : "Asmodian") + " Info",
+									(announce.getFaction().equalsIgnoreCase("ELYOS") ? "Elyos" : "Asmodian") + " Info : "
+										+ announce.getAnnounce(), announce.getChatType()));
 					}
 				}
 			}, announce.getDelay() * 1000, announce.getDelay() * 1000));
@@ -143,14 +131,13 @@ public class AnnouncementService {
 
 	/**
 	 * Retuns {@link com.aionemu.loginserver.dao.AnnouncementDAO} , just a shortcut
-	 *
+	 * 
 	 * @return {@link com.aionemu.loginserver.dao.AnnouncementDAO}
 	 */
 	private AnnouncementsDAO getDAO() {
 		return DAOManager.getDAO(AnnouncementsDAO.class);
 	}
 
-	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder {
 
 		protected static final AnnouncementService instance = new AnnouncementService();

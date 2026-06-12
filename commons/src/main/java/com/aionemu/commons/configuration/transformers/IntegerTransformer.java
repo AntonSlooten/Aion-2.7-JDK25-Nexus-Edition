@@ -23,7 +23,7 @@ import com.aionemu.commons.configuration.TransformationException;
 
 /**
  * Transfomrs string to integer. Integer can be represented both as decimal or hex value.
- *
+ * 
  * @author SoulKeeper
  */
 public class IntegerTransformer implements PropertyTransformer<Integer> {
@@ -35,17 +35,21 @@ public class IntegerTransformer implements PropertyTransformer<Integer> {
 
 	/**
 	 * Transforms value to integer
-	 *
-	 * @param value value that will be transformed
-	 * @param field value will be assigned to this field
+	 * 
+	 * @param value
+	 *          value that will be transformed
+	 * @param field
+	 *          value will be assigned to this field
 	 * @return Integer object that represents value
-	 * @throws TransformationException if something went wrong
+	 * @throws TransformationException
+	 *           if something went wrong
 	 */
 	@Override
 	public Integer transform(String value, Field field) throws TransformationException {
 		try {
 			return Integer.decode(value);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new TransformationException(e);
 		}
 	}

@@ -81,73 +81,73 @@ public class _3930SecretoftheShatteredStigma extends QuestHandler {
 
 			switch (targetId) {
 
-			// Xenophon
-			case 203833:
-				if (var == 0) {
-					switch (env.getDialog()) {
-					// Get HACTION_QUEST_SELECT in the eddit-HyperLinks.xml
-					case START_DIALOG:
-						// Send select1 to eddit-HtmlPages.xml
-						return sendQuestDialog(env, 1011);
-					// Get HACTION_SETPRO1 in the eddit-HyperLinks.xml
-					case STEP_TO_1:
-						qs.setQuestVar(1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+				// Xenophon
+				case 203833:
+					if (var == 0) {
+						switch (env.getDialog()) {
+							// Get HACTION_QUEST_SELECT in the eddit-HyperLinks.xml
+							case START_DIALOG:
+								// Send select1 to eddit-HtmlPages.xml
+								return sendQuestDialog(env, 1011);
+								// Get HACTION_SETPRO1 in the eddit-HyperLinks.xml
+							case STEP_TO_1:
+								qs.setQuestVar(1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+						}
+					}
+					// 2 / 4- Talk with Koruchinerk
+				case 798321:
+					if (var == 1) {
+						switch (env.getDialog()) {
+							// Get HACTION_QUEST_SELECT in the eddit-HyperLinks.xml
+							case START_DIALOG:
+								// Send select1 to eddit-HtmlPages.xml
+								return sendQuestDialog(env, 1352);
+								// Get HACTION_SETPRO1 in the eddit-HyperLinks.xml
+							case STEP_TO_2:
+								qs.setQuestVar(2);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+						}
+					}
+					else if (var == 2) {
+						switch (env.getDialog()) {
+							// Get HACTION_QUEST_SELECT in the eddit-HyperLinks.xml
+							case START_DIALOG:
+								// Send select1 to eddit-HtmlPages.xml
+								return sendQuestDialog(env, 1693);
+								// Get HACTION_SETPRO1 in the eddit-HyperLinks.xml
+							case CHECK_COLLECTED_ITEMS:
+								if (player.getInventory().getItemCountByItemId(182206075) < 1) {
+									// player doesn't own required item
+									return sendQuestDialog(env, 10001);
+								}
+								removeQuestItem(env, 182206075, 1);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 10000);
+						}
+
+					}
+					return false;
+				case 700562:
+					if (var == 2) {
+						ThreadPoolManager.getInstance().schedule(new Runnable() {
+
+							@Override
+							public void run() {
+								updateQuestStatus(env);
+							}
+						}, 3000);
 						return true;
 					}
-				}
-				// 2 / 4- Talk with Koruchinerk
-			case 798321:
-				if (var == 1) {
-					switch (env.getDialog()) {
-					// Get HACTION_QUEST_SELECT in the eddit-HyperLinks.xml
-					case START_DIALOG:
-						// Send select1 to eddit-HtmlPages.xml
-						return sendQuestDialog(env, 1352);
-					// Get HACTION_SETPRO1 in the eddit-HyperLinks.xml
-					case STEP_TO_2:
-						qs.setQuestVar(2);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-				} else if (var == 2) {
-					switch (env.getDialog()) {
-					// Get HACTION_QUEST_SELECT in the eddit-HyperLinks.xml
-					case START_DIALOG:
-						// Send select1 to eddit-HtmlPages.xml
-						return sendQuestDialog(env, 1693);
-					// Get HACTION_SETPRO1 in the eddit-HyperLinks.xml
-					case CHECK_COLLECTED_ITEMS:
-						if (player.getInventory().getItemCountByItemId(182206075) < 1) {
-							// player doesn't own required item
-							return sendQuestDialog(env, 10001);
-						}
-						removeQuestItem(env, 182206075, 1);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 10000);
-					}
-
-				}
-				return false;
-			case 700562:
-				if (var == 2) {
-					ThreadPoolManager.getInstance().schedule(new Runnable() {
-
-						@Override
-						public void run() {
-							updateQuestStatus(env);
-						}
-					}, 3000);
-					return true;
-				}
-				break;
+					break;
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203711)// Miriya
 			{
 				if (env.getDialog() == QuestDialog.USE_OBJECT)

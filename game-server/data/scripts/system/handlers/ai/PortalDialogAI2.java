@@ -57,7 +57,8 @@ public class PortalDialogAI2 extends NpcAI2 {
 				if (qs != null && (qs.getStatus() == QuestStatus.START || qs.getStatus() == QuestStatus.REWARD)) {
 					playerHasQuest = true;
 					break;
-				} else if (qs == null || qs.getStatus() == QuestStatus.NONE || qs.canRepeat()) {
+				}
+				else if (qs == null || qs.getStatus() == QuestStatus.NONE || qs.canRepeat()) {
 					if (QuestService.checkStartConditions(new QuestEnv(getOwner(), player, questId, 0))) {
 						playerCanStartQuest = true;
 						break;
@@ -79,9 +80,11 @@ public class PortalDialogAI2 extends NpcAI2 {
 			if (!isRewardStep) { // normal dialog
 				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), questDialogId));
 			}
-		} else if (playerCanStartQuest) { // start quest dialog
+		}
+		else if (playerCanStartQuest) { // start quest dialog
 			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), startingDialogId));
-		} else { // show teleportation dialog
+		}
+		else { // show teleportation dialog
 			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), teleportationDialogId));
 		}
 	}

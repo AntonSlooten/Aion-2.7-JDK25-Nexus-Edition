@@ -38,7 +38,7 @@ public class CAPTCHAUtil {
 
 	/**
 	 * create CAPTCHA
-	 *
+	 * 
 	 * @param word
 	 * @return byte[]
 	 */
@@ -53,8 +53,9 @@ public class CAPTCHAUtil {
 
 	/**
 	 * CAPTCHA image create
-	 *
-	 * @param word text word
+	 * 
+	 * @param word
+	 *          text word
 	 * @return BufferedImage
 	 */
 	private static BufferedImage createImage(String word) {
@@ -87,7 +88,8 @@ public class CAPTCHAUtil {
 
 			// resource dispose
 			g2.dispose();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			bImg = null;
 		}

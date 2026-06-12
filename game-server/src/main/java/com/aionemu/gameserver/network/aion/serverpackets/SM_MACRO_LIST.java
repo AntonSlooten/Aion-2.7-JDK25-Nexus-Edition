@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -24,11 +24,11 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * Packet with macro list.
- *
+ * 
  * @author -Nemesiss-
  */
 public class SM_MACRO_LIST extends AionServerPacket {
-
+	
 	private Player player;
 
 	/**
@@ -40,24 +40,28 @@ public class SM_MACRO_LIST extends AionServerPacket {
 
 	/**
 	 * {@inheritDoc}
-	 *
-	 * writeD player id writeC secondPart writeH size writeC Key writeS Value
+	 * 
+	 * writeD player id
+	 * writeC secondPart
+	 * writeH size
+	 * writeC Key
+	 * writeS Value
 	 */
-
+	
 	@Override
 	protected void writeImpl(AionConnection con) {
 		writeD(player.getObjectId());// player id
-		writeC(0x01);// unk; may be was used to split macro list if getMacroList().getSize() > 7
+        writeC(0x01);// unk; may be was used to split macro list if getMacroList().getSize() > 7
 
-		final int size = player.getMacroList().getSize();
+        final int size = player.getMacroList().getSize();
 
-		writeH(-size);// (-)count
+        writeH(-size);// (-)count
 
-		if (size > 0) {
-			for (Map.Entry<Integer, String> entry : player.getMacroList().entrySet()) {
-				writeC(entry.getKey());// order
-				writeS(entry.getValue());// xml
-			}
-		}
+        if (size > 0) {
+            for (Map.Entry<Integer, String> entry : player.getMacroList().entrySet()) {
+                writeC(entry.getKey());// order
+                writeS(entry.getValue());// xml
+            }
+        }
 	}
 }

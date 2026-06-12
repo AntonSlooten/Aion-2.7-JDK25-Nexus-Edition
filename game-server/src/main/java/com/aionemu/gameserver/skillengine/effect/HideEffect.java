@@ -42,9 +42,8 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 @XmlType(name = "HideEffect")
 public class HideEffect extends BufEffect {
 
-	// TODO! value should be enum already (@XmlEnum) - having int here is just
-	// stupid
-	// TODO calc probability
+	//TODO! value should be enum already (@XmlEnum) - having int here is just stupid 
+	//TODO calc probability
 	@XmlAttribute(name = "bufcount")
 	protected int buffCount;
 
@@ -63,35 +62,35 @@ public class HideEffect extends BufEffect {
 		CreatureVisualState visualState;
 
 		switch (value) {
-		case 1:
-			visualState = CreatureVisualState.HIDE1;
-			break;
-		case 2:
-			visualState = CreatureVisualState.HIDE2;
-			break;
-		case 3:
-			visualState = CreatureVisualState.HIDE3;
-			break;
-		case 5:
-			visualState = CreatureVisualState.HIDE5;
-			break;
-		case 10:
-			visualState = CreatureVisualState.HIDE10;
-			break;
-		case 13:
-			visualState = CreatureVisualState.HIDE13;
-			break;
-		case 20:
-			visualState = CreatureVisualState.HIDE20;
-			break;
-		default:
-			visualState = CreatureVisualState.VISIBLE;
-			break;
+			case 1:
+				visualState = CreatureVisualState.HIDE1;
+				break;
+			case 2:
+				visualState = CreatureVisualState.HIDE2;
+				break;
+			case 3:
+				visualState = CreatureVisualState.HIDE3;
+				break;
+			case 5:
+				visualState = CreatureVisualState.HIDE5;
+				break;
+			case 10:
+				visualState = CreatureVisualState.HIDE10;
+				break;
+			case 13:
+				visualState = CreatureVisualState.HIDE13;
+				break;
+			case 20:
+				visualState = CreatureVisualState.HIDE20;
+				break;
+			default:
+				visualState = CreatureVisualState.VISIBLE;
+				break;
 		}
 		effected.unsetVisualState(visualState);
 		ActionObserver observer = effect.getActionObserver(position);
 		effect.getEffected().getObserveController().removeObserver(observer);
-
+		
 		PacketSendUtility.broadcastPacketAndReceive(effected, new SM_PLAYER_STATE(effected));
 	}
 
@@ -108,30 +107,30 @@ public class HideEffect extends BufEffect {
 		AttackUtil.deselectTargettingMe(effected);
 
 		switch (value) {
-		case 1:
-			visualState = CreatureVisualState.HIDE1;
-			break;
-		case 2:
-			visualState = CreatureVisualState.HIDE2;
-			break;
-		case 3:
-			visualState = CreatureVisualState.HIDE3;
-			break;
-		case 5:
-			visualState = CreatureVisualState.HIDE5;
-			break;
-		case 10:
-			visualState = CreatureVisualState.HIDE10;
-			break;
-		case 13:
-			visualState = CreatureVisualState.HIDE13;
-			break;
-		case 20:
-			visualState = CreatureVisualState.HIDE20;
-			break;
-		default:
-			visualState = CreatureVisualState.VISIBLE;
-			break;
+			case 1:
+				visualState = CreatureVisualState.HIDE1;
+				break;
+			case 2:
+				visualState = CreatureVisualState.HIDE2;
+				break;
+			case 3:
+				visualState = CreatureVisualState.HIDE3;
+				break;
+			case 5:
+				visualState = CreatureVisualState.HIDE5;
+				break;
+			case 10:
+				visualState = CreatureVisualState.HIDE10;
+				break;
+			case 13:
+				visualState = CreatureVisualState.HIDE13;
+				break;
+			case 20:
+				visualState = CreatureVisualState.HIDE20;
+				break;
+			default:
+				visualState = CreatureVisualState.VISIBLE;
+				break;
 		}
 		effected.setVisualState(visualState);
 
@@ -145,10 +144,9 @@ public class HideEffect extends BufEffect {
 			@Override
 			public void skilluse(Skill skill) {
 				// [2.5] Allow self buffs = (buffCount - 1)
-				if (skill.isSelfBuff() && bufNumber++ < buffCount) {
+				if (skill.isSelfBuff() && bufNumber++ < buffCount)
 					return;
-				}
-
+				
 				effect.endEffect();
 			}
 		};
@@ -167,8 +165,9 @@ public class HideEffect extends BufEffect {
 			}
 		});
 		/**
-		 * for player adding: Remove Hide when using any item action Remove hide when
-		 * requesting dialog to any npc
+		 * for player adding:
+		 * Remove Hide when using any item action
+		 * Remove hide when requesting dialog to any npc
 		 */
 		if (effected instanceof Player) {
 			effected.getObserveController().attach(new ActionObserver(ObserverType.ITEMUSE) {

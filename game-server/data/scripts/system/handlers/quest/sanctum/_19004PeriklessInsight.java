@@ -24,8 +24,7 @@ import com.aionemu.gameserver.questEngine.model.QuestState;
 import com.aionemu.gameserver.questEngine.model.QuestStatus;
 
 /**
- * Starts Perikles (203757). Talk with Jucleas (203752). Talk with Lavirintos
- * (203701). Talk with Mysteris (798500).
+ * Starts Perikles (203757). Talk with Jucleas (203752). Talk with Lavirintos (203701). Talk with Mysteris (798500).
  * 
  * @author Rolandas
  * @reworked vlog
@@ -58,48 +57,53 @@ public class _19004PeriklessInsight extends QuestHandler {
 			if (targetId == 203757) { // Perikles
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			if (targetId == 203752) { // Jucleas
 				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1352);
+					case START_DIALOG: {
+						if (var == 0) {
+							return sendQuestDialog(env, 1352);
+						}
 					}
-				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-			} else if (targetId == 203701) { // Lavirintos
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1693);
+					case STEP_TO_1: {
+						return defaultCloseDialog(env, 0, 1); // 1
 					}
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				}
-			} else if (targetId == 798500) { // Mysteris
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 2) {
-						return sendQuestDialog(env, 2375);
-					}
-				}
-				case SELECT_REWARD: {
-					changeQuestStep(env, 2, 2, true); // reward
-					return sendQuestDialog(env, 5);
-				}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+			else if (targetId == 203701) { // Lavirintos
+				switch (dialog) {
+					case START_DIALOG: {
+						if (var == 1) {
+							return sendQuestDialog(env, 1693);
+						}
+					}
+					case STEP_TO_2: {
+						return defaultCloseDialog(env, 1, 2); // 2
+					}
+				}
+			}
+			else if (targetId == 798500) { // Mysteris
+				switch (dialog) {
+					case START_DIALOG: {
+						if (var == 2) {
+							return sendQuestDialog(env, 2375);
+						}
+					}
+					case SELECT_REWARD: {
+						changeQuestStep(env, 2, 2, true); // reward
+						return sendQuestDialog(env, 5);
+					}
+				}
+			}
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798500) { // Mysteris
 				return sendQuestEndDialog(env);
 			}

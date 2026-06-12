@@ -44,7 +44,7 @@ public class InstanceEngine implements GameEngine {
 	public static final File INSTANCE_DESCRIPTOR_FILE = new File("./data/scripts/system/instancehandlers.xml");
 	public static final InstanceHandler DUMMY_INSTANCE_HANDLER = new GeneralInstanceHandler();
 
-	private Map<Integer, Class<? extends InstanceHandler>> handlers = new HashMap<>();
+	private Map<Integer, Class<? extends InstanceHandler>> handlers = new HashMap<Integer, Class<? extends InstanceHandler>>();
 
 	@Override
 	public void load() {
@@ -59,7 +59,8 @@ public class InstanceEngine implements GameEngine {
 
 		try {
 			scriptManager.load(INSTANCE_DESCRIPTOR_FILE);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new GameServerError("Can't initialize instance handlers.", e);
 		}
 		log.info("Loaded " + handlers.size() + " instance handlers.");
@@ -79,8 +80,10 @@ public class InstanceEngine implements GameEngine {
 		InstanceHandler instanceHandler = null;
 		if (instanceClass != null) {
 			try {
+				// PERBAIKAN: Java 9+ getDeclaredConstructor().newInstance()
 				instanceHandler = instanceClass.getDeclaredConstructor().newInstance();
-			} catch (Exception ex) {
+			}
+			catch (Exception ex) {
 				log.warn("Can't instantiate instance handler " + worldId, ex);
 			}
 		}

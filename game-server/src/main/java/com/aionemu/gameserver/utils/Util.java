@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -27,13 +27,28 @@ public class Util {
 	 * @param s
 	 */
 	public static void printSection(String s) {
-		s = "[ " + s + " ]";
+		if (!s.isEmpty())
+			s = "[ " + s + " ]";
 
 		while (s.length() < 79) {
 			s = "=" + s + "=";
 		}
 
+		System.out.println("");
 		System.out.println(s);
+		System.out.println("");
+	}
+
+	public static void printSsSection(String s) {
+		s = "( " + s + " )";
+
+		while (s.length() < 79) {
+			s = "-" + s + "-";
+		}
+
+		System.out.println("");
+		System.out.println(s);
+		System.out.println("");
 	}
 
 	public static void printProgressBarHeader(int size) {
@@ -54,9 +69,15 @@ public class Util {
 		System.out.print(" Done. \n");
 	}
 
+	public static void printRotatingBarHeader(int dataSize) {
+		String anim = "|/-\\";
+		System.out.print("\r" + anim.charAt(Math.round(dataSize / 50) % anim.length()) + " Processing data : " + dataSize + " data" + (dataSize <= 1 ? "." : "s.                 "));
+		System.out.print("\r");
+	}
+
 	/**
 	 * Convert data from given ByteBuffer to hex
-	 *
+	 * 
 	 * @param data
 	 * @return hex
 	 */
@@ -65,9 +86,8 @@ public class Util {
 		int counter = 0;
 		int b;
 		while (data.hasRemaining()) {
-			if (counter % 16 == 0) {
+			if (counter % 16 == 0)
 				result.append(String.format("%04X: ", counter));
-			}
 
 			b = data.get() & 0xff;
 			result.append(String.format("%02X ", b));
@@ -90,14 +110,35 @@ public class Util {
 	}
 
 	/**
-	 * Gets last <tt>cnt</tt> read bytes from the <tt>data</tt> buffer and puts into
-	 * <tt>result</tt> buffer in special format:
+	 * Convert data from given ByteBuffer to hex
+	 *
+	 * @param data
+	 * @return hex
+	 */
+	public static String toHexStream(ByteBuffer data) {
+		StringBuilder result = new StringBuilder();
+		int counter = 0;
+		int b;
+		while (data.hasRemaining()) {
+			b = data.get() & 0xff;
+			result.append(String.format("%02X ", b));
+
+			counter++;
+			if (counter % 16 == 0) {
+				result.append("\n");
+			}
+		}
+		return result.toString();
+	}
+
+	/**
+	 * Gets last <tt>cnt</tt> read bytes from the <tt>data</tt> buffer and puts into <tt>result</tt> buffer in special format:
 	 * <ul>
-	 * <li>if byte represents char from partition 0x1F to 0x80 (which are normal
-	 * ascii chars) then it's put into buffer as it is</li>
+	 * <li>if byte represents char from partition 0x1F to 0x80 (which are normal ascii chars) then it's put into buffer as
+	 * it is</li>
 	 * <li>otherwise dot is put into buffer</li>
 	 * </ul>
-	 *
+	 * 
 	 * @param data
 	 * @param result
 	 * @param cnt
@@ -106,25 +147,23 @@ public class Util {
 		int charPos = data.position() - cnt;
 		for (int a = 0; a < cnt; a++) {
 			int c = data.get(charPos++);
-			if (c > 0x1f && c < 0x80) {
+			if (c > 0x1f && c < 0x80)
 				result.append((char) c);
-			} else {
+			else
 				result.append('.');
-			}
 		}
 	}
 
 	/**
 	 * Converts name to valid pattern For example : "atracer" -> "Atracer"
-	 *
+	 * 
 	 * @param name
 	 * @return String
 	 */
 	public static String convertName(String name) {
-		if (!name.isEmpty()) {
+		if (!name.isEmpty())
 			return name.substring(0, 1).toUpperCase() + name.toLowerCase().substring(1);
-		} else {
+		else
 			return "";
-		}
 	}
 }

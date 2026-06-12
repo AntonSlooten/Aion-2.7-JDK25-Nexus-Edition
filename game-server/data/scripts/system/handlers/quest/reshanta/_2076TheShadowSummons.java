@@ -29,12 +29,10 @@ import com.aionemu.gameserver.world.WorldMapInstance;
 import com.aionemu.gameserver.world.zone.ZoneName;
 
 /**
- * Go to Brusthonin and meet Phyper (798300). See if the prophecy of Phyper is
- * realized (go out from Brusthonin). A summons has arrived! Go to Khrudgelmir
- * (204253). Talk with the Arena Master, Garm (204089). Enter Underground Arena
- * Entrance (700368) and find a Shadow Judge (700963). Find Underground Arena
- * Exit (730067) and escape from the Shadow Court Dungeon. Talk with
- * Khrudgelmir. Go to Ishalgen and talk with Munin (203550).
+ * Go to Brusthonin and meet Phyper (798300). See if the prophecy of Phyper is realized (go out from Brusthonin). A
+ * summons has arrived! Go to Khrudgelmir (204253). Talk with the Arena Master, Garm (204089). Enter Underground Arena
+ * Entrance (700368) and find a Shadow Judge (700963). Find Underground Arena Exit (730067) and escape from the Shadow
+ * Court Dungeon. Talk with Khrudgelmir. Go to Ishalgen and talk with Munin (203550).
  * 
  * @author vlog
  */
@@ -82,60 +80,62 @@ public class _2076TheShadowSummons extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798300: { // Phyper
-				if (dialog == QuestDialog.START_DIALOG && var == 0) {
-					return sendQuestDialog(env, 1011);
+				case 798300: { // Phyper
+					if (dialog == QuestDialog.START_DIALOG && var == 0) {
+						return sendQuestDialog(env, 1011);
+					}
+					if (dialog == QuestDialog.STEP_TO_1) {
+						return defaultCloseDialog(env, 0, 1); // 1
+					}
+					break;
 				}
-				if (dialog == QuestDialog.STEP_TO_1) {
-					return defaultCloseDialog(env, 0, 1); // 1
+				case 204253: { // Khrudgelmir
+					if (dialog == QuestDialog.START_DIALOG && var == 2) {
+						return sendQuestDialog(env, 1693);
+					}
+					if (dialog == QuestDialog.START_DIALOG && var == 6) {
+						return sendQuestDialog(env, 3057);
+					}
+					if (dialog == QuestDialog.STEP_TO_3) {
+						removeQuestItem(env, 182205502, 1);
+						return defaultCloseDialog(env, 2, 3); // 3
+					}
+					if (dialog == QuestDialog.SET_REWARD) {
+						return defaultCloseDialog(env, 6, 6, true, false); // reward
+					}
+					break;
 				}
-				break;
-			}
-			case 204253: { // Khrudgelmir
-				if (dialog == QuestDialog.START_DIALOG && var == 2) {
-					return sendQuestDialog(env, 1693);
+				case 700369: { // Underground Arena Exit
+					if (dialog == QuestDialog.USE_OBJECT && var == 5) {
+						TeleportService.teleportTo(player, 120010000, 981.6009f, 1552.97f, 210.46f, 0);
+						changeQuestStep(env, 5, 6, false); // 6
+						return true;
+					}
+					break;
 				}
-				if (dialog == QuestDialog.START_DIALOG && var == 6) {
-					return sendQuestDialog(env, 3057);
-				}
-				if (dialog == QuestDialog.STEP_TO_3) {
-					removeQuestItem(env, 182205502, 1);
-					return defaultCloseDialog(env, 2, 3); // 3
-				}
-				if (dialog == QuestDialog.SET_REWARD) {
-					return defaultCloseDialog(env, 6, 6, true, false); // reward
-				}
-				break;
-			}
-			case 700369: { // Underground Arena Exit
-				if (dialog == QuestDialog.USE_OBJECT && var == 5) {
-					TeleportService.teleportTo(player, 120010000, 981.6009f, 1552.97f, 210.46f, 0);
-					changeQuestStep(env, 5, 6, false); // 6
-					return true;
-				}
-				break;
-			}
-			case 204089: { // Garm
-				if (dialog == QuestDialog.START_DIALOG && var == 3) {
-					return sendQuestDialog(env, 2034);
-				}
-				if (dialog == QuestDialog.STEP_TO_4) {
-					WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(320120000);
-					InstanceService.registerPlayerWithInstance(newInstance, player);
-					TeleportService.teleportTo(player, 320120000, newInstance.getInstanceId(), 591.47894f, 420.20865f,
+				case 204089: { // Garm
+					if (dialog == QuestDialog.START_DIALOG && var == 3) {
+						return sendQuestDialog(env, 2034);
+					}
+					if (dialog == QuestDialog.STEP_TO_4) {
+						WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(320120000);
+						InstanceService.registerPlayerWithInstance(newInstance, player);
+						TeleportService.teleportTo(player, 320120000, newInstance.getInstanceId(), 591.47894f, 420.20865f,
 							202.97754f, 3000, true);
-					playQuestMovie(env, 423);
-					changeQuestStep(env, 3, 5, false); // 5
-					return closeDialogWindow(env);
+						playQuestMovie(env, 423);
+						changeQuestStep(env, 3, 5, false); // 5
+						return closeDialogWindow(env);
+					}
+					break;
 				}
-				break;
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203550) { // Munin
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

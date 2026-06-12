@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -29,9 +29,8 @@ import com.aionemu.gameserver.network.loginserver.serverpackets.SM_GS_AUTH;
 import com.aionemu.gameserver.utils.ThreadPoolManager;
 
 /**
- * This packet is response for SM_GS_AUTH its notify Gameserver if registration
- * was ok or what was wrong.
- *
+ * This packet is response for SM_GS_AUTH its notify Gameserver if registration was ok or what was wrong.
+ * 
  * @author -Nemesiss-
  */
 public class CM_GS_AUTH_RESPONSE extends LsClientPacket {
@@ -49,7 +48,7 @@ public class CM_GS_AUTH_RESPONSE extends LsClientPacket {
 	 * Response: 0=Authed,1=NotAuthed,2=AlreadyRegistered
 	 */
 	private int response;
-
+	
 	private byte serverCount;
 
 	/**
@@ -58,9 +57,8 @@ public class CM_GS_AUTH_RESPONSE extends LsClientPacket {
 	@Override
 	public void readImpl() {
 		response = readC();
-		if (response == 0) {
-			serverCount = (byte) readC();
-		}
+		if(response == 0)
+			serverCount = (byte)readC();
 	}
 
 	/**

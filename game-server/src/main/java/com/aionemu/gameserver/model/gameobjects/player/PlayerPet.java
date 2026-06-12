@@ -43,7 +43,8 @@ public class PlayerPet {
 	}
 
 	/**
-	 * @param databaseIndex the databaseIndex to set
+	 * @param databaseIndex
+	 *          the databaseIndex to set
 	 */
 	public void setDatabaseIndex(int databaseIndex) {
 		this.databaseIndex = databaseIndex;
@@ -57,7 +58,8 @@ public class PlayerPet {
 	}
 
 	/**
-	 * @param petId the petId to set
+	 * @param petId
+	 *          the petId to set
 	 */
 	public void setPetId(int petId) {
 		this.petId = petId;
@@ -71,7 +73,8 @@ public class PlayerPet {
 	}
 
 	/**
-	 * @param decoration the decoration to set
+	 * @param decoration
+	 *          the decoration to set
 	 */
 	public void setDecoration(int decoration) {
 		this.decoration = decoration;
@@ -85,7 +88,8 @@ public class PlayerPet {
 	}
 
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *          the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;

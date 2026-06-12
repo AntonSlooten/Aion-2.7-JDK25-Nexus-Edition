@@ -10,9 +10,9 @@ import ai.AggressiveNpcAI2;
  */
 @AIName("sorcererhakiki")
 public class SorcererHakiki extends AggressiveNpcAI2 {
-
+  
 	@Override
-	public int modifyDamage(int damage) {
+	public int modifyDamage(int damage)	{
 		return 2;
 	}
 

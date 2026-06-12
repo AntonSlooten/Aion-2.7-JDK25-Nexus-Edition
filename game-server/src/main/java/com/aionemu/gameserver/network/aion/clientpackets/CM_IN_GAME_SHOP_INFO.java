@@ -56,28 +56,26 @@ public class CM_IN_GAME_SHOP_INFO extends AionClientPacket {
 			Player player = getConnection().getActivePlayer();
 
 			switch (actionId) {
-			case 0x01:
-				PacketSendUtility.sendPacket(player, new SM_IN_GAME_SHOP_ITEM(player, categoryId));
-				break;
-			case 0x08:// showcat
-				if (categoryId > 1) {
-					player.setNrCategoryInGameShop(categoryId);
-				}
+				case 0x01:
+					PacketSendUtility.sendPacket(player, new SM_IN_GAME_SHOP_ITEM(player, categoryId));
+					break;
+				case 0x08://showcat
+					if (categoryId > 1)
+						player.setNrCategoryInGameShop(categoryId);
 
-				PacketSendUtility.sendPacket(player, new SM_IN_GAME_SHOP_LIST(player, listInCategory, 1));
-				PacketSendUtility.sendPacket(player, new SM_IN_GAME_SHOP_LIST(player, listInCategory, 0));
-				break;
-			case 0x10:
-				PacketSendUtility.sendPacket(player, new SM_IN_GAME_SHOP_CATEGORY_LIST());
-				PacketSendUtility.sendPacket(player,
-						new SM_TOLL_INFO(player.getClientConnection().getAccount().getToll()));
-				break;
-			case 0x20: // buy
-				InGameShopEn.getInstance().acceptRequest(player, categoryId);
-				break;
-			case 0x40: // gift
-				InGameShopEn.getInstance().sendRequest(player, senderName, senderMessage, categoryId);
-				break;
+					PacketSendUtility.sendPacket(player, new SM_IN_GAME_SHOP_LIST(player, listInCategory, 1));
+					PacketSendUtility.sendPacket(player, new SM_IN_GAME_SHOP_LIST(player, listInCategory, 0));
+					break;
+				case 0x10:
+					PacketSendUtility.sendPacket(player, new SM_IN_GAME_SHOP_CATEGORY_LIST());
+					PacketSendUtility.sendPacket(player, new SM_TOLL_INFO(player.getClientConnection().getAccount().getToll()));
+					break;
+				case 0x20: //buy
+					InGameShopEn.getInstance().acceptRequest(player, categoryId);
+					break;
+				case 0x40: //gift
+					InGameShopEn.getInstance().sendRequest(player, senderName, senderMessage, categoryId);
+					break;
 			}
 		}
 	}

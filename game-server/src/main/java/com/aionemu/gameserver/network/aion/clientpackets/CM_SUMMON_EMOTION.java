@@ -57,29 +57,28 @@ public class CM_SUMMON_EMOTION extends AionClientPacket {
 		EmotionType emotionType = EmotionType.getEmotionTypeById(emotionTypeId);
 
 		// Unknown Summon Emotion Type
-		if (emotionType == EmotionType.UNK) {
+		if (emotionType == EmotionType.UNK)
 			log.error("Unknown emotion type? 0x" + Integer.toHexString(emotionTypeId).toUpperCase());
-		}
 
 		Summon summon = player.getSummon();
 		if (summon == null) {
-			log.warn("summon emotion without active summon on " + player.getName() + ".");
+			log.warn("summon emotion without active summon on "+player.getName()+".");
 			return;
 		}
 
 		switch (emotionType) {
-		case FLY:
-		case LAND:
-			PacketSendUtility.broadcastPacket(summon, new SM_EMOTION(summon, emotionType));
-			break;
-		case ATTACKMODE: // start attacking
-			summon.setState(CreatureState.WEAPON_EQUIPPED);
-			PacketSendUtility.broadcastPacket(summon, new SM_EMOTION(summon, emotionType));
-			break;
-		case NEUTRALMODE: // stop attacking
-			summon.unsetState(CreatureState.WEAPON_EQUIPPED);
-			PacketSendUtility.broadcastPacket(summon, new SM_EMOTION(summon, emotionType));
-			break;
+			case FLY:
+			case LAND:
+				PacketSendUtility.broadcastPacket(summon, new SM_EMOTION(summon, emotionType));
+				break;
+			case ATTACKMODE: // start attacking
+				summon.setState(CreatureState.WEAPON_EQUIPPED);
+				PacketSendUtility.broadcastPacket(summon, new SM_EMOTION(summon, emotionType));
+				break;
+			case NEUTRALMODE: // stop attacking
+				summon.unsetState(CreatureState.WEAPON_EQUIPPED);
+				PacketSendUtility.broadcastPacket(summon, new SM_EMOTION(summon, emotionType));
+				break;
 		}
 	}
 }

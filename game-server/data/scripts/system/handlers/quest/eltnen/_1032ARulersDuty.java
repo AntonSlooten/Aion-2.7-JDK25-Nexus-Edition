@@ -65,14 +65,14 @@ public class _1032ARulersDuty extends QuestHandler {
 		if (!player.isInsideZone(ZoneName.LF2_ITEMUSEAREA_Q1032))
 			return HandlerResult.UNKNOWN;
 		final QuestState qs = player.getQuestStateList().getQuestState(questId);
-		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0, 0), true);
+		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0,
+			0), true);
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
-				PacketSendUtility.broadcastPacket(player,
-						new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+				PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+					1, 0), true);
 				qs.setQuestVar(4);
 				updateQuestStatus(env);
 			}
@@ -109,10 +109,10 @@ public class _1032ARulersDuty extends QuestHandler {
 				else if (env.getDialog() == QuestDialog.STEP_TO_1) {
 					qs.setQuestVar(1);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 
@@ -121,7 +121,8 @@ public class _1032ARulersDuty extends QuestHandler {
 					return sendQuestDialog(env, 2716);
 				return sendQuestEndDialog(env);
 			}
-		} else if (targetId == 730020) // Demro
+		}
+		else if (targetId == 730020) // Demro
 		{
 			if (qs.getStatus() == QuestStatus.START && qs.getQuestVarById(0) == 1) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
@@ -129,10 +130,10 @@ public class _1032ARulersDuty extends QuestHandler {
 				else if (env.getDialog() == QuestDialog.STEP_TO_2) {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 
@@ -142,10 +143,10 @@ public class _1032ARulersDuty extends QuestHandler {
 				else if (env.getDialogId() == 10004) {
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -158,35 +159,36 @@ public class _1032ARulersDuty extends QuestHandler {
 				else if (env.getDialog() == QuestDialog.STEP_TO_3) {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 
 			else if (qs.getStatus() == QuestStatus.START && qs.getQuestVarById(0) == 4) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 2034);
-				else if (env.getDialog() == QuestDialog.STEP_TO_4) {
+				else if (env.getDialog() == QuestDialog.STEP_TO_4) 
+				{
 					removeQuestItem(env, 182201001, 1);
 					qs.setQuestVar(5);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
 
 		else if (qs.getStatus() == QuestStatus.START && qs.getQuestVarById(0) == 3) {
 			switch (targetId) {
-			case 700157: { // Seau kerubien
-				if (qs.getQuestVarById(0) == 3 && env.getDialog() == QuestDialog.USE_OBJECT) {
-					return true; // loot
+				case 700157: { // Seau kerubien
+					if (qs.getQuestVarById(0) == 3 && env.getDialog() == QuestDialog.USE_OBJECT) {
+						return true; // loot
+					}
 				}
-			}
 			}
 		}
 		return false;

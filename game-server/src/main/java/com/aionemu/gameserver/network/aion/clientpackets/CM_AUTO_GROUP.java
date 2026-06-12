@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  *
  *  aion-lightning is free software: you can redistribute it and/or modify
@@ -48,28 +48,28 @@ public class CM_AUTO_GROUP extends AionClientPacket {
 		Player player = getConnection().getActivePlayer();
 
 		switch (windowId) {
-		case 100:
-			EntryRequestType ert = EntryRequestType.getTypeById(entryRequestId);
-			if (ert == null) {
-				return;
-			}
-			AutoGroupService2.getInstance().startLooking(player, instanceMaskId, ert);
-			break;
-		case 101:
-			AutoGroupService2.getInstance().unregisterLooking(player, instanceMaskId);
-			break;
-		case 102:
-			AutoGroupService2.getInstance().enterToInstance(player, instanceMaskId);
-			break;
-		case 103:
-			AutoGroupService2.getInstance().cancelEnter(player, instanceMaskId);
-			break;
-		case 104:
-			DredgionService2.getInstance().showWindow(player, instanceMaskId);
-			break;
-		case 105:
-			// DredgionRegService.getInstance().failedEnterDredgion(player);
-			break;
+			case 100:
+				EntryRequestType ert = EntryRequestType.getTypeById(entryRequestId);
+				if (ert == null) {
+					return;
+				}
+				AutoGroupService2.getInstance().startLooking(player, instanceMaskId, ert);
+				break;
+			case 101:
+				AutoGroupService2.getInstance().unregisterLooking(player, instanceMaskId);
+				break;
+			case 102:
+				AutoGroupService2.getInstance().enterToInstance(player, instanceMaskId);
+				break;
+			case 103:
+				AutoGroupService2.getInstance().cancelEnter(player, instanceMaskId);
+				break;
+			case 104:
+				DredgionService2.getInstance().showWindow(player, instanceMaskId);
+				break;
+			case 105:
+				// DredgionRegService.getInstance().failedEnterDredgion(player);
+				break;
 		}
 	}
 }

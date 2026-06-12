@@ -83,8 +83,8 @@ public abstract class AbstractAI implements AI2 {
 	public void setScenario(AI2Scenario scenario) {
 		this.scenario = scenario;
 	}
-
-	public final void clearScenario() {
+	
+	public final void clearScenario(){
 		this.scenario = AI2Scenarios.NO_SCENARIO;
 	}
 
@@ -129,19 +129,19 @@ public abstract class AbstractAI implements AI2 {
 
 	boolean canHandleEvent(AIEventType eventType) {
 		switch (this.currentState) {
-		case DESPAWNED:
-			return StateEvents.DESPAWN_EVENTS.hasEvent(eventType);
-		case DIED:
-			return StateEvents.DEAD_EVENTS.hasEvent(eventType);
-		case CREATED:
-			return StateEvents.CREATED_EVENTS.hasEvent(eventType);
+			case DESPAWNED:
+				return StateEvents.DESPAWN_EVENTS.hasEvent(eventType);
+			case DIED:
+				return StateEvents.DEAD_EVENTS.hasEvent(eventType);
+			case CREATED:
+				return StateEvents.CREATED_EVENTS.hasEvent(eventType);
 		}
 		switch (eventType) {
-		case DIALOG_START:
-		case DIALOG_FINISH:
-		case CREATURE_ATTACKED:
-		case CREATURE_ATTACKING:
-			return isNonFightningState();
+			case DIALOG_START:
+			case DIALOG_FINISH:
+			case CREATURE_ATTACKED:
+			case CREATURE_ATTACKING:
+				return isNonFightningState();
 		}
 		return true;
 	}
@@ -208,7 +208,7 @@ public abstract class AbstractAI implements AI2 {
 
 	/**
 	 * Will be hidden for all AI's below NpcAI2
-	 *
+	 * 
 	 * @return
 	 */
 	public Creature getOwner() {
@@ -269,7 +269,7 @@ public abstract class AbstractAI implements AI2 {
 	protected abstract void handleMoveArrived();
 
 	protected abstract void handleAttackComplete();
-
+	
 	protected abstract void handleFinishAttack();
 
 	protected abstract void handleTargetReached();
@@ -315,54 +315,54 @@ public abstract class AbstractAI implements AI2 {
 		}
 		logEvent(event);
 		switch (event) {
-		case MOVE_VALIDATE:
-			handleMoveValidate();
-			break;
-		case MOVE_ARRIVED:
-			handleMoveArrived();
-			break;
-		case SPAWNED:
-			handleSpawned();
-			break;
-		case RESPAWNED:
-			handleRespawned();
-			break;
-		case DESPAWNED:
-			handleDespawned();
-			break;
-		case DIED:
-			handleDied();
-			break;
-		case ATTACK_COMPLETE:
-			handleAttackComplete();
-			break;
-		case ATTACK_FINISH:
-			handleFinishAttack();
-			break;
-		case TARGET_REACHED:
-			handleTargetReached();
-			break;
-		case TARGET_TOOFAR:
-			handleTargetTooFar();
-			break;
-		case TARGET_GIVEUP:
-			handleTargetGiveup();
-			break;
-		case NOT_AT_HOME:
-			handleNotAtHome();
-			break;
-		case BACK_HOME:
-			handleBackHome();
-			break;
-		case ACTIVATE:
-			handleActivate();
-			break;
-		case DEACTIVATE:
-			handleDeactivate();
-			break;
-		case DROP_REGISTERED:
-			handleDropRegistered();
-			break;
+			case MOVE_VALIDATE:
+				handleMoveValidate();
+				break;
+			case MOVE_ARRIVED:
+				handleMoveArrived();
+				break;
+			case SPAWNED:
+				handleSpawned();
+				break;
+			case RESPAWNED:
+				handleRespawned();
+				break;
+			case DESPAWNED:
+				handleDespawned();
+				break;
+			case DIED:
+				handleDied();
+				break;
+			case ATTACK_COMPLETE:
+				handleAttackComplete();
+				break;
+			case ATTACK_FINISH:
+				handleFinishAttack();
+				break;
+			case TARGET_REACHED:
+				handleTargetReached();
+				break;
+			case TARGET_TOOFAR:
+				handleTargetTooFar();
+				break;
+			case TARGET_GIVEUP:
+				handleTargetGiveup();
+				break;
+			case NOT_AT_HOME:
+				handleNotAtHome();
+				break;
+			case BACK_HOME:
+				handleBackHome();
+				break;
+			case ACTIVATE:
+				handleActivate();
+				break;
+			case DEACTIVATE:
+				handleDeactivate();
+				break;
+			case DROP_REGISTERED:
+				handleDropRegistered();
+				break;
 		}
 	}
 
@@ -384,50 +384,49 @@ public abstract class AbstractAI implements AI2 {
 
 	void handleCreatureEvent(AIEventType event, Creature creature) {
 		switch (event) {
-		case ATTACK:
-			if (DataManager.TRIBE_RELATIONS_DATA.isFriendlyRelation(getOwner().getTribe(), creature.getTribe())) {
-				return;
-			}
-			handleAttack(creature);
-			logEvent(event);
-			break;
-		case CREATURE_ATTACKED:
-			handleCreatureAttacked(creature);
-			logEvent(event);
-			break;
-		case CREATURE_ATTACKING:
-			handleCreatureAttacking(creature);
-			logEvent(event);
-			break;
-		case CREATURE_SEE:
-			handleCreatureSee(creature);
-			break;
-		case CREATURE_MOVED:
-			handleCreatureMoved(creature);
-			break;
-		case CREATURE_AGGRO:
-			handleCreatureAggro(creature);
-			logEvent(event);
-			break;
-		case TARGET_CHANGED:
-			handleTargetChanged(creature);
-			break;
-		case FOLLOW_ME:
-			handleFollowMe(creature);
-			logEvent(event);
-			break;
-		case STOP_FOLLOW_ME:
-			handleStopFollowMe(creature);
-			logEvent(event);
-			break;
-		case DIALOG_START:
-			handleDialogStart((Player) creature);
-			logEvent(event);
-			break;
-		case DIALOG_FINISH:
-			handleDialogFinish((Player) creature);
-			logEvent(event);
-			break;
+			case ATTACK:
+				if (DataManager.TRIBE_RELATIONS_DATA.isFriendlyRelation(getOwner().getTribe(), creature.getTribe()))
+					return;
+				handleAttack(creature);
+				logEvent(event);
+				break;
+			case CREATURE_ATTACKED:
+				handleCreatureAttacked(creature);
+				logEvent(event);
+				break;
+			case CREATURE_ATTACKING:
+				handleCreatureAttacking(creature);
+				logEvent(event);
+				break;
+			case CREATURE_SEE:
+				handleCreatureSee(creature);
+				break;
+			case CREATURE_MOVED:
+				handleCreatureMoved(creature);
+				break;
+			case CREATURE_AGGRO:
+				handleCreatureAggro(creature);
+				logEvent(event);
+				break;
+			case TARGET_CHANGED:
+				handleTargetChanged(creature);
+				break;
+			case FOLLOW_ME:
+				handleFollowMe(creature);
+				logEvent(event);
+				break;
+			case STOP_FOLLOW_ME:
+				handleStopFollowMe(creature);
+				logEvent(event);
+				break;
+			case DIALOG_START:
+				handleDialogStart((Player) creature);
+				logEvent(event);
+				break;
+			case DIALOG_FINISH:
+				handleDialogFinish((Player) creature);
+				logEvent(event);
+				break;
 		}
 	}
 
@@ -438,19 +437,19 @@ public abstract class AbstractAI implements AI2 {
 			return instanceAnswer.isPositive();
 		}
 		switch (question) {
-		case DESTINATION_REACHED:
-			return isDestinationReached();
-		case CAN_SPAWN_ON_DAYTIME_CHANGE:
-			return isCanSpawnOnDaytimeChange();
-		case CAN_SHOUT:
-			return isMayShout();
+			case DESTINATION_REACHED:
+				return isDestinationReached();
+			case CAN_SPAWN_ON_DAYTIME_CHANGE:
+				return isCanSpawnOnDaytimeChange();
+			case CAN_SHOUT:
+				return isMayShout();
 		}
 		return false;
 	}
 
 	/**
 	 * Poll concrete AI instance for the answer.
-	 *
+	 * 
 	 * @param question
 	 * @return null if there is no specific answer
 	 */
@@ -467,27 +466,28 @@ public abstract class AbstractAI implements AI2 {
 	protected boolean isDestinationReached() {
 		AIState state = currentState;
 		switch (state) {
-		case FEAR:
-			return MathUtil.isNearCoordinates(getOwner(), owner.getMoveController().getTargetX2(),
-					owner.getMoveController().getTargetY2(), owner.getMoveController().getTargetZ2(), 1);
-		case FIGHT:
-			return SimpleAttackManager.isTargetInAttackRange((Npc) owner);
-		case RETURNING:
-			SpawnTemplate spawn = getOwner().getSpawn();
-			Npc npc = (Npc) getOwner();
-			Point2D dest = null;
-			Point2D origin = new Point2D(spawn.getX(), spawn.getY());
-			if (npc.getWalkerGroup() != null) {
-				npc.getWalkerGroup().setStep(npc, 1);
-				dest = WalkerGroup.getLinePoint(new Point2D(npc.getX(), npc.getY()), origin, npc.getWalkerGroupShift());
-			} else {
-				dest = origin;
-			}
-			return MathUtil.isNearCoordinates(getOwner(), dest.getX(), dest.getY(), spawn.getZ(), 1);
-		case FOLLOWING:
-			return FollowEventHandler.isInRange(this, getOwner().getTarget());
-		case WALKING:
-			return currentSubState == AISubState.TALK || WalkManager.isArrivedAtPoint((NpcAI2) this);
+			case FEAR:
+				return MathUtil.isNearCoordinates(getOwner(), owner.getMoveController().getTargetX2(), owner
+					.getMoveController().getTargetY2(), owner.getMoveController().getTargetZ2(), 1);
+			case FIGHT:
+				return SimpleAttackManager.isTargetInAttackRange((Npc) owner);
+			case RETURNING:
+				SpawnTemplate spawn = getOwner().getSpawn();
+				Npc npc = (Npc) getOwner();
+				Point2D dest = null;
+				Point2D origin = new Point2D(spawn.getX(), spawn.getY());
+				if (npc.getWalkerGroup() != null) {
+					npc.getWalkerGroup().setStep(npc, 1);
+					dest = WalkerGroup.getLinePoint(new Point2D(npc.getX(), npc.getY()), origin, npc.getWalkerGroupShift());
+				}
+				else {
+					dest = origin;
+				}
+				return MathUtil.isNearCoordinates(getOwner(), dest.getX(), dest.getY(), spawn.getZ(), 1);
+			case FOLLOWING:
+				return FollowEventHandler.isInRange(this, getOwner().getTarget());
+			case WALKING:
+				return currentSubState == AISubState.TALK || WalkManager.isArrivedAtPoint((NpcAI2) this);
 		}
 		return true;
 	}
@@ -495,7 +495,7 @@ public abstract class AbstractAI implements AI2 {
 	protected boolean isCanSpawnOnDaytimeChange() {
 		return currentState == AIState.DESPAWNED || currentState == AIState.CREATED;
 	}
-
+	
 	public abstract boolean isMayShout();
 
 	public abstract AttackIntention chooseAttackIntention();
@@ -525,7 +525,7 @@ public abstract class AbstractAI implements AI2 {
 	}
 
 	private VisibleObject spawn(int worldId, int npcId, float x, float y, float z, byte heading, int staticId,
-			int instanceId) {
+		int instanceId) {
 		SpawnTemplate template = SpawnEngine.addNewSingleTimeSpawn(worldId, npcId, x, y, z, heading);
 		template.setStaticId(staticId);
 		return SpawnEngine.spawnObject(template, instanceId);
@@ -535,12 +535,13 @@ public abstract class AbstractAI implements AI2 {
 	public int modifyDamage(int damage) {
 		return damage;
 	}
-
+	
 	@Override
 	public AbstractAI getIa() {
 		return this;
 	}
 
+	
 	protected void attackPlayer(final Npc npc, final VisibleObject target) {
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
@@ -550,14 +551,13 @@ public abstract class AbstractAI implements AI2 {
 				((AbstractAI) npc.getAi2()).setStateIfNot(AIState.WALKING);
 				npc.setState(1);
 				npc.getMoveController().moveToTargetObject();
-				PacketSendUtility.broadcastPacket(npc,
-						new SM_EMOTION(npc, EmotionType.START_EMOTE2, 0, npc.getObjectId()));
+				PacketSendUtility.broadcastPacket(npc, new SM_EMOTION(npc, EmotionType.START_EMOTE2, 0, npc.getObjectId()));
 			}
 		}, 1000);
 	}
-
+	
 	@Override
 	public List<Player> getClosePlayer(int range) {
-		return new ArrayList<>();
+		return new ArrayList<Player>();
 	}
 }

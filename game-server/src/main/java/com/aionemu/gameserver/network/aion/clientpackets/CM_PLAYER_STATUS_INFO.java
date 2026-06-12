@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-unique.org>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ import com.aionemu.gameserver.network.aion.AionConnection.State;
 
 /**
  * Called when entering the world and during group management
- *
+ * 
  * @author Lyahim, ATracer, Simple, xTz
  */
 
@@ -54,14 +54,14 @@ public class CM_PLAYER_STATUS_INFO extends AionClientPacket {
 		Player activePlayer = getConnection().getActivePlayer();
 		TeamCommand command = TeamCommand.getCommand(commandCode);
 		switch (command) {
-		case GROUP_SET_LFG:
-			activePlayer.setLookingForGroup(playerObjId == 2);
-			break;
-		case ALLIANCE_CHANGE_GROUP:
-			PlayerAllianceService.changeMemberGroup(activePlayer, playerObjId, secondObjectId, allianceGroupId);
-			break;
-		default:
-			PlayerTeamCommandService.executeCommand(activePlayer, command, playerObjId);
+			case GROUP_SET_LFG:
+				activePlayer.setLookingForGroup(playerObjId == 2);
+				break;
+			case ALLIANCE_CHANGE_GROUP:
+				PlayerAllianceService.changeMemberGroup(activePlayer, playerObjId, secondObjectId, allianceGroupId);
+				break;
+			default:
+				PlayerTeamCommandService.executeCommand(activePlayer, command, playerObjId);
 		}
 	}
 }

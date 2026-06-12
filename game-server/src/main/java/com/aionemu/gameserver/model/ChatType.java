@@ -19,7 +19,7 @@ package com.aionemu.gameserver.model;
 
 /**
  * Chat types that are supported by Aion.
- *
+ * 
  * @author SoulKeeper, Imaginary
  */
 public enum ChatType {
@@ -32,12 +32,12 @@ public enum ChatType {
 	LEAGUE(0x08), // League chat (Dark Blue)
 	LEAGUE_ALERT(0x09), // League chat (Orange)
 	LEGION(0x0A), // Legion chat (Green)
-
+	
 	/**
 	 * Global chat types
 	 */
 	GOLDEN_YELLOW(0x19, true), // System message (Dark Yellow), most commonly used, no "center" equivalent.
-
+	
 	WHITE(0x1E, true), // System message (White), visible in "All" chat thumbnail only !
 	YELLOW(0x1F, true), // System message (Yellow), visible in "All" chat thumbnail only !
 	BRIGHT_YELLOW(0x20, true), // System message (Light Yellow), visible in "All" chat thumbnail only !
@@ -45,11 +45,13 @@ public enum ChatType {
 	YELLOW_CENTER(0x22, true), // Periodic Announcement(Yellow && Box on screen center)
 	BRIGHT_YELLOW_CENTER(0x23, true); // System Notice (Light Yellow && Box on screen center)
 
+	
 	private final int intValue;
 	private boolean sysMsg;
 
 	/**
-	 * Constructor client chat type integer representation
+	 * Constructor
+	 *    client chat type integer representation
 	 */
 	private ChatType(int intValue) {
 		this(intValue, false);
@@ -57,7 +59,7 @@ public enum ChatType {
 
 	/**
 	 * Converts ChatType value to integer representation
-	 *
+	 * 
 	 * @return chat type in client
 	 */
 	public int toInteger() {
@@ -66,10 +68,12 @@ public enum ChatType {
 
 	/**
 	 * Returns ChatType by it's integer representation
-	 *
-	 * @param integerValue integer value of chat type
+	 * 
+	 * @param integerValue
+	 *          integer value of chat type
 	 * @return ChatType
-	 * @throws IllegalArgumentException if can't find suitable chat type
+	 * @throws IllegalArgumentException
+	 *           if can't find suitable chat type
 	 */
 	public static ChatType getChatTypeByInt(int integerValue) throws IllegalArgumentException {
 		for (ChatType ct : ChatType.values()) {

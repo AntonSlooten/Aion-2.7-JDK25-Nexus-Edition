@@ -58,79 +58,85 @@ public class _1033SatalocasHeart extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203900: { // Diomedes
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 203900: { // Diomedes
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
 					}
+					break;
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-				break;
-			}
-			case 203996: { // Kimeia
-				long drakeFangs = player.getInventory().getItemCountByItemId(182201019);
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1693);
-					} else if (var == 11) {
-						return sendQuestDialog(env, 2034);
+				case 203996: { // Kimeia
+					long drakeFangs = player.getInventory().getItemCountByItemId(182201019);
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1693);
+							}
+							else if (var == 11) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case SELECT_ACTION_1695: {
+							playQuestMovie(env, 42);
+							return sendQuestDialog(env, 1695);
+						}
+						case STEP_TO_3: {
+							QuestService.questTimerStart(env, 180);
+							return defaultCloseDialog(env, 1, 10); // 10
+						}
+						case SELECT_ACTION_2035: {
+							if (drakeFangs < 5) {
+								removeQuestItem(env, 182201019, drakeFangs);
+								changeQuestStep(env, 11, 10, false);
+								QuestService.questTimerStart(env, 180);
+								return sendQuestDialog(env, 2035);
+							}
+							else if (drakeFangs >= 5 && drakeFangs < 7) {
+								removeQuestItem(env, 182201019, drakeFangs);
+								qs.setQuestVar(12);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 2120);
+							}
+							else if (drakeFangs >= 7) {
+								removeQuestItem(env, 182201019, drakeFangs);
+								qs.setQuestVar(13);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 2205);
+							}
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
 					}
+					break;
 				}
-				case SELECT_ACTION_1695: {
-					playQuestMovie(env, 42);
-					return sendQuestDialog(env, 1695);
-				}
-				case STEP_TO_3: {
-					QuestService.questTimerStart(env, 180);
-					return defaultCloseDialog(env, 1, 10); // 10
-				}
-				case SELECT_ACTION_2035: {
-					if (drakeFangs < 5) {
-						removeQuestItem(env, 182201019, drakeFangs);
-						changeQuestStep(env, 11, 10, false);
-						QuestService.questTimerStart(env, 180);
-						return sendQuestDialog(env, 2035);
-					} else if (drakeFangs >= 5 && drakeFangs < 7) {
-						removeQuestItem(env, 182201019, drakeFangs);
-						qs.setQuestVar(12);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 2120);
-					} else if (drakeFangs >= 7) {
-						removeQuestItem(env, 182201019, drakeFangs);
-						qs.setQuestVar(13);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 2205);
-					}
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-				break;
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203900) { // Diomedes
 				if (dialog == QuestDialog.USE_OBJECT) {
 					switch (var) {
-					case 12: {
-						return sendQuestDialog(env, 2716);
+						case 12: {
+							return sendQuestDialog(env, 2716);
+						}
+						case 13: {
+							return sendQuestDialog(env, 3057);
+						}
 					}
-					case 13: {
-						return sendQuestDialog(env, 3057);
-					}
-					}
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env, var - 12);
 				}
-			} else if (targetId == 203996) { // Kimeia
+			}
+			else if (targetId == 203996) { // Kimeia
 				if (dialog == QuestDialog.FINISH_DIALOG) {
 					return sendQuestSelectionDialog(env);
 				}

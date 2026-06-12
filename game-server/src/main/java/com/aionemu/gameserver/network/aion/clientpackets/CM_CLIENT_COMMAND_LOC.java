@@ -24,7 +24,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 
 /**
  * Handler for "/loc" command
- *
+ * 
  * @author SoulKeeper
  * @author EvilSpirit
  */
@@ -32,7 +32,7 @@ public class CM_CLIENT_COMMAND_LOC extends AionClientPacket {
 
 	/**
 	 * Constructs new client packet instance.
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_CLIENT_COMMAND_LOC(int opcode, State state, State... restStates) {
@@ -54,7 +54,6 @@ public class CM_CLIENT_COMMAND_LOC extends AionClientPacket {
 	@Override
 	protected void runImpl() {
 		Player player = getConnection().getActivePlayer();
-		sendPacket(SM_SYSTEM_MESSAGE.STR_CMD_LOCATION_DESC(player.getWorldId(), player.getX(), player.getY(),
-				player.getZ()));
+		sendPacket(SM_SYSTEM_MESSAGE.STR_CMD_LOCATION_DESC(player.getWorldId(), player.getX(), player.getY(), player.getZ()));
 	}
 }

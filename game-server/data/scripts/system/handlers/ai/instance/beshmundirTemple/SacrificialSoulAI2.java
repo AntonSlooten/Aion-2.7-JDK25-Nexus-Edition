@@ -27,17 +27,18 @@ import com.aionemu.gameserver.skillengine.SkillEngine;
 
 import ai.AggressiveNpcAI2;
 
+
 /**
  * @author Luzien
  */
 @AIName("templeSoul")
 public class SacrificialSoulAI2 extends AggressiveNpcAI2 {
 	private Npc boss;
-
+	
 	@Override
 	protected void handleSpawned() {
 		super.handleSpawned();
-		// AI2Actions.useSkill(this, 18901);
+		//AI2Actions.useSkill(this, 18901);
 		this.setStateIfNot(AIState.FOLLOWING);
 		boss = getPosition().getWorldMapInstance().getNpc(216263);
 		final SacrificialSoulAI2 soul = this;
@@ -53,23 +54,23 @@ public class SacrificialSoulAI2 extends AggressiveNpcAI2 {
 			}
 		}, 2000);
 	}
-
+	
 	@Override
 	protected void handleAttack(Creature creature) {
 		super.handleAttack(creature);
 		if (creature.getEffectController().hasAbnormalEffect(18959)) {
 
 			int souls = getPosition().getWorldMapInstance().getNpcs(getNpcId()).size();
-			if (souls <= 1) {
+			if(souls <= 1){
 				creature.getEffectController().removeEffect(18959);
 			}
-
+			
 			getMoveController().abortMove();
 			getOwner().getController().die();
 			AI2Actions.deleteOwner(this);
 		}
 	}
-
+	
 	@Override
 	protected void handleMoveArrived() {
 		if (boss != null && !NpcActions.isAlreadyDead(boss)) {
@@ -77,14 +78,14 @@ public class SacrificialSoulAI2 extends AggressiveNpcAI2 {
 			AI2Actions.deleteOwner(this);
 		}
 	}
-
+	
 	@Override
 	public boolean canThink() {
 		return false;
 	}
-
+	
 	@Override
-	public int modifyDamage(int damage) {
+	public int modifyDamage(int damage)	{
 		return 2;
 	}
 }

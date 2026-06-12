@@ -24,22 +24,23 @@ import com.aionemu.gameserver.services.siegeservice.OutpostSiege;
 
 /**
  * @author Source
+ * @deprecated Should be deleted ?
  */
-@SuppressWarnings("deprecation")
-@AIName(OutpostSiege.OUTPOST_SIEGE_BOSS_AI)
+@AIName(OutpostSiege.SIEGE_BOSS_AI_NAME)
+@Deprecated
 public class SiegeRaceProtectorAI2 extends SiegeNpcAI2 {
 
 	@Override
 	protected AIAnswer pollInstance(AIQuestion question) {
 		switch (question) {
-		case SHOULD_DECAY:
-			return AIAnswers.POSITIVE;
-		case SHOULD_RESPAWN:
-			return AIAnswers.NEGATIVE;
-		case SHOULD_REWARD:
-			return AIAnswers.POSITIVE;
-		default:
-			return null;
+			case SHOULD_DECAY:
+				return AIAnswers.POSITIVE;
+			case SHOULD_RESPAWN:
+				return AIAnswers.NEGATIVE;
+			case SHOULD_REWARD:
+				return AIAnswers.POSITIVE;
+			default:
+				return null;
 		}
 	}
 

@@ -41,8 +41,8 @@ public final class ShoutEventHandler {
 	public static void onSee(NpcAI2 npcAI, Creature target) {
 		Npc npc = npcAI.getOwner();
 		if (DataManager.NPC_SHOUT_DATA.hasAnyShout(npc.getPosition().getMapId(), npc.getNpcId(), ShoutEventType.SEE)) {
-			List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(),
-					npc.getNpcId(), ShoutEventType.SEE, null, 0);
+			List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(), npc.getNpcId(),
+				ShoutEventType.SEE, null, 0);
 			NpcShoutsService.getInstance().shout(npc, target, shouts, 0, false);
 			shouts.clear();
 		}
@@ -51,9 +51,9 @@ public final class ShoutEventHandler {
 	public static void onBeforeDespawn(NpcAI2 npcAI) {
 		Npc npc = npcAI.getOwner();
 		if (DataManager.NPC_SHOUT_DATA.hasAnyShout(npc.getPosition().getMapId(), npc.getNpcId(),
-				ShoutEventType.BEFORE_DESPAWN)) {
-			List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(),
-					npc.getNpcId(), ShoutEventType.BEFORE_DESPAWN, null, 0);
+			ShoutEventType.BEFORE_DESPAWN)) {
+			List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(), npc.getNpcId(),
+				ShoutEventType.BEFORE_DESPAWN, null, 0);
 			NpcShoutsService.getInstance().shout(npc, null, shouts, 0, false);
 			shouts.clear();
 		}
@@ -64,16 +64,15 @@ public final class ShoutEventHandler {
 		WalkerTemplate tp = DataManager.WALKER_DATA.getWalkerTemplate(npc.getSpawn().getWalkerId());
 		int stepCount = tp.getRouteSteps().size();
 		ShoutEventType shoutType = npc.getMoveController().isChangingDirection() ? ShoutEventType.WALK_DIRECTION
-				: ShoutEventType.WALK_WAYPOINT;
+			: ShoutEventType.WALK_WAYPOINT;
 		if (DataManager.NPC_SHOUT_DATA.hasAnyShout(npc.getPosition().getMapId(), npc.getNpcId(), shoutType)) {
 			if (Rnd.get(stepCount) < 2) {
-				List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(),
-						npc.getNpcId(), shoutType, null, 0);
-				if (npc.getTarget() instanceof Creature) {
+				List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(), npc.getNpcId(),
+					shoutType, null, 0);
+				if (npc.getTarget() instanceof Creature)
 					NpcShoutsService.getInstance().shout(npc, (Creature) npc.getTarget(), shouts, 0, false);
-				} else {
+				else
 					NpcShoutsService.getInstance().shout(npc, null, shouts, 0, false);
-				}
 				shouts.clear();
 			}
 		}
@@ -82,9 +81,9 @@ public final class ShoutEventHandler {
 	public static void onSwitchedTarget(NpcAI2 npcAI, Creature creature) {
 		Npc npc = npcAI.getOwner();
 		if (DataManager.NPC_SHOUT_DATA.hasAnyShout(npc.getPosition().getMapId(), npc.getNpcId(),
-				ShoutEventType.SWITCH_TARGET)) {
-			List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(),
-					npc.getNpcId(), ShoutEventType.SWITCH_TARGET, null, 0);
+			ShoutEventType.SWITCH_TARGET)) {
+			List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(), npc.getNpcId(),
+				ShoutEventType.SWITCH_TARGET, null, 0);
 			NpcShoutsService.getInstance().shout(npc, creature, shouts, 0, false);
 			shouts.clear();
 		}
@@ -92,25 +91,21 @@ public final class ShoutEventHandler {
 
 	public static void onDied(NpcAI2 npcAI) {
 		Npc owner = npcAI.getOwner();
-		if (DataManager.NPC_SHOUT_DATA.hasAnyShout(owner.getPosition().getMapId(), owner.getNpcId(),
-				ShoutEventType.DIED)) {
-			List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(owner.getPosition().getMapId(),
-					owner.getNpcId(), ShoutEventType.DIED, null, 0);
-			List<NpcShout> finalShouts = new ArrayList<>();
+		if (DataManager.NPC_SHOUT_DATA.hasAnyShout(owner.getPosition().getMapId(), owner.getNpcId(), ShoutEventType.DIED)) {
+			List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(owner.getPosition().getMapId(), owner.getNpcId(),
+				ShoutEventType.DIED, null, 0);
+			List<NpcShout> finalShouts = new ArrayList<NpcShout>();
 			for (NpcShout shout : shouts) {
-				if (shout.getPattern() == null) {
+				if (shout.getPattern() == null)
 					finalShouts.add(shout);
-				}
 			}
-			if (finalShouts.size() > 0) {
+			if (finalShouts.size() > 0)
 				NpcShoutsService.getInstance().shout(owner, (Creature) owner.getTarget(), finalShouts, 0, false);
-			}
 			shouts.clear();
 		}
 	}
 
-	// TODO: Figure out what the difference between ATTACK_BEGIN and HELP; HELPCALL
-	// should make NPC run
+	// TODO: Figure out what the difference between ATTACK_BEGIN and HELP; HELPCALL should make NPC run
 
 	/**
 	 * Called on Aggro when NPC is ready to attack
@@ -118,9 +113,9 @@ public final class ShoutEventHandler {
 	public static void onAttackBegin(NpcAI2 npcAI, Creature creature) {
 		Npc npc = npcAI.getOwner();
 		if (DataManager.NPC_SHOUT_DATA.hasAnyShout(npc.getPosition().getMapId(), npc.getNpcId(),
-				ShoutEventType.ATTACK_BEGIN)) {
-			List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(),
-					npc.getNpcId(), ShoutEventType.ATTACK_BEGIN, null, 0);
+			ShoutEventType.ATTACK_BEGIN)) {
+			List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(), npc.getNpcId(),
+				ShoutEventType.ATTACK_BEGIN, null, 0);
 			NpcShoutsService.getInstance().shout(npc, creature, shouts, 0, false);
 			shouts.clear();
 			return;
@@ -134,18 +129,16 @@ public final class ShoutEventHandler {
 		// TODO: [RR] change AI or randomise behaviour for "cowards" and "fanatics" ???
 		Npc npc = npcAI.getOwner();
 		if (npc.getAttackedCount() == 0) {
-			if (DataManager.NPC_SHOUT_DATA.hasAnyShout(npc.getPosition().getMapId(), npc.getNpcId(),
-					ShoutEventType.ATTACKED)) {
-				List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(),
-						npc.getNpcId(), ShoutEventType.ATTACKED, null, 0);
+			if (DataManager.NPC_SHOUT_DATA.hasAnyShout(npc.getPosition().getMapId(), npc.getNpcId(), ShoutEventType.ATTACKED)) {
+				List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(), npc.getNpcId(),
+					ShoutEventType.ATTACKED, null, 0);
 				NpcShoutsService.getInstance().shout(npc, creature, shouts, 0, false);
 				shouts.clear();
 				return;
 			}
-			if (DataManager.NPC_SHOUT_DATA.hasAnyShout(npc.getPosition().getMapId(), npc.getNpcId(),
-					ShoutEventType.HELPCALL)) {
-				List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(),
-						npc.getNpcId(), ShoutEventType.HELPCALL, null, 0);
+			if (DataManager.NPC_SHOUT_DATA.hasAnyShout(npc.getPosition().getMapId(), npc.getNpcId(), ShoutEventType.HELPCALL)) {
+				List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(), npc.getNpcId(),
+					ShoutEventType.HELPCALL, null, 0);
 				NpcShoutsService.getInstance().shout(npc, creature, shouts, 0, false);
 				shouts.clear();
 			}
@@ -153,30 +146,26 @@ public final class ShoutEventHandler {
 	}
 
 	/**
-	 * Handles attacks from NPC to NPC. <br>
-	 * <b><font color='red'>IMPORTANT!!! </font>All such shouts must be of type
-	 * SAY.</b>
+	 * Handles attacks from NPC to NPC.
+	 * <br>
+	 * <b><font color='red'>IMPORTANT!!! </font>All such shouts must be of type SAY.</b>
 	 */
 	public static void onEnemyAttack(NpcAI2 npcAI, Creature target) {
 		final Npc npc = npcAI.getOwner();
-		if (!DataManager.NPC_SHOUT_DATA.hasAnyShout(npc.getPosition().getMapId(), npc.getNpcId(),
-				ShoutEventType.ATTACKED)) {
+		if (!DataManager.NPC_SHOUT_DATA.hasAnyShout(npc.getPosition().getMapId(), npc.getNpcId(), ShoutEventType.ATTACKED))
 			return;
-		}
 
 		List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(), npc.getNpcId(),
-				ShoutEventType.ATTACKED, null, 0);
+			ShoutEventType.ATTACKED, null, 0);
 
-		List<NpcShout> finalShouts = new ArrayList<>();
+		List<NpcShout> finalShouts = new ArrayList<NpcShout>();
 		for (NpcShout s : shouts) {
-			if (s.getPattern() == null && s.getShoutType() == ShoutType.SAY) {
+			if (s.getPattern() == null && s.getShoutType() == ShoutType.SAY)
 				finalShouts.add(s);
-			}
 		}
 
-		if (finalShouts.size() == 0) {
+		if (finalShouts.size() == 0)
 			return;
-		}
 
 		int randomShout = Rnd.get(finalShouts.size());
 		final NpcShout shout = finalShouts.get(randomShout);
@@ -190,9 +179,8 @@ public final class ShoutEventHandler {
 				Iterator<Player> iter = npc.getKnownList().getKnownPlayers().values().iterator();
 				while (iter.hasNext()) {
 					Player kObj = iter.next();
-					if (kObj.getLifeStats().isAlreadyDead()) {
+					if (kObj.getLifeStats().isAlreadyDead())
 						return;
-					}
 					NpcShoutsService.getInstance().shout(npc, kObj, shout, 0);
 				}
 			}
@@ -212,29 +200,27 @@ public final class ShoutEventHandler {
 
 	private static void handleNumericEvent(NpcAI2 npcAI, Creature creature, ShoutEventType eventType) {
 		Npc owner = npcAI.getOwner();
-		List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(owner.getPosition().getMapId(),
-				owner.getNpcId(), eventType, null, 0);
-		if (shouts == null) {
+		List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(owner.getPosition().getMapId(), owner.getNpcId(),
+			eventType, null, 0);
+		if (shouts == null)
 			return;
-		}
 
-		List<NpcShout> validShouts = new ArrayList<>();
-		List<NpcShout> nonNumberedShouts = new ArrayList<>();
+		List<NpcShout> validShouts = new ArrayList<NpcShout>();
+		List<NpcShout> nonNumberedShouts = new ArrayList<NpcShout>();
 		for (NpcShout shout : shouts) {
-			if (shout.getPattern() != null) {
+			if (shout.getPattern() != null)
 				continue;
-			}
-			if (shout.getSkillNo() == 0) {
+			if (shout.getSkillNo() == 0)
 				nonNumberedShouts.add(shout);
-			} else if (shout.getSkillNo() == owner.getSkillNumber()) {
+			else if (shout.getSkillNo() == owner.getSkillNumber())
 				validShouts.add(shout);
-			}
 		}
 
 		if (validShouts.size() == 0) {
 			validShouts.clear();
 			validShouts = nonNumberedShouts;
-		} else {
+		}
+		else {
 			nonNumberedShouts.clear();
 		}
 
@@ -248,10 +234,9 @@ public final class ShoutEventHandler {
 
 	public static void onAttackEnd(NpcAI2 npcAI) {
 		Npc npc = npcAI.getOwner();
-		if (DataManager.NPC_SHOUT_DATA.hasAnyShout(npc.getPosition().getMapId(), npc.getNpcId(),
-				ShoutEventType.ATTACK_END)) {
-			List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(),
-					npc.getNpcId(), ShoutEventType.ATTACK_END, null, 0);
+		if (DataManager.NPC_SHOUT_DATA.hasAnyShout(npc.getPosition().getMapId(), npc.getNpcId(), ShoutEventType.ATTACK_END)) {
+			List<NpcShout> shouts = DataManager.NPC_SHOUT_DATA.getNpcShouts(npc.getPosition().getMapId(), npc.getNpcId(),
+				ShoutEventType.ATTACK_END, null, 0);
 			NpcShoutsService.getInstance().shout(npc, null, shouts, 0, false);
 			shouts.clear();
 		}

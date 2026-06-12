@@ -70,21 +70,21 @@ public class CM_INVITE_TO_GROUP extends AionClientPacket {
 				return;
 			}
 			switch (inviteType) {
-			case 0:
-				PlayerGroupService.inviteToGroup(inviter, invited);
-				break;
-			case 12: // 2.5
-				PlayerAllianceService.inviteToAlliance(inviter, invited);
-				break;
-			case 28:
-				LeagueService.inviteToLeague(inviter, invited);
-				break;
-			default:
-				PacketSendUtility.sendMessage(inviter, "You used an unknown invite type: " + inviteType);
-				break;
+				case 0:
+					PlayerGroupService.inviteToGroup(inviter, invited);
+					break;
+				case 12: // 2.5
+					PlayerAllianceService.inviteToAlliance(inviter, invited);
+					break;
+				case 28:
+					LeagueService.inviteToLeague(inviter, invited);
+					break;
+				default:
+					PacketSendUtility.sendMessage(inviter, "You used an unknown invite type: " + inviteType);
+					break;
 			}
-		} else {
-			inviter.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.STR_NO_SUCH_USER(name));
 		}
+		else
+			inviter.getClientConnection().sendPacket(SM_SYSTEM_MESSAGE.STR_NO_SUCH_USER(name));
 	}
 }

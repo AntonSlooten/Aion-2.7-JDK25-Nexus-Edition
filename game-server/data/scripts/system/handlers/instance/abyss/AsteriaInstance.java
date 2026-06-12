@@ -36,23 +36,25 @@ import com.aionemu.gameserver.world.WorldMapInstance;
  */
 @InstanceID(300050000)
 public class AsteriaInstance extends GeneralInstanceHandler {
-
+	
 	private boolean isStartTimer = false;
 	private long startTime;
 	private boolean isInstanceDestroyed = false;
-
+	
 	@Override
 	public void onInstanceCreate(WorldMapInstance instance) {
 		super.onInstanceCreate(instance);
 		spawnRings();
 	}
-
+	
 	private void spawnRings() {
-		FlyRing f1 = new FlyRing(new FlyRingTemplate("ASTERIA_WING_1", mapId, new Point3D(479.24, 572.57, 202.72),
-				new Point3D(477.95, 567.64, 212.9), new Point3D(477.97, 563.35, 202.12), 10), instanceId);
+		FlyRing f1 = new FlyRing(new FlyRingTemplate("ASTERIA_WING_1", mapId,
+				new Point3D(479.24, 572.57, 202.72),
+				new Point3D(477.95, 567.64, 212.9),
+				new Point3D(477.97, 563.35, 202.12), 10), instanceId);
 		f1.spawn();
 	}
-
+	
 	@Override
 	public boolean onPassFlyingRing(Player player, String flyingRing) {
 		if (flyingRing.equals("ASTERIA_WING_1")) {
@@ -74,7 +76,7 @@ public class AsteriaInstance extends GeneralInstanceHandler {
 		}
 		return false;
 	}
-
+	
 	@Override
 	public void onEnterInstance(Player player) {
 		if (isStartTimer) {
@@ -84,7 +86,7 @@ public class AsteriaInstance extends GeneralInstanceHandler {
 			}
 		}
 	}
-
+	
 	private List<Npc> getNpcs(int npcId) {
 		if (!isInstanceDestroyed) {
 			return instance.getNpcs(npcId);
@@ -97,7 +99,8 @@ public class AsteriaInstance extends GeneralInstanceHandler {
 			npc.getController().onDelete();
 		}
 	}
-
+	
+	
 	@Override
 	public void onLeaveInstance(Player player) {
 		Storage bag = player.getInventory();
@@ -105,7 +108,7 @@ public class AsteriaInstance extends GeneralInstanceHandler {
 		bag.decreaseByItemId(185000034, bag.getItemCountByItemId(185000034));
 		bag.decreaseByItemId(185000035, bag.getItemCountByItemId(185000035));
 	}
-
+	
 	@Override
 	public void onInstanceDestroy() {
 		isInstanceDestroyed = true;

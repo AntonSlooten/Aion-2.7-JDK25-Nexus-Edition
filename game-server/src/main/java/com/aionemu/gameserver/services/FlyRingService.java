@@ -44,7 +44,7 @@ public class FlyRingService {
 			FlyRing f = new FlyRing(t, 0);
 			f.spawn();
 			log.debug("Added " + f.getName() + " at m=" + f.getWorldId() + ",x=" + f.getX() + ",y=" + f.getY() + ",z="
-					+ f.getZ());
+				+ f.getZ());
 		}
 	}
 }

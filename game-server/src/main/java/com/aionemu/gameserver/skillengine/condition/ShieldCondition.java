@@ -20,7 +20,7 @@ public class ShieldCondition extends Condition {
 			Player player = (Player) env.getEffector();
 			return player.getEquipment().isShieldEquipped();
 		}
-
+		
 		return false;
 	}
 }

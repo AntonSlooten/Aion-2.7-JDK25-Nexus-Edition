@@ -22,28 +22,30 @@ import com.aionemu.gameserver.utils.gametime.DayTime;
  * @author ATracer
  */
 public enum SpawnTime {
-	ALL, DAY, NIGHT;
+	ALL,
+	DAY,
+	NIGHT;
 
 	public boolean isAllowedDuring(DayTime dayTime) {
 		switch (this) {
-		case ALL:
-			return true;
-		case DAY:
-			return dayTime == DayTime.AFTERNOON || dayTime == DayTime.MORNING || dayTime == DayTime.EVENING;
-		case NIGHT:
-			return dayTime == DayTime.NIGHT;
+			case ALL:
+				return true;
+			case DAY:
+				return dayTime == DayTime.AFTERNOON || dayTime == DayTime.MORNING || dayTime == DayTime.EVENING;
+			case NIGHT:
+				return dayTime == DayTime.NIGHT;
 		}
 		return true;
 	}
 
 	public boolean isNeedUpdate(DayTime dayTime) {
 		switch (this) {
-		case ALL:
-			return false;
-		case DAY:
-			return dayTime == DayTime.MORNING;
-		case NIGHT:
-			return dayTime == DayTime.NIGHT;
+			case ALL:
+				return false;
+			case DAY:
+				return dayTime == DayTime.MORNING;
+			case NIGHT:
+				return dayTime == DayTime.NIGHT;
 		}
 		return true;
 	}

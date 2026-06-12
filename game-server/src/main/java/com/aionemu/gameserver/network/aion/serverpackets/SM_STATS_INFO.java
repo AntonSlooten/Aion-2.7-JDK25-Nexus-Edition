@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ import com.aionemu.gameserver.utils.gametime.GameTimeManager;
 
 /**
  * In this packet Server is sending User Info?
- *
+ * 
  * @author -Nemesiss-
  * @author Luno
  */
@@ -44,7 +44,7 @@ public class SM_STATS_INFO extends AionServerPacket {
 
 	/**
 	 * Constructs new <tt>SM_UI</tt> packet
-	 *
+	 * 
 	 * @param player
 	 */
 	public SM_STATS_INFO(Player player) {
@@ -168,9 +168,8 @@ public class SM_STATS_INFO extends AionServerPacket {
 		Stat2 concentration = pgs.getStat(StatEnum.CONCENTRATION, 0);
 		Stat2 mBoost = pgs.getMBoost();
 		int totalBoostMagicalSkill = mBoost.getCurrent();
-		if (totalBoostMagicalSkill > 2700) {
+		if (totalBoostMagicalSkill > 2700)
 			totalBoostMagicalSkill = 2700;
-		}
 		Stat2 healBoost = pgs.getStat(StatEnum.HEAL_BOOST, 0);
 		writeH(concentration.getCurrent());// [current concetration]
 		// Was mBoost.getCurrent() before optimizing
@@ -200,7 +199,7 @@ public class SM_STATS_INFO extends AionServerPacket {
 
 		writeC(pcd.getCurrentSalvationPercent());
 
-		// unk
+		//unk
 		writeB(new byte[7]);
 
 		writeH(power.getBase());// [base power]

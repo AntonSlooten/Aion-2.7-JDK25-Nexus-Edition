@@ -9,10 +9,8 @@ import com.aionemu.gameserver.questEngine.model.QuestState;
 import com.aionemu.gameserver.questEngine.model.QuestStatus;
 
 /**
- * Talk with Jebal (278002). Talk with Lakadi (278019). Talk with Glati
- * (278088). Locate the Captured Asmodian Prisoner (253626). Escort Captured
- * Asmodian Prisoner to the Magic Ward (1273, 1494, 1538). Report back to
- * Lakadi.
+ * Talk with Jebal (278002). Talk with Lakadi (278019). Talk with Glati (278088). Locate the Captured Asmodian Prisoner
+ * (253626). Escort Captured Asmodian Prisoner to the Magic Ward (1273, 1494, 1538). Report back to Lakadi.
  * 
  * @author MetaWind
  * @modified kale
@@ -51,54 +49,55 @@ public class _2073CapturedComrades extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 278002: { // Jebal
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				break;
-			}
-			case 278019: { // Lakadi
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_2:
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				break;
-			}
-			case 278088: { // Glati
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 2)
-						return sendQuestDialog(env, 1693);
-				case STEP_TO_3:
-					return defaultCloseDialog(env, 2, 3); // 3
-				}
-				break;
-			}
-			case 253626: { // Captured Asmodian Prisoner
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 3) {
-						return sendQuestDialog(env, 2034);
+				case 278002: { // Jebal
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+						case STEP_TO_1:
+							return defaultCloseDialog(env, 0, 1); // 1
 					}
-				case SELECT_ACTION_2035: {
-					playQuestMovie(env, 294);
-					return sendQuestDialog(env, 2035);
+					break;
 				}
-				case STEP_TO_4: {
-					return defaultStartFollowEvent(env, 1295.0565f, 1499.0419f, 1571.1864f, 3, 4); // 4
+				case 278019: { // Lakadi
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 1)
+								return sendQuestDialog(env, 1352);
+						case STEP_TO_2:
+							return defaultCloseDialog(env, 1, 2); // 2
+					}
+					break;
 				}
+				case 278088: { // Glati
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 2)
+								return sendQuestDialog(env, 1693);
+						case STEP_TO_3:
+							return defaultCloseDialog(env, 2, 3); // 3
+					}
+					break;
 				}
-				break;
+				case 253626: { // Captured Asmodian Prisoner
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 3) {
+								return sendQuestDialog(env, 2034);
+							}
+						case SELECT_ACTION_2035: {
+							playQuestMovie(env, 294);
+							return sendQuestDialog(env, 2035);
+						}
+						case STEP_TO_4: {
+							return defaultStartFollowEvent(env, 1295.0565f, 1499.0419f, 1571.1864f, 3, 4); // 4
+						}
+					}
+					break;
+				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 278019) { // Lakadi
 				if (env.getDialog() == QuestDialog.USE_OBJECT)
 					return sendQuestDialog(env, 10002);

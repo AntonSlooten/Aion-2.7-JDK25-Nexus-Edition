@@ -35,12 +35,10 @@ public class PositionUtil {
 		float angleObject2 = MathUtil.convertHeadingToDegree(object2.getHeading());
 		float angleDiff = angleObject1 - angleObject2;
 
-		if (angleDiff <= -360 + MAX_ANGLE_DIFF) {
+		if (angleDiff <= -360 + MAX_ANGLE_DIFF)
 			angleDiff += 360;
-		}
-		if (angleDiff >= 360 - MAX_ANGLE_DIFF) {
+		if (angleDiff >= 360 - MAX_ANGLE_DIFF)
 			angleDiff -= 360;
-		}
 		return Math.abs(angleDiff) <= MAX_ANGLE_DIFF;
 	}
 
@@ -54,27 +52,24 @@ public class PositionUtil {
 		float angleObject1 = MathUtil.convertHeadingToDegree(object2.getHeading());
 		float angleDiff = angleObject1 - angleObject2;
 
-		if (angleDiff <= -360 + MAX_ANGLE_DIFF) {
+		if (angleDiff <= -360 + MAX_ANGLE_DIFF)
 			angleDiff += 360;
-		}
-		if (angleDiff >= 360 - MAX_ANGLE_DIFF) {
+		if (angleDiff >= 360 - MAX_ANGLE_DIFF)
 			angleDiff -= 360;
-		}
 		return Math.abs(angleDiff) <= MAX_ANGLE_DIFF;
 	}
 
 	/**
 	 * Analyse two object position by coordinates
-	 *
+	 * 
 	 * @param object1
 	 * @param object2
 	 * @return true if the analysed object is behind base object
 	 */
 	public static boolean isBehind(VisibleObject object1, VisibleObject object2) {
 		float angle = MathUtil.convertHeadingToDegree(object1.getHeading()) + 90;
-		if (angle >= 360) {
+		if (angle >= 360)
 			angle -= 360;
-		}
 		double radian = Math.toRadians(angle);
 		float x0 = object1.getX();
 		float y0 = object1.getY();

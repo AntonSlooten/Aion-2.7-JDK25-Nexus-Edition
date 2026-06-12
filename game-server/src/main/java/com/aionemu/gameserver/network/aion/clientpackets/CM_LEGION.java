@@ -50,7 +50,7 @@ public class CM_LEGION extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of CM_LEGION packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_LEGION(int opcode, State state, State... restStates) {
@@ -65,75 +65,75 @@ public class CM_LEGION extends AionClientPacket {
 		exOpcode = readC();
 
 		switch (exOpcode) {
-		/** Create a legion **/
-		case 0x00:
-			readD(); // 00 78 19 00 40
-			legionName = readS();
-			break;
-		/** Invite to legion **/
-		case 0x01:
-			readD(); // empty
-			charName = readS();
-			break;
-		/** Leave legion **/
-		case 0x02:
-			readD(); // empty
-			readH(); // empty
-			break;
-		/** Kick member from legion **/
-		case 0x04:
-			readD(); // empty
-			charName = readS();
-			break;
-		/** Appoint a new Brigade General **/
-		case 0x05:
-			readD();
-			charName = readS();
-			break;
-		/** Appoint Centurion **/
-		case 0x06:
-			rank = readD();
-			charName = readS();
-			break;
-		/** Demote to Legionary **/
-		case 0x07:
-			readD(); // char id? 00 78 19 00 40
-			charName = readS();
-			break;
-		/** Refresh legion info **/
-		case 0x08:
-			readD();
-			readH();
-			break;
-		/** Edit announcements **/
-		case 0x09:
-			readD(); // empty or char id?
-			announcement = readS();
-			break;
-		/** Change self introduction **/
-		case 0x0A:
-			readD(); // empty char id?
-			newSelfIntro = readS();
-			break;
-		/** Edit permissions **/
-		case 0x0D:
-			deputyPermission = (short) readH();
-			centurionPermission = (short) readH();
-			legionarPermission = (short) readH();
-			volunteerPermission = (short) readH();
-			break;
-		/** Level legion up **/
-		case 0x0E:
-			readD(); // empty
-			readH(); // empty
-			break;
-		case 0x0F:
-			charName = readS();
-			newNickname = readS();
-			break;
-		default:
-			log.info("Unknown Legion exOpcode? 0x" + Integer.toHexString(exOpcode).toUpperCase());
-			break;
+			/** Create a legion **/
+			case 0x00:
+				readD(); // 00 78 19 00 40
+				legionName = readS();
+				break;
+			/** Invite to legion **/
+			case 0x01:
+				readD(); // empty
+				charName = readS();
+				break;
+			/** Leave legion **/
+			case 0x02:
+				readD(); // empty
+				readH(); // empty
+				break;
+			/** Kick member from legion **/
+			case 0x04:
+				readD(); // empty
+				charName = readS();
+				break;
+			/** Appoint a new Brigade General **/
+			case 0x05:
+				readD();
+				charName = readS();
+				break;
+			/** Appoint Centurion **/
+			case 0x06:
+				rank = readD();
+				charName = readS();
+				break;
+			/** Demote to Legionary **/
+			case 0x07:
+				readD(); // char id? 00 78 19 00 40
+				charName = readS();
+				break;
+			/** Refresh legion info **/
+			case 0x08:
+				readD();
+				readH();
+				break;
+			/** Edit announcements **/
+			case 0x09:
+				readD(); // empty or char id?
+				announcement = readS();
+				break;
+			/** Change self introduction **/
+			case 0x0A:
+				readD(); // empty char id?
+				newSelfIntro = readS();
+				break;
+			/** Edit permissions **/
+			case 0x0D:
+				deputyPermission = (short) readH();
+				centurionPermission = (short) readH();
+				legionarPermission = (short) readH();
+				volunteerPermission = (short) readH();
+				break;
+			/** Level legion up **/
+			case 0x0E:
+				readD(); // empty
+				readH(); // empty
+				break;
+			case 0x0F:
+				charName = readS();
+				newNickname = readS();
+				break;
+			default:
+				log.info("Unknown Legion exOpcode? 0x" + Integer.toHexString(exOpcode).toUpperCase());
+				break;
 		}
 	}
 
@@ -148,39 +148,39 @@ public class CM_LEGION extends AionClientPacket {
 
 			if (charName != null) {
 				LegionService.getInstance().handleCharNameRequest(exOpcode, activePlayer, charName, newNickname, rank);
-			} else {
+			}
+			else {
 				switch (exOpcode) {
-				/** Refresh legion info **/
-				case 0x08:
-					sendPacket(new SM_LEGION_INFO(legion));
-					break;
-				/** Edit announcements **/
-				case 0x09:
-					LegionService.getInstance().handleLegionRequest(exOpcode, activePlayer, announcement);
-					break;
-				/** Change self introduction **/
-				case 0x0A:
-					LegionService.getInstance().handleLegionRequest(exOpcode, activePlayer, newSelfIntro);
-					break;
-				/** Edit permissions **/
-				case 0x0D:
-					if (activePlayer.getLegionMember().isBrigadeGeneral()) {
-						LegionService.getInstance().changePermissions(legion, deputyPermission, centurionPermission,
-								legionarPermission, volunteerPermission);
-					}
-					break;
-				/** Misc. **/
-				default:
-					LegionService.getInstance().handleLegionRequest(exOpcode, activePlayer);
-					break;
+					/** Refresh legion info **/
+					case 0x08:
+						sendPacket(new SM_LEGION_INFO(legion));
+						break;
+					/** Edit announcements **/
+					case 0x09:
+						LegionService.getInstance().handleLegionRequest(exOpcode, activePlayer, announcement);
+						break;
+					/** Change self introduction **/
+					case 0x0A:
+						LegionService.getInstance().handleLegionRequest(exOpcode, activePlayer, newSelfIntro);
+						break;
+					/** Edit permissions **/
+					case 0x0D:
+						if (activePlayer.getLegionMember().isBrigadeGeneral())
+							LegionService.getInstance().changePermissions(legion, deputyPermission, centurionPermission, legionarPermission, volunteerPermission);
+						break;
+					/** Misc. **/
+					default:
+						LegionService.getInstance().handleLegionRequest(exOpcode, activePlayer);
+						break;
 				}
 			}
-		} else {
+		}
+		else {
 			switch (exOpcode) {
-			/** Create a legion **/
-			case 0x00:
-				LegionService.getInstance().createLegion(activePlayer, legionName);
-				break;
+				/** Create a legion **/
+				case 0x00:
+					LegionService.getInstance().createLegion(activePlayer, legionName);
+					break;
 			}
 		}
 	}

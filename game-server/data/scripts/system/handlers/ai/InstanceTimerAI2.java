@@ -36,20 +36,21 @@ public class InstanceTimerAI2 extends AggressiveNpcAI2 {
 
 		int time = 0;
 		switch (getNpcId()) {
-		case 215222:
-		case 215221:
-		case 215179:
-		case 215178:
-		case 215136:
-		case 215135:
-			time = 600000;
-			break;
+			case 215222:
+			case 215221:
+			case 215179:
+			case 215178:
+			case 215136:
+			case 215135:
+				time = 600000;
+				break;
 		}
 
 		Player player;
 		if (creature instanceof Player) {
 			player = (Player) creature;
-		} else {
+		}
+		else {
 			return;
 		}
 		isInTimer = true;
@@ -57,10 +58,11 @@ public class InstanceTimerAI2 extends AggressiveNpcAI2 {
 		sendTime(player, time);
 	}
 
-	private void sendTime(Player player, int time) {
+	private void sendTime(Player player, int time) {		
 		if (player.isInTeam()) {
 			player.getCurrentTeam().sendPacket(new SM_QUEST_ACTION(0, time / 1000), new SameInstanceFilter(player));
-		} else {
+		}
+		else {
 			PacketSendUtility.sendPacket(player, new SM_QUEST_ACTION(0, time / 1000));
 		}
 	}
@@ -68,7 +70,7 @@ public class InstanceTimerAI2 extends AggressiveNpcAI2 {
 	@Override
 	protected void handleAttack(Creature creature) {
 		super.handleAttack(creature);
-		if (!isInTimer)
+		if(!isInTimer)
 			setInstanceTimer(creature);
 	}
 

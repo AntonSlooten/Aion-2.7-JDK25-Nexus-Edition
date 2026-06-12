@@ -41,7 +41,7 @@ public class Plane3D {
 		this.p2 = p2;
 
 		Matrix3D equation = new Matrix3D(
-				new double[][] { { p0.x, p0.y, p0.z }, { p1.x, p1.y, p1.z }, { p2.x, p2.y, p2.z } });
+			new double[][] { { p0.x, p0.y, p0.z }, { p1.x, p1.y, p1.z }, { p2.x, p2.y, p2.z } });
 
 		double D = equation.determinant();
 
@@ -76,7 +76,7 @@ public class Plane3D {
 		double[] v1 = new double[] { la.x - p0.x, la.y - p0.y, la.z - p0.z };
 
 		Matrix3D m1 = new Matrix3D(new double[][] { { la.x - lb.x, p1.x - p0.x, p2.x - p0.x },
-				{ la.y - lb.y, p1.y - p0.y, p2.y - p0.y }, { la.z - lb.z, p1.z - p0.z, p2.z - p0.z } });
+			{ la.y - lb.y, p1.y - p0.y, p2.y - p0.y }, { la.z - lb.z, p1.z - p0.z, p2.z - p0.z } });
 
 		double[] formula = null;
 		Point3D result = null;
@@ -88,9 +88,11 @@ public class Plane3D {
 			result.x = la.x + (lb.x - la.x) * formula[0];
 			result.y = la.y + (lb.y - la.y) * formula[0];
 			result.z = la.z + (lb.z - la.z) * formula[0];
-		} catch (RuntimeException e) {
-			LoggerFactory.getLogger(getClass()).debug(m1 + "(determinant: " + m1.determinant() + ") * [ " + v1[0] + ","
-					+ v1[1] + "," + v1[0] + " ]: " + e.getMessage(), e);
+		}
+		catch (RuntimeException e) {
+			LoggerFactory.getLogger(getClass()).debug(
+				m1 + "(determinant: " + m1.determinant() + ") * [ " + v1[0] + "," + v1[1] + "," + v1[0] + " ]: "
+					+ e.getMessage(), e);
 		}
 
 		return result;

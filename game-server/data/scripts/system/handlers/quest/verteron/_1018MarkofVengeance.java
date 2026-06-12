@@ -66,19 +66,21 @@ public class _1018MarkofVengeance extends QuestHandler {
 
 		if (targetId == 203098 && qs.getStatus() == QuestStatus.START) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-			case CHECK_COLLECTED_ITEMS:
-				if (QuestService.collectItemCheck(env, true)) {
-					qs.setQuestVarById(0, var + 1);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return sendQuestDialog(env, 5);
-				} else
-					return sendQuestDialog(env, 1097);
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+				case CHECK_COLLECTED_ITEMS:
+					if (QuestService.collectItemCheck(env, true)) {
+						qs.setQuestVarById(0, var + 1);
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						return sendQuestDialog(env, 5);
+					}
+					else
+						return sendQuestDialog(env, 1097);
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203098)
 				return sendQuestEndDialog(env);
 		}

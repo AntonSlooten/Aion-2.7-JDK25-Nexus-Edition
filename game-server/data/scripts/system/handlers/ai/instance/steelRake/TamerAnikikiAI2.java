@@ -27,7 +27,7 @@ import ai.AggressiveNpcAI2;
  * @author xTz
  */
 @AIName("tameranikiki")
-public class TamerAnikikiAI2 extends AggressiveNpcAI2 {
+public class TamerAnikikiAI2 extends AggressiveNpcAI2{
 	@Override
 	protected void handleSpawned() {
 		super.handleSpawned();

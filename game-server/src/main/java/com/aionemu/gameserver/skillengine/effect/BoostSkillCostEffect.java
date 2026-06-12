@@ -31,7 +31,7 @@ public class BoostSkillCostEffect extends BufEffect {
 
 			@Override
 			public void skilluse(Skill skill) {
-				skill.setBoostSkillCost(value);
+					skill.setBoostSkillCost(value);
 			}
 		};
 

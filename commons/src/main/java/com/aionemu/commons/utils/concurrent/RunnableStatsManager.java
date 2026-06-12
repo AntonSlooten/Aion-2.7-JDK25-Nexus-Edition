@@ -1,18 +1,18 @@
 /*
- * This file is part of aion-unique <aion-unique.org>.
+ * This file is part of InPanic Core <Ver:3.1>.
  *
- *  aion-unique is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
+ * InPanic-Core is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- *  aion-unique is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
+ * InPanic-Core is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
- *  along with aion-unique.  If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with InPanic-Core.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.aionemu.commons.utils.concurrent;
 
@@ -29,6 +29,7 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * @author NB4L1
  */
+@SuppressWarnings("unchecked")
 public final class RunnableStatsManager {
 
 	private static final Logger log = LoggerFactory.getLogger(RunnableStatsManager.class);
@@ -47,8 +48,8 @@ public final class RunnableStatsManager {
 			className = clazz.getName().replace("com.aionemu.gameserver.", "");
 			runnableStat = new MethodStat(className, "run()");
 
-			methodNames = new String[]{"run()"};
-			methodStats = new MethodStat[]{runnableStat};
+			methodNames = new String[] { "run()" };
+			methodStats = new MethodStat[] { runnableStat };
 
 			classStats.put(clazz, this);
 		}
@@ -107,7 +108,8 @@ public final class RunnableStatsManager {
 				total += runTime;
 				min = Math.min(min, runTime);
 				max = Math.max(max, runTime);
-			} finally {
+			}
+			finally {
 				lock.unlock();
 			}
 		}
@@ -143,7 +145,7 @@ public final class RunnableStatsManager {
 		NAME("class"),
 		METHOD("method"),
 		MIN("min"),
-		MAX("max"),;
+		MAX("max"), ;
 
 		private final String xmlAttributeName;
 
@@ -154,12 +156,13 @@ public final class RunnableStatsManager {
 		private final Comparator<MethodStat> comparator = new Comparator<MethodStat>() {
 
 			@Override
+			@SuppressWarnings("rawtypes")
 			public int compare(MethodStat o1, MethodStat o2) {
-				final Object c1 = getComparableValueOf(o1);
-				final Object c2 = getComparableValueOf(o2);
+				final Comparable c1 = getComparableValueOf(o1);
+				final Comparable c2 = getComparableValueOf(o2);
 
-				if (c1 instanceof Number && c2 instanceof Number)
-					return Long.compare(((Number) c2).longValue(), ((Number) c1).longValue());
+				if (c1 instanceof Number)
+					return c2.compareTo(c1);
 
 				final String s1 = (String) c1;
 				final String s2 = (String) c2;
@@ -194,7 +197,8 @@ public final class RunnableStatsManager {
 			}
 		};
 
-		private Object getComparableValueOf(MethodStat stat) {
+		@SuppressWarnings("rawtypes")
+		private Comparable getComparableValueOf(MethodStat stat) {
 			switch (this) {
 				case AVG:
 					return stat.total / stat.count;
@@ -239,8 +243,8 @@ public final class RunnableStatsManager {
 
 		lines.add("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
 		lines.add("<entries>");
-		lines.add("\t<!-- This XML contains statistics about execution times. -->");
-		lines.add("\t<!-- Submitted results will help the developers to optimize the server. -->");
+		lines.add("\t");
+		lines.add("\t");
 
 		final String[][] values = new String[SortBy.VALUES.length][methodStats.size()];
 		final int[] maxLength = new int[SortBy.VALUES.length];
@@ -249,7 +253,8 @@ public final class RunnableStatsManager {
 			final SortBy sort = SortBy.VALUES[i];
 
 			for (int k = 0; k < methodStats.size(); k++) {
-				final Object c = sort.getComparableValueOf(methodStats.get(k));
+				@SuppressWarnings("rawtypes")
+				final Comparable c = sort.getComparableValueOf(methodStats.get(k));
 
 				final String value;
 
@@ -304,9 +309,11 @@ public final class RunnableStatsManager {
 
 			for (String line : lines)
 				ps.println(line);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.warn("", e);
-		} finally {
+		}
+		finally {
 			IOUtils.closeQuietly(ps);
 		}
 	}

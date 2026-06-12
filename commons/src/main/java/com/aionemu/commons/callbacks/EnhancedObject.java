@@ -39,52 +39,52 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 @SuppressWarnings("rawtypes")
 public interface EnhancedObject {
 
-	/**
-	 * Adds callback to this object.<br>
-	 * {@link com.aionemu.commons.callbacks.EnhancedObject concurrency description}
-	 *
-	 * @param callback instance of callback to add
-	 * @see com.aionemu.commons.callbacks.util.ObjectCallbackHelper#addCallback(Callback, EnhancedObject)
-	 */
-	public void addCallback(Callback callback);
+    /**
+     * Adds callback to this object.<br>
+     * {@link com.aionemu.commons.callbacks.EnhancedObject concurrency description}
+     *
+     * @param callback instance of callback to add
+     * @see com.aionemu.commons.callbacks.util.ObjectCallbackHelper#addCallback(Callback, EnhancedObject)
+     */
+    public void addCallback(Callback callback);
 
-	/**
-	 * Removes callback from this object.<br>
-	 * {@link com.aionemu.commons.callbacks.EnhancedObject concurrency description}
-	 *
-	 * @param callback instance of callback to remove
-	 * @see com.aionemu.commons.callbacks.util.ObjectCallbackHelper#removeCallback(Callback, EnhancedObject)
-	 */
-	public void removeCallback(Callback callback);
+    /**
+     * Removes callback from this object.<br>
+     * {@link com.aionemu.commons.callbacks.EnhancedObject concurrency description}
+     *
+     * @param callback instance of callback to remove
+     * @see com.aionemu.commons.callbacks.util.ObjectCallbackHelper#removeCallback(Callback, EnhancedObject)
+     */
+    public void removeCallback(Callback callback);
 
-	/**
-	 * Returns all callbacks associated with this.<br><br>
-	 * <b><font color="red">
-	 * Iteration over this map is not thread-safe, please make sure that {@link #getCallbackLock()} is locked
-	 * in read mode to read.<br>
-	 * <br>
-	 * Same for writing. If you are going to write something here - please make sure that {@link #getCallbackLock()}
-	 * is in write mode
-	 * </b></font>
-	 *
-	 * @return map with callbacks associated with this object or null if there is no callbacks
-	 */
-	public Map<Class<? extends Callback>, List<Callback>> getCallbacks();
+    /**
+     * Returns all callbacks associated with this.<br><br>
+     * <b><font color="red">
+     * Iteration over this map is not thread-safe, please make sure that {@link #getCallbackLock()} is locked
+     * in read mode to read.<br>
+     * <br>
+     * Same for writing. If you are going to write something here - please make sure that {@link #getCallbackLock()}
+     * is in write mode
+     * </b></font>
+     *
+     * @return map with callbacks associated with this object or null if there is no callbacks
+     */
+    public Map<Class<? extends Callback>, List<Callback>> getCallbacks();
 
-	/**
-	 * Associates callback map with this object.<br><br>
-	 * <b><font color="red">
-	 * Please make sure that {@link #getCallbackLock()} is in write-mode lock when calling this method
-	 * </b></font>
-	 *
-	 * @param callbacks callbackMap or null
-	 */
-	public void setCallbacks(Map<Class<? extends Callback>, List<Callback>> callbacks);
+    /**
+     * Associates callback map with this object.<br><br>
+     * <b><font color="red">
+     * Please make sure that {@link #getCallbackLock()} is in write-mode lock when calling this method
+     * </b></font>
+     *
+     * @param callbacks callbackMap or null
+     */
+    public void setCallbacks(Map<Class<? extends Callback>, List<Callback>> callbacks);
 
-	/**
-	 * Returns lock that is used to ensure thread safety
-	 *
-	 * @return lock that is used to ensure thread safety
-	 */
-	public ReentrantReadWriteLock getCallbackLock();
+    /**
+     * Returns lock that is used to ensure thread safety
+     *
+     * @return lock that is used to ensure thread safety
+     */
+    public ReentrantReadWriteLock getCallbackLock();
 }

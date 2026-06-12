@@ -58,18 +58,21 @@ public class _30337ImprovedPolearm extends QuestHandler {
 				if (player.getInventory().getItemCountByItemId(101300691) >= 1) { // Noble Siel's Supreme Polearm
 					if (dialog == QuestDialog.START_DIALOG) {
 						return sendQuestDialog(env, 4762);
-					} else {
+					}
+					else {
 						return sendQuestStartDialog(env);
 					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799336) { // Tataka
 				if (dialog == QuestDialog.USE_OBJECT) {
 					if (player.getInventory().getItemCountByItemId(182209735) > 0) {
 						return sendQuestDialog(env, 10002);
 					}
-				} else {
+				}
+				else {
 					removeQuestItem(env, 182209735, 1);
 					return sendQuestEndDialog(env);
 				}
@@ -85,18 +88,18 @@ public class _30337ImprovedPolearm extends QuestHandler {
 		int targetId = env.getTargetId();
 		if (qs != null && qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 286904:
-			case 281419:
-			case 215795: {
-				if (QuestService.collectItemCheck(env, true)) {
-					return giveQuestItem(env, 182209735, 1);
+				case 286904:
+				case 281419:
+				case 215795: {
+					if (QuestService.collectItemCheck(env, true)) {
+						return giveQuestItem(env, 182209735, 1);
+					}
 				}
-			}
 			}
 		}
 		return false;
 	}
-
+	
 	@Override
 	public boolean onGetItemEvent(QuestEnv env) {
 		Player player = env.getPlayer();

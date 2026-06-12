@@ -43,7 +43,7 @@ import com.aionemu.gameserver.utils.idfactory.IDFactory;
 
 /**
  * In this packets aion client is requesting creation of character.
- *
+ * 
  * @author -Nemesiss-
  * @modified cura
  */
@@ -56,7 +56,7 @@ public class CM_CREATE_CHARACTER extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_CREATE_CHARACTER </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_CREATE_CHARACTER(int opcode, State state, State... restStates) {
@@ -179,17 +179,17 @@ public class CM_CREATE_CHARACTER extends AionClientPacket {
 				IDFactory.getInstance().releaseId(playerCommonData.getPlayerObjId());
 				return;
 			}
-		} else if (GSConfig.CHARACTER_LIMIT_COUNT <= account.size()) {
+		}
+		else if (GSConfig.CHARACTER_LIMIT_COUNT <= account.size()) {
 			client.sendPacket(new SM_CREATE_CHARACTER(null, SM_CREATE_CHARACTER.RESPONSE_SERVER_LIMIT_EXCEEDED));
 			IDFactory.getInstance().releaseId(playerCommonData.getPlayerObjId());
 			return;
 		}
 		if (!PlayerService.isFreeName(playerCommonData.getName())) {
-			if (GSConfig.CHARACTER_FACTIONS_MODE == 2) {
+			if (GSConfig.CHARACTER_FACTIONS_MODE == 2)
 				client.sendPacket(new SM_CREATE_CHARACTER(null, SM_CREATE_CHARACTER.RESPONSE_NAME_RESERVED));
-			} else {
+			else
 				client.sendPacket(new SM_CREATE_CHARACTER(null, SM_CREATE_CHARACTER.RESPONSE_NAME_ALREADY_USED));
-			}
 			IDFactory.getInstance().releaseId(playerCommonData.getPlayerObjId());
 			return;
 		}
@@ -211,8 +211,7 @@ public class CM_CREATE_CHARACTER extends AionClientPacket {
 		if (GSConfig.CHARACTER_FACTIONS_MODE == 0) {
 			for (PlayerAccountData data : account.getSortedAccountsList()) {
 				if (data.getPlayerCommonData().getRace() != playerCommonData.getRace()) {
-					client.sendPacket(
-							new SM_CREATE_CHARACTER(null, SM_CREATE_CHARACTER.FAILED_TO_CREATE_THE_CHARACTER));
+					client.sendPacket(new SM_CREATE_CHARACTER(null, SM_CREATE_CHARACTER.FAILED_TO_CREATE_THE_CHARACTER));
 					IDFactory.getInstance().releaseId(playerCommonData.getPlayerObjId());
 					return;
 				}
@@ -223,10 +222,10 @@ public class CM_CREATE_CHARACTER extends AionClientPacket {
 		if (!PlayerService.storeNewPlayer(player, account.getName(), account.getId())) {
 			client.sendPacket(new SM_CREATE_CHARACTER(null, SM_CREATE_CHARACTER.RESPONSE_DB_ERROR));
 			IDFactory.getInstance().releaseId(playerCommonData.getPlayerObjId());
-		} else {
+		}
+		else {
 			List<Item> equipment = DAOManager.getDAO(InventoryDAO.class).loadEquipment(player.getObjectId());
-			PlayerAccountData accPlData = new PlayerAccountData(playerCommonData, null, playerAppearance, equipment,
-					null);
+			PlayerAccountData accPlData = new PlayerAccountData(playerCommonData, null, playerAppearance, equipment, null);
 
 			accPlData.setCreationDate(new Timestamp(System.currentTimeMillis()));
 			PlayerService.storeCreationTime(player.getObjectId(), accPlData.getCreationDate());

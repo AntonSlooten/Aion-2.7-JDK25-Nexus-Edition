@@ -29,9 +29,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import com.aionemu.gameserver.model.templates.pet.PetTemplate;
 
 /**
- * This is a container holding and serving all {@link PetTemplate}
- * instances.<br>
- *
+ * This is a container holding and serving all {@link PetTemplate} instances.<br>
+ * 
  * @author IlBuono
  */
 @XmlRootElement(name = "pets")
@@ -42,7 +41,7 @@ public class PetData {
 	private List<PetTemplate> pets;
 
 	/** A map containing all pet templates */
-	private TIntObjectHashMap<PetTemplate> petData = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<PetTemplate> petData = new TIntObjectHashMap<PetTemplate>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (PetTemplate pet : pets) {
@@ -58,8 +57,9 @@ public class PetData {
 
 	/**
 	 * /** Returns an {@link PetTemplate} object with given id.
-	 *
-	 * @param id id of Pet
+	 * 
+	 * @param id
+	 *          id of Pet
 	 * @return PetTemplate object containing data about Pet with that id.
 	 */
 	public PetTemplate getPetTemplate(int id) {

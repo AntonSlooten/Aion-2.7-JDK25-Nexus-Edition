@@ -60,7 +60,7 @@ public class AdminConfig {
 	public static boolean ENABLE_TRADEITEM_RESTRICTION;
 	@Property(key = "gameserver.administration.nocoolddown.gm.connection", defaultValue = "true")
 	public static boolean ADMIN_NO_CD_ON_CONNECTION;
-
+	
 	/**
 	 * Custom TAG based on access level
 	 */
@@ -77,20 +77,26 @@ public class AdminConfig {
 	@Property(key = "gameserver.customtag.access5", defaultValue = "<TAG_HERE> %s")
 	public static String CUSTOMTAG_ACCESS5;
 	@Property(key = "gameserver.customtag.access6", defaultValue = "<TAG_HERE> %s")
-	public static String CUSTOMTAG_ACCESS6;
-	@Property(key = "gameserver.customtag.access7", defaultValue = "<TAG_HERE> %s")
-	public static String CUSTOMTAG_ACCESS7;
-	@Property(key = "gameserver.customtag.access8", defaultValue = "<TAG_HERE> %s")
-	public static String CUSTOMTAG_ACCESS8;
-	@Property(key = "gameserver.customtag.access9", defaultValue = "<TAG_HERE> %s")
-	public static String CUSTOMTAG_ACCESS9;
-	@Property(key = "gameserver.customtag.access10", defaultValue = "<TAG_HERE> %s")
-	public static String CUSTOMTAG_ACCESS10;
-	@Property(key = "gameserver.customtag.access11", defaultValue = "<TAG_HERE> %s")
-	public static String CUSTOMTAG_ACCESS11;
-	@Property(key = "gameserver.customtag.access12", defaultValue = "<TAG_HERE> %s")
-	public static String CUSTOMTAG_ACCESS12;
-
+    public static String CUSTOMTAG_ACCESS6;
+    @Property(key = "gameserver.customtag.access7", defaultValue = "<TAG_HERE> %s")
+    public static String CUSTOMTAG_ACCESS7;
+    @Property(key = "gameserver.customtag.access8", defaultValue = "<TAG_HERE> %s")
+    public static String CUSTOMTAG_ACCESS8;
+    @Property(key = "gameserver.customtag.access9", defaultValue = "<TAG_HERE> %s")
+    public static String CUSTOMTAG_ACCESS9;
+    @Property(key = "gameserver.customtag.access10", defaultValue = "<TAG_HERE> %s")
+    public static String CUSTOMTAG_ACCESS10;
+    @Property(key = "gameserver.customtag.access11", defaultValue = "<TAG_HERE> %s")
+    public static String CUSTOMTAG_ACCESS11;
+    @Property(key = "gameserver.customtag.access12", defaultValue = "<TAG_HERE> %s")
+    public static String CUSTOMTAG_ACCESS12;
+	
 	@Property(key = "gameserver.admin.announce.force.level", defaultValue = "12")
 	public static int ANNOUNCE_FORCE_LEVEL;
+
+	/**
+	 * GM special skill
+	 */
+	@Property(key = "administration.command.special.skill", defaultValue = "3")
+	public static int COMMAND_SPECIAL_SKILL;
 }

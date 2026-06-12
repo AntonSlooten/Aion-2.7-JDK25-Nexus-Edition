@@ -34,47 +34,46 @@ package com.aionemu.gameserver.geoEngine.collision;
 
 import com.aionemu.gameserver.geoEngine.math.Vector3f;
 
+
 /**
  * @author Kirill
  */
 public class CollisionResult implements Comparable<CollisionResult> {
 
-	private Vector3f contactPoint;
-	private float distance;
+    private Vector3f contactPoint;
+    private float distance;
 
-	public CollisionResult(Vector3f contactPoint, float distance) {
-		this.contactPoint = contactPoint;
-		this.distance = distance;
-	}
+    public CollisionResult(Vector3f contactPoint, float distance) {
+        this.contactPoint = contactPoint;
+        this.distance = distance;
+    }
 
-	public CollisionResult() {
-	}
+    public CollisionResult(){
+    }
 
-	public void setContactPoint(Vector3f point) {
-		this.contactPoint = point;
-	}
+    public void setContactPoint(Vector3f point){
+        this.contactPoint = point;
+    }
 
-	public void setDistance(float dist) {
-		this.distance = dist;
-	}
+    public void setDistance(float dist){
+        this.distance = dist;
+    }
 
-	@Override
-	public int compareTo(CollisionResult other) {
-		if (distance < other.distance) {
-			return -1;
-		} else if (distance > other.distance) {
-			return 1;
-		} else {
-			return 0;
-		}
-	}
+    public int compareTo(CollisionResult other) {
+        if (distance < other.distance)
+            return -1;
+        else if (distance > other.distance)
+            return 1;
+        else
+            return 0;
+    }
 
-	public Vector3f getContactPoint() {
-		return contactPoint;
-	}
+    public Vector3f getContactPoint() {
+        return contactPoint;
+    }
 
-	public float getDistance() {
-		return distance;
-	}
+    public float getDistance() {
+        return distance;
+    }
 
 }

@@ -46,7 +46,8 @@ public class LegionEmblem {
 	}
 
 	/**
-	 * @param customEmblemData the customEmblemData to set
+	 * @param customEmblemData
+	 *          the customEmblemData to set
 	 */
 	public void setCustomEmblemData(byte[] customEmblemData) {
 		setPersistentState(PersistentState.UPDATE_REQUIRED);
@@ -58,15 +59,20 @@ public class LegionEmblem {
 	}
 
 	/**
-	 * @param emblemId    the emblemId to set
-	 * @param color_r     the color_r to set
-	 * @param color_g     the color_g to set
-	 * @param color_b     the color_b to set
-	 * @param emblemType  the emblemType to set
+	 * @param emblemId
+	 *          the emblemId to set
+	 * @param color_r
+	 *          the color_r to set
+	 * @param color_g
+	 *          the color_g to set
+	 * @param color_b
+	 *          the color_b to set
+	 * @param emblemType
+	 *          the emblemType to set
 	 * @param emblem_data
 	 */
 	public void setEmblem(int emblemId, int color_r, int color_g, int color_b, LegionEmblemType emblemType,
-			byte[] emblem_data) {
+		byte[] emblem_data) {
 		this.emblemId = emblemId;
 		this.color_r = color_r;
 		this.color_g = color_g;
@@ -113,7 +119,8 @@ public class LegionEmblem {
 	}
 
 	/**
-	 * @param isUploading the isUploading to set
+	 * @param isUploading
+	 *          the isUploading to set
 	 */
 	public void setUploading(boolean isUploading) {
 		this.isUploading = isUploading;
@@ -127,7 +134,8 @@ public class LegionEmblem {
 	}
 
 	/**
-	 * @param emblemSize the emblemSize to set
+	 * @param emblemSize
+	 *          the emblemSize to set
 	 */
 	public void setUploadSize(int emblemSize) {
 		this.uploadSize = emblemSize;
@@ -141,7 +149,8 @@ public class LegionEmblem {
 	}
 
 	/**
-	 * @param uploadData the uploadData to set
+	 * @param uploadData
+	 *          the uploadData to set
 	 */
 	public void addUploadData(byte[] data) {
 		byte[] newData = new byte[uploadedSize];
@@ -167,7 +176,8 @@ public class LegionEmblem {
 	}
 
 	/**
-	 * @param uploadedSize the uploadedSize to set
+	 * @param uploadedSize
+	 *          the uploadedSize to set
 	 */
 	public void addUploadedSize(int uploadedSize) {
 		this.uploadedSize += uploadedSize;
@@ -181,7 +191,8 @@ public class LegionEmblem {
 	}
 
 	/**
-	 * @param emblemType the emblemType to set
+	 * @param emblemType
+	 *          the emblemType to set
 	 */
 	public void setEmblemType(LegionEmblemType emblemType) {
 		this.emblemType = emblemType;
@@ -206,15 +217,13 @@ public class LegionEmblem {
 	/**
 	 * @param persistentState
 	 */
-	@SuppressWarnings("fallthrough")
 	public void setPersistentState(PersistentState persistentState) {
 		switch (persistentState) {
-		case UPDATE_REQUIRED:
-			if (this.persistentState == PersistentState.NEW) {
-				break;
-			}
-		default:
-			this.persistentState = persistentState;
+			case UPDATE_REQUIRED:
+				if (this.persistentState == PersistentState.NEW)
+					break;
+			default:
+				this.persistentState = persistentState;
 		}
 	}
 

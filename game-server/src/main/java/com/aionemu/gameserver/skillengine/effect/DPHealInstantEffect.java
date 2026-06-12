@@ -35,7 +35,7 @@ public class DPHealInstantEffect extends AbstractHealEffect {
 	public void calculate(Effect effect) {
 		super.calculate(effect, HealType.DP);
 	}
-
+	
 	@Override
 	public void applyEffect(Effect effect) {
 		super.applyEffect(effect, HealType.DP);
@@ -48,6 +48,6 @@ public class DPHealInstantEffect extends AbstractHealEffect {
 
 	@Override
 	protected int getMaxStatValue(Effect effect) {
-		return ((Player) effect.getEffected()).getGameStats().getMaxDp().getCurrent();
+		return ((Player)effect.getEffected()).getGameStats().getMaxDp().getCurrent();
 	}
 }

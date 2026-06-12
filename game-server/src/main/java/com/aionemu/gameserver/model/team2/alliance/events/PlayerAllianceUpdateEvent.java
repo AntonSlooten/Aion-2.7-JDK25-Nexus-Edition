@@ -45,13 +45,13 @@ public class PlayerAllianceUpdateEvent extends AlwaysTrueTeamEvent implements Pr
 	@Override
 	public void handleEvent() {
 		switch (allianceEvent) {
-		case MOVEMENT:
-		case UPDATE:
-			alliance.apply(this);
-			break;
-		default:
-			// Unsupported
-			break;
+			case MOVEMENT:
+			case UPDATE:
+				alliance.apply(this);
+				break;
+			default:
+				// Unsupported
+				break;
 		}
 
 	}

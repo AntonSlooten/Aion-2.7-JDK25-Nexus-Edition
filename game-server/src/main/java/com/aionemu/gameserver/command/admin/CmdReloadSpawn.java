@@ -15,7 +15,7 @@ import com.aionemu.gameserver.world.knownlist.Visitor;
  */
 public class CmdReloadSpawn extends BaseCommand {
 
-	@Override
+
 	public void execute(Player player, String... params) {
 		int worldId = 0;
 		if (params.length == 1 && "this".equals(params[0])) {
@@ -39,7 +39,8 @@ public class CmdReloadSpawn extends BaseCommand {
 
 		if (worldId == 0) {
 			SpawnEngine.spawnAll();
-		} else {
+		}
+		else {
 			SpawnEngine.spawnWorldMap(worldId);
 		}
 	}

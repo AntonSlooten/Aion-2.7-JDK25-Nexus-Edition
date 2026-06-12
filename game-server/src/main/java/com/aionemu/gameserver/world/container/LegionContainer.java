@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.org>.
  *
  * aion-unique is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ import java.util.Map;
 
 /**
  * Container for storing Legions by legionId and name.
- *
+ * 
  * @author Simple
  */
 public class LegionContainer implements Iterable<Legion> {
@@ -41,23 +41,22 @@ public class LegionContainer implements Iterable<Legion> {
 
 	/**
 	 * Add Legion to this Container.
-	 *
+	 * 
 	 * @param legion
 	 */
 	public void add(Legion legion) {
-		if (legion == null || legion.getLegionName() == null) {
+		if (legion == null || legion.getLegionName() == null)
 			return;
-		}
 
-		if ((legionsById.put(legion.getLegionId(), legion) != null)
-				|| (legionsByName.put(legion.getLegionName().toLowerCase(), legion) != null)) {
+		if (legionsById.put(legion.getLegionId(), legion) != null)
 			throw new DuplicateAionObjectException();
-		}
+		if (legionsByName.put(legion.getLegionName().toLowerCase(), legion) != null)
+			throw new DuplicateAionObjectException();
 	}
 
 	/**
 	 * Remove Legion from this Container.
-	 *
+	 * 
 	 * @param legion
 	 */
 	public void remove(Legion legion) {
@@ -67,10 +66,10 @@ public class LegionContainer implements Iterable<Legion> {
 
 	/**
 	 * Get Legion object by objectId.
-	 *
-	 * @param legionId - legionId of legion.
-	 * @return Legion with given ojectId or null if Legion with given legionId is
-	 *         not logged.
+	 * 
+	 * @param legionId
+	 *          - legionId of legion.
+	 * @return Legion with given ojectId or null if Legion with given legionId is not logged.
 	 */
 	public Legion get(int legionId) {
 		return legionsById.get(legionId);
@@ -78,10 +77,10 @@ public class LegionContainer implements Iterable<Legion> {
 
 	/**
 	 * Get Legion object by name.
-	 *
-	 * @param name - name of legion
-	 * @return Legion with given name or null if Legion with given name is not
-	 *         logged.
+	 * 
+	 * @param name
+	 *          - name of legion
+	 * @return Legion with given name or null if Legion with given name is not logged.
 	 */
 	public Legion get(String name) {
 		return legionsByName.get(name.toLowerCase());
@@ -89,7 +88,7 @@ public class LegionContainer implements Iterable<Legion> {
 
 	/**
 	 * Returns true if legion is in cached by id
-	 *
+	 * 
 	 * @param legionId
 	 * @return true or false
 	 */
@@ -99,7 +98,7 @@ public class LegionContainer implements Iterable<Legion> {
 
 	/**
 	 * Returns true if legion is in cached by name
-	 *
+	 * 
 	 * @param name
 	 * @return true or false
 	 */

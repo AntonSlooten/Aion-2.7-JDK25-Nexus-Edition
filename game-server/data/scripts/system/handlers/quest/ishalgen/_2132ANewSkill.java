@@ -63,18 +63,18 @@ public class _2132ANewSkill extends QuestHandler {
 			if (!playerClass.isStartingClass())
 				playerClass = PlayerClass.getStartingClassFor(playerClass);
 			switch (playerClass) {
-			case WARRIOR:
-				qs.setQuestVar(1);
-				break;
-			case SCOUT:
-				qs.setQuestVar(2);
-				break;
-			case MAGE:
-				qs.setQuestVar(3);
-				break;
-			case PRIEST:
-				qs.setQuestVar(4);
-				break;
+				case WARRIOR:
+					qs.setQuestVar(1);
+					break;
+				case SCOUT:
+					qs.setQuestVar(2);
+					break;
+				case MAGE:
+					qs.setQuestVar(3);
+					break;
+				case PRIEST:
+					qs.setQuestVar(4);
+					break;
 			}
 			updateQuestStatus(env);
 		}
@@ -94,46 +94,46 @@ public class _2132ANewSkill extends QuestHandler {
 
 		PlayerClass playerClass = PlayerClass.getStartingClassFor(player.getCommonData().getPlayerClass());
 		switch (targetId) {
-		case 203527:
-			if (playerClass == PlayerClass.WARRIOR) {
-				if (env.getDialog() == QuestDialog.USE_OBJECT)
-					return sendQuestDialog(env, 1011);
-				else if (env.getDialogId() == 1009)
-					return sendQuestDialog(env, 5);
-				else
-					return this.sendQuestEndDialog(env);
-			}
-			return false;
-		case 203528:
-			if (playerClass == PlayerClass.SCOUT) {
-				if (env.getDialog() == QuestDialog.USE_OBJECT)
-					return sendQuestDialog(env, 1352);
-				else if (env.getDialogId() == 1009)
-					return sendQuestDialog(env, 6);
-				else
-					return this.sendQuestEndDialog(env);
-			}
-			return false;
-		case 203529:
-			if (playerClass == PlayerClass.MAGE) {
-				if (env.getDialog() == QuestDialog.USE_OBJECT)
-					return sendQuestDialog(env, 1693);
-				else if (env.getDialogId() == 1009)
-					return sendQuestDialog(env, 7);
-				else
-					return this.sendQuestEndDialog(env);
-			}
-			return false;
-		case 203530:
-			if (playerClass == PlayerClass.PRIEST) {
-				if (env.getDialog() == QuestDialog.USE_OBJECT)
-					return sendQuestDialog(env, 2034);
-				else if (env.getDialogId() == 1009)
-					return sendQuestDialog(env, 8);
-				else
-					return this.sendQuestEndDialog(env);
-			}
-			return false;
+			case 203527:
+				if (playerClass == PlayerClass.WARRIOR) {
+					if (env.getDialog() == QuestDialog.USE_OBJECT)
+						return sendQuestDialog(env, 1011);
+					else if (env.getDialogId() == 1009)
+						return sendQuestDialog(env, 5);
+					else
+						return this.sendQuestEndDialog(env);
+				}
+				return false;
+			case 203528:
+				if (playerClass == PlayerClass.SCOUT) {
+					if (env.getDialog() == QuestDialog.USE_OBJECT)
+						return sendQuestDialog(env, 1352);
+					else if (env.getDialogId() == 1009)
+						return sendQuestDialog(env, 6);
+					else
+						return this.sendQuestEndDialog(env);
+				}
+				return false;
+			case 203529:
+				if (playerClass == PlayerClass.MAGE) {
+					if (env.getDialog() == QuestDialog.USE_OBJECT)
+						return sendQuestDialog(env, 1693);
+					else if (env.getDialogId() == 1009)
+						return sendQuestDialog(env, 7);
+					else
+						return this.sendQuestEndDialog(env);
+				}
+				return false;
+			case 203530:
+				if (playerClass == PlayerClass.PRIEST) {
+					if (env.getDialog() == QuestDialog.USE_OBJECT)
+						return sendQuestDialog(env, 2034);
+					else if (env.getDialogId() == 1009)
+						return sendQuestDialog(env, 8);
+					else
+						return this.sendQuestEndDialog(env);
+				}
+				return false;
 		}
 		return false;
 	}

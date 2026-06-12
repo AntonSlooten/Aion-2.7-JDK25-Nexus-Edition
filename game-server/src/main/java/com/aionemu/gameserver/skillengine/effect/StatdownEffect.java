@@ -27,5 +27,5 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "StatdownEffect")
 public class StatdownEffect extends BufEffect {
 
-	// TODO bosses are resistent to this?
+	//TODO bosses are resistent to this?
 }

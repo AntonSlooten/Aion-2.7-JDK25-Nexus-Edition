@@ -101,9 +101,8 @@ public class PlayerGameStats extends CreatureGameStats<Player> {
 		if (mainHandWeapon != null) {
 			base = mainHandWeapon.getItemTemplate().getWeaponStats().getAttackSpeed();
 			Item offWeapon = owner.getEquipment().getOffHandWeapon();
-			if (offWeapon != null) {
+			if (offWeapon != null)
 				base += offWeapon.getItemTemplate().getWeaponStats().getAttackSpeed() / 4;
-			}
 		}
 		Stat2 aSpeed = getStat(StatEnum.ATTACK_SPEED, base);
 		return aSpeed;
@@ -113,15 +112,14 @@ public class PlayerGameStats extends CreatureGameStats<Player> {
 	public Stat2 getMovementSpeed() {
 		Stat2 movementSpeed;
 		PlayerStatsTemplate pst = DataManager.PLAYER_STATS_DATA.getTemplate(owner.getPlayerClass(), owner.getLevel());
-		if (owner.isInFlyingState()) {
+		if (owner.isInFlyingState())
 			movementSpeed = getStat(StatEnum.FLY_SPEED, Math.round(pst.getFlySpeed() * 1000));
-		} else if (owner.isInState(CreatureState.FLIGHT_TELEPORT) && !owner.isInState(CreatureState.RESTING)) {
+		else if (owner.isInState(CreatureState.FLIGHT_TELEPORT) && !owner.isInState(CreatureState.RESTING))
 			movementSpeed = getStat(StatEnum.SPEED, 12000);
-		} else if (owner.isInState(CreatureState.WALKING)) {
+		else if (owner.isInState(CreatureState.WALKING))
 			movementSpeed = getStat(StatEnum.SPEED, Math.round(pst.getWalkSpeed() * 1000));
-		} else {
+		else
 			movementSpeed = getStat(StatEnum.SPEED, Math.round(pst.getRunSpeed() * 1000));
-		}
 		return movementSpeed;
 	}
 
@@ -211,9 +209,8 @@ public class PlayerGameStats extends CreatureGameStats<Player> {
 		Equipment equipment = owner.getEquipment();
 		Item mainHandWeapon = equipment.getMainHandWeapon();
 		if (mainHandWeapon != null) {
-			if (mainHandWeapon.getItemTemplate().getAttackType().isMagical()) {
+			if (mainHandWeapon.getItemTemplate().getAttackType().isMagical())
 				return new AdditionStat(StatEnum.MAIN_HAND_POWER, 0, owner);
-			}
 			base = mainHandWeapon.getItemTemplate().getWeaponStats().getMeanDamage();
 		}
 		Stat2 stat = getStat(StatEnum.PHYSICAL_ATTACK, base);
@@ -225,7 +222,7 @@ public class PlayerGameStats extends CreatureGameStats<Player> {
 		Item offHandWeapon = equipment.getOffHandWeapon();
 		if (offHandWeapon != null && offHandWeapon.getItemTemplate().isWeapon()) {
 			int base = offHandWeapon.getItemTemplate().getWeaponStats().getMeanDamage();
-			base = (int) (base * 0.98d);
+			base *= 0.98;
 			Stat2 stat = getStat(StatEnum.PHYSICAL_ATTACK, base);
 			return getStat(StatEnum.OFF_HAND_POWER, stat);
 		}
@@ -269,8 +266,7 @@ public class PlayerGameStats extends CreatureGameStats<Player> {
 		Equipment equipment = owner.getEquipment();
 		Item offHandWeapon = equipment.getOffHandWeapon();
 		if (offHandWeapon != null && offHandWeapon.getItemTemplate().isWeapon()) {
-			PlayerStatsTemplate pst = DataManager.PLAYER_STATS_DATA.getTemplate(owner.getPlayerClass(),
-					owner.getLevel());
+			PlayerStatsTemplate pst = DataManager.PLAYER_STATS_DATA.getTemplate(owner.getPlayerClass(), owner.getLevel());
 			int base = pst.getMainHandAccuracy();
 			base += offHandWeapon.getItemTemplate().getWeaponStats().getPhysicalAccuracy();
 			return getStat(StatEnum.PHYSICAL_ACCURACY, base);
@@ -284,11 +280,11 @@ public class PlayerGameStats extends CreatureGameStats<Player> {
 		Equipment equipment = owner.getEquipment();
 		Item mainHandWeapon = equipment.getMainHandWeapon();
 		if (mainHandWeapon != null) {
-			if (!mainHandWeapon.getItemTemplate().getAttackType().isMagical()) {
+			if (!mainHandWeapon.getItemTemplate().getAttackType().isMagical())
 				return new AdditionStat(StatEnum.MAGICAL_ATTACK, 0, owner);
-			}
 			base = mainHandWeapon.getItemTemplate().getWeaponStats().getMeanDamage();
-		} else {
+		}
+		else {
 			base = Rnd.get(16, 20);// hand attack
 		}
 
@@ -331,20 +327,18 @@ public class PlayerGameStats extends CreatureGameStats<Player> {
 	@Override
 	public Stat2 getHpRegenRate() {
 		int base = owner.getLevel() + 3;
-		if (owner.isInState(CreatureState.RESTING)) {
+		if (owner.isInState(CreatureState.RESTING))
 			base *= 8;
-		}
-		base = (int) (base * (getHealth().getCurrent() / 100f));
+		base *= getHealth().getCurrent() / 100f;
 		return getStat(StatEnum.REGEN_HP, base);
 	}
 
 	@Override
 	public Stat2 getMpRegenRate() {
 		int base = owner.getLevel() + 8;
-		if (owner.isInState(CreatureState.RESTING)) {
+		if (owner.isInState(CreatureState.RESTING))
 			base *= 8;
-		}
-		base = (int) (base * (getWill().getCurrent() / 100f));
+		base *= getWill().getCurrent() / 100f;
 		return getStat(StatEnum.REGEN_HP, base);
 	}
 

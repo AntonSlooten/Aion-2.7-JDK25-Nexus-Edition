@@ -59,17 +59,17 @@ public class _1561TheMisersMap extends QuestHandler {
 		QuestState qs = player.getQuestStateList().getQuestState(questId);
 
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
-			PacketSendUtility.broadcastPacket(player,
-					new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0, 0), true);
+			PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000,
+				0, 0), true);
 			ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 				@Override
 				public void run() {
-					PacketSendUtility.broadcastPacket(player,
-							new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+					PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+						1, 0), true);
 					removeQuestItem(env, id, 1);
 					QuestService.startQuest(env);
-					// sendQuestDialog(env, 4);
+					//sendQuestDialog(env, 4);
 				}
 			}, 3000);
 			return HandlerResult.SUCCESS;
@@ -93,12 +93,14 @@ public class _1561TheMisersMap extends QuestHandler {
 				if (var == 0) {
 					if (env.getDialog() == QuestDialog.START_DIALOG || env.getDialog() == QuestDialog.USE_OBJECT) {
 						return sendQuestDialog(env, 2375);
-					} else if (env.getDialog() == QuestDialog.SELECT_REWARD) {
+					}
+					else if (env.getDialog() == QuestDialog.SELECT_REWARD) {
 						return defaultCloseDialog(env, 0, 0, true, true);
 					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 700188) { // Jewel Box
 				return sendQuestEndDialog(env);
 			}

@@ -20,7 +20,7 @@ import com.aionemu.gameserver.model.gameobjects.AionObject;
 
 /**
  * AggroInfo: - hate of creature - damage of creature
- *
+ * 
  * @author ATracer, Sarynth
  */
 public class AggroInfo {
@@ -48,9 +48,8 @@ public class AggroInfo {
 	 */
 	public void addDamage(int damage) {
 		this.damage += damage;
-		if (this.damage < 0) {
+		if (this.damage < 0)
 			this.damage = 0;
-		}
 	}
 
 	/**
@@ -58,9 +57,8 @@ public class AggroInfo {
 	 */
 	public void addHate(int damage) {
 		this.hate += damage;
-		if (this.hate < 1) {
+		if (this.hate < 1)
 			this.hate = 1;
-		}
 	}
 
 	/**

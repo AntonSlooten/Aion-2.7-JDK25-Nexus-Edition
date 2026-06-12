@@ -60,7 +60,8 @@ public class _1634TheWreckOfTheArgos extends QuestHandler {
 			if (targetId == 204547) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -70,66 +71,67 @@ public class _1634TheWreckOfTheArgos extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204547: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(182201760);
-					if (qs.getQuestVarById(0) == 0 && itemCount1 >= 3) {
-						return sendQuestDialog(env, 1011);
+				case 204547: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182201760);
+							if (qs.getQuestVarById(0) == 0 && itemCount1 >= 3) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case SELECT_ACTION_4763: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+							return true;
+						}
 					}
 				}
-				case SELECT_ACTION_4763: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-					return true;
+				case 204540: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 1693);
+						}
+						case SELECT_ACTION_1694: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							removeQuestItem(env, 182201760, 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+							return true;
+						}
+					}
 				}
-				}
-			}
-			case 204540: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1693);
-				}
-				case SELECT_ACTION_1694: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					removeQuestItem(env, 182201760, 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-					return true;
-				}
-				}
-			}
-			case 790018: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2034);
-				}
-				case SELECT_ACTION_2035: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					removeQuestItem(env, 182201760, 1);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-					return true;
-				}
+				case 790018: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							return sendQuestDialog(env, 2034);
+						}
+						case SELECT_ACTION_2035: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							removeQuestItem(env, 182201760, 1);
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+							return true;
+						}
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204541) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2375);
-				}
-				case SELECT_REWARD: {
-					return sendQuestDialog(env, 5);
-				}
-				case SELECT_NO_REWARD: {
-					removeQuestItem(env, 182201760, 1);
-				}
-				default:
-					return sendQuestEndDialog(env);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 2375);
+					}
+					case SELECT_REWARD: {
+						return sendQuestDialog(env, 5);
+					}
+					case SELECT_NO_REWARD: {
+						removeQuestItem(env, 182201760, 1);
+					}
+					default:
+						return sendQuestEndDialog(env);
 				}
 			}
 		}

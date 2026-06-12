@@ -28,8 +28,7 @@ import com.aionemu.gameserver.model.Race;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
-import org.apache.commons.lang3.StringUtils;
-
+import org.apache.commons.lang.StringUtils;
 /**
  * @author xTz
  */
@@ -37,7 +36,7 @@ import org.apache.commons.lang3.StringUtils;
 @XmlType(name = "GuideTemplate")
 public class GuideTemplate {
 
-	@XmlAttribute(name = "level")
+	@XmlAttribute(name = "level") 
 	private int level;
 	@XmlAttribute(name = "classType")
 	private PlayerClass classType;
@@ -53,7 +52,7 @@ public class GuideTemplate {
 	private String select = StringUtils.EMPTY;
 	@XmlElement(name = "survey")
 	private List<SurveyTemplate> surveys;
-	@XmlAttribute(name = "rewardCount")
+	@XmlAttribute(name = "rewardCount") 
 	private int rewardCount;
 	@XmlTransient
 	private boolean isActivated = true;
@@ -85,35 +84,35 @@ public class GuideTemplate {
 	public Race getRace() {
 		return this.race;
 	}
-
+	
 	/**
 	 * @return the surveys
 	 */
-	public List<SurveyTemplate> getSurveys() {
+	public  List<SurveyTemplate> getSurveys() {
 		return this.surveys;
 	}
-
+	
 	/**
 	 * @return the message
 	 */
 	public String getMessage() {
 		return this.message;
 	}
-
+	
 	/**
 	 * @return the select
 	 */
 	public String getSelect() {
 		return this.select;
 	}
-
+	
 	/**
 	 * @return the select
 	 */
 	public String getRewardInfo() {
 		return this.rewardInfo;
 	}
-
+	
 	public int getRewardCount() {
 		return this.rewardCount;
 	}

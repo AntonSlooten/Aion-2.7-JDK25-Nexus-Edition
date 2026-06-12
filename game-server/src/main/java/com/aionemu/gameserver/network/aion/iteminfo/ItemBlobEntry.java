@@ -23,11 +23,11 @@ import com.aionemu.gameserver.network.aion.iteminfo.ItemInfoBlob.ItemBlobType;
 
 /**
  * ItemInfo blob entry (contains detailed item info).
- *
+ * 
  * @author -Nemesiss-
  *
  */
-public abstract class ItemBlobEntry extends PacketWriteHelper {
+public abstract class ItemBlobEntry extends PacketWriteHelper{
 	private final ItemBlobType type;
 	private ItemBlobEntry nextBlob;
 	ItemInfoBlob parent;
@@ -41,20 +41,18 @@ public abstract class ItemBlobEntry extends PacketWriteHelper {
 	}
 
 	void addBlobEntry(ItemBlobEntry ent) {
-		if (nextBlob == null) {
+		if(nextBlob == null)
 			nextBlob = ent;
-		} else {
+		else
 			nextBlob.addBlobEntry(ent);
-		}
 	}
 
 	@Override
-	protected void writeMe(ByteBuffer buf) {
+	protected	void writeMe(ByteBuffer buf) {
 		writeC(buf, type.getEntryId());
 		writeThisBlob(buf);
-		if (nextBlob != null) {
+		if(nextBlob != null)
 			nextBlob.writeMe(buf);
-		}
 	}
 
 	public abstract void writeThisBlob(ByteBuffer buf);

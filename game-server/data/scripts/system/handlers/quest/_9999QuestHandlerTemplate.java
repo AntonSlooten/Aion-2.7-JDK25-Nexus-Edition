@@ -30,8 +30,7 @@ import com.aionemu.gameserver.world.zone.ZoneName;
  * This is a template for everyone, who will write a new quest handler<br>
  * It's only example. All IDs should be changed to the from your quest<br>
  * And use only needed events<br>
- * The main things are the structure and using default methods from the
- * QuestHandler class<br>
+ * The main things are the structure and using default methods from the QuestHandler class<br>
  * - First the quest status<br>
  * - Then the target ID<br>
  * - Then QuestDialog
@@ -63,48 +62,54 @@ public class _9999QuestHandlerTemplate extends QuestHandler {
 			if (targetId == 000000) { // Viktor Logwin
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011); // can be different
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 111111: { // Oliver
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1352);
-					} else if (var == 4) {
-						return sendQuestDialog(env, 1693);
-					} else if (var == 5) {
-						return sendQuestDialog(env, 2034);
+				case 111111: { // Oliver
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1352);
+							}
+							else if (var == 4) {
+								return sendQuestDialog(env, 1693);
+							}
+							else if (var == 5) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case SELECT_ACTION_1353: {
+							playQuestMovie(env, 0);
+							return sendQuestDialog(env, 1353);
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 4, 5); // 5
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 5, 6, true, 2375, 10001);
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
 					}
 				}
-				case SELECT_ACTION_1353: {
-					playQuestMovie(env, 0);
-					return sendQuestDialog(env, 1353);
-				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 4, 5); // 5
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 5, 6, true, 2375, 10001);
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 000000) { // Viktor Logwin
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 20001);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
@@ -123,7 +128,7 @@ public class _9999QuestHandlerTemplate extends QuestHandler {
 		QuestState qs = player.getQuestStateList().getQuestState(questId);
 		if (qs != null && qs.getStatus() == QuestStatus.START) {
 			if (player.isInsideZone(ZoneName.DF1A_ITEMUSEAREA_Q2016)) { // example zone
-				return HandlerResult.fromBoolean(useQuestItem(env, item, 3, 4, false));
+					return HandlerResult.fromBoolean(useQuestItem(env, item, 3, 4, false));
 			}
 		}
 		return HandlerResult.FAILED;

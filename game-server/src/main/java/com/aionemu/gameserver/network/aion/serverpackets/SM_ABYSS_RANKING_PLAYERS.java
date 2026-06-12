@@ -35,15 +35,14 @@ public class SM_ABYSS_RANKING_PLAYERS extends AionServerPacket {
 	private int page;
 	private boolean isEndPacket;
 
-	public SM_ABYSS_RANKING_PLAYERS(int lastUpdate, List<AbyssRankingResult> data, Race race, int page,
-			boolean isEndPacket) {
+	public SM_ABYSS_RANKING_PLAYERS(int lastUpdate, List<AbyssRankingResult> data, Race race, int page, boolean isEndPacket) {
 		this.lastUpdate = lastUpdate;
 		this.data = data;
 		this.race = race.getRaceId();
 		this.page = page;
 		this.isEndPacket = isEndPacket;
 	}
-
+	
 	public SM_ABYSS_RANKING_PLAYERS(int lastUpdate, Race race) {
 		this.lastUpdate = lastUpdate;
 		this.data = Collections.emptyList();
@@ -53,7 +52,7 @@ public class SM_ABYSS_RANKING_PLAYERS extends AionServerPacket {
 	}
 
 	@Override
-	protected void writeImpl(AionConnection con) {
+	protected void writeImpl(AionConnection con){
 		writeD(race);// 0:Elyos 1:Asmo
 		writeD(lastUpdate);// Date
 		writeD(page);
@@ -70,7 +69,7 @@ public class SM_ABYSS_RANKING_PLAYERS extends AionServerPacket {
 			writeD(0); // Sex ? 0=male / 1=female
 			writeQ(rs.getPlayerAP());// Abyss Points
 			writeH(rs.getPlayerLevel());
-
+			
 			writeS(rs.getPlayerName(), 52);// Player Name
 			writeS(rs.getLegionName(), 82);// Legion Name
 		}

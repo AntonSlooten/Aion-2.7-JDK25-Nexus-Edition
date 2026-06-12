@@ -74,33 +74,33 @@ public class _11031CanIEatIt extends QuestHandler {
 		}
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (env.getTargetId()) {
-			case 798959:
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case CHECK_COLLECTED_ITEMS:
-					if (var == 0) {
-						if (QuestService.collectItemCheck(env, true)) {
-							qs.setQuestVarById(0, var + 1);
-							updateQuestStatus(env);
-							PacketSendUtility.sendPacket(player,
-									new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+				case 798959:
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+							else if (var == 1)
+								return sendQuestDialog(env, 1352);
+						case CHECK_COLLECTED_ITEMS:
+							if (var == 0) {
+								if (QuestService.collectItemCheck(env, true)) {
+									qs.setQuestVarById(0, var + 1);
+									updateQuestStatus(env);
+									PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+									return true;
+								}
+								else
+									return sendQuestDialog(env, 10001);
+							}
+						case STEP_TO_2:
+							if (var == 1) {
+								if (!giveQuestItem(env, 182206724, 1))
+									return true;
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+							}
 							return true;
-						} else
-							return sendQuestDialog(env, 10001);
 					}
-				case STEP_TO_2:
-					if (var == 1) {
-						if (!giveQuestItem(env, 182206724, 1))
-							return true;
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-					}
-					return true;
-				}
 			}
 		}
 		return false;
@@ -115,14 +115,14 @@ public class _11031CanIEatIt extends QuestHandler {
 
 		if (id != 182206724)
 			return HandlerResult.UNKNOWN;
-		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 1000, 0, 0), true);
+		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 1000, 0,
+			0), true);
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
-				PacketSendUtility.broadcastPacket(player,
-						new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+				PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+					1, 0), true);
 				removeQuestItem(env, 182206724, 1);
 				qs.setStatus(QuestStatus.REWARD);
 				updateQuestStatus(env);

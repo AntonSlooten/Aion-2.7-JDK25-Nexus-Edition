@@ -2,11 +2,11 @@ package com.aionemu.gameserver.configs.shedule;
 
 import com.aionemu.commons.utils.xml.JAXBUtil;
 import java.io.File;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.List;
 import javax.xml.bind.annotation.*;
 import org.apache.commons.io.FileUtils;
+import java.nio.charset.Charset;
+
 
 @XmlRootElement(name = "siege_schedule")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -53,7 +53,7 @@ public class SiegeSchedule {
 	public static SiegeSchedule load() {
 		SiegeSchedule ss;
 		try {
-			String xml = Files.readString(new File("./config/shedule/siege_schedule.xml").toPath(), StandardCharsets.UTF_8);
+			String xml = FileUtils.readFileToString(new File("./config/shedule/siege_schedule.xml"), Charset.defaultCharset());
 			ss = JAXBUtil.deserialize(xml, SiegeSchedule.class);
 		} catch (Exception e) {
 			throw new RuntimeException("Failed to initialize sieges", e);

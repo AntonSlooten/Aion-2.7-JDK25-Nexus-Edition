@@ -71,50 +71,49 @@ public class _10026SecretOfInggison extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799053)
 				return sendQuestEndDialog(env);
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 799052) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-			case STEP_TO_1:
-				if (var == 0) {
-					PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(1, 14));
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+				case STEP_TO_1:
+					if (var == 0) {
+						PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(1, 14));
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
 			}
-		} else if (targetId == 799053) {
+		}
+		else if (targetId == 799053) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-				else if (var == 1)
-					return sendQuestDialog(env, 1353);
-			case SET_REWARD:
-				if (var == 1) {
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(1, 15));
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			case STEP_TO_3:
-				if (qs.getStatus() == QuestStatus.REWARD) {
-					qs.setStatus(QuestStatus.COMPLETE);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+					else if (var == 1)
+						return sendQuestDialog(env, 1353);
+				case SET_REWARD:
+					if (var == 1) {
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(1, 15));
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+				case STEP_TO_3:
+					if (qs.getStatus() == QuestStatus.REWARD) {
+						qs.setStatus(QuestStatus.COMPLETE);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
 			}
 		}
 		return false;

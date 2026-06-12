@@ -17,10 +17,10 @@
 
 package com.aionemu.commons.callbacks;
 
-import java.lang.instrument.Instrumentation;
-
 import com.aionemu.commons.callbacks.enhancer.GlobalCallbackEnhancer;
 import com.aionemu.commons.callbacks.enhancer.ObjectCallbackEnhancer;
+
+import java.lang.instrument.Instrumentation;
 
 /**
  * This class is used as javaagent to do on-class-load transformations with objects whose methods are marked by
@@ -35,14 +35,14 @@ import com.aionemu.commons.callbacks.enhancer.ObjectCallbackEnhancer;
  */
 public class JavaAgentEnhancer {
 
-	/**
-	 * Premain method that registers this class as ClassFileTransformer
-	 *
-	 * @param args            arguments passed to javaagent, ignored
-	 * @param instrumentation Instrumentation object
-	 */
-	public static void premain(String args, Instrumentation instrumentation) {
-		instrumentation.addTransformer(new ObjectCallbackEnhancer(), true);
-		instrumentation.addTransformer(new GlobalCallbackEnhancer(), true);
-	}
+    /**
+     * Premain method that registers this class as ClassFileTransformer
+     *
+     * @param args            arguments passed to javaagent, ignored
+     * @param instrumentation Instrumentation object
+     */
+    public static void premain(String args, Instrumentation instrumentation) {
+        instrumentation.addTransformer(new ObjectCallbackEnhancer(), true);
+        instrumentation.addTransformer(new GlobalCallbackEnhancer(), true);
+    }
 }

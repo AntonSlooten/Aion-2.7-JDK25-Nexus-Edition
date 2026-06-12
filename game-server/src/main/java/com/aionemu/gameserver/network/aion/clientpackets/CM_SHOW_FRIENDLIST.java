@@ -22,7 +22,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_LIST;
 
 /**
  * Send when the client requests the friendlist
- *
+ * 
  * @author Ben
  */
 public class CM_SHOW_FRIENDLIST extends AionClientPacket {

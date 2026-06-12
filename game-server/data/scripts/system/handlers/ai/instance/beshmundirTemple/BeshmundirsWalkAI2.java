@@ -60,31 +60,33 @@ public class BeshmundirsWalkAI2 extends NpcAI2 {
 			}
 		};
 		switch (dialogId) {
-		case 60: { // I'm ready to enter
-			if (player.isInGroup2() && player.getPlayerGroup2().isLeader(player)) {
-				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 4762)); // Path selection
-			} else if (isAGroupMemberInInstance(player)) {
-				PortalTemplate portalTemplate = DataManager.PORTAL_DATA.getPortalTemplate(getNpcId());
-				if (portalTemplate != null) {
-					PortalService.port(portalTemplate, player, getObjectId(), getObjectTemplate().getTalkDelay());
+			case 60: { // I'm ready to enter
+				if (player.isInGroup2() && player.getPlayerGroup2().isLeader(player)) {
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 4762)); // Path selection
 				}
-			} else {
-				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 10)); // Initial dialog
+				else if (isAGroupMemberInInstance(player)) {
+					PortalTemplate portalTemplate = DataManager.PORTAL_DATA.getPortalTemplate(getNpcId());
+					if (portalTemplate != null) {
+						PortalService.port(portalTemplate, player, getObjectId(), getObjectTemplate().getTalkDelay());
+					}
+				}
+				else {
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 10)); // Initial dialog
+				}
+				break;
 			}
-			break;
-		}
-		case 4763: { // I'll take the safer path
-			AI2Actions.addRequest(this, player, SM_QUESTION_WINDOW.STR_INSTANCE_DUNGEON_WITH_DIFFICULTY_ENTER_CONFIRM,
+			case 4763: { // I'll take the safer path
+				AI2Actions.addRequest(this, player, SM_QUESTION_WINDOW.STR_INSTANCE_DUNGEON_WITH_DIFFICULTY_ENTER_CONFIRM,
 					getObjectId(), request, new DescriptionId(1804103));
-			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 4762)); // Path selection
-			break;
-		}
-		case 4848: { // Give me the dangerous path
-			AI2Actions.addRequest(this, player, SM_QUESTION_WINDOW.STR_INSTANCE_DUNGEON_WITH_DIFFICULTY_ENTER_CONFIRM,
+				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 4762)); // Path selection
+				break;
+			}
+			case 4848: { // Give me the dangerous path
+				AI2Actions.addRequest(this, player, SM_QUESTION_WINDOW.STR_INSTANCE_DUNGEON_WITH_DIFFICULTY_ENTER_CONFIRM,
 					getObjectId(), request, new DescriptionId(1804105));
-			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 4762)); // Path selection
-			break;
-		}
+				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 4762)); // Path selection
+				break;
+			}
 		}
 		return true;
 	}

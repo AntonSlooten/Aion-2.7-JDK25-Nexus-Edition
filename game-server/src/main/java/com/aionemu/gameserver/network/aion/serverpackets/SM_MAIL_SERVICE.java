@@ -55,7 +55,7 @@ public class SM_MAIL_SERVICE extends MailServicePacket {
 
 	/**
 	 * Send mailMessage(ex. Send OK, Mailbox full etc.)
-	 *
+	 * 
 	 * @param mailMessage
 	 */
 	public SM_MAIL_SERVICE(MailMessage mailMessage) {
@@ -66,7 +66,7 @@ public class SM_MAIL_SERVICE extends MailServicePacket {
 
 	/**
 	 * Send mailbox info
-	 *
+	 * 
 	 * @param player
 	 * @param letters
 	 */
@@ -78,7 +78,7 @@ public class SM_MAIL_SERVICE extends MailServicePacket {
 
 	/**
 	 * used when reading letter
-	 *
+	 * 
 	 * @param player
 	 * @param letter
 	 * @param time
@@ -92,7 +92,7 @@ public class SM_MAIL_SERVICE extends MailServicePacket {
 
 	/**
 	 * used when getting attached items
-	 *
+	 * 
 	 * @param letterId
 	 * @param attachmentType
 	 */
@@ -105,7 +105,7 @@ public class SM_MAIL_SERVICE extends MailServicePacket {
 
 	/**
 	 * used when deleting letter
-	 *
+	 * 
 	 * @param letterId
 	 */
 	public SM_MAIL_SERVICE(int letterId) {
@@ -118,24 +118,24 @@ public class SM_MAIL_SERVICE extends MailServicePacket {
 	protected void writeImpl(AionConnection con) {
 		writeC(serviceId);
 		switch (serviceId) {
-		case 0:
-			writeMailboxState(totalCount, unreadCount, unreadExpressCount);
-			break;
-		case 1:
-			writeMailMessage(mailMessage);
-			break;
-		case 2:
-			writeLettersList(letters, player);
-			break;
-		case 3:
-			writeLetterRead(letter, time);
-			break;
-		case 5:
-			writeLetterState(letterId, attachmentType);
-			break;
-		case 6:
-			writeLetterDelete(totalCount, unreadCount, unreadExpressCount, letterId);
-			break;
+			case 0:
+				writeMailboxState(totalCount, unreadCount, unreadExpressCount);
+				break;
+			case 1:
+				writeMailMessage(mailMessage);
+				break;
+			case 2:
+				writeLettersList(letters, player);
+				break;
+			case 3:
+				writeLetterRead(letter, time);
+				break;
+			case 5:
+				writeLetterState(letterId, attachmentType);
+				break;
+			case 6:
+				writeLetterDelete(totalCount, unreadCount, unreadExpressCount, letterId);
+				break;
 		}
 	}
 }

@@ -42,7 +42,6 @@ public class WorthinessTicketBoxAI2 extends ChestAI2 {
 	public void handleDropRegistered() {
 		Set<DropItem> dropItems = DropRegistrationService.getInstance().geCurrentDropMap().get(getObjectId());
 		dropItems.clear();
-		dropItems.add(DropRegistrationService.getInstance().regDropItem(1,
-				getPosition().getWorldMapInstance().getSoloPlayerObj(), getNpcId(), 186000134, 1));
+		dropItems.add(DropRegistrationService.getInstance().regDropItem(1, getPosition().getWorldMapInstance().getSoloPlayerObj(), getNpcId(), 186000134, 1));
 	}
 }

@@ -44,24 +44,21 @@ public class DispelBuffCounterAtkEffect extends DamageEffect {
 
 	@Override
 	public void calculate(Effect effect) {
-		if (!super.calculate(effect, null, null)) {
+		if (!super.calculate(effect, null, null))
 			return;
-		}
-
+		
 		Creature effected = effect.getEffected();
 		int count = value + delta * effect.getSkillLevel();
 		int finalPower = power + dpower * effect.getSkillLevel();
-
-		int i = effected.getEffectController().calculateNumberOfEffects(DispelCategoryType.BUFF, SkillTargetSlot.BUFF,
-				dispelLevel);
+		
+		int i = effected.getEffectController().calculateNumberOfEffects(DispelCategoryType.BUFF, SkillTargetSlot.BUFF, dispelLevel);
 		i = (i < count ? i : count);
-
+		
 		int newValue = 0;
-		if (i == 1) {
+		if (i == 1)
 			newValue = hitvalue;
-		} else if (i > 1) {
+		else if (i > 1)
 			newValue = hitvalue + ((hitvalue / 2) * (i - 1));
-		}
 
 		int valueWithDelta = newValue + hitdelta * effect.getSkillLevel();
 
@@ -70,8 +67,8 @@ public class DispelBuffCounterAtkEffect extends DamageEffect {
 		AttackUtil.calculateMagicalSkillResult(effect, valueWithDelta, bonus, getElement());
 
 		// First cancel buffs so to avoid shield effects to calculate damage as 0
-		// TOOD move to apply effect, this is not good
-		effect.getEffected().getEffectController().removeEffectByDispelCat(DispelCategoryType.BUFF,
-				SkillTargetSlot.BUFF, i, dispelLevel, finalPower, false);
+		//TOOD move to apply effect, this is not good
+		effect.getEffected().getEffectController().removeEffectByDispelCat(DispelCategoryType.BUFF, SkillTargetSlot.BUFF
+				, i, dispelLevel, finalPower, false);
 	}
 }

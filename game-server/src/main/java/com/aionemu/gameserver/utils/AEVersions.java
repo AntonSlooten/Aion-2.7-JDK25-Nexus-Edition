@@ -50,16 +50,14 @@ public class AEVersions {
 
 	public static String[] getFullVersionInfo() {
 		return new String[] { "Commons Revision: " + getRevisionInfo(commons),
-				"Commons Build Date: " + getDateInfo(commons), "GS Revision: " + getRevisionInfo(gameserver),
-				"GS Branch: " + getBranchInfo(gameserver),
-				"GS Branch Commit Date: " + getBranchCommitTimeInfo(gameserver),
-				"GS Build Date: " + getDateInfo(gameserver), "..................................................",
-				".................................................." };
+			"Commons Build Date: " + getDateInfo(commons), "GS Revision: " + getRevisionInfo(gameserver),
+			"GS Branch: " + getBranchInfo(gameserver), "GS Branch Commit Date: " + getBranchCommitTimeInfo(gameserver),
+			"GS Build Date: " + getDateInfo(gameserver), "..................................................",
+			".................................................." };
 	}
 
 	public static void printFullVersionInfo() {
-		for (String line : getFullVersionInfo()) {
+		for (String line : getFullVersionInfo())
 			log.info(line);
-		}
 	}
 }

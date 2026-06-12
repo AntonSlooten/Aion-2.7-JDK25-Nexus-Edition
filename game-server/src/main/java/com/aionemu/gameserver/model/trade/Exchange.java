@@ -38,7 +38,7 @@ public class Exchange {
 
 	private long kinahCount;
 
-	private Map<Integer, ExchangeItem> items = new HashMap<>();
+	private Map<Integer, ExchangeItem> items = new HashMap<Integer, ExchangeItem>();
 	private List<Item> itemsToUpdate = FastList.newInstance();
 
 	public Exchange(Player activeplayer, Player targetPlayer) {

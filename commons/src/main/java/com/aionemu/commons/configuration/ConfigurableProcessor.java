@@ -1,136 +1,231 @@
+/*
+ * This file is part of aion-emu <aion-emu.com>.
+ *
+ * aion-emu is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * aion-emu is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.aionemu.commons.configuration;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Objects;
 import java.util.Properties;
 
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.slf4j.Logger;
+
+
 /**
- * Processes fields annotated with {@link Property} and injects values from property files.
+ * This class is designed to process classes and interfaces that have fields marked with {@link Property} annotation
+ * 
+ * @author SoulKeeper
  */
-public final class ConfigurableProcessor {
+@SuppressWarnings("deprecation")
+public class ConfigurableProcessor {
 
-    private static final Logger log = LoggerFactory.getLogger(ConfigurableProcessor.class);
+	private static final Logger log = LoggerFactory.getLogger(ConfigurableProcessor.class);
 
-    private ConfigurableProcessor() {
-    }
+	/**
+	 * This method is an entry point to the parser logic.<br>
+	 * Any object or class that have {@link Property} annotation in it or it's parent class/interface can be submitted
+	 * here.<br>
+	 * If object(new Something()) is submitted, object fields are parsed. (non-static)<br>
+	 * If class is submitted(Sotmething.class), static fields are parsed.<br>
+	 * <p/>
+	 * 
+	 * @param object
+	 *          Class or Object that has {@link Property} annotations.
+	 * @param properties
+	 *          Properties that should be used while seraching for a {@link Property#key()}
+	 */
+	public static void process(Object object, Properties... properties) {
+		Class<?> clazz;
 
-    public static void process(Object target, Properties... properties) {
-        Objects.requireNonNull(target, "target");
+		if (object instanceof Class) {
+			clazz = (Class<?>) object;
+			object = null;
+		}
+		else {
+			clazz = object.getClass();
+		}
 
-        Class<?> type;
-        Object instance;
+		process(clazz, object, properties);
+	}
 
-        if (target instanceof Class<?> clazz) {
-            type = clazz;
-            instance = null;
-        } else {
-            type = target.getClass();
-            instance = target;
-        }
+	/**
+	 * This method uses recurcieve calls to launch search for {@link Property} annotation on itself and
+	 * parents\interfaces.
+	 * 
+	 * @param clazz
+	 *          Class of object
+	 * @param obj
+	 *          Object if any, null if parsing class (static fields only)
+	 * @param props
+	 *          Properties with keys\values
+	 */
+	private static void process(Class<?> clazz, Object obj, Properties[] props) {
+		processFields(clazz, obj, props);
 
-        process(type, instance, properties == null ? new Properties[0] : properties);
-    }
+		// Interfaces can't have any object fields, only static
+		// So there is no need to parse interfaces for instances of objects
+		// Only classes (static fields) can be located in interfaces
+		if (obj == null) {
+			for (Class<?> itf : clazz.getInterfaces()) {
+				process(itf, obj, props);
+			}
+		}
 
-    private static void process(Class<?> type, Object instance, Properties[] properties) {
-        processFields(type, instance, properties);
+		Class<?> superClass = clazz.getSuperclass();
+		if (superClass != null && superClass != Object.class) {
+			process(superClass, obj, props);
+		}
+	}
 
-        if (instance == null) {
-            for (Class<?> interfaceType : type.getInterfaces()) {
-                process(interfaceType, null, properties);
-            }
-        }
+	/**
+	 * This method runs throught the declared fields watching for the {@link Property} annotation. It also watches for the
+	 * field modifiers like {@link java.lang.reflect.Modifier#STATIC} and {@link java.lang.reflect.Modifier#FINAL}
+	 * 
+	 * @param clazz
+	 *          Class of object
+	 * @param obj
+	 *          Object if any, null if parsing class (static fields only)
+	 * @param props
+	 *          Properties with keys\values
+	 */
+	private static void processFields(Class<?> clazz, Object obj, Properties[] props) {
+		for (Field f : clazz.getDeclaredFields()) {
+			// Static fields should not be modified when processing object
+			if (Modifier.isStatic(f.getModifiers()) && obj != null) {
+				continue;
+			}
 
-        Class<?> superClass = type.getSuperclass();
-        if (superClass != null && superClass != Object.class) {
-            process(superClass, instance, properties);
-        }
-    }
+			// Not static field should not be processed when parsing class
+			if (!Modifier.isStatic(f.getModifiers()) && obj == null) {
+				continue;
+			}
 
-    private static void processFields(Class<?> type, Object instance, Properties[] properties) {
-        for (Field field : type.getDeclaredFields()) {
-            boolean staticField = Modifier.isStatic(field.getModifiers());
+			if (f.isAnnotationPresent(Property.class)) {
+				// Final fields should not be processed
+				if (Modifier.isFinal(f.getModifiers())) {
+					log.error("Attempt to proceed final field " + f.getName() + " of class " + clazz.getName());
+					throw new RuntimeException();
+				}
+				processField(f, obj, props);
+			}
+		}
+	}
 
-            if (staticField && instance != null) {
-                continue;
-            }
-            if (!staticField && instance == null) {
-                continue;
-            }
-            if (!field.isAnnotationPresent(Property.class)) {
-                continue;
-            }
-            if (Modifier.isFinal(field.getModifiers())) {
-                throw new IllegalStateException(
-                        "Cannot process final property field " + field.getName() + " in class " + type.getName()
-                );
-            }
+	/**
+	 * This method takes {@link Property} annotation and does sets value according to annotation property. For this reason
+	 * {@link #getFieldValue(java.lang.reflect.Field, java.util.Properties[])} can be called, however if method sees that
+	 * there is no need - field can remain with it's initial value.
+	 * <p/>
+	 * Also this method is capturing and logging all {@link Exception} that are thrown by underlying methods.
+	 * 
+	 * @param f
+	 *          field that is going to be processed
+	 * @param obj
+	 *          Object if any, null if parsing class (static fields only)
+	 * @param props
+	 *          Properties with kyes\values
+	 */
+	private static void processField(Field f, Object obj, Properties[] props) {
+		boolean oldAccessible = f.isAccessible();
+		f.setAccessible(true);
+		try {
+			Property property = f.getAnnotation(Property.class);
+			if (!Property.DEFAULT_VALUE.equals(property.defaultValue()) || isKeyPresent(property.key(), props)) {
+				f.set(obj, getFieldValue(f, props));
+			}
+			else if (log.isDebugEnabled()) {
+				log.debug("Field " + f.getName() + " of class " + f.getDeclaringClass().getName() + " wasn't modified");
+			}
+		}
+		catch (Exception e) {
+			log.error("Can't transform field " + f.getName() + " of class " + f.getDeclaringClass());
+			throw new RuntimeException();
+		}
+		f.setAccessible(oldAccessible);
+	}
 
-            processField(field, instance, properties);
-        }
-    }
+	/**
+	 * This method is responsible for receiving field value.<br>
+	 * It tries to load property by key, if not found - it uses default value.<br>
+	 * Transformation is done using {@link com.aionemu.commons.configuration.PropertyTransformerFactory}
+	 * 
+	 * @param field
+	 *          field that has to be transformed
+	 * @param props
+	 *          properties with key\values
+	 * @return transformed object that will be used as field value
+	 * @throws TransformationException
+	 *           if something goes wrong during transformation
+	 */
+	private static Object getFieldValue(Field field, Properties[] props) throws TransformationException {
+		Property property = field.getAnnotation(Property.class);
+		String defaultValue = property.defaultValue();
+		String key = property.key();
+		String value = null;
 
-    private static void processField(Field field, Object instance, Properties[] properties) {
-        Object accessTarget = Modifier.isStatic(field.getModifiers()) ? null : instance;
-        boolean restoreAccessibility = !field.canAccess(accessTarget);
+		if (key.isEmpty()) {
+			log.warn("Property " + field.getName() + " of class " + field.getDeclaringClass().getName() + " has empty key");
+		}
+		else {
+			value = findPropertyByKey(key, props);
+		}
 
-        try {
-            if (restoreAccessibility) {
-                field.setAccessible(true);
-            }
+		if (value == null || value.trim().equals("")) {
+			value = defaultValue;
+			if (log.isDebugEnabled()) {
+				log.debug("Using default value for field " + field.getName() + " of class "
+					+ field.getDeclaringClass().getName());
+			}
+		}
 
-            Property property = field.getAnnotation(Property.class);
-            if (!Property.DEFAULT_VALUE.equals(property.defaultValue()) || isKeyPresent(property.key(), properties)) {
-                field.set(instance, getFieldValue(field, properties));
-            } else {
-                log.debug("Field {} of class {} was not modified", field.getName(), field.getDeclaringClass().getName());
-            }
-        } catch (Exception e) {
-            throw new IllegalStateException(
-                    "Cannot transform field " + field.getName() + " of class " + field.getDeclaringClass().getName(),
-                    e
-            );
-        } finally {
-            if (restoreAccessibility) {
-                field.setAccessible(false);
-            }
-        }
-    }
+		PropertyTransformer<?> pt = PropertyTransformerFactory.newTransformer(field.getType(),
+			property.propertyTransformer());
+		return pt.transform(value, field);
+	}
 
-    private static Object getFieldValue(Field field, Properties[] properties) throws TransformationException {
-        Property property = field.getAnnotation(Property.class);
-        String key = property.key();
-        String value = null;
+	/**
+	 * Finds value by key in properties
+	 * 
+	 * @param key
+	 *          value key
+	 * @param props
+	 *          properties to loook for the key
+	 * @return value if found, null otherwise
+	 */
+	private static String findPropertyByKey(String key, Properties[] props) {
+		for (Properties p : props) {
+			if (p.containsKey(key)) {
+				return p.getProperty(key);
+			}
+		}
 
-        if (key.isBlank()) {
-            log.warn("Property {} of class {} has an empty key", field.getName(), field.getDeclaringClass().getName());
-        } else {
-            value = findPropertyByKey(key, properties);
-        }
+		return null;
+	}
 
-        if (value == null || value.isBlank()) {
-            value = property.defaultValue();
-            log.debug("Using default value for field {} of class {}", field.getName(), field.getDeclaringClass().getName());
-        }
-
-        PropertyTransformer<?> transformer = PropertyTransformerFactory.newTransformer(
-                field.getType(), property.propertyTransformer());
-        return transformer.transform(value, field);
-    }
-
-    private static String findPropertyByKey(String key, Properties[] properties) {
-        for (Properties propertySet : properties) {
-            if (propertySet != null && propertySet.containsKey(key)) {
-                return propertySet.getProperty(key);
-            }
-        }
-        return null;
-    }
-
-    private static boolean isKeyPresent(String key, Properties[] properties) {
-        return findPropertyByKey(key, properties) != null;
-    }
+	/**
+	 * Checks if key is present in the given properties
+	 * 
+	 * @param key
+	 *          key to check
+	 * @param props
+	 *          prperties to look for key
+	 * @return true if key present, false in other case
+	 */
+	private static boolean isKeyPresent(String key, Properties[] props) {
+		return findPropertyByKey(key, props) != null;
+	}
 }

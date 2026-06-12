@@ -23,16 +23,16 @@ import com.aionemu.commons.configuration.TransformationException;
 
 /**
  * Transforms enum string representation to enum. String must match case definition of enum, for instance:
- * <p/>
+ * 
  * <pre>
  * enum{
  *  FILE,
  *  URL
  * }
  * </pre>
- * <p/>
+ * 
  * will be parsed with string "FILE" but not "file".
- *
+ * 
  * @author SoulKeeper
  */
 public class EnumTransformer implements PropertyTransformer<Enum<?>> {
@@ -44,11 +44,14 @@ public class EnumTransformer implements PropertyTransformer<Enum<?>> {
 
 	/**
 	 * Trnasforms string to enum
-	 *
-	 * @param value value that will be transformed
-	 * @param field value will be assigned to this field
+	 * 
+	 * @param value
+	 *          value that will be transformed
+	 * @param field
+	 *          value will be assigned to this field
 	 * @return Enum object representing the value
-	 * @throws TransformationException if somehting went wrong
+	 * @throws TransformationException
+	 *           if somehting went wrong
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
@@ -58,7 +61,8 @@ public class EnumTransformer implements PropertyTransformer<Enum<?>> {
 
 		try {
 			return Enum.valueOf(clazz, value);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new TransformationException(e);
 		}
 	}

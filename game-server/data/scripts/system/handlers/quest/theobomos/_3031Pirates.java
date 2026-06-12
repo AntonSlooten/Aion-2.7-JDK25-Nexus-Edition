@@ -62,16 +62,16 @@ public class _3031Pirates extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 730144) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 4762);
-				}
-				case STEP_TO_1: {
-					QuestService.startQuest(env);
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
-					return true;
-				}
-				default:
-					return sendQuestStartDialog(env);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 4762);
+					}
+					case STEP_TO_1: {
+						QuestService.startQuest(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
+						return true;
+					}
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
@@ -106,56 +106,57 @@ public class _3031Pirates extends QuestHandler {
 
 		if (targetId == 214219 || targetId == 214220) {
 			switch (qs.getQuestVarById(1)) {
-			case 0:
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
-			case 9:
-			case 10:
-			case 11:
-			case 12:
-			case 13:
-			case 14: {
-				qs.setQuestVarById(1, qs.getQuestVarById(1) + 1);
-				updateQuestStatus(env);
-
-				if (qs.getQuestVarById(1) == 15 && qs.getQuestVarById(2) == 12) {
-					qs.setStatus(QuestStatus.REWARD);
+				case 0:
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				case 6:
+				case 7:
+				case 8:
+				case 9:
+				case 10:
+				case 11:
+				case 12:
+				case 13:
+				case 14: {
+					qs.setQuestVarById(1, qs.getQuestVarById(1) + 1);
 					updateQuestStatus(env);
+
+					if (qs.getQuestVarById(1) == 15 && qs.getQuestVarById(2) == 12) {
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						return true;
+					}
 					return true;
 				}
-				return true;
 			}
-			}
-		} else if (targetId == 214222 || targetId == 214223) {
+		}
+		else if (targetId == 214222 || targetId == 214223) {
 			switch (qs.getQuestVarById(2)) {
-			case 0:
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
-			case 9:
-			case 10:
-			case 11: {
-				qs.setQuestVarById(2, qs.getQuestVarById(2) + 1);
-				updateQuestStatus(env);
-
-				if (qs.getQuestVarById(1) == 15 && qs.getQuestVarById(2) == 12) {
-					qs.setStatus(QuestStatus.REWARD);
+				case 0:
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				case 6:
+				case 7:
+				case 8:
+				case 9:
+				case 10:
+				case 11: {
+					qs.setQuestVarById(2, qs.getQuestVarById(2) + 1);
 					updateQuestStatus(env);
+
+					if (qs.getQuestVarById(1) == 15 && qs.getQuestVarById(2) == 12) {
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						return true;
+					}
 					return true;
 				}
-				return true;
-			}
 			}
 		}
 		return false;

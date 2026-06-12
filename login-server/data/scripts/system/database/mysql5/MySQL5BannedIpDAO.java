@@ -137,7 +137,7 @@ public class MySQL5BannedIpDAO extends BannedIpDAO {
 	@Override
 	public Set<BannedIP> getAllBans() {
 
-		final Set<BannedIP> result = new HashSet<>();
+		final Set<BannedIP> result = new HashSet<BannedIP>();
 		DB.select("SELECT * FROM banned_ip", new ReadStH() {
 
 			@Override

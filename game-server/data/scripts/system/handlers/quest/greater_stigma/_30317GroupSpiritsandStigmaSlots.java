@@ -71,49 +71,50 @@ public class _30317GroupSpiritsandStigmaSlots extends QuestHandler {
 
 		if (qs != null && qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 799322: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 1011);
-				case STEP_TO_1:
-					QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 799506, player.getX(),
-							player.getY(), player.getZ(), player.getHeading());
-					qs.setQuestVarById(0, 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			}
-			case 799208:
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					long itemCount1 = player.getInventory().getItemCountByItemId(182209718);
-					long itemCount2 = player.getInventory().getItemCountByItemId(182209719);
-					if (var == 2) {
-						if (itemCount1 > 0 && itemCount2 > 0) {
-							removeQuestItem(env, 182209718, 1);
-							removeQuestItem(env, 182209719, 1);
-							qs.setStatus(QuestStatus.REWARD);
+				case 799322: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							return sendQuestDialog(env, 1011);
+						case STEP_TO_1:
+							QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 799506, player.getX(),
+								player.getY(), player.getZ(), player.getHeading());
+							qs.setQuestVarById(0, 1);
 							updateQuestStatus(env);
-							return sendQuestDialog(env, 1693);
-						} else
-							return sendQuestDialog(env, 10001);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
 					}
 				}
-			case 799506:
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_2:
-					env.getVisibleObject().getController().delete();
-					qs.setQuestVarById(0, 2);
-					updateQuestStatus(env);
-					return true;
-				}
+				case 799208:
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							long itemCount1 = player.getInventory().getItemCountByItemId(182209718);
+							long itemCount2 = player.getInventory().getItemCountByItemId(182209719);
+							if (var == 2) {
+								if (itemCount1 > 0 && itemCount2 > 0) {
+									removeQuestItem(env, 182209718, 1);
+									removeQuestItem(env, 182209719, 1);
+									qs.setStatus(QuestStatus.REWARD);
+									updateQuestStatus(env);
+									return sendQuestDialog(env, 1693);
+								}
+								else
+									return sendQuestDialog(env, 10001);
+							}
+					}
+				case 799506:
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 1)
+								return sendQuestDialog(env, 1352);
+						case STEP_TO_2:
+							env.getVisibleObject().getController().delete();
+							qs.setQuestVarById(0, 2);
+							updateQuestStatus(env);
+							return true;
+					}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799208) {
 				if (env.getDialogId() == 34)
 					return sendQuestDialog(env, 5);

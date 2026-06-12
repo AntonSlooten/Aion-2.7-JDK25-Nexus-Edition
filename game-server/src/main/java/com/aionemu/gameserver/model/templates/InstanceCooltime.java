@@ -29,7 +29,7 @@ import com.aionemu.gameserver.model.Race;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "InstanceCooltime", propOrder = { "entCoolTime", "maxMemberLight", "maxMemberDark",
-		"enterMinLevelLight", "enterMaxLevelLight", "enterMinLevelDark", "enterMaxLevelDark", "can_enter_mentor" })
+	"enterMinLevelLight", "enterMaxLevelLight", "enterMinLevelDark", "enterMaxLevelDark", "can_enter_mentor" })
 public class InstanceCooltime {
 
 	@XmlElement(name = "ent_cool_time")
@@ -57,7 +57,7 @@ public class InstanceCooltime {
 
 	/**
 	 * Gets the value of the entCoolTime property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getEntCoolTime() {
@@ -66,7 +66,7 @@ public class InstanceCooltime {
 
 	/**
 	 * Gets the value of the maxMemberLight property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getMaxMemberLight() {
@@ -75,7 +75,7 @@ public class InstanceCooltime {
 
 	/**
 	 * Gets the value of the maxMemberDark property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getMaxMemberDark() {
@@ -84,7 +84,7 @@ public class InstanceCooltime {
 
 	/**
 	 * Gets the value of the enterMinLevelLight property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getEnterMinLevelLight() {
@@ -93,7 +93,7 @@ public class InstanceCooltime {
 
 	/**
 	 * Gets the value of the enterMaxLevelLight property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getEnterMaxLevelLight() {
@@ -102,7 +102,7 @@ public class InstanceCooltime {
 
 	/**
 	 * Gets the value of the enterMinLevelDark property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getEnterMinLevelDark() {
@@ -111,7 +111,7 @@ public class InstanceCooltime {
 
 	/**
 	 * Gets the value of the enterMaxLevelDark property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getEnterMaxLevelDark() {
@@ -120,7 +120,7 @@ public class InstanceCooltime {
 
 	/**
 	 * Gets the value of the can_enter_mentor property.
-	 *
+	 * 
 	 * @return possible object is {@link boolean }
 	 */
 	public boolean getCanEnterMentor() {
@@ -143,7 +143,7 @@ public class InstanceCooltime {
 
 	/**
 	 * Gets the value of the race property.
-	 *
+	 * 
 	 * @return possible object is {@link Race }
 	 */
 	public Race getRace() {

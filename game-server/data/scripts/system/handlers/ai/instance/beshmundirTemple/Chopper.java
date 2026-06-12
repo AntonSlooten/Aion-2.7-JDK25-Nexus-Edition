@@ -21,14 +21,14 @@ import com.aionemu.gameserver.ai2.AIName;
 import ai.AggressiveNpcAI2;
 
 /**
- * @author Kairyu
+ * @author Kairyu 
  *
  */
 @AIName("chopper")
 public class Chopper extends AggressiveNpcAI2 {
-
+  
 	@Override
-	public int modifyDamage(int damage) {
+	public int modifyDamage(int damage)	{
 		return 2;
 	}
 }

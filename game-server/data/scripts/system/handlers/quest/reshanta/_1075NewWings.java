@@ -65,79 +65,81 @@ public class _1075NewWings extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 278506: { // Tellus
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 278506: { // Tellus
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case SELECT_ACTION_1013: {
+							playQuestMovie(env, 272);
+							break;
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
 					}
-				}
-				case SELECT_ACTION_1013: {
-					playQuestMovie(env, 272);
 					break;
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-				break;
-			}
-			case 279023: { // Agemonerk
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
+				case 279023: { // Agemonerk
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_2: {
+							if (qs.getQuestVars().getQuestVars() == 1) {
+								player.setState(CreatureState.FLIGHT_TELEPORT);
+								player.unsetState(CreatureState.ACTIVE);
+								player.setFlightTeleportId(57001);
+								PacketSendUtility.sendPacket(player, new SM_EMOTION(player, EmotionType.START_FLYTELEPORT, 57001, 0));
+							}
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
 					}
+					break;
 				}
-				case STEP_TO_2: {
-					if (qs.getQuestVars().getQuestVars() == 1) {
-						player.setState(CreatureState.FLIGHT_TELEPORT);
-						player.unsetState(CreatureState.ACTIVE);
-						player.setFlightTeleportId(57001);
-						PacketSendUtility.sendPacket(player,
-								new SM_EMOTION(player, EmotionType.START_FLYTELEPORT, 57001, 0));
-					}
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				}
-				break;
-			}
-			case 278643: { // Raithor
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 2) {
-						return sendQuestDialog(env, 1693);
-					} else if (var == 3) {
-						if (killed) {
-							return sendQuestDialog(env, 2034);
+				case 278643: { // Raithor
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 2) {
+								return sendQuestDialog(env, 1693);
+							}
+							else if (var == 3) {
+								if (killed) {
+									return sendQuestDialog(env, 2034);
+								}
+							}
+						}
+						case STEP_TO_3: {
+							if (var == 2) {
+								QuestService.addNewSpawn(400010000, player.getInstanceId(), 214102, 2344.32f, 1789.96f, 2258.88f,
+									(byte) 86);
+								QuestService.addNewSpawn(400010000, player.getInstanceId(), 214102, 2344.51f, 1786.01f, 2258.88f,
+									(byte) 52);
+								return defaultCloseDialog(env, 2, 3); // 3
+							}
+						}
+						case STEP_TO_4: {
+							if (var == 3) {
+								qs.setQuestVarById(0, 12);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestSelectionDialog(env);
+							}
 						}
 					}
 				}
-				case STEP_TO_3: {
-					if (var == 2) {
-						QuestService.addNewSpawn(400010000, player.getInstanceId(), 214102, 2344.32f, 1789.96f,
-								2258.88f, (byte) 86);
-						QuestService.addNewSpawn(400010000, player.getInstanceId(), 214102, 2344.51f, 1786.01f,
-								2258.88f, (byte) 52);
-						return defaultCloseDialog(env, 2, 3); // 3
-					}
-				}
-				case STEP_TO_4: {
-					if (var == 3) {
-						qs.setQuestVarById(0, 12);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestSelectionDialog(env);
-					}
-				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 279023) { // Agemonerk
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  * aion-emu is free software: you can redistribute it and/or modify it under the
@@ -26,6 +26,7 @@ import com.aionemu.gameserver.network.aion.AionConnection.State;
 import com.aionemu.gameserver.network.aion.serverpackets.*;
 import com.aionemu.gameserver.questEngine.QuestEngine;
 import com.aionemu.gameserver.questEngine.model.QuestEnv;
+import com.aionemu.gameserver.services.LegionService;
 import com.aionemu.gameserver.services.SerialKillerService;
 import com.aionemu.gameserver.services.WeatherService;
 import com.aionemu.gameserver.spawnengine.InstanceRiftSpawnManager;
@@ -56,16 +57,14 @@ public class CM_LEVEL_READY extends AionClientPacket {
 		sendPacket(new SM_MOTION(activePlayer.getObjectId(), activePlayer.getMotions().getActiveMotions()));
 		activePlayer.getController().startProtectionActiveTask();
 
-		WindstreamTemplate template = DataManager.WINDSTREAM_DATA
-				.getStreamTemplate(activePlayer.getPosition().getMapId());
+		WindstreamTemplate template = DataManager.WINDSTREAM_DATA.getStreamTemplate(activePlayer.getPosition().getMapId());
 		Location2D location;
-		if (template != null) {
-			for (Location2D element : template.getLocations().getLocation()) {
-				location = element;
-				sendPacket(new SM_WINDSTREAM_ANNOUNCE(location.getBidirectional(), template.getMapid(),
-						location.getId(), location.getBoost()));
+		if (template != null)
+			for (int i = 0; i < template.getLocations().getLocation().size(); i++) {
+				location = template.getLocations().getLocation().get(i);
+				sendPacket(new SM_WINDSTREAM_ANNOUNCE(location.getBidirectional(), template.getMapid(), location.getId(),
+						location.getBoost()));
 			}
-		}
 		location = null;
 		template = null;
 
@@ -73,9 +72,8 @@ public class CM_LEVEL_READY extends AionClientPacket {
 		 * Spawn player into the world.
 		 */
 		// If already spawned, despawn before spawning into the world
-		if (activePlayer.isSpawned()) {
+		if (activePlayer.isSpawned())
 			World.getInstance().despawn(activePlayer);
-		}
 		World.getInstance().spawn(activePlayer);
 
 		activePlayer.getController().refreshZoneImpl();
@@ -86,9 +84,9 @@ public class CM_LEVEL_READY extends AionClientPacket {
 		 * Loading weather for the player's region
 		 */
 		WeatherService.getInstance().loadWeather(activePlayer);
-
+		
 		SerialKillerService.getInstance().onEnterMap(activePlayer);
-
+		
 		QuestEngine.getInstance().onEnterWorld(new QuestEnv(null, activePlayer, 0, 0));
 
 		activePlayer.getController().onEnterWorld();
@@ -101,14 +99,15 @@ public class CM_LEVEL_READY extends AionClientPacket {
 		activePlayer.getEffectController().updatePlayerEffectIcons();
 		sendPacket(SM_CUBE_UPDATE.cubeSize(StorageType.CUBE, activePlayer));
 
-		if (activePlayer.isTeleporting()) {
+		if (activePlayer.isTeleporting())
 			activePlayer.setIsTeleporting(false);
-		}
 
 		Pet pet = activePlayer.getPet();
-		if (pet != null) {
+		if (pet != null)
 			World.getInstance().spawn(pet);
-		}
+		
+		if (activePlayer.isLegionMember())
+			LegionService.getInstance().onPlayerChangeMap(activePlayer);
 	}
 
 }

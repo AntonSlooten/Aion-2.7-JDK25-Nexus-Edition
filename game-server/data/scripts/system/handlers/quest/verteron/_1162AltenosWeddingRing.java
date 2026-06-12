@@ -70,37 +70,37 @@ public class _1162AltenosWeddingRing extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 700005: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					if (player.getInventory().getItemCountByItemId(182200563) == 0) {
-						if (!giveQuestItem(env, 182200563, 1)) {
+				case 700005: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							if (player.getInventory().getItemCountByItemId(182200563) == 0) {
+								if (!giveQuestItem(env, 182200563, 1)) {
+									return true;
+								}
+							}
+							qs = player.getQuestStateList().getQuestState(questId);
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.broadcastPacket(player.getTarget(), new SM_EMOTION((Creature) player.getTarget(),
+								EmotionType.DIE, 128, 0)); // wtf ?
 							return true;
 						}
 					}
-					qs = player.getQuestStateList().getQuestState(questId);
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.broadcastPacket(player.getTarget(),
-							new SM_EMOTION((Creature) player.getTarget(), EmotionType.DIE, 128, 0)); // wtf ?
-					return true;
 				}
+				case 203093:
+				case 203095: {
+					if (qs.getQuestVarById(0) == 1) {
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						removeQuestItem(env, 182200563, 1);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
 				}
-			}
-			case 203093:
-			case 203095: {
-				if (qs.getQuestVarById(0) == 1) {
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					removeQuestItem(env, 182200563, 1);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			}
 				return false;
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203095) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

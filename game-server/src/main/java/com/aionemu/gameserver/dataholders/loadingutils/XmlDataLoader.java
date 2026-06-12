@@ -31,11 +31,9 @@ import java.io.File;
 import java.io.FileReader;
 
 /**
- * This class is responsible for loading xml files. It uses JAXB to do the
- * job.<br>
- * In addition, it uses @{link {@link XmlMerger} to create input file from all
- * xml files.
- *
+ * This class is responsible for loading xml files. It uses JAXB to do the job.<br>
+ * In addition, it uses @{link {@link XmlMerger} to create input file from all xml files.
+ * 
  * @author Luno
  */
 public class XmlDataLoader {
@@ -58,9 +56,8 @@ public class XmlDataLoader {
 	}
 
 	/**
-	 * Creates {@link StaticData} object based on xml files, starting from
-	 * static_data.xml
-	 *
+	 * Creates {@link StaticData} object based on xml files, starting from static_data.xml
+	 * 
 	 * @return StaticData object, containing all game data defined in xml files
 	 */
 	public StaticData loadStaticData() {
@@ -79,23 +76,26 @@ public class XmlDataLoader {
 			return (StaticData) un.unmarshal(new FileReader(CACHE_XML_FILE));
 		}
 		/*
-		 * catch (IllegalAnnotationsException e) {
-		 * log.error("Error while loading static data", e); throw new
-		 * Error("Error while loading static data", e); } catch (FileNotFoundException
-		 * e) { log.error("Error while loading static data", e); throw new
-		 * Error("Error while loading static data", e); } catch (JAXBException e) {
-		 * log.error("Error while loading static data", e); throw new
-		 * Error("Error while loading static data", e); }
-		 */
+		catch (IllegalAnnotationsException e) {
+			log.error("Error while loading static data", e);
+			throw new Error("Error while loading static data", e);
+		}
+		catch (FileNotFoundException e) {
+			log.error("Error while loading static data", e);
+			throw new Error("Error while loading static data", e);
+		}
+		catch (JAXBException e) {
+			log.error("Error while loading static data", e);
+			throw new Error("Error while loading static data", e);
+		}*/
 		catch (Exception e) {
 			return null;
 		}
 	}
 
 	/**
-	 * Creates and returns {@link Schema} object representing xml schema of xml
-	 * files
-	 *
+	 * Creates and returns {@link Schema} object representing xml schema of xml files
+	 * 
 	 * @return a Schema object.
 	 */
 	private Schema getSchema() {
@@ -104,7 +104,8 @@ public class XmlDataLoader {
 
 		try {
 			schema = sf.newSchema(new File(XML_SCHEMA_FILE));
-		} catch (SAXException saxe) {
+		}
+		catch (SAXException saxe) {
 			log.error("Error while getting schema", saxe);
 			throw new Error("Error while getting schema", saxe);
 		}
@@ -115,24 +116,25 @@ public class XmlDataLoader {
 	/** Creates directory for cache files if it doesn't already exist */
 	private void makeCacheDirectory() {
 		File cacheDir = new File(CACHE_DIRECTORY);
-		if (!cacheDir.exists()) {
+		if (!cacheDir.exists())
 			cacheDir.mkdir();
-		}
 	}
 
 	/**
 	 * Merges xml files(if are newer than cache file) and puts output to cache file.
-	 *
+	 * 
 	 * @see XmlMerger
 	 * @param cachedXml
 	 * @param cleanMainXml
-	 * @throws Error is thrown if some problem occured.
+	 * @throws Error
+	 *           is thrown if some problem occured.
 	 */
 	private void mergeXmlFiles(File cachedXml, File cleanMainXml) throws Error {
 		XmlMerger merger = new XmlMerger(cleanMainXml, cachedXml);
 		try {
 			merger.process();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Error while merging xml files", e);
 			throw new Error("Error while merging xml files", e);
 		}

@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.ai2;
 
+
+
 import com.aionemu.commons.scripting.classlistener.AggregatedClassListener;
 import com.aionemu.commons.scripting.classlistener.OnClassLoadUnloadListener;
 import com.aionemu.commons.scripting.classlistener.ScheduledTaskClassListener;
@@ -40,7 +42,7 @@ public class AI2Engine implements GameEngine {
 	private static ScriptManager scriptManager = new ScriptManager();
 	public static final File INSTANCE_DESCRIPTOR_FILE = new File("./data/scripts/system/aihandlers.xml");
 
-	private final Map<String, Class<? extends AbstractAI>> aiMap = new HashMap<>();
+	private final Map<String, Class<? extends AbstractAI>> aiMap = new HashMap<String, Class<? extends AbstractAI>>();
 
 	@Override
 	public void load() {
@@ -55,11 +57,12 @@ public class AI2Engine implements GameEngine {
 
 		try {
 			scriptManager.load(INSTANCE_DESCRIPTOR_FILE);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new GameServerError("Can't initialize ai handlers.", e);
 		}
 		log.info("Loaded " + aiMap.size() + " ai handlers.");
-
+		
 	}
 
 	@Override
@@ -77,38 +80,40 @@ public class AI2Engine implements GameEngine {
 			aiMap.put(nameAnnotation.value(), class1);
 		}
 	}
-
+	
 	public void reload() {
-		log.info("AI2 engine reload started");
-		ScriptManager tmpSM;
+        log.info("AI2 engine reload started");
+        ScriptManager tmpSM;
 
-		try {
-			tmpSM = new ScriptManager();
-			AggregatedClassListener acl = new AggregatedClassListener();
-			acl.addClassListener(new OnClassLoadUnloadListener());
-			acl.addClassListener(new ScheduledTaskClassListener());
-			acl.addClassListener(new AI2HandlerClassListener());
-			tmpSM.setGlobalClassListener(acl);
-			try {
-				tmpSM.load(INSTANCE_DESCRIPTOR_FILE);
-			} catch (Exception e) {
-				throw new GameServerError("Can't initialize AI2 handlers.", e);
-			}
-		} catch (Exception e) {
-			throw new GameServerError("Can't reload AI2 engine.", e);
-		}
+        try {
+            tmpSM = new ScriptManager();
+            AggregatedClassListener acl = new AggregatedClassListener();
+            acl.addClassListener(new OnClassLoadUnloadListener());
+            acl.addClassListener(new ScheduledTaskClassListener());
+            acl.addClassListener(new AI2HandlerClassListener());
+            tmpSM.setGlobalClassListener(acl);
+            try {
+                tmpSM.load(INSTANCE_DESCRIPTOR_FILE);
+            } catch (Exception e) {
+                throw new GameServerError("Can't initialize AI2 handlers.", e);
+            }
+        } catch (Exception e) {
+            throw new GameServerError("Can't reload AI2 engine.", e);
+        }
 
-		if (tmpSM != null) {
-			shutdown();
-			load();
-		}
-	}
+        if (tmpSM != null) {
+            shutdown();
+            load();
+        }
+    }
 
 	public final AI2 setupAI(String name, Creature owner) {
 		AbstractAI aiInstance = null;
 		try {
+			// PERBAIKAN
 			aiInstance = aiMap.get(name).getDeclaredConstructor().newInstance();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("[AI2] AI factory error: " + name, e);
 		}
 		aiInstance.setOwner(owner);
@@ -118,7 +123,6 @@ public class AI2Engine implements GameEngine {
 		}
 		return aiInstance;
 	}
-
 	/**
 	 * @param aiName
 	 * @param owner
@@ -126,12 +130,13 @@ public class AI2Engine implements GameEngine {
 	public void setupAI(AiNames aiName, Npc owner) {
 		setupAI(aiName.getName(), owner);
 	}
+	
+
 
 	public static AI2Engine getInstance() {
 		return SingletonHolder.instance;
 	}
 
-	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder {
 
 		protected static final AI2Engine instance = new AI2Engine();

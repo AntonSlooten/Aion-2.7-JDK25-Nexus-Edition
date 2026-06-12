@@ -33,13 +33,13 @@ import com.aionemu.gameserver.world.zone.handler.ZoneHandler;
 /**
  * @author ATracer
  */
-public class ZoneInstance implements Comparable<ZoneInstance> {
+public class ZoneInstance implements Comparable<ZoneInstance>{
 
 	private ZoneInfo template;
 	private int mapId;
-	private Map<Integer, Creature> creatures = new FastMap<>();
-	protected List<ZoneHandler> handlers = new ArrayList<>();
-
+	private Map<Integer, Creature> creatures = new FastMap<Integer, Creature>();
+	protected List<ZoneHandler> handlers = new ArrayList<ZoneHandler>(); 
+	
 	public ZoneInstance(int mapId, ZoneInfo template) {
 		this.template = template;
 		this.mapId = mapId;
@@ -58,7 +58,7 @@ public class ZoneInstance implements Comparable<ZoneInstance> {
 	public ZoneTemplate getZoneTemplate() {
 		return template.getZoneTemplate();
 	}
-
+	
 	/**
 	 * @return the breath
 	 */
@@ -66,76 +66,69 @@ public class ZoneInstance implements Comparable<ZoneInstance> {
 		return template.getZoneTemplate().isBreath();
 	}
 
-	public boolean revalidate(Creature creature) {
-		return (mapId == creature.getWorldId()
-				&& template.getArea().isInside3D(creature.getX(), creature.getY(), creature.getZ()));
+	public boolean revalidate(Creature creature){
+		return (mapId == creature.getWorldId() && template.getArea().isInside3D(creature.getX(), creature.getY(), creature.getZ()));
 	}
-
-	public synchronized boolean onEnter(Creature creature) {
-		if (creatures.containsKey(creature.getObjectId())) {
+	
+	public synchronized boolean onEnter(Creature creature){
+		if (creatures.containsKey(creature.getObjectId()))
 			return false;
-		}
 		creatures.put(creature.getObjectId(), creature);
-		if (isBreath()) {
+		if (isBreath())
 			creature.setInsideZoneType(ZoneType.WATER);
-		}
 		creature.getController().onEnterZone(this);
-		for (ZoneHandler handler : handlers) {
-			handler.onEnterZone(creature, this);
-		}
+		for (int i = 0 ; i < handlers.size(); i++)
+			handlers.get(i).onEnterZone(creature, this);
 		return true;
 	}
-
-	public synchronized boolean onLeave(Creature creature) {
-		if (!creatures.containsKey(creature.getObjectId())) {
+	
+	public synchronized boolean onLeave(Creature creature){
+		if (!creatures.containsKey(creature.getObjectId()))
 			return false;
-		}
 		creatures.remove(creature.getObjectId());
-		if (isBreath()) {
+		if (isBreath())
 			creature.unsetInsideZoneType(ZoneType.WATER);
-		}
 		creature.getController().onLeaveZone(this);
-		for (ZoneHandler handler : handlers) {
-			handler.onLeaveZone(creature, this);
-		}
+		for (int i = 0 ; i < handlers.size(); i++)
+			handlers.get(i).onLeaveZone(creature, this);
 		return true;
 	}
-
-	public boolean onDie(Creature attacker, Creature target) {
-		if (!creatures.containsKey(target.getObjectId())) {
+	
+	public boolean onDie(Creature attacker, Creature target){
+		if (!creatures.containsKey(target.getObjectId()))
 			return false;
-		}
-		for (ZoneHandler handler : handlers) {
-			if (handler instanceof AdvencedZoneHandler) {
-				if (((AdvencedZoneHandler) handler).onDie(attacker, target, this)) {
+		for (int i = 0 ; i < handlers.size(); i++){
+			ZoneHandler handler = handlers.get(i);
+			if (handler instanceof AdvencedZoneHandler){
+				if (((AdvencedZoneHandler) handler).onDie(attacker, target, this))
 					return true;
-				}
 			}
 		}
 		return false;
 	}
 
-	public boolean isInsideCreature(Creature creature) {
+	public boolean isInsideCreature(Creature creature){
 		return creatures.containsKey(creature.getObjectId());
 	}
-
-	public boolean isInsideCordinate(float x, float y, float z) {
+	
+	public boolean isInsideCordinate(float x, float y, float z){
 		return template.getArea().isInside3D(x, y, z);
 	}
 
 	@Override
 	public int compareTo(ZoneInstance o) {
-		int result = getZoneTemplate().getPriority() - o.getZoneTemplate().getPriority();
-		if (result == 0) {
-			return template.getZoneTemplate().getName().ordinal() - o.template.getZoneTemplate().getName().ordinal();
+		int result = getZoneTemplate().getPriority()-o.getZoneTemplate().getPriority();
+		if (result == 0){
+			return template.getZoneTemplate().getName().ordinal()-o.template.getZoneTemplate().getName().ordinal();
 		}
 		return result;
 	}
-
-	public void addHandler(ZoneHandler handler) {
+	
+	public void addHandler(ZoneHandler handler){
 		this.handlers.add(handler);
 	}
 
+	
 	/**
 	 * @return the creatures
 	 */

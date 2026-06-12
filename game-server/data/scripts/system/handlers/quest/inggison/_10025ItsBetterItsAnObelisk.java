@@ -93,57 +93,59 @@ public class _10025ItsBetterItsAnObelisk extends QuestHandler {
 				return HandlerResult.UNKNOWN;
 			if (!player.isInsideZone(ZoneName.TEMPLE_OF_SCALES_210050000))
 				return HandlerResult.UNKNOWN;
-			PacketSendUtility.broadcastPacket(player,
-					new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0, 0), true);
+			PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000,
+				0, 0), true);
 			ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 				@Override
 				public void run() {
 					removeQuestItem(env, 182206623, 1);
 					int var = qs.getQuestVarById(0);
-					PacketSendUtility.broadcastPacket(player,
-							new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+					PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+						1, 0), true);
 					qs.setQuestVarById(0, var + 1);
 					updateQuestStatus(env);
 				}
 			}, 3000);
 			return HandlerResult.SUCCESS;
 
-		} else if (var == 6) {
+		}
+		else if (var == 6) {
 			if (qs == null || id != 182206624)
 				return HandlerResult.UNKNOWN;
 			if (!player.isInsideZone(ZoneName.ALTAR_OF_AVARICE_210050000))
 				return HandlerResult.UNKNOWN;
-			PacketSendUtility.broadcastPacket(player,
-					new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0, 0), true);
+			PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000,
+				0, 0), true);
 			ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 				@Override
 				public void run() {
 					removeQuestItem(env, 182206624, 1);
 					int var = qs.getQuestVarById(0);
-					PacketSendUtility.broadcastPacket(player,
-							new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+					PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+						1, 0), true);
 					qs.setQuestVarById(0, var + 1);
 					updateQuestStatus(env);
 				}
 			}, 3000);
 			return HandlerResult.SUCCESS;
 
-		} else if (var == 12) {
+		}
+		else if (var == 12) {
 			if (qs == null || id != 182206626)
 				return HandlerResult.UNKNOWN;
 			if (!player.isInsideZone(ZoneName.ANGRIEF_BULWARK_210050000))
 				return HandlerResult.UNKNOWN;
-			PacketSendUtility.broadcastPacket(player,
-					new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0, 0), true);
+			PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000,
+				0, 0), true);
 			ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 				@Override
 				public void run() {
 					removeQuestItem(env, 182206626, 1);
-					PacketSendUtility.broadcastPacket(player,
-							new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+					PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+						1, 0), true);
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
 				}
@@ -176,83 +178,91 @@ public class _10025ItsBetterItsAnObelisk extends QuestHandler {
 					return sendQuestEndDialog(env);
 			}
 			return false;
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 798927) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-			case STEP_TO_1:
-				if (var == 0)
-					return defaultCloseDialog(env, 0, 1); // 1
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+				case STEP_TO_1:
+					if (var == 0)
+						return defaultCloseDialog(env, 0, 1); // 1
 			}
-		} else if (targetId == 798932) {
+		}
+		else if (targetId == 798932) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-			case STEP_TO_2:
-				if (var == 1)
-					return defaultCloseDialog(env, 1, 2); // 2
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+				case STEP_TO_2:
+					if (var == 1)
+						return defaultCloseDialog(env, 1, 2); // 2
 			}
-		} else if (targetId == 798933) {
+		}
+		else if (targetId == 798933) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 2)
-					return sendQuestDialog(env, 1693);
-			case STEP_TO_3:
-				if (var == 2)
-					return defaultCloseDialog(env, 2, 3); // 3
+				case START_DIALOG:
+					if (var == 2)
+						return sendQuestDialog(env, 1693);
+				case STEP_TO_3:
+					if (var == 2)
+						return defaultCloseDialog(env, 2, 3); // 3
 			}
-		} else if (targetId == 799023) {
+		}
+		else if (targetId == 799023) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 3)
-					return sendQuestDialog(env, 2034);
-			case STEP_TO_4:
-				if (var == 3)
-					return defaultCloseDialog(env, 3, 4, 182206623, 1, 0, 0); // 4
+				case START_DIALOG:
+					if (var == 3)
+						return sendQuestDialog(env, 2034);
+				case STEP_TO_4:
+					if (var == 3)
+						return defaultCloseDialog(env, 3, 4, 182206623, 1, 0, 0); // 4
 			}
-		} else if (targetId == 799024) {
+		}
+		else if (targetId == 799024) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 5)
-					return sendQuestDialog(env, 2716);
-				else if (var == 7)
-					return sendQuestDialog(env, 3398);
-			case STEP_TO_6:
-				if (var == 5)
-					return defaultCloseDialog(env, 5, 6, 182206624, 1, 0, 0); // 6
-			case STEP_TO_8:
-				if (var == 7)
-					return defaultCloseDialog(env, 7, 8); // 8
+				case START_DIALOG:
+					if (var == 5)
+						return sendQuestDialog(env, 2716);
+					else if (var == 7)
+						return sendQuestDialog(env, 3398);
+				case STEP_TO_6:
+					if (var == 5)
+						return defaultCloseDialog(env, 5, 6, 182206624, 1, 0, 0); // 6
+				case STEP_TO_8:
+					if (var == 7)
+						return defaultCloseDialog(env, 7, 8); // 8
 			}
-		} else if (targetId == 278500) {
+		}
+		else if (targetId == 278500) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 8)
-					return sendQuestDialog(env, 3739);
-			case STEP_TO_9:
-				if (var == 8)
-					return defaultCloseDialog(env, 8, 9); // 9
+				case START_DIALOG:
+					if (var == 8)
+						return sendQuestDialog(env, 3739);
+				case STEP_TO_9:
+					if (var == 8)
+						return defaultCloseDialog(env, 8, 9); // 9
 			}
-		} else if (targetId == 700607) {
+		}
+		else if (targetId == 700607) {
 			switch (env.getDialog()) {
-			case USE_OBJECT:
-				if (var == 10) {
-					qs.setQuestVar(11);
-					updateQuestStatus(env);
-				}
+				case USE_OBJECT:
+					if (var == 10) {
+						qs.setQuestVar(11);
+						updateQuestStatus(env);
+					}
 			}
-		} else if (targetId == 700637) {
+		}
+		else if (targetId == 700637) {
 			switch (env.getDialog()) {
-			case USE_OBJECT:
-				if (var == 11) {
-					qs.setQuestVar(12);
-					updateQuestStatus(env);
-				}
+				case USE_OBJECT:
+					if (var == 11) {
+						qs.setQuestVar(12);
+						updateQuestStatus(env);
+					}
 			}
 		}
 		return false;

@@ -53,42 +53,45 @@ public class _21460AShulacksStory extends QuestHandler {
 			if (targetId == 799258) { // Denskel
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 799502: { // Dorkin
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1352);
+				case 799502: { // Dorkin
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1, 182209520, 1, 0, 0); // 1
+						}
+					}
+					break;
+				}
+				case 799276: { // Chenkiki
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case SELECT_REWARD: {
+							if (removeQuestItem(env, 182209520, 1))
+								changeQuestStep(env, 1, 1, true); // reward
+							return sendQuestDialog(env, 5);
+						}
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1, 182209520, 1, 0, 0); // 1
-				}
-				}
-				break;
 			}
-			case 799276: { // Chenkiki
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 2375);
-					}
-				}
-				case SELECT_REWARD: {
-					if (removeQuestItem(env, 182209520, 1))
-						changeQuestStep(env, 1, 1, true); // reward
-					return sendQuestDialog(env, 5);
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799276) { // Chenkiki
 				return sendQuestEndDialog(env);
 			}

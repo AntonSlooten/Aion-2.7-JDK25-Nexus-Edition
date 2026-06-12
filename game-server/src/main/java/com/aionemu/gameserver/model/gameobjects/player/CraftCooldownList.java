@@ -23,22 +23,20 @@ import javolution.util.FastMap;
  */
 public class CraftCooldownList {
 
-	// private Player owner;
+	//private Player owner;
 	private FastMap<Integer, Long> craftCooldowns;
 
 	CraftCooldownList(Player owner) {
-		// this.owner = owner;
+		//this.owner = owner;
 	}
 
 	public boolean isCanCraft(int delayId) {
-		if (craftCooldowns == null || !craftCooldowns.containsKey(delayId)) {
+		if (craftCooldowns == null || !craftCooldowns.containsKey(delayId))
 			return true;
-		}
 
 		Long coolDown = craftCooldowns.get(delayId);
-		if (coolDown == null) {
+		if (coolDown == null)
 			return true;
-		}
 
 		if (coolDown < System.currentTimeMillis()) {
 			craftCooldowns.remove(delayId);
@@ -49,9 +47,8 @@ public class CraftCooldownList {
 	}
 
 	public long getCraftCooldown(int delayId) {
-		if (craftCooldowns == null || !craftCooldowns.containsKey(delayId)) {
+		if (craftCooldowns == null || !craftCooldowns.containsKey(delayId))
 			return 0;
-		}
 
 		return craftCooldowns.get(delayId);
 	}
@@ -66,7 +63,7 @@ public class CraftCooldownList {
 
 	public void addCraftCooldown(int delayId, int delay) {
 		if (craftCooldowns == null) {
-			craftCooldowns = new FastMap<>();
+			craftCooldowns = new FastMap<Integer, Long>();
 		}
 
 		long nextUseTime = System.currentTimeMillis() + (delay * 1000);

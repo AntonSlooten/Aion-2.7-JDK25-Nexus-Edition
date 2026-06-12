@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.org>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -48,15 +48,14 @@ public class SummonEffect extends EffectTemplate {
 		Creature effected = effect.getEffected();
 		effected.getController().createSummon(npcId, effect.getSkillId(), effect.getSkillLevel());
 		if ((time > 0) && (effect.getEffected() instanceof Player)) {
-			final Player effector = (Player) effect.getEffected();
+			final Player effector = (Player)effect.getEffected();
 			final Summon summon = effector.getSummon();
 			Future<?> task = ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 				@Override
 				public void run() {
-					if ((summon != null) && (summon.isSpawned())) {
+					if ((summon != null) && (summon.isSpawned()))
 						summon.getController().release(UnsummonType.COMMAND);
-					}
 				}
 			}, time * 1000);
 			summon.getController().addTask(TaskId.DESPAWN, task);

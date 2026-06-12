@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -16,12 +16,13 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * dunno wtf this packet is doing. Not sure about id/name
- *
+ * 
  * @author -Nemesiss-
  */
 public class SM_ENTER_WORLD_CHECK extends AionServerPacket {

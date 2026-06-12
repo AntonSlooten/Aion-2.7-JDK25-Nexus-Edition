@@ -34,91 +34,88 @@ import javax.xml.bind.annotation.XmlType;
 import java.util.Collection;
 
 /**
- * @author ATracer, kecimis modified by seita
+ * @author ATracer, kecimis  modified by seita
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "AuraEffect")
 public class AuraEffect extends EffectTemplate {
 
-	@XmlAttribute
-	protected int distance;
-	@XmlAttribute(name = "skill_id")
-	protected int skillId;
-	// TODO distancez
+    @XmlAttribute
+    protected int distance;
+    @XmlAttribute(name = "skill_id")
+    protected int skillId;
+    //TODO distancez
 
-	@Override
-	public void applyEffect(Effect effect) {
-		final Player effector = (Player) effect.getEffector();
-		if (effector.getEffectController().isNoshowPresentBySkillId(effect.getSkillId())) {
-			AuditLogger.info(effector, "Player might be abusing CM_CASTSPELL mantra effect Player kicked skill id: "
-					+ effect.getSkillId());
-			effector.getClientConnection().closeNow();
-			return;
-		}
-		effect.addToEffectedController();
-	}
+    @Override
+    public void applyEffect(Effect effect) {
+        final Player effector = (Player) effect.getEffector();
+        if (effector.getEffectController().isNoshowPresentBySkillId(effect.getSkillId())) {
+            AuditLogger.info(effector, "Player might be abusing CM_CASTSPELL mantra effect Player kicked skill id: " + effect.getSkillId());
+            effector.getClientConnection().closeNow();
+            return;
+        }
+        effect.addToEffectedController();
+    }
 
-	@Override
-	public void onPeriodicAction(final Effect effect) {
-		final Player effector = (Player) effect.getEffector();
-		if (!effector.isOnline()) { // task check
-			return;
-		}
-		if (effector.isInGroup2() || effector.isInAlliance2()) {
-			Collection<Player> onlynePlayers = effector.isInGroup2() ? effector.getPlayerGroup2().getOnlineMembers()
-					: effector.getPlayerAllianceGroup2().getOnlineMembers();
-			final int actualRange = (int) (distance
-					* effector.getGameStats().getStat(StatEnum.BOOST_MANTRA_RANGE, 100).getCurrent() / 100f);
-			for (Player player : onlynePlayers) {
-				if (MathUtil.isIn3dRange(effector, player, actualRange)) {
-					applyAuraTo(player, effect);
-				}
-			}
-		} else {
-			applyAuraTo(effector, effect);
-		}
-		PacketSendUtility.broadcastPacket(effector, new SM_MANTRA_EFFECT(effector, skillId));
-	}
+    @Override
+    public void onPeriodicAction(final Effect effect) {
+        final Player effector = (Player) effect.getEffector();
+        if (!effector.isOnline()) { // task check
+            return;
+        }
+        if (effector.isInGroup2() || effector.isInAlliance2()) {
+            Collection<Player> onlynePlayers = effector.isInGroup2() ? effector.getPlayerGroup2().getOnlineMembers()
+                    : effector.getPlayerAllianceGroup2().getOnlineMembers();
+            final int actualRange = (int) (distance * effector.getGameStats().getStat(StatEnum.BOOST_MANTRA_RANGE, 100).getCurrent() / 100f);
+            for (Player player : onlynePlayers) {
+                if (MathUtil.isIn3dRange(effector, player, actualRange)) {
+                    applyAuraTo(player, effect);
+                }
+            }
+        } else {
+            applyAuraTo(effector, effect);
+        }
+        PacketSendUtility.broadcastPacket(effector, new SM_MANTRA_EFFECT(effector, skillId));
+    }
 
-	/**
-	 * @param effector
-	 */
-	private void applyAuraTo(Player effected, Effect effect) {
-		SkillTemplate template = DataManager.SKILL_DATA.getSkillTemplate(skillId);
-		Effect e = new Effect(effected, effected, template, template.getLvl(), 0);
-		e.initialize();
-		e.applyEffect();
-	}
+    /**
+     * @param effector
+     */
+    private void applyAuraTo(Player effected, Effect effect) {
+        SkillTemplate template = DataManager.SKILL_DATA.getSkillTemplate(skillId);
+        Effect e = new Effect(effected, effected, template, template.getLvl(), 0);
+        e.initialize();
+        e.applyEffect();
+    }
 
-	@Override
-	public void startEffect(final Effect effect) {
-		effect.setPeriodicTask(ThreadPoolManager.getInstance().scheduleAtFixedRate(new AuraTask(effect), 0, 6500),
-				position);
-	}
+    @Override
+    public void startEffect(final Effect effect) {
+        effect.setPeriodicTask(ThreadPoolManager.getInstance().scheduleAtFixedRate(new AuraTask(effect), 0, 6500), position);
+    }
 
-	private class AuraTask implements Runnable {
+    private class AuraTask implements Runnable {
 
-		private Effect effect;
+        private Effect effect;
 
-		public AuraTask(Effect effect) {
-			this.effect = effect;
-		}
+        public AuraTask(Effect effect) {
+            this.effect = effect;
+        }
 
-		@Override
-		public void run() {
-			onPeriodicAction(effect);
-			/**
-			 * This has the special effect of clearing the current thread's quantum and
-			 * putting it to the end of the queue for its priority level. Will just give-up
-			 * the thread's turn, and gain it in the next round.
-			 */
-			Thread.yield();
-		}
-	}
+        @Override
+        public void run() {
+            onPeriodicAction(effect);
+            /**
+             * This has the special effect of clearing the current thread's quantum
+             * and putting it to the end of the queue for its priority level.
+             * Will just give-up the thread's turn, and gain it in the next round.
+             */
+            Thread.yield();
+        }
+    }
 
-	@Override
-	public void endEffect(Effect effect) {
-		// nothing todo
-	}
+    @Override
+    public void endEffect(Effect effect) {
+        // nothing todo
+    }
 
 }

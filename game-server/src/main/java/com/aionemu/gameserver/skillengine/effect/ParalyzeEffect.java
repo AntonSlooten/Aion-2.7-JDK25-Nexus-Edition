@@ -49,8 +49,7 @@ public class ParalyzeEffect extends EffectTemplate {
 		effected.getController().cancelCurrentSkill();
 		effect.setAbnormal(AbnormalState.PARALYZE.getId());
 		effect.getEffected().getEffectController().setAbnormal(AbnormalState.PARALYZE.getId());
-		PacketSendUtility.broadcastPacketAndReceive(effect.getEffected(),
-				new SM_TARGET_IMMOBILIZE(effect.getEffected()));
+		PacketSendUtility.broadcastPacketAndReceive(effect.getEffected(), new SM_TARGET_IMMOBILIZE(effect.getEffected()));
 
 	}
 

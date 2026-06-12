@@ -40,35 +40,35 @@ public class PlegetonAI2 extends NpcAI2 {
 		if (dialogId == 10000) {
 			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 0));
 			switch (getNpcId()) {
-			case 799517:
-				if (!isStartTimer) {
-					isStartTimer = true;
-					sendTimer();
-					ThreadPoolManager.getInstance().schedule(new Runnable() {
+				case 799517:
+					if (!isStartTimer) {
+						isStartTimer = true;
+						sendTimer();
+						ThreadPoolManager.getInstance().schedule(new Runnable() {
 
-						@Override
-						public void run() {
-							Npc npc = getPosition().getWorldMapInstance().getNpc(216586);
-							if (npc != null && !npc.getLifeStats().isAlreadyDead()) {
-								npc.getController().onDelete();
-								PacketSendUtility.sendPacket(player, new SM_QUEST_ACTION(0, 0));
-								getPosition().getWorldMapInstance().getDoors().get(467).setOpen(true);
+							@Override
+							public void run() {
+								Npc npc = getPosition().getWorldMapInstance().getNpc(216586);
+								if (npc != null && !npc.getLifeStats().isAlreadyDead()) {
+									npc.getController().onDelete();
+									PacketSendUtility.sendPacket(player, new SM_QUEST_ACTION(0, 0));
+									getPosition().getWorldMapInstance().getDoors().get(467).setOpen(true);
+								}
 							}
-						}
-					}, 360000);
-
-				}
-				PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(0, 448));
-				break;
-			case 799518:
-				PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(0, 449));
-				break;
-			case 799519:
-				PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(0, 450));
-				break;
-			case 799520:
-				PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(0, 451));
-				break;
+						}, 360000);
+	
+					}
+					PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(0, 448));
+					break;
+				case 799518:
+					PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(0, 449));
+					break;
+				case 799519:
+					PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(0, 450));
+					break;
+				case 799520:
+					PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(0, 451));
+					break;
 			}
 		}
 		return true;

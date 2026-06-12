@@ -58,23 +58,19 @@ public class CM_TELEPORT_SELECT extends AionClientPacket {
 	@Override
 	protected void runImpl() {
 		Player player = getConnection().getActivePlayer();
-		if (player.getLifeStats().isAlreadyDead()) {
+		if (player.getLifeStats().isAlreadyDead())
 			return;
-		}
-
+		
 		AionObject obj = player.getKnownList().getObject(targetObjectId);
-		if (obj != null && obj instanceof Npc) {
-			int npcId = ((Npc) obj).getNpcId();
+		if(obj != null && obj instanceof Npc) {
+			int npcId = ((Npc)obj).getNpcId();
 			TeleporterTemplate teleport = DataManager.TELEPORTER_DATA.getTeleporterTemplate(npcId);
-			if (teleport != null) {
+			if(teleport != null)
 				TeleportService.teleport(teleport, locId, player);
-			} else {
-				LoggerFactory.getLogger(CM_TELEPORT_SELECT.class)
-						.warn("teleportation id " + locId + " was not found on npc " + npcId);
-			}
-		} else {
-			LoggerFactory.getLogger(CM_TELEPORT_SELECT.class).debug("player " + player.getName() + " requested npc "
-					+ targetObjectId + " for teleportation " + locId + ", but he doesnt have such npc in knownlist");
+			else
+				LoggerFactory.getLogger(CM_TELEPORT_SELECT.class).warn("teleportation id "+locId+" was not found on npc "+npcId);
 		}
+		else
+			LoggerFactory.getLogger(CM_TELEPORT_SELECT.class).debug("player "+player.getName()+" requested npc "+targetObjectId+" for teleportation "+locId+", but he doesnt have such npc in knownlist");
 	}
 }

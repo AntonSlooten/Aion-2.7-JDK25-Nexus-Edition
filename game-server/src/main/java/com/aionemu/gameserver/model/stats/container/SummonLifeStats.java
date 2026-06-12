@@ -61,7 +61,7 @@ public class SummonLifeStats extends CreatureLifeStats<Summon> {
 
 	@Override
 	public Summon getOwner() {
-		return super.getOwner();
+		return (Summon) super.getOwner();
 	}
 
 	@Override
@@ -71,7 +71,8 @@ public class SummonLifeStats extends CreatureLifeStats<Summon> {
 			if (lifeRestoreTask == null && !alreadyDead) {
 				this.lifeRestoreTask = LifeStatsRestoreService.getInstance().scheduleHpRestoreTask(this);
 			}
-		} finally {
+		}
+		finally {
 			restoreLock.unlock();
 		}
 	}

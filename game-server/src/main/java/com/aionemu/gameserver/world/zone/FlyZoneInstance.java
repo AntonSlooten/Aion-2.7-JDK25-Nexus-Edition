@@ -37,7 +37,8 @@ public class FlyZoneInstance extends ZoneInstance {
 		if (super.onEnter(creature)) {
 			creature.setInsideZoneType(ZoneType.FLY);
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
@@ -47,13 +48,12 @@ public class FlyZoneInstance extends ZoneInstance {
 		if (super.onLeave(creature)) {
 			creature.unsetInsideZoneType(ZoneType.FLY);
 			if (creature.isInState(CreatureState.FLYING) && !creature.isInState(CreatureState.FLIGHT_TELEPORT)) {
-				if (creature instanceof Player) {
+				if (creature instanceof Player)
 					AuditLogger.info((Player) creature, "On leave Fly zone in fly state!!");
-				}
 			}
 			return true;
-		} else {
-			return false;
 		}
+		else
+			return false;
 	}
 }

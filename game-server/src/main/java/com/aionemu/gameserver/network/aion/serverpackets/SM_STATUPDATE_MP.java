@@ -16,12 +16,13 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * This packet is used to update mp / max mp value.
- *
+ * 
  * @author Luno
  */
 public class SM_STATUPDATE_MP extends AionServerPacket {

@@ -67,52 +67,53 @@ public class _1582ThePriestsNightmare extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 700196: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					if (qs.getQuestVarById(0) == 0) {
-						qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-						updateQuestStatus(env);
-						return true;
+				case 700196: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							if (qs.getQuestVarById(0) == 0) {
+								qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+								updateQuestStatus(env);
+								return true;
+							}
+						}
 					}
 				}
+				case 204560: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_2: {
+							if (qs.getQuestVarById(0) == 1) {
+								qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 10);
+							}
+						}
+					}
+				}
+				case 204573: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 2) {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case STEP_TO_3: {
+							if (qs.getQuestVarById(0) == 2) {
+								qs.setQuestVar(2);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 10);
+							}
+						}
+					}
 				}
 			}
-			case 204560: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 1) {
-						return sendQuestDialog(env, 1352);
-					}
-				}
-				case STEP_TO_2: {
-					if (qs.getQuestVarById(0) == 1) {
-						qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 10);
-					}
-				}
-				}
-			}
-			case 204573: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 2) {
-						return sendQuestDialog(env, 1693);
-					}
-				}
-				case STEP_TO_3: {
-					if (qs.getQuestVarById(0) == 2) {
-						qs.setQuestVar(2);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 10);
-					}
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 700196) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

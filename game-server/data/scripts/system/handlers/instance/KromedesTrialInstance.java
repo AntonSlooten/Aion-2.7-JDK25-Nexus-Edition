@@ -86,46 +86,49 @@ public class KromedesTrialInstance extends GeneralInstanceHandler {
 	public void onPlayMovieEnd(Player player, int movieId) {
 		Storage storage = player.getInventory();
 		switch (movieId) {
-		case 454:
-			Npc npc1 = player.getPosition().getWorldMapInstance().getNpc(730308);
-			if (npc1 != null && MathUtil.isIn3dRange(player, npc1, 20)) {
-				storage.decreaseByItemId(185000109, storage.getItemCountByItemId(185000109));
-				TeleportService.teleportTo(player, mapId, 687.56116f, 681.68225f, 200.28648f, 30);
-			}
-			break;
+			case 454:
+				Npc npc1 = player.getPosition().getWorldMapInstance().getNpc(730308);
+				if (npc1 != null && MathUtil.isIn3dRange(player, npc1, 20)) {
+					storage.decreaseByItemId(185000109, storage.getItemCountByItemId(185000109));
+					TeleportService.teleportTo(player, mapId, 687.56116f, 681.68225f, 200.28648f, 30);
+				}
+				break;
 		}
 	}
 
 	@Override
 	public void onEnterZone(Player player, ZoneInstance zone) {
 		switch (zone.getAreaTemplate().getZoneName()) {
-		case MANOR_ENTRANCE_300230000:
-			sendMovie(player, 462);
-			break;
-		case KALIGA_TREASURY_300230000:
-			if (!isSpawned) {
-				isSpawned = true;
-				Npc npc1 = instance.getNpc(217002);
-				Npc npc2 = instance.getNpc(217000);
-				Npc npc3 = instance.getNpc(216982);
-				if (isDead(npc1) && isDead(npc2) && isDead(npc3)) {
-					spawn(217005, 669.214f, 774.387f, 216.88f, (byte) 60);
-					spawn(217001, 663.8805f, 779.1967f, 216.26213f, (byte) 60);
-					spawn(217003, 663.0468f, 774.6116f, 216.26215f, (byte) 60);
-					spawn(217004, 663.0468f, 770.03815f, 216.26212f, (byte) 60);
-				} else {
-					spawn(217006, 669.214f, 774.387f, 216.88f, (byte) 60);
+			case MANOR_ENTRANCE_300230000:
+				sendMovie(player, 462);
+				break;
+			case KALIGA_TREASURY_300230000:
+				if (!isSpawned) {
+					isSpawned = true;
+					Npc npc1 = instance.getNpc(217002);
+					Npc npc2 = instance.getNpc(217000);
+					Npc npc3 = instance.getNpc(216982);
+					if (isDead(npc1) && isDead(npc2) && isDead(npc3)) {
+						spawn(217005, 669.214f, 774.387f, 216.88f, (byte) 60);
+						spawn(217001, 663.8805f, 779.1967f, 216.26213f, (byte) 60);
+						spawn(217003, 663.0468f, 774.6116f, 216.26215f, (byte) 60);
+						spawn(217004, 663.0468f, 770.03815f, 216.26212f, (byte) 60);
+					}
+					else {
+						spawn(217006, 669.214f, 774.387f, 216.88f, (byte) 60);
+					}
 				}
-			}
-			break;
-		case KALIGA_DUNGEONS_300230000:
-			inManor = true;
+				break;
+			case KALIGA_DUNGEONS_300230000:
+				inManor = true;
+				break;
+		default:
 			break;
 		}
 	}
 
 	private boolean isDead(Npc npc) {
-		return (npc == null || npc.getLifeStats().isAlreadyDead());
+		return (npc == null || npc.getLifeStats().isAlreadyDead()); 
 	}
 
 	private void sendMovie(Player player, int movie) {
@@ -139,11 +142,11 @@ public class KromedesTrialInstance extends GeneralInstanceHandler {
 	public void onInstanceDestroy() {
 		movies.clear();
 	}
-
+	
 	@Override
 	public boolean onDie(final Player player, Creature lastAttacker) {
 		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.DIE, 0,
-				player.equals(lastAttacker) ? 0 : lastAttacker.getObjectId()), true);
+			player.equals(lastAttacker) ? 0 : lastAttacker.getObjectId()), true);
 
 		PacketSendUtility.sendPacket(player, new SM_DIE(player.haveSelfRezEffect(), player.haveSelfRezItem(), 0, 8));
 		return true;
@@ -160,8 +163,7 @@ public class KromedesTrialInstance extends GeneralInstanceHandler {
 		PacketSendUtility.sendPacket(player, STR_REBIRTH_MASSAGE_ME);
 		player.getGameStats().updateStatsAndSpeedVisually();
 		PacketSendUtility.sendPacket(player, new SM_PLAYER_INFO(player, false));
-		PacketSendUtility.sendPacket(player,
-				new SM_MOTION(player.getObjectId(), player.getMotions().getActiveMotions()));
+		PacketSendUtility.sendPacket(player, new SM_MOTION(player.getObjectId(), player.getMotions().getActiveMotions()));
 		if (inManor)
 			TeleportService.teleportTo(player, player.getWorldId(), 687, 681, 201, 0, true);
 		else
@@ -170,5 +172,5 @@ public class KromedesTrialInstance extends GeneralInstanceHandler {
 		player.unsetResPosState();
 		return true;
 	}
-
+	
 }

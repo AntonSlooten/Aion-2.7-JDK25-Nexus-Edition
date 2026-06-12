@@ -16,8 +16,7 @@
  */
 package com.aionemu.gameserver.taskmanager.tasks;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.aionemu.gameserver.ShutdownHook;
 import com.aionemu.gameserver.ShutdownHook.ShutdownMode;
@@ -62,8 +61,8 @@ public class RestartTask extends TaskFromDBHandler {
 
 			@Override
 			public void visit(Player player) {
-				PacketSendUtility.sendBrightYellowMessageOnCenter(player, "Automatic Task: The server will restart in "
-						+ warnCountDown + " seconds ! Please find a safe place and disconnect your character.");
+				PacketSendUtility.sendBrightYellowMessageOnCenter(player, "Automatic Task: The server will restart in " + warnCountDown
+					+ " seconds ! Please find a safe place and disconnect your character.");
 			}
 		});
 

@@ -39,9 +39,8 @@ public class DpUseAction extends Action {
 		Player effector = (Player) skill.getEffector();
 		int currentDp = effector.getCommonData().getDp();
 
-		if (currentDp <= 0 || currentDp < value) {
+		if (currentDp <= 0 || currentDp < value)
 			return;
-		}
 
 		effector.getCommonData().setDp(currentDp - value);
 	}

@@ -55,7 +55,8 @@ public class _3922TheGladiatorPreceptorsTask extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			return sendQuestEndDialog(env);
 		}
 		return false;
@@ -77,7 +78,8 @@ public class _3922TheGladiatorPreceptorsTask extends QuestHandler {
 			if (var >= 0 && var < 9) {
 				changeQuestStep(env, var, var + 1, false);
 				return true;
-			} else if (var == 9) {
+			}
+			else if (var == 9) {
 				changeQuestStep(env, var, var + 1, true);
 				return true;
 			}

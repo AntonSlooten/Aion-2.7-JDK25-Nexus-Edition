@@ -20,7 +20,11 @@ package com.aionemu.gameserver.utils.stats;
  * @author ATracer, Jangan
  */
 public enum XPLossEnum {
-	LEVEL_6(6, 1.0), LEVEL_30(30, 1.0), LEVEL_40(40, 0.35), LEVEL_50(50, 0.25), LEVEL_55(55, 0.25);
+	LEVEL_6(6, 1.0),
+	LEVEL_30(30, 1.0),
+	LEVEL_40(40, 0.35),
+	LEVEL_50(50, 0.25),
+	LEVEL_55(55, 0.25);
 
 	private int level;
 	private double param;
@@ -50,14 +54,12 @@ public enum XPLossEnum {
 	 * @return long
 	 */
 	public static long getExpLoss(int level, long expNeed) {
-		if (level < 6) {
+		if (level < 6)
 			return 0;
-		}
 
 		for (XPLossEnum xpLossEnum : values()) {
-			if (level <= xpLossEnum.getLevel()) {
+			if (level <= xpLossEnum.getLevel())
 				return Math.round(expNeed / 100 * xpLossEnum.getParam());
-			}
 		}
 		return 0;
 	}

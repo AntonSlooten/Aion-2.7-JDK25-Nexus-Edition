@@ -16,12 +16,13 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * Notifies players when their friends log in, out, or delete them
- *
+ * 
  * @author Ben
  */
 public class SM_FRIEND_NOTIFY extends AionServerPacket {
@@ -44,9 +45,11 @@ public class SM_FRIEND_NOTIFY extends AionServerPacket {
 
 	/**
 	 * Constructs a new notify packet
-	 *
-	 * @param code Message code
-	 * @param name Name of friend
+	 * 
+	 * @param code
+	 *          Message code
+	 * @param name
+	 *          Name of friend
 	 */
 	public SM_FRIEND_NOTIFY(int code, String name) {
 		this.code = code;

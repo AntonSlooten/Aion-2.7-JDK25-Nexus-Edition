@@ -44,8 +44,7 @@ public class TallocsSummonAI2 extends NpcAI2 {
 				return true;
 			}
 
-			Summon summon = new Summon(getObjectId(), new SummonController(), getSpawnTemplate(), getObjectTemplate(),
-					getObjectTemplate().getLevel());
+			Summon summon = new Summon(getObjectId(), new SummonController(), getSpawnTemplate(), getObjectTemplate(), getObjectTemplate().getLevel());
 			player.setSummon(summon);
 			summon.setMaster(player);
 			summon.setTarget(player.getTarget());

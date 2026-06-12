@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  *
  *  aion-lightning is free software: you can redistribute it and/or modify
@@ -44,7 +44,7 @@ public class RoadService {
 			Road r = new Road(rt);
 			r.spawn();
 			log.debug("Added " + r.getName() + " at m=" + r.getWorldId() + ",x=" + r.getX() + ",y=" + r.getY() + ",z="
-					+ r.getZ());
+				+ r.getZ());
 		}
 	}
 }

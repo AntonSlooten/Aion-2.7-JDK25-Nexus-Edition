@@ -40,17 +40,17 @@ public class GoodsListData {
 
 	@XmlElement(name = "in_list")
 	protected List<GoodsList> inList;
-
+	
 	/** A map containing all goodslist templates */
 	private TIntObjectHashMap<GoodsList> goodsListData;
 	private TIntObjectHashMap<GoodsList> goodsInListData;
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
-		goodsListData = new TIntObjectHashMap<>();
+		goodsListData = new TIntObjectHashMap<GoodsList>();
 		for (GoodsList it : list) {
 			goodsListData.put(it.getId(), it);
 		}
-		goodsInListData = new TIntObjectHashMap<>();
+		goodsInListData = new TIntObjectHashMap<GoodsList>();
 		for (GoodsList it : inList) {
 			goodsInListData.put(it.getId(), it);
 		}
@@ -65,11 +65,10 @@ public class GoodsListData {
 	public GoodsList getGoodsInListById(int id) {
 		return goodsInListData.get(id);
 	}
-
 	/**
 	 * @return goodListData.size()
 	 */
 	public int size() {
-		return goodsListData.size() + goodsInListData.size();
+		return goodsListData.size()+goodsInListData.size();
 	}
 }

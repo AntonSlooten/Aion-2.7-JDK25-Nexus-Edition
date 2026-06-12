@@ -58,24 +58,28 @@ public class _2759TenaciousGuardian extends QuestHandler {
 			if (targetId == 264769) { // Gudharten
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			if (targetId == 264769) { // Gudharten
 				if (dialog == QuestDialog.START_DIALOG) {
 					if (var == 3) {
 						return sendQuestDialog(env, 1352);
 					}
-				} else if (dialog == QuestDialog.SELECT_REWARD) {
+				}
+				else if (dialog == QuestDialog.SELECT_REWARD) {
 					changeQuestStep(env, 3, 3, true); // reward
 					killedMobs.clear();
 					return sendQuestDialog(env, 5);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 264769) { // Gudharten
 				return sendQuestEndDialog(env);
 			}
@@ -92,27 +96,27 @@ public class _2759TenaciousGuardian extends QuestHandler {
 			int var = qs.getQuestVarById(0);
 			if (var < 3) {
 				switch (targetId) {
-				case 278588: {
-					if (!killedMobs.contains(278588)) {
-						killedMobs.add(278588);
-						return defaultOnKillEvent(env, 278588, var, var + 1);
+					case 278588: {
+						if (!killedMobs.contains(278588)) {
+							killedMobs.add(278588);
+							return defaultOnKillEvent(env, 278588, var, var + 1);
+						}
+						break;
 					}
-					break;
-				}
-				case 278589: {
-					if (!killedMobs.contains(278589)) {
-						killedMobs.add(278589);
-						return defaultOnKillEvent(env, 278589, var, var + 1);
+					case 278589: {
+						if (!killedMobs.contains(278589)) {
+							killedMobs.add(278589);
+							return defaultOnKillEvent(env, 278589, var, var + 1);
+						}
+						break;
 					}
-					break;
-				}
-				case 278590: {
-					if (!killedMobs.contains(278590)) {
-						killedMobs.add(278590);
-						return defaultOnKillEvent(env, 278590, var, var + 1);
+					case 278590: {
+						if (!killedMobs.contains(278590)) {
+							killedMobs.add(278590);
+							return defaultOnKillEvent(env, 278590, var, var + 1);
+						}
+						break;
 					}
-					break;
-				}
 				}
 			}
 		}

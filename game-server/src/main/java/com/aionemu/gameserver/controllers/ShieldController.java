@@ -37,13 +37,12 @@ public class ShieldController extends VisibleObjectController<Shield> {
 		FortressLocation loc = SiegeService.getInstance().getFortress(getOwner().getId());
 		Player player = (Player) object;
 
-		if (loc.isUnderShield()) {
+		if (loc.isUnderShield())
 			if (loc.getRace() != SiegeRace.getByRace(player.getRace())) {
 				ShieldObserver observer = new ShieldObserver(getOwner(), player);
 				player.getObserveController().addObserver(observer);
 				observed.put(player.getObjectId(), observer);
 			}
-		}
 	}
 
 	@Override
@@ -51,18 +50,16 @@ public class ShieldController extends VisibleObjectController<Shield> {
 		FortressLocation loc = SiegeService.getInstance().getFortress(getOwner().getId());
 		Player player = (Player) object;
 
-		if (loc.isUnderShield()) {
+		if (loc.isUnderShield())
 			if (loc.getRace() != SiegeRace.getByRace(player.getRace())) {
 				ShieldObserver observer = observed.remove(player.getObjectId());
 				if (observer != null) {
-					if (isOutOfRange) {
+					if (isOutOfRange)
 						observer.moved();
-					}
 
 					player.getObserveController().removeObserver(observer);
 				}
 			}
-		}
 	}
 
 }

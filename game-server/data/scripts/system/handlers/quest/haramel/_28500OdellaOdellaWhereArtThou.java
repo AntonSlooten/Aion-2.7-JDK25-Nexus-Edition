@@ -69,59 +69,64 @@ public class _28500OdellaOdellaWhereArtThou extends QuestHandler {
 			if (targetId == 203560) {
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs != null && qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 203649: {
-				switch (dialog) {
-				case START_DIALOG:
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 203649: {
+					switch (dialog) {
+						case START_DIALOG:
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
 					}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
+					break;
 				}
+				case 730306: {
+					switch (dialog) {
+						case USE_OBJECT: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+					}
+					break;
 				}
-				break;
-			}
-			case 730306: {
-				switch (dialog) {
-				case USE_OBJECT: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
+				case 730307: {
+					switch (dialog) {
+						case USE_OBJECT: {
+							if (var == 2) {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case STEP_TO_3: {
+							playQuestMovie(env, 217);
+							return defaultCloseDialog(env, 2, 3); // 3
+						}
 					}
 				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				}
-				break;
 			}
-			case 730307: {
-				switch (dialog) {
-				case USE_OBJECT: {
-					if (var == 2) {
-						return sendQuestDialog(env, 1693);
-					}
-				}
-				case STEP_TO_3: {
-					playQuestMovie(env, 217);
-					return defaultCloseDialog(env, 2, 3); // 3
-				}
-				}
-			}
-			}
-		} else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799522) {
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else if (dialog == QuestDialog.SELECT_REWARD) {
+				}
+				else if (dialog == QuestDialog.SELECT_REWARD) {
 					return sendQuestDialog(env, 5);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

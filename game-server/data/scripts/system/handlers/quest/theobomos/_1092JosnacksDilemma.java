@@ -30,11 +30,10 @@ import com.aionemu.gameserver.services.teleport.TeleportService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /**
- * Talk with Atropos (798155). Talk with Josnack (798206). Get rid of stones so
- * they can restore the statue: Stone above the Statue (700389) Stone on the
- * Statue Platform (700388) Talk with Atropos. Destroy the Eternal Flames
- * (700390), and collect their Soul Pieces (182208012) (6) from the Burnt
- * Zombies (214552). Take them to Atropos. Receive a reward from Atropos.
+ * Talk with Atropos (798155). Talk with Josnack (798206). Get rid of stones so they can restore the statue: Stone above
+ * the Statue (700389) Stone on the Statue Platform (700388) Talk with Atropos. Destroy the Eternal Flames (700390), and
+ * collect their Soul Pieces (182208012) (6) from the Burnt Zombies (214552). Take them to Atropos. Receive a reward
+ * from Atropos.
  * 
  * @author Dune11
  * @reworked vlog
@@ -83,97 +82,96 @@ public class _1092JosnacksDilemma extends QuestHandler {
 			if (targetId == 798155)
 				return sendQuestEndDialog(env);
 			return false;
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798155: // Atropos
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 3)
-						return sendQuestDialog(env, 2034);
-					else if (var == 4)
-						return sendQuestDialog(env, 2375);
-				case STEP_TO_1:
-					if (var == 0) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
+				case 798155: // Atropos
+					switch (env.getDialog()) {
+						case START_DIALOG:
+		                    if (var == 0)
+		                        return sendQuestDialog(env, 1011);
+		                    else if (var == 3)
+		                        return sendQuestDialog(env, 2034);
+		                    else if (var == 4)
+		                        return sendQuestDialog(env, 2375);
+		                case STEP_TO_1:
+		                    if (var == 0) {
+		                        qs.setQuestVarById(0, var + 1);
+		                        updateQuestStatus(env);
+		                        PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+		                        return true;
+		                    }
+		                case STEP_TO_4:
+		                    if (var == 3) {
+		                        qs.setQuestVarById(0, var + 1);
+		                        updateQuestStatus(env);
+		                        PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+		                        return true;
+		                    }
+		                case CHECK_COLLECTED_ITEMS:
+		                    if (var == 4) {
+		                        if (QuestService.collectItemCheck(env, true)) {
+		                            qs.setStatus(QuestStatus.REWARD);
+		                            updateQuestStatus(env);
+		                            return sendQuestDialog(env, 5);
+		                        } else
+		                            return sendQuestDialog(env, 10001);
+		                    }
 					}
-				case STEP_TO_4:
-					if (var == 3) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-				case CHECK_COLLECTED_ITEMS:
-					if (var == 4) {
-						if (QuestService.collectItemCheck(env, true)) {
-							qs.setStatus(QuestStatus.REWARD);
-							updateQuestStatus(env);
-							return sendQuestDialog(env, 5);
-						} else
-							return sendQuestDialog(env, 10001);
-					}
-				}
-				break;
-			case 798206: // Josnack
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-					if (var == 2)
-						return sendQuestDialog(env, 1693);
-				case SELECT_ACTION_1353:
-					playQuestMovie(env, 364);
 					break;
-				case STEP_TO_2:
-					if (var == 1) {
-						defaultCloseDialog(env, 1, 2); // 2
-						TeleportService.teleportTo(player, 210060000, 926, 3035, 186, 30);
-						return true;
+				case 798206: // Josnack
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 1)
+								return sendQuestDialog(env, 1352);
+							if (var == 2)
+								return sendQuestDialog(env, 1693);
+						case SELECT_ACTION_1353:
+							playQuestMovie(env, 364);
+							break;
+						case STEP_TO_2:
+							if (var == 1) {
+								defaultCloseDialog(env, 1, 2); // 2
+								TeleportService.teleportTo(player, 210060000, 926, 3035, 186, 30);
+								return true;
+							}
 					}
-				}
-				break;
-			case 700389: // Stone above the Statue
-				switch (env.getDialog()) {
-				case USE_OBJECT:
-					if (var == 2 && qs.getQuestVarById(1) == 0) {
-						qs.setQuestVarById(1, 1); // 1: 1
-						updateQuestStatus(env);
+					break;
+				case 700389: // Stone above the Statue
+					switch (env.getDialog()) {
+						case USE_OBJECT:
+							if (var == 2 && qs.getQuestVarById(1) == 0) {
+								qs.setQuestVarById(1, 1); // 1: 1
+								updateQuestStatus(env);
 
-						if (qs.getQuestVarById(2) == 1) {
-							qs.setQuestVar(3); // 3
-							updateQuestStatus(env);
-						}
-						return true;
+								if (qs.getQuestVarById(2) == 1) {
+									qs.setQuestVar(3); // 3
+									updateQuestStatus(env);
+								}
+								return true;
+							}
 					}
-				}
-				break;
-			case 700388: // Stone on the Statue Platform
-				switch (env.getDialog()) {
-				case USE_OBJECT:
-					if (var == 2 && qs.getQuestVarById(2) == 0) {
-						qs.setQuestVarById(2, 1); // 2: 1
-						if (qs.getQuestVarById(1) == 1) {
-							qs.setQuestVar(3); // 3
-							updateQuestStatus(env);
-							return true;
-						}
-						updateQuestStatus(env);
-						return true;
+					break;
+				case 700388: // Stone on the Statue Platform
+					switch (env.getDialog()) {
+						case USE_OBJECT:
+							if (var == 2 && qs.getQuestVarById(2) == 0) {
+								qs.setQuestVarById(2, 1); // 2: 1
+								if (qs.getQuestVarById(1) == 1) {
+									qs.setQuestVar(3); // 3
+									updateQuestStatus(env);
+									return true;
+								}
+								updateQuestStatus(env);
+								return true;
+							}
 					}
-				}
-				break;
+					break;
 			}
 		}
 		return false;
 	}
-
+	
 	@Override
 	public boolean onKillEvent(QuestEnv env) {
 		Player player = env.getPlayer();
@@ -184,13 +182,10 @@ public class _1092JosnacksDilemma extends QuestHandler {
 			Storage bag = player.getInventory();
 			if (target instanceof Npc) {
 				Npc npc = (Npc) target;
-				if (npc.getNpcId() == 700390 && var == 4 && (bag.getItemCountByItemId(182208012) < 6)) {
-					QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 214552, npc.getX(),
-							npc.getY(), npc.getZ(), npc.getHeading());
-					QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 214552, npc.getX() - 2,
-							npc.getY() - 2, npc.getZ(), npc.getHeading());
-					QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 214552, npc.getX() + 2,
-							npc.getY(), npc.getZ(), npc.getHeading());
+				if(npc.getNpcId() == 700390 && var == 4 && (bag.getItemCountByItemId(182208012) < 6)) {
+					QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 214552, npc.getX(), npc.getY(), npc.getZ(), npc.getHeading());
+					QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 214552, npc.getX() - 2, npc.getY() - 2, npc.getZ(), npc.getHeading());
+					QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 214552, npc.getX() + 2, npc.getY(), npc.getZ(), npc.getHeading());
 					return true;
 				}
 			}

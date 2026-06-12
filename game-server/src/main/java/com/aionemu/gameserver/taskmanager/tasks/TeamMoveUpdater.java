@@ -39,7 +39,6 @@ public final class TeamMoveUpdater extends AbstractIterativePeriodicTaskManager<
 
 	public TeamMoveUpdater() {
 		super(2000);
-		registerStartupHook();
 	}
 
 	@Override

@@ -69,96 +69,93 @@ public class _1043BalaurConspiracy extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203901: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 0) {
-						return sendQuestDialog(env, 1011);
-					}
-				}
-				case STEP_TO_1: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				}
-			}
-			case 204020: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 1) {
-						return sendQuestDialog(env, 1352);
-					}
-				}
-				case STEP_TO_2: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				}
-			}
-			case 700141:
-				if (qs.getQuestVarById(0) == 2) {
-					final int targetObjectId = env.getVisibleObject().getObjectId();
-					PacketSendUtility.broadcastPacket(player,
-							new SM_EMOTION(player, EmotionType.NEUTRALMODE2, 0, targetObjectId), true);
-					ThreadPoolManager.getInstance().schedule(new Runnable() {
-
-						@Override
-						public void run() {
-							WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(310040000);
-							InstanceService.registerPlayerWithInstance(newInstance, player);
-							TeleportService.teleportTo(player, 310040000, newInstance.getInstanceId(), (float) 270.5,
-									(float) 174.3, (float) 204.3, 3000, true);
+				case 203901: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 0) {
+								return sendQuestDialog(env, 1011);
+							}
 						}
-					}, 3000);
-					return true;
-				}
-			case 204044: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					switch (qs.getQuestVarById(0)) {
-					case 2: {
-						return sendQuestDialog(env, 1693);
-					}
-					case 4: {
-						return sendQuestDialog(env, 2034);
-					}
+						case STEP_TO_1: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
 					}
 				}
-				case STEP_TO_3: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 2);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
+				case 204020: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_2: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
+					}
 				}
-				case STEP_TO_4: {
-					qs.setQuestVar(4);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					TeleportService.teleportTo(player, WorldMapType.ELTNEN.getId(), 2502.1948f, 782.9152f, 408.97723f,
-							0);
-					return true;
-				}
+				case 700141:
+					if (qs.getQuestVarById(0) == 2) {
+						final int targetObjectId = env.getVisibleObject().getObjectId();
+						PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.NEUTRALMODE2, 0,
+							targetObjectId), true);
+						ThreadPoolManager.getInstance().schedule(new Runnable() {
+
+							@Override
+							public void run() {
+								WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(310040000);
+								InstanceService.registerPlayerWithInstance(newInstance, player);
+								TeleportService.teleportTo(player, 310040000, newInstance.getInstanceId(), (float) 270.5,
+									(float) 174.3, (float) 204.3, 3000, true);
+							}
+						}, 3000);
+						return true;
+					}
+				case 204044: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							switch (qs.getQuestVarById(0)) {
+								case 2: {
+									return sendQuestDialog(env, 1693);
+								}
+								case 4: {
+									return sendQuestDialog(env, 2034);
+								}
+							}
+						}
+						case STEP_TO_3: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 2);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
+						case STEP_TO_4: {
+							qs.setQuestVar(4);
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							TeleportService.teleportTo(player, WorldMapType.ELTNEN.getId(), 2502.1948f, 782.9152f, 408.97723f, 0);
+							return true;
+						}
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203901) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2375);
-				}
-				case SELECT_REWARD: {
-					return sendQuestDialog(env, 5);
-				}
-				default:
-					return sendQuestEndDialog(env);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 2375);
+					}
+					case SELECT_REWARD: {
+						return sendQuestDialog(env, 5);
+					}
+					default:
+						return sendQuestEndDialog(env);
 				}
 			}
 		}

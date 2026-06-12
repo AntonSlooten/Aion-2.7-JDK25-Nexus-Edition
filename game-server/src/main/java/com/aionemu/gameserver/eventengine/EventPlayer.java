@@ -15,26 +15,23 @@ public class EventPlayer {
 	public final float z;
 	public final byte head;
 	public final Player player;
-	public final ArrayList<EquipementC> equipment = new ArrayList<>();
+	public final ArrayList<EquipementC> equipment = new ArrayList<EquipementC>();
 
 	public static Logger log = LoggerFactory.getLogger(EventPlayer.class);
-
 	/*
-	 * TeleportService.teleportTo(playerToMove, admin.getWorldId(),
-	 * admin.getInstanceId(), admin.getX(), admin.getY(), admin.getZ(),
-	 * admin.getHeading(), 0, true);
-	 */
-	class EquipementC {
+		TeleportService.teleportTo(playerToMove, admin.getWorldId(), admin.getInstanceId(), admin.getX(), admin.getY(),
+				admin.getZ(), admin.getHeading(), 0, true);
+	*/
+	class EquipementC{
 		public final int objectId;
 		public final int slot;
-
-		public EquipementC(int objectId, int slot) {
+		public EquipementC(int objectId, int slot){
 			this.objectId = objectId;
 			this.slot = slot;
 		}
 	}
-
-	public EventPlayer(Player player) {
+	
+	public EventPlayer(Player player){
 		world = player.getWorldId();
 		instanceId = player.getInstanceId();
 		x = player.getX();
@@ -43,17 +40,16 @@ public class EventPlayer {
 		head = player.getHeading();
 		this.player = player;
 	}
-
-	public void seauvItem(int objectId, int slot) {
+	
+	public void seauvItem(int objectId, int slot){
 		equipment.add(new EquipementC(objectId, slot));
-		log.info("Equipement size : " + equipment.size());
+		log.info("Equipement size : "+ equipment.size());
 	}
-
-	public void equip() {
+	
+	public void equip(){
 		log.info("Equipement equip stop");
-		for (EquipementC e : equipment) {
+		for(EquipementC e : equipment)
 			player.getEquipment().equipItem(e.objectId, e.slot);
-		}
 		log.info("Equipement equip ok");
 	}
 }

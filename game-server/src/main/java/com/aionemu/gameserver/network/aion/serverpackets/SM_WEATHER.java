@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,10 +38,9 @@ public class SM_WEATHER extends AionServerPacket {
 
 	@Override
 	protected void writeImpl(AionConnection con) {
-		writeC(0x00);// unk
+		writeC(0x00);//unk
 		writeC(weatherCodes.size());
-		for (int weatherCode : weatherCodes) {
+		for(int weatherCode : weatherCodes)
 			writeC(weatherCode);
-		}
 	}
 }

@@ -47,13 +47,12 @@ public class WorkOrdersData extends XMLQuest {
 	/**
 	 * Gets the value of the giveComponent property.
 	 * <p>
-	 * This accessor method returns a reference to the live list, not a snapshot.
-	 * Therefore any modification you make to the returned list will be present
-	 * inside the JAXB object. This is why there is not a <CODE>set</CODE> method
-	 * for the giveComponent property.
+	 * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+	 * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+	 * the giveComponent property.
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 *
+	 * 
 	 * <pre>
 	 * getGiveComponent().add(newItem);
 	 * </pre>
@@ -62,7 +61,7 @@ public class WorkOrdersData extends XMLQuest {
 	 */
 	public List<QuestItems> getGiveComponent() {
 		if (giveComponent == null) {
-			giveComponent = new ArrayList<>();
+			giveComponent = new ArrayList<QuestItems>();
 		}
 		return this.giveComponent;
 	}
@@ -83,9 +82,7 @@ public class WorkOrdersData extends XMLQuest {
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see
-	 * com.aionemu.gameserver.questEngine.handlers.models.QuestScriptData#register()
+	 * @see com.aionemu.gameserver.questEngine.handlers.models.QuestScriptData#register()
 	 */
 	@Override
 	public void register(QuestEngine questEngine) {

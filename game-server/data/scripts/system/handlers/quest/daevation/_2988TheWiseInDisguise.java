@@ -62,7 +62,8 @@ public class _2988TheWiseInDisguise extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (targetId == 204338)// Utgar
+		}
+		else if (targetId == 204338)// Utgar
 		{
 
 			if (qs != null && qs.getStatus() == QuestStatus.START && qs.getQuestVarById(0) == 0) {
@@ -71,14 +72,15 @@ public class _2988TheWiseInDisguise extends QuestHandler {
 				else if (env.getDialog() == QuestDialog.STEP_TO_1) {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 
-		} else if (targetId == 204213)// Brakan
+		}
+		else if (targetId == 204213)// Brakan
 		{
 			if (qs != null && qs.getStatus() == QuestStatus.START && qs.getQuestVarById(0) == 1) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
@@ -86,13 +88,14 @@ public class _2988TheWiseInDisguise extends QuestHandler {
 				else if (env.getDialog() == QuestDialog.STEP_TO_2) {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (targetId == 204146)// Kanensa
+		}
+		else if (targetId == 204146)// Kanensa
 		{
 			if (qs != null && qs.getStatus() == QuestStatus.START && qs.getQuestVarById(0) == 2) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
@@ -102,16 +105,18 @@ public class _2988TheWiseInDisguise extends QuestHandler {
 						return sendQuestDialog(env, 2035);
 					else
 						return sendQuestDialog(env, 2120);
-				} else if (env.getDialogId() == 1009) {
+				}
+				else if (env.getDialogId() == 1009) {
 					removeQuestItem(env, 186000039, 1);
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
-			} else if (qs != null && qs.getStatus() == QuestStatus.REWARD)// Reward
+			}
+			else if (qs != null && qs.getStatus() == QuestStatus.REWARD)// Reward
 			{
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 4080);
@@ -120,7 +125,8 @@ public class _2988TheWiseInDisguise extends QuestHandler {
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
 					return sendQuestEndDialog(env);
-				} else
+				}
+				else
 					return sendQuestEndDialog(env);
 			}
 		}

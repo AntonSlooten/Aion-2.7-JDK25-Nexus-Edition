@@ -27,7 +27,6 @@ import ai.AggressiveNpcAI2;
  */
 public class EmpyreanSpectralWarriorAI2 extends AggressiveNpcAI2 {
 	private boolean isDone = false;
-
 	@Override
 	protected void handleAttack(Creature creature) {
 		super.handleAttack(creature);

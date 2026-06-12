@@ -57,52 +57,55 @@ public class _2209TheScribbler extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203562: {
-				if (qs.getQuestVarById(0) == 0) {
-					if (env.getDialog() == QuestDialog.START_DIALOG)
-						return sendQuestDialog(env, 1352);
-					else if (env.getDialog() == QuestDialog.STEP_TO_1) {
-						return defaultCloseDialog(env, 0, 1); // 1
+				case 203562: {
+					if (qs.getQuestVarById(0) == 0) {
+						if (env.getDialog() == QuestDialog.START_DIALOG)
+							return sendQuestDialog(env, 1352);
+						else if (env.getDialog() == QuestDialog.STEP_TO_1) {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+					}
+				}
+					break;
+				case 203572: {
+					if (qs.getQuestVarById(0) == 1) {
+						if (env.getDialog() == QuestDialog.START_DIALOG)
+							return sendQuestDialog(env, 1693);
+						else if (env.getDialog() == QuestDialog.STEP_TO_2) {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+					}
+				}
+					break;
+				case 203592: {
+					if (qs.getQuestVarById(0) == 2) {
+						if (env.getDialog() == QuestDialog.START_DIALOG)
+							return sendQuestDialog(env, 2034);
+						else if (env.getDialog() == QuestDialog.STEP_TO_3) {
+							return defaultCloseDialog(env, 2, 3); // 3
+						}
+					}
+				}
+					break;
+				case 203555: {
+					if (qs.getQuestVarById(0) == 3) {
+						if (env.getDialog() == QuestDialog.START_DIALOG)
+							return sendQuestDialog(env, 2375);
+						else if (env.getDialogId() == 1009) {
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return sendQuestEndDialog(env);
+						}
+						else
+							return sendQuestEndDialog(env);
 					}
 				}
 			}
-				break;
-			case 203572: {
-				if (qs.getQuestVarById(0) == 1) {
-					if (env.getDialog() == QuestDialog.START_DIALOG)
-						return sendQuestDialog(env, 1693);
-					else if (env.getDialog() == QuestDialog.STEP_TO_2) {
-						return defaultCloseDialog(env, 1, 2); // 2
-					}
-				}
-			}
-				break;
-			case 203592: {
-				if (qs.getQuestVarById(0) == 2) {
-					if (env.getDialog() == QuestDialog.START_DIALOG)
-						return sendQuestDialog(env, 2034);
-					else if (env.getDialog() == QuestDialog.STEP_TO_3) {
-						return defaultCloseDialog(env, 2, 3); // 3
-					}
-				}
-			}
-				break;
-			case 203555: {
-				if (qs.getQuestVarById(0) == 3) {
-					if (env.getDialog() == QuestDialog.START_DIALOG)
-						return sendQuestDialog(env, 2375);
-					else if (env.getDialogId() == 1009) {
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestEndDialog(env);
-					} else
-						return sendQuestEndDialog(env);
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203555)
 				return sendQuestEndDialog(env);
 		}

@@ -60,20 +60,24 @@ public class _1107TheLostAxe extends QuestHandler {
 				QuestService.startQuest(env);
 				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
 				return true;
-			} else
+			}
+			else
 				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
-		} else if (targetId == 203075) {
+		}
+		else if (targetId == 203075) {
 			if (qs != null) {
 				if (env.getDialog() == QuestDialog.START_DIALOG && qs.getStatus() == QuestStatus.START) {
 					return sendQuestDialog(env, 2375);
-				} else if (env.getDialogId() == 1009 && qs.getStatus() != QuestStatus.COMPLETE
-						&& qs.getStatus() != QuestStatus.NONE) {
+				}
+				else if (env.getDialogId() == 1009 && qs.getStatus() != QuestStatus.COMPLETE
+					&& qs.getStatus() != QuestStatus.NONE) {
 					removeQuestItem(env, 182200501, 1);
 					qs.setQuestVar(1);
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
 					return sendQuestEndDialog(env);
-				} else
+				}
+				else
 					return sendQuestEndDialog(env);
 			}
 		}
@@ -90,7 +94,7 @@ public class _1107TheLostAxe extends QuestHandler {
 		if (id != 182200501)
 			return HandlerResult.UNKNOWN;
 		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 20, 1, 0), true);
+			new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 20, 1, 0), true);
 		if (qs == null || qs.getStatus() == QuestStatus.NONE)
 			sendQuestDialog(env, 4);
 		return HandlerResult.SUCCESS;

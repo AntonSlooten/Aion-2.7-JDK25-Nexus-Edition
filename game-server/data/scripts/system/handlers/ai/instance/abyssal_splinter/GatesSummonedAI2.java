@@ -70,27 +70,26 @@ public class GatesSummonedAI2 extends GeneralNpcAI2 {
 		startEventTask();
 	}
 
-	private void startMove() {
+	private void startMove()
+	{
 		final AbstractAI ia = this;
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
-				if (isAlreadyDead()) {
+				if(isAlreadyDead()){
 					return;
 				}
 				canThink = false;
 				EmoteManager.emoteStopAttacking(getOwner());
 				setStateIfNot(AIState.FOLLOWING);
 				getOwner().setState(1);
-				Npc boss = (getPosition().getWorldMapInstance().getNpc(216960) == null
-						? getPosition().getWorldMapInstance().getNpc(216952)
-						: getPosition().getWorldMapInstance().getNpc(216960));
+				Npc boss = (getPosition().getWorldMapInstance().getNpc(216960) == null ? getPosition().getWorldMapInstance().getNpc(216952) : getPosition().getWorldMapInstance().getNpc(216960));
 				AI2Actions.targetCreature(ia, boss);
 				getMoveController().moveToTargetObject();
 			}
 		}, 2000);
-
+		
 	}
 
 	private void cancelEventTask() {
@@ -106,11 +105,11 @@ public class GatesSummonedAI2 extends GeneralNpcAI2 {
 			public void run() {
 				Npc boss1 = getPosition().getWorldMapInstance().getNpc(216960);
 				Npc boss2 = getPosition().getWorldMapInstance().getNpc(216952);
-				Npc boss = (boss1 == null ? boss2 : boss1);
+				Npc boss = ( boss1 == null ? boss2 : boss1);
 				if ((boss1 == null && boss2 == null) || isAlreadyDead() || getOwner() == null)
 					cancelEventTask();
-				else {
-					if (Rnd.get(1) == 0)
+				else{
+					if(Rnd.get(1) == 0)
 						SkillEngine.getInstance().getSkill(getOwner(), 19257, 55, boss).useSkill();
 					else
 						SkillEngine.getInstance().getSkill(getOwner(), 19281, 55, boss).useSkill();

@@ -23,7 +23,7 @@ public class BindPointData {
 	private List<BindPointTemplate> bplist;
 
 	/** A map containing all bind point location templates */
-	private TIntObjectHashMap<BindPointTemplate> bindplistData = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<BindPointTemplate> bindplistData = new TIntObjectHashMap<BindPointTemplate>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (BindPointTemplate bind : bplist) {

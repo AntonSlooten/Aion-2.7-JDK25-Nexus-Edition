@@ -130,7 +130,7 @@ public class PortalTemplate {
 		}
 		return false;
 	}
-
+	
 	public boolean existsEntryForRace(Race race) {
 		for (EntryPoint entry : entryPoints) {
 			if (entry.getRace() == race || entry.getRace() == Race.PC_ALL) {
@@ -174,11 +174,10 @@ public class PortalTemplate {
 			for (int i = 0; i < parts.length; i++) {
 				String[] parts2 = parts[i].split("/");
 				requirequests[i][0] = Integer.parseInt(parts2[0]);
-				if (parts2.length == 1) {
+				if (parts2.length == 1)
 					requirequests[i][1] = 0;
-				} else {
+				else
 					requirequests[i][1] = Integer.parseInt(parts2[1]);
-				}
 			}
 		}
 	}

@@ -20,7 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import java.util.Comparator;
+import static ch.lambdaj.Lambda.on;
+import static ch.lambdaj.Lambda.sort;
 
 import com.aionemu.gameserver.configs.network.NetworkConfig;
 import com.aionemu.gameserver.instance.handlers.InstanceID;
@@ -63,10 +64,11 @@ public class ArenaOfDisciplineInstance extends DisciplineTrainingGroundsInstance
 				// float scoreRate = ((float) score / (float) totalPoints);
 				int rank = instanceReward.getRank(score);
 				/*
-				 * float percent = reward.getParticipation(); int basicAP = 200; // to do other
-				 * formula int rankingAP = 431; if (size > 1) { rankingAP = rank == 0 ? 1108 :
-				 * 431; } int scoreAP = (int) (totalAP * scoreRate); basicAP *= percent;
-				 * rankingAP *= percent; rankingAP *= playerRate; reward.setBasicAP(basicAP);
+				 * float percent = reward.getParticipation(); int basicAP = 200;
+				 * // to do other formula int rankingAP = 431; if (size > 1) {
+				 * rankingAP = rank == 0 ? 1108 : 431; } int scoreAP = (int)
+				 * (totalAP * scoreRate); basicAP *= percent; rankingAP *=
+				 * percent; rankingAP *= playerRate; reward.setBasicAP(basicAP);
 				 * reward.setRankingAP(rankingAP); reward.setScoreAP(scoreAP);
 				 */
 				reward.setBasicAP(0);
@@ -75,11 +77,13 @@ public class ArenaOfDisciplineInstance extends DisciplineTrainingGroundsInstance
 
 				// insigne orda
 				/*
-				 * int basicCrI = 195; basicCrI *= percent; // to do other formula int
-				 * rankingCrI = 256; if (size > 1) { rankingCrI = rank == 0 ? 660 : 256; }
-				 * rankingCrI *= percent; rankingCrI *= playerRate; int scoreCrI = (int)
-				 * (totalCrucible * scoreRate); reward.setBasicCrucible(basicCrI);
-				 * reward.setRankingCrucible(rankingCrI); reward.setScoreCrucible(scoreCrI);
+				 * int basicCrI = 195; basicCrI *= percent; // to do other
+				 * formula int rankingCrI = 256; if (size > 1) { rankingCrI =
+				 * rank == 0 ? 660 : 256; } rankingCrI *= percent; rankingCrI *=
+				 * playerRate; int scoreCrI = (int) (totalCrucible * scoreRate);
+				 * reward.setBasicCrucible(basicCrI);
+				 * reward.setRankingCrucible(rankingCrI);
+				 * reward.setScoreCrucible(scoreCrI);
 				 */
 				reward.setBasicCrucible(0);
 				reward.setRankingCrucible(0);
@@ -87,11 +91,13 @@ public class ArenaOfDisciplineInstance extends DisciplineTrainingGroundsInstance
 
 				// insigne courage
 				/*
-				 * int basicCoI = 0; basicCoI *= percent; // to do other formula int rankingCoI
-				 * = 23; if (size > 1) { rankingCoI = rank == 0 ? 59 : 23; } rankingCoI *=
-				 * percent; rankingCoI *= playerRate; int scoreCoI = (int) (totalCourage *
-				 * scoreRate); reward.setBasicCourage(basicCoI);
-				 * reward.setRankingCourage(rankingCoI); reward.setScoreCourage(scoreCoI);
+				 * int basicCoI = 0; basicCoI *= percent; // to do other formula
+				 * int rankingCoI = 23; if (size > 1) { rankingCoI = rank == 0 ?
+				 * 59 : 23; } rankingCoI *= percent; rankingCoI *= playerRate;
+				 * int scoreCoI = (int) (totalCourage * scoreRate);
+				 * reward.setBasicCourage(basicCoI);
+				 * reward.setRankingCourage(rankingCoI);
+				 * reward.setScoreCourage(scoreCoI);
 				 */
 				reward.setBasicCourage(0);
 				reward.setRankingCourage(0);
@@ -126,7 +132,7 @@ public class ArenaOfDisciplineInstance extends DisciplineTrainingGroundsInstance
 
 		for (Player p : instance.getPlayersInside()) {
 			List<Item> items = p.getInventory().getItemsByItemId(itemId);
-			items.sort(Comparator.comparing(Item::getExpireTime));
+			items = sort(items, on(Item.class).getExpireTime());
 			for (Item item : items) {
 				ticketRemoved.put(p.getObjectId(), 1);
 				p.getInventory().decreaseItemCount(item, 1);

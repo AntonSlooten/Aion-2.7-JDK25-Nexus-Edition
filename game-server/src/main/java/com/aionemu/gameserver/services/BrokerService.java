@@ -25,7 +25,7 @@ import java.util.Map;
 
 import javolution.util.FastMap;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,15 +99,18 @@ public class BrokerService {
 				if (item.isSettled()) {
 					asmodianSettledItems.put(item.getItemUniqueId(), item);
 					loadedSettledItemsCount++;
-				} else {
+				}
+				else {
 					asmodianBrokerItems.put(item.getItemUniqueId(), item);
 					loadedBrokerItemsCount++;
 				}
-			} else if (item.getItemBrokerRace() == BrokerRace.ELYOS) {
+			}
+			else if (item.getItemBrokerRace() == BrokerRace.ELYOS) {
 				if (item.isSettled()) {
 					elyosSettledItems.put(item.getItemUniqueId(), item);
 					loadedSettledItemsCount++;
-				} else {
+				}
+				else {
 					elyosBrokerItems.put(item.getItemUniqueId(), item);
 					loadedBrokerItemsCount++;
 				}
@@ -131,21 +134,21 @@ public class BrokerService {
 		boolean isChidrenMask = brokerMaskById.isChildrenMask(playerBrokerMaskCache);
 		if (itemList != null && clientMask == 0) {
 			Map<Integer, BrokerItem> brokerItems = getRaceBrokerItems(player.getRace());
-			if (brokerItems == null) {
+			if (brokerItems == null)
 				return;
-			}
 			searchItems = brokerItems.values().toArray(new BrokerItem[brokerItems.values().size()]);
-		} else if ((getFilteredItems(player).length == 0 || !isChidrenMask) && clientMask != 0) {
+		}
+		else if ((getFilteredItems(player).length == 0 || !isChidrenMask) && clientMask != 0) {
 			searchItems = getItemsByMask(player, clientMask, false);
-		} else if (isChidrenMask) {
+		}
+		else if (isChidrenMask) {
 			searchItems = getItemsByMask(player, clientMask, true);
-		} else {
+		}
+		else
 			searchItems = getFilteredItems(player);
-		}
 
-		if (searchItems == null || searchItems.length < 0) {
+		if (searchItems == null || searchItems.length < 0)
 			return;
-		}
 
 		int totalSearchItemsCount = searchItems.length;
 
@@ -153,18 +156,17 @@ public class BrokerService {
 		getPlayerCache(player).setBrokerStartPageCache(startPage);
 
 		if (itemList != null) {
-			List<BrokerItem> itemsFound = new ArrayList<>();
+			List<BrokerItem> itemsFound = new ArrayList<BrokerItem>();
 			for (BrokerItem item : searchItems) {
-				if (itemList.contains(item.getItemId())) {
+				if (itemList.contains(item.getItemId()))
 					itemsFound.add(item);
-				}
 			}
 			getPlayerCache(player).setSearchItemsList(itemList);
 			searchItems = itemsFound.toArray(new BrokerItem[itemsFound.size()]);
 			getPlayerCache(player).setBrokerListCache(searchItems);
-		} else {
-			getPlayerCache(player).setSearchItemsList(null);
 		}
+		else
+			getPlayerCache(player).setSearchItemsList(null);
 
 		sortBrokerItems(searchItems, sortType);
 		searchItems = getRequestedPage(searchItems, startPage);
@@ -178,34 +180,31 @@ public class BrokerService {
 	 * @return
 	 */
 	private BrokerItem[] getItemsByMask(Player player, int clientMask, boolean cached) {
-		List<BrokerItem> searchItems = new ArrayList<>();
+		List<BrokerItem> searchItems = new ArrayList<BrokerItem>();
 
 		BrokerItemMask brokerMask = BrokerItemMask.getBrokerMaskById(clientMask);
 
 		if (cached) {
 			BrokerItem[] brokerItems = getFilteredItems(player);
-			if (brokerItems == null) {
+			if (brokerItems == null)
 				return null;
-			}
 
 			for (BrokerItem item : brokerItems) {
-				if (item == null || item.getItem() == null) {
+				if (item == null || item.getItem() == null)
 					continue;
-				}
 
 				if (brokerMask.isMatches(item.getItem())) {
 					searchItems.add(item);
 				}
 			}
-		} else {
+		}
+		else {
 			Map<Integer, BrokerItem> brokerItems = getRaceBrokerItems(player.getRace());
-			if (brokerItems == null) {
+			if (brokerItems == null)
 				return null;
-			}
 			for (BrokerItem item : brokerItems.values()) {
-				if (item == null || item.getItem() == null) {
+				if (item == null || item.getItem() == null)
 					continue;
-				}
 
 				if (brokerMask.isMatches(item.getItem())) {
 					searchItems.add(item);
@@ -236,7 +235,7 @@ public class BrokerService {
 	 * @return
 	 */
 	private BrokerItem[] getRequestedPage(BrokerItem[] brokerItems, int startPage) {
-		List<BrokerItem> page = new ArrayList<>();
+		List<BrokerItem> page = new ArrayList<BrokerItem>();
 		int startingElement = startPage * 9;
 
 		for (int i = startingElement, limit = 0; i < brokerItems.length && limit < 45; i++, limit++) {
@@ -252,12 +251,12 @@ public class BrokerService {
 	 */
 	private Map<Integer, BrokerItem> getRaceBrokerItems(Race race) {
 		switch (race) {
-		case ELYOS:
-			return elyosBrokerItems;
-		case ASMODIANS:
-			return asmodianBrokerItems;
-		default:
-			return null;
+			case ELYOS:
+				return elyosBrokerItems;
+			case ASMODIANS:
+				return asmodianBrokerItems;
+			default:
+				return null;
 		}
 	}
 
@@ -267,12 +266,12 @@ public class BrokerService {
 	 */
 	private Map<Integer, BrokerItem> getRaceBrokerSettledItems(Race race) {
 		switch (race) {
-		case ELYOS:
-			return elyosSettledItems;
-		case ASMODIANS:
-			return asmodianSettledItems;
-		default:
-			return null;
+			case ELYOS:
+				return elyosSettledItems;
+			case ASMODIANS:
+				return asmodianSettledItems;
+			default:
+				return null;
 		}
 	}
 
@@ -287,9 +286,12 @@ public class BrokerService {
 
 		BrokerItem buyingItem = getRaceBrokerItems(playerRace).get(itemUniqueId);
 
-		if (!RestrictionsManager.canTrade(player) || (buyingItem == null)) {
-			return; // TODO: Message "this item has already been bought, refresh page please."
+		if (!RestrictionsManager.canTrade(player)) {
+			return;
 		}
+
+		if (buyingItem == null)
+			return; // TODO: Message "this item has already been bought, refresh page please."
 
 		if (SecurityConfig.BROKER_PREBUY_CHECK) { // wtf?
 			if (!(DAOManager.getDAO(BrokerDAO.class).preBuyCheck(itemUniqueId))) {
@@ -314,36 +316,33 @@ public class BrokerService {
 				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_FULL_INVENTORY);
 				return;
 			}
-			if (player.getInventory().getKinah() < price) {
+			if (player.getInventory().getKinah() < price)
 				return;
-			}
 
 			getRaceBrokerItems(playerRace).remove(itemUniqueId);
 			putToSettled(playerRace, buyingItem, true);
 
 			if (!isEmptyCache) {
-				BrokerItem[] newCache = ArrayUtils.removeElement(getFilteredItems(player), buyingItem);
+				BrokerItem[] newCache = (BrokerItem[]) ArrayUtils.removeElement(getFilteredItems(player), buyingItem);
 				getPlayerCache(player).setBrokerListCache(newCache);
 			}
 
 			player.getInventory().decreaseKinah(price);
 			Item boughtItem = player.getInventory().add(item);
 
-			if (LoggingConfig.LOG_BROKER_EXCHANGE) {
-				log.info("[BROKER EXCHANGE] > [Player: " + player.getName() + "] bought [Item: "
-						+ buyingItem.getItemId() + "] " + "[Count: " + buyingItem.getItemCount()
-						+ (LoggingConfig.ENABLE_ADVANCED_LOGGING ? "] [Item Name: " + item.getItemName() : "]")
+			if (LoggingConfig.LOG_BROKER_EXCHANGE)
+				log.info("[BROKER EXCHANGE] > [Player: " + player.getName() + "] bought [Item: " + buyingItem.getItemId() + "] "
+						+ "[Count: " + buyingItem.getItemCount() + (LoggingConfig.ENABLE_ADVANCED_LOGGING ? "] [Item Name: " + item.getItemName() : "]")
 						+ " from [Player: " + buyingItem.getSeller() + "] for [Price: " + buyingItem.getPrice() + "]");
-			}
 
 			// create save task
 			BrokerOpSaveTask bost = new BrokerOpSaveTask(buyingItem, boughtItem, player.getInventory().getKinahItem(),
 					player.getObjectId());
 			saveManager.add(bost);
 		}
-		showRequestedItems(player, getPlayerCache(player).getBrokerMaskCache(),
-				getPlayerCache(player).getBrokerSortTypeCache(), getPlayerCache(player).getBrokerStartPageCache(),
-				getPlayerCache(player).getSearchItemList());
+		showRequestedItems(player, getPlayerCache(player).getBrokerMaskCache(), getPlayerCache(player)
+				.getBrokerSortTypeCache(), getPlayerCache(player).getBrokerStartPageCache(), getPlayerCache(player)
+				.getSearchItemList());
 
 	}
 
@@ -353,24 +352,23 @@ public class BrokerService {
 	 * @param isSold
 	 */
 	private void putToSettled(Race race, BrokerItem brokerItem, boolean isSold) {
-		if (isSold) {
+		if (isSold)
 			brokerItem.removeItem();
-		} else {
+		else
 			brokerItem.setSettled();
-		}
 
 		brokerItem.setPersistentState(PersistentState.UPDATE_REQUIRED);
 
 		switch (race) {
-		case ASMODIANS:
-			asmodianSettledItems.put(brokerItem.getItemUniqueId(), brokerItem);
-			break;
+			case ASMODIANS:
+				asmodianSettledItems.put(brokerItem.getItemUniqueId(), brokerItem);
+				break;
 
-		case ELYOS:
-			elyosSettledItems.put(brokerItem.getItemUniqueId(), brokerItem);
-			break;
-		default:
-			break;
+			case ELYOS:
+				elyosSettledItems.put(brokerItem.getItemUniqueId(), brokerItem);
+				break;
+			default:
+				break;
 		}
 
 		Player seller = World.getInstance().findPlayer(brokerItem.getSellerId());
@@ -387,9 +385,8 @@ public class BrokerService {
 		int playerId = player.getObjectId();
 		int c = 0;
 		for (BrokerItem item : getRaceBrokerItems(player.getRace()).values()) {
-			if (item != null && playerId == item.getSellerId()) {
+			if (item != null && playerId == item.getSellerId())
 				c++;
-			}
 		}
 		return c;
 	}
@@ -403,10 +400,15 @@ public class BrokerService {
 		Item itemToRegister = player.getInventory().getItemByObjId(itemUniqueId);
 		Race playerRace = player.getRace();
 
-		if (itemToRegister == null || count > itemToRegister.getItemCount() || !RestrictionsManager.canTrade(player)
-				|| (price <= 0)) {
+		if (itemToRegister == null || count > itemToRegister.getItemCount())
+			return;
+
+		if (!RestrictionsManager.canTrade(player)) {
 			return;
 		}
+
+		if (price <= 0)
+			return;
 
 		// check max price for 1 item in stack
 		if (price / count > 999999999) {
@@ -414,38 +416,34 @@ public class BrokerService {
 		}
 
 		// Check Trade Hack
-		if (!itemToRegister.isTradeable(player)) {
+		if (!itemToRegister.isTradeable(player))
 			return;
-		}
 
-		if (!AdminService.getInstance().canOperate(player, null, itemToRegister, "broker")) {
+		if (!AdminService.getInstance().canOperate(player, null, itemToRegister, "broker"))
 			return;
-		}
 
 		BrokerRace brRace;
 
-		if (playerRace == Race.ASMODIANS) {
+		if (playerRace == Race.ASMODIANS)
 			brRace = BrokerRace.ASMODIAN;
-		} else if (playerRace == Race.ELYOS) {
+		else if (playerRace == Race.ELYOS)
 			brRace = BrokerRace.ELYOS;
-		} else {
+		else
 			return;
-		}
 
 		int registeredItemsCount = getRegisteredItemsCount(player);
 		int registrationCommition = 0;
 		if (registeredItemsCount > 14) {
 			PacketSendUtility.sendPacket(player, new SM_BROKER_SERVICE(BrokerMessages.NO_SPACE_AVAIABLE.getId()));
 			return;
-		} else if (registeredItemsCount > 9) {
+		}
+		else if (registeredItemsCount > 9)
 			registrationCommition = Math.round(price * 0.04f);
-		} else {
+		else
 			registrationCommition = Math.round(price * 0.02f);
-		}
 
-		if (registrationCommition < 10) {
+		if (registrationCommition < 10)
 			registrationCommition = 10;
-		}
 
 		if (player.getInventory().getKinah() < registrationCommition) {
 			PacketSendUtility.sendPacket(player, new SM_BROKER_SERVICE(BrokerMessages.NO_ENOUGHT_KINAH.getId()));
@@ -457,28 +455,28 @@ public class BrokerService {
 			int itemId = itemToRegister.getItemId();
 			player.getInventory().decreaseItemCount(itemToRegister, count);
 			itemToRegister = ItemFactory.newItem(itemId, count);
-		} else {
+		}
+		else {
 			player.getInventory().remove(itemToRegister);
 			PacketSendUtility.sendPacket(player, new SM_DELETE_ITEM(itemToRegister.getObjectId()));
 		}
 
 		itemToRegister.setItemLocation(126);
 
-		BrokerItem newBrokerItem = new BrokerItem(itemToRegister, price, player.getName(), player.getObjectId(),
-				brRace);
+		BrokerItem newBrokerItem = new BrokerItem(itemToRegister, price, player.getName(), player.getObjectId(), brRace);
 
 		switch (brRace) {
-		case ASMODIAN:
-			asmodianBrokerItems.put(newBrokerItem.getItemUniqueId(), newBrokerItem);
-			break;
+			case ASMODIAN:
+				asmodianBrokerItems.put(newBrokerItem.getItemUniqueId(), newBrokerItem);
+				break;
 
-		case ELYOS:
-			elyosBrokerItems.put(newBrokerItem.getItemUniqueId(), newBrokerItem);
-			break;
+			case ELYOS:
+				elyosBrokerItems.put(newBrokerItem.getItemUniqueId(), newBrokerItem);
+				break;
 		}
 
-		BrokerOpSaveTask bost = new BrokerOpSaveTask(newBrokerItem, itemToRegister,
-				player.getInventory().getKinahItem(), player.getObjectId());
+		BrokerOpSaveTask bost = new BrokerOpSaveTask(newBrokerItem, itemToRegister, player.getInventory().getKinahItem(),
+				player.getObjectId());
 		saveManager.add(bost);
 
 		PacketSendUtility.sendPacket(player, new SM_BROKER_SERVICE(newBrokerItem, 0, registeredItemsCount));
@@ -490,13 +488,12 @@ public class BrokerService {
 	public void showRegisteredItems(Player player) {
 		Map<Integer, BrokerItem> brokerItems = getRaceBrokerItems(player.getRace());
 
-		List<BrokerItem> registeredItems = new ArrayList<>();
+		List<BrokerItem> registeredItems = new ArrayList<BrokerItem>();
 		int playerId = player.getObjectId();
 
 		for (BrokerItem item : brokerItems.values()) {
-			if (item != null && item.getItem() != null && playerId == item.getSellerId()) {
+			if (item != null && item.getItem() != null && playerId == item.getSellerId())
 				registeredItems.add(item);
-			}
 		}
 
 		PacketSendUtility.sendPacket(player,
@@ -506,9 +503,8 @@ public class BrokerService {
 	public boolean hasRegisteredItems(Player player) {
 		Map<Integer, BrokerItem> brokerItems = getRaceBrokerItems(player.getRace());
 		for (BrokerItem item : brokerItems.values()) {
-			if (item != null && item.getItem() != null && player.getObjectId() == item.getSellerId()) {
+			if (item != null && item.getItem() != null && player.getObjectId() == item.getSellerId())
 				return true;
-			}
 		}
 
 		return false;
@@ -529,8 +525,7 @@ public class BrokerService {
 			}
 			if (player.getInventory().isFull()) {
 				// TODO message
-				// TODO find on retail whether its possible to add to stacks when inventory is
-				// full
+				// TODO find on retail whether its possible to add to stacks when inventory is full
 				return;
 			}
 			synchronized (this) {
@@ -550,7 +545,7 @@ public class BrokerService {
 	public void showSettledItems(Player player) {
 		Map<Integer, BrokerItem> brokerSettledItems = getRaceBrokerSettledItems(player.getRace());
 
-		List<BrokerItem> settledItems = new ArrayList<>();
+		List<BrokerItem> settledItems = new ArrayList<BrokerItem>();
 
 		int playerId = player.getObjectId();
 		long totalKinah = 0;
@@ -559,9 +554,8 @@ public class BrokerService {
 			if (item != null && playerId == item.getSellerId()) {
 				settledItems.add(item);
 
-				if (item.isSold()) {
+				if (item.isSold())
 					totalKinah += item.getPrice();
-				}
 			}
 		}
 
@@ -580,9 +574,8 @@ public class BrokerService {
 
 		for (BrokerItem item : brokerSettledItems.values()) {
 			if (item != null && playerId == item.getSellerId()) {
-				if (item.isSold()) {
+				if (item.isSold())
 					totalKinah += item.getPrice();
-				}
 			}
 		}
 		return totalKinah;
@@ -593,9 +586,8 @@ public class BrokerService {
 		int playerId = player.getObjectId();
 		for (BrokerItem item : getRaceBrokerSettledItems(player.getRace()).values()) {
 			if (item != null && playerId == item.getSellerId()) {
-				if (item.isSold()) {
+				if (item.isSold())
 					totalKinah += item.getPrice();
-				}
 			}
 		}
 		return totalKinah;
@@ -607,29 +599,28 @@ public class BrokerService {
 	public void settleAccount(Player player) {
 		Race playerRace = player.getRace();
 		Map<Integer, BrokerItem> brokerSettledItems = getRaceBrokerSettledItems(playerRace);
-		List<BrokerItem> collectedItems = new ArrayList<>();
+		List<BrokerItem> collectedItems = new ArrayList<BrokerItem>();
 		int playerId = player.getObjectId();
 		long kinahCollect = 0;
 		boolean itemsLeft = false;
 
 		for (BrokerItem item : brokerSettledItems.values()) {
-			if (item.getSellerId() == playerId) {
+			if (item.getSellerId() == playerId)
 				collectedItems.add(item);
-			}
 		}
 
 		for (BrokerItem item : collectedItems) {
 			if (item.isSold()) {
 				boolean result = false;
 				switch (playerRace) {
-				case ASMODIANS:
-					result = asmodianSettledItems.remove(item.getItemUniqueId()) != null;
-					break;
-				case ELYOS:
-					result = elyosSettledItems.remove(item.getItemUniqueId()) != null;
-					break;
-				default:
-					break;
+					case ASMODIANS:
+						result = asmodianSettledItems.remove(item.getItemUniqueId()) != null;
+						break;
+					case ELYOS:
+						result = elyosSettledItems.remove(item.getItemUniqueId()) != null;
+						break;
+					default:
+						break;
 				}
 
 				if (result) {
@@ -637,33 +628,34 @@ public class BrokerService {
 					saveManager.add(new BrokerOpSaveTask(item));
 					kinahCollect += item.getPrice();
 				}
-			} else {
+			}
+			else {
 				if (item.getItem() != null) {
 					Item resultItem = player.getInventory().add(item.getItem());
 					if (resultItem != null) {
 						boolean result = false;
 						switch (playerRace) {
-						case ASMODIANS:
-							result = asmodianSettledItems.remove(item.getItemUniqueId()) != null;
-							break;
-						case ELYOS:
-							result = elyosSettledItems.remove(item.getItemUniqueId()) != null;
-							break;
-						default:
-							break;
+							case ASMODIANS:
+								result = asmodianSettledItems.remove(item.getItemUniqueId()) != null;
+								break;
+							case ELYOS:
+								result = elyosSettledItems.remove(item.getItemUniqueId()) != null;
+								break;
+							default:
+								break;
 						}
 
 						if (result) {
 							item.setPersistentState(PersistentState.DELETED);
 							saveManager.add(new BrokerOpSaveTask(item));
 						}
-					} else {
-						itemsLeft = true;
 					}
+					else
+						itemsLeft = true;
 
-				} else {
-					log.warn("Broker settled item missed. ObjID: " + item.getItemUniqueId());
 				}
+				else
+					log.warn("Broker settled item missed. ObjID: " + item.getItemUniqueId());
 			}
 		}
 
@@ -671,9 +663,8 @@ public class BrokerService {
 
 		showSettledItems(player);
 
-		if (!itemsLeft) {
+		if (!itemsLeft)
 			PacketSendUtility.sendPacket(player, new SM_BROKER_SERVICE(false, 0));
-		}
 
 	}
 
@@ -807,20 +798,16 @@ public class BrokerService {
 		@Override
 		public void run() {
 			// first save item for FK consistency
-			if (item != null) {
+			if (item != null)
 				DAOManager.getDAO(InventoryDAO.class).store(item, playerId);
-			}
-			if (brokerItem != null) {
+			if (brokerItem != null)
 				DAOManager.getDAO(BrokerDAO.class).store(brokerItem);
-			}
-			if (kinahItem != null) {
+			if (kinahItem != null)
 				DAOManager.getDAO(InventoryDAO.class).store(kinahItem, playerId);
-			}
 		}
 
 	}
 
-	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder {
 
 		protected static final BrokerService instance = new BrokerService();

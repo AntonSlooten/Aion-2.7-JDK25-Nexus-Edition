@@ -55,15 +55,18 @@ public class _1169LightningfootTuka extends QuestHandler {
 			if (env.getTargetId() == 203126) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (env.getTargetId() == 203126) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1352);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

@@ -41,14 +41,12 @@ public class PortalCooldownList {
 	 ** @return
 	 */
 	public boolean isPortalUseDisabled(int worldId) {
-		if (portalCooldowns == null || !portalCooldowns.containsKey(worldId)) {
+		if (portalCooldowns == null || !portalCooldowns.containsKey(worldId))
 			return false;
-		}
 
 		Long coolDown = portalCooldowns.get(worldId);
-		if (coolDown == null) {
+		if (coolDown == null)
 			return false;
-		}
 
 		if (coolDown < System.currentTimeMillis()) {
 			portalCooldowns.remove(worldId);
@@ -63,9 +61,8 @@ public class PortalCooldownList {
 	 * @return
 	 */
 	public long getPortalCooldown(int worldId) {
-		if (portalCooldowns == null || !portalCooldowns.containsKey(worldId)) {
+		if (portalCooldowns == null || !portalCooldowns.containsKey(worldId))
 			return 0;
-		}
 
 		return portalCooldowns.get(worldId);
 	}
@@ -84,13 +81,13 @@ public class PortalCooldownList {
 	 */
 	public void addPortalCooldown(int worldId, long useDelay) {
 		if (portalCooldowns == null) {
-			portalCooldowns = new FastMap<>();
+			portalCooldowns = new FastMap<Integer, Long>();
 		}
 
 		long nextUseTime = System.currentTimeMillis() + useDelay;
 		portalCooldowns.put(worldId, nextUseTime);
 
-		if (owner.isInTeam()) {
+		if(owner.isInTeam()){
 			owner.getCurrentTeam().sendPacket(new SM_INSTANCE_INFO(owner, worldId));
 			return;
 		}

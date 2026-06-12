@@ -33,11 +33,14 @@ public class CharTransformer implements PropertyTransformer<Character> {
 
 	/**
 	 * Transforms string to character
-	 *
-	 * @param value value that will be transformed
-	 * @param field value will be assigned to this field
+	 * 
+	 * @param value
+	 *          value that will be transformed
+	 * @param field
+	 *          value will be assigned to this field
 	 * @return Character object that represents transformed string
-	 * @throws TransformationException if something went wrong
+	 * @throws TransformationException
+	 *           if something went wrong
 	 */
 	@Override
 	public Character transform(String value, Field field) throws TransformationException {
@@ -48,7 +51,8 @@ public class CharTransformer implements PropertyTransformer<Character> {
 			}
 
 			return chars[0];
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new TransformationException(e);
 		}
 	}

@@ -80,65 +80,67 @@ public class _1057CreatingaMonster extends QuestHandler {
 					return sendQuestEndDialog(env);
 			}
 			return false;
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 204502) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-				else if (var == 3)
-					return sendQuestDialog(env, 2034);
-			case SELECT_ACTION_2036:
-				if (var == 3)
-					playQuestMovie(env, 190);
-				return false;
-			case STEP_TO_1:
-				if (var == 0) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			case STEP_TO_4:
-				if (var == 3) {
-					removeQuestItem(env, 182201616, 1);
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+					else if (var == 3)
+						return sendQuestDialog(env, 2034);
+				case SELECT_ACTION_2036:
+					if (var == 3)
+						playQuestMovie(env, 190);
+					return false;
+				case STEP_TO_1:
+					if (var == 0) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+				case STEP_TO_4:
+					if (var == 3) {
+						removeQuestItem(env, 182201616, 1);
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
 			}
-		} else if (targetId == 204619) {
+		}
+		else if (targetId == 204619) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-			case STEP_TO_2:
-				if (var == 1) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+				case STEP_TO_2:
+					if (var == 1) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
 			}
-		} else if (targetId == 700218 && qs.getQuestVarById(0) == 2) {
+		}
+		else if (targetId == 700218 && qs.getQuestVarById(0) == 2) {
 			if (env.getDialog() == QuestDialog.USE_OBJECT) {
 				return sendQuestDialog(env, 1693);
-			} else if (env.getDialog() == QuestDialog.STEP_TO_3) {
+			}
+			else if (env.getDialog() == QuestDialog.STEP_TO_3) {
 				if (!giveQuestItem(env, 182201616, 1))
 					return false;
 				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
 				changeQuestStep(env, 2, 3, false); // 3
 				return true;
 			}
-		} else if (targetId == 700279 && qs.getQuestVarById(0) == 9) {
+		}
+		else if (targetId == 700279 && qs.getQuestVarById(0) == 9) {
 			if (env.getDialog() == QuestDialog.USE_OBJECT) {
 				return useQuestObject(env, 9, 9, true, false); // reward
 			}
@@ -173,7 +175,8 @@ public class _1057CreatingaMonster extends QuestHandler {
 		if (targetId == 700219 && qs.getQuestVarById(0) < 8) {
 			qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 			updateQuestStatus(env);
-		} else if (targetId == 212211 && qs.getQuestVarById(0) == 8) {
+		}
+		else if (targetId == 212211 && qs.getQuestVarById(0) == 8) {
 			qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 			updateQuestStatus(env);
 		}

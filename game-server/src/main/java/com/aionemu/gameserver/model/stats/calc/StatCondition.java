@@ -25,7 +25,7 @@ public interface StatCondition {
 
 	/**
 	 * Validate that function should be applied to the stat
-	 *
+	 * 
 	 * @param stat
 	 * @param statFunction
 	 * @return

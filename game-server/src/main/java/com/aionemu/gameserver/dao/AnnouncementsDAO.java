@@ -1,4 +1,4 @@
-/*
+/**
  * MODIF EVO
  * Fichier de bannissement
  *
@@ -26,7 +26,7 @@ import com.aionemu.gameserver.model.Announcement;
 
 /**
  * DAO that manages Announcements
- *
+ * 
  * @author Divinity
  */
 public abstract class AnnouncementsDAO implements DAO {
@@ -39,7 +39,7 @@ public abstract class AnnouncementsDAO implements DAO {
 
 	/**
 	 * Returns class name that will be uses as unique identifier for all DAO classes
-	 *
+	 * 
 	 * @return class name
 	 */
 	@Override

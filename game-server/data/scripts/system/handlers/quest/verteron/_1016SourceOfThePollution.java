@@ -61,146 +61,150 @@ public class _1016SourceOfThePollution extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203149: { // Geolus
-				switch (dialog) {
-				case START_DIALOG: {
-					switch (var) {
-					case 0: {
-						return sendQuestDialog(env, 1011);
-					}
-					case 2: {
-						return sendQuestDialog(env, 1693);
-					}
-					case 7: {
-						return sendQuestDialog(env, 3398);
-					}
-					case 8: {
-						if (player.getInventory().getItemCountByItemId(182200015) < 2) {
-							return sendQuestDialog(env, 3484);
-						} else {
-							return sendQuestDialog(env, 3569);
+				case 203149: { // Geolus
+					switch (dialog) {
+						case START_DIALOG: {
+							switch (var) {
+								case 0: {
+									return sendQuestDialog(env, 1011);
+								}
+								case 2: {
+									return sendQuestDialog(env, 1693);
+								}
+								case 7: {
+									return sendQuestDialog(env, 3398);
+								}
+								case 8: {
+									if (player.getInventory().getItemCountByItemId(182200015) < 2) {
+										return sendQuestDialog(env, 3484);
+									}
+									else {
+										return sendQuestDialog(env, 3569);
+									}
+								}
+							}
+						}
+						case SELECT_ACTION_3400: {
+							playQuestMovie(env, 28);
+							return sendQuestDialog(env, 3400);
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+						case STEP_TO_3: {
+							return defaultCloseDialog(env, 2, 3); // 3
+						}
+						case STEP_TO_8: {
+							if (var == 7) {
+								removeQuestItem(env, 182200013, 1);
+								removeQuestItem(env, 182200014, 1);
+								return defaultCloseDialog(env, 7, 8, 182200015, 2, 0, 0); // 8
+							}
+							else if (var == 8) {
+								return defaultCloseDialog(env, 8, 8, 182200015, 2, 0, 0); // 8
+							}
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
 						}
 					}
-					}
+					break;
 				}
-				case SELECT_ACTION_3400: {
-					playQuestMovie(env, 28);
-					return sendQuestDialog(env, 3400);
-				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				case STEP_TO_3: {
-					return defaultCloseDialog(env, 2, 3); // 3
-				}
-				case STEP_TO_8: {
-					if (var == 7) {
-						removeQuestItem(env, 182200013, 1);
-						removeQuestItem(env, 182200014, 1);
-						return defaultCloseDialog(env, 7, 8, 182200015, 2, 0, 0); // 8
-					} else if (var == 8) {
-						return defaultCloseDialog(env, 8, 8, 182200015, 2, 0, 0); // 8
-					}
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-				break;
-			}
-			case 203148: { // Lepios
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					}
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2, 182200017, 1, 0, 0); // 2
-				}
-				}
-				break;
-			}
-			case 203832: { // Dimos
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 3) {
-						return sendQuestDialog(env, 2034);
-					}
-				}
-				case STEP_TO_4: {
-					return defaultCloseDialog(env, 3, 4, 182200013, 1, 0, 0); // 4
-				}
-				}
-				break;
-			}
-			case 203705: { // Jumentis
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 4) {
-						return sendQuestDialog(env, 2375);
-					}
-				}
-				case STEP_TO_5: {
-					return defaultCloseDialog(env, 4, 5); // 5
-				}
-				}
-				break;
-			}
-			case 203822: { // Quintus
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 5) {
-						return sendQuestDialog(env, 2716);
-					}
-				}
-				case STEP_TO_6: {
-					return defaultCloseDialog(env, 5, 6, 182200018, 1, 182200017, 1); // 6
-				}
-				}
-				break;
-			}
-			case 203761: { // Hygea
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 6) {
-						return sendQuestDialog(env, 3057);
-					}
-				}
-				case STEP_TO_7: {
-					return defaultCloseDialog(env, 6, 7, 182200014, 1, 182200018, 1); // 7
-				}
-				}
-				break;
-			}
-			case 203195: { // Kato
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 9) {
-						return sendQuestDialog(env, 3739);
-					}
-				}
-				case STEP_TO_9: {
-					if (var == 9) {
-						if (!giveQuestItem(env, 182200016, 1)) {
-							return closeDialogWindow(env);
+				case 203148: { // Lepios
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
 						}
-						Npc npc = (Npc) env.getVisibleObject();
-						changeQuestStep(env, 9, 9, true); // reward
-						removeQuestItem(env, 182200015, 2);
-						npc.getController().onDelete();
-						return closeDialogWindow(env);
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2, 182200017, 1, 0, 0); // 2
+						}
+					}
+					break;
+				}
+				case 203832: { // Dimos
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 3) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case STEP_TO_4: {
+							return defaultCloseDialog(env, 3, 4, 182200013, 1, 0, 0); // 4
+						}
+					}
+					break;
+				}
+				case 203705: { // Jumentis
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 4) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case STEP_TO_5: {
+							return defaultCloseDialog(env, 4, 5); // 5
+						}
+					}
+					break;
+				}
+				case 203822: { // Quintus
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 5) {
+								return sendQuestDialog(env, 2716);
+							}
+						}
+						case STEP_TO_6: {
+							return defaultCloseDialog(env, 5, 6, 182200018, 1, 182200017, 1); // 6
+						}
+					}
+					break;
+				}
+				case 203761: { // Hygea
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 6) {
+								return sendQuestDialog(env, 3057);
+							}
+						}
+						case STEP_TO_7: {
+							return defaultCloseDialog(env, 6, 7, 182200014, 1, 182200018, 1); // 7
+						}
+					}
+					break;
+				}
+				case 203195: { // Kato
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 9) {
+								return sendQuestDialog(env, 3739);
+							}
+						}
+						case STEP_TO_9: {
+							if (var == 9) {
+								if (!giveQuestItem(env, 182200016, 1)) {
+									return closeDialogWindow(env);
+								}
+								Npc npc = (Npc) env.getVisibleObject();
+								changeQuestStep(env, 9, 9, true); // reward
+								removeQuestItem(env, 182200015, 2);
+								npc.getController().onDelete();
+								return closeDialogWindow(env);
+							}
+						}
 					}
 				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203098) { // Spatalos
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					removeQuestItem(env, 182200016, 1);
 					return sendQuestDialog(env, 4080);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
@@ -218,8 +222,8 @@ public class _1016SourceOfThePollution extends QuestHandler {
 				int targetId = env.getTargetId();
 				if (targetId == 210318) {
 					Npc npc = (Npc) env.getVisibleObject();
-					QuestService.addNewSpawn(210030000, player.getInstanceId(), 203195, npc.getX(), npc.getY(),
-							npc.getZ(), (byte) 0);
+					QuestService.addNewSpawn(210030000, player.getInstanceId(), 203195, npc.getX(), npc.getY(), npc.getZ(),
+						(byte) 0);
 					return defaultOnKillEvent(env, 210318, 8, 9); // 9
 				}
 			}

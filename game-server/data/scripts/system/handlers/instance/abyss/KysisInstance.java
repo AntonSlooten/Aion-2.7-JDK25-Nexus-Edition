@@ -17,6 +17,7 @@
  */
 package instance.abyss;
 
+
 import com.aionemu.gameserver.instance.handlers.GeneralInstanceHandler;
 import com.aionemu.gameserver.instance.handlers.InstanceID;
 import com.aionemu.gameserver.model.gameobjects.Npc;
@@ -34,28 +35,27 @@ public class KysisInstance extends GeneralInstanceHandler {
 
 	@Override
 	public void onDie(Npc npc) {
-		switch (npc.getNpcId()) {
-		case 215179: // bosses
-		case 215178:
-			spawnChests(npc);
-			break;
-		case 215414: // artifact spawns weakened boss
-			Npc boss = instance.getNpc(215179);
-			if (boss != null && !boss.getLifeStats().isAlreadyDead()) {
-				spawn(215178, boss.getX(), boss.getY(), boss.getZ(), boss.getHeading());
-				boss.getController().onDelete();
-			}
+		switch(npc.getNpcId()) {
+			case 215179: // bosses
+			case 215178:
+				spawnChests(npc);
+				break;
+			case 215414: // artifact spawns weakened boss
+				Npc boss = instance.getNpc(215179);
+				if(boss != null && !boss.getLifeStats().isAlreadyDead()) {
+					spawn(215178, boss.getX(), boss.getY(), boss.getZ(), boss.getHeading());
+					boss.getController().onDelete();
+				}	
 		}
 	}
 
 	private void spawnChests(Npc npc) {
-		if (!rewarded) {
-			rewarded = true; // safety mechanism
+		if(!rewarded) {
+			rewarded = true; //safety mechanism
 			if (npc.getAi2().getRemainigTime() != 0) {
-				long rtime = (600000 - npc.getAi2().getRemainigTime()) / 30000; // Spawn chests depending on time needed
-																				// for boss kill
+				long rtime = (600000 - npc.getAi2().getRemainigTime()) / 30000; // Spawn chests depending on time needed for boss kill
 				spawn(700541, 478.7917f, 815.5538f, 199.70894f, (byte) 9);
-				if (rtime > 1)
+				if (rtime > 1)	
 					spawn(700541, 471, 853, 199f, (byte) 117);
 				if (rtime > 2)
 					spawn(700541, 477, 873, 199.7f, (byte) 109);
@@ -74,9 +74,9 @@ public class KysisInstance extends GeneralInstanceHandler {
 				if (rtime > 9)
 					spawn(700541, 490, 899, 199.7f, (byte) 44);
 				if (rtime > 10)
-					spawn(700541, 470, 834, 199.7f, (byte) 63); // 700560
+					spawn(700541, 470, 834, 199.7f, (byte) 63); //700560
 				if (rtime > 11 && npc.getNpcId() == 215179)
-					spawn(700542, 577.5694f, 836.9684f, 199.7f, (byte) 120); // last chest only for big boss
+					spawn(700542, 577.5694f, 836.9684f, 199.7f, (byte) 120); //last chest only for big boss
 			}
 		}
 	}

@@ -36,9 +36,9 @@ import com.aionemu.gameserver.world.World;
 import com.aionemu.gameserver.world.WorldMap;
 
 /**
- * This service in future should schedule job that is changing weather sometimes
- * in region and probably sends to all players
- *
+ * This service in future should schedule job that is changing weather sometimes in region and probably sends to all
+ * players
+ * 
  * @author ATracer
  * @author Kwazar
  */
@@ -55,12 +55,11 @@ public class WeatherService {
 	}
 
 	private WeatherService() {
-		worldWeathers = new FastMap<>();
+		worldWeathers = new FastMap<WeatherKey, Integer>();
 		ThreadPoolManager.getInstance().scheduleAtFixedRate(new Runnable() {
 
 			/*
 			 * (non-Javadoc)
-			 *
 			 * @see java.lang.Runnable#run()
 			 */
 			@Override
@@ -72,7 +71,7 @@ public class WeatherService {
 
 	/**
 	 * Key class used to store date of key creation (for rolling weather usage)
-	 *
+	 * 
 	 * @author Kwazar
 	 */
 	private class WeatherKey {
@@ -88,9 +87,11 @@ public class WeatherService {
 
 		/**
 		 * Parametered Constructor
-		 *
-		 * @param date     creation date
-		 * @param worldMap map to link
+		 * 
+		 * @param date
+		 *          creation date
+		 * @param worldMap
+		 *          map to link
 		 */
 		public WeatherKey(Date date, WorldMap worldMap) {
 			this.created = date;
@@ -105,9 +106,9 @@ public class WeatherService {
 		}
 
 		/**
-		 * Returns <code>true</code> if the key is out of date relating to constant
-		 * WEATHER_DURATION, <code>false</code> either
-		 *
+		 * Returns <code>true</code> if the key is out of date relating to constant WEATHER_DURATION, <code>false</code>
+		 * either
+		 * 
 		 * @return true or false
 		 */
 		public boolean isOutDated() {
@@ -124,7 +125,7 @@ public class WeatherService {
 	 * triggered every CHECK_INTERVAL
 	 */
 	private void checkWeathersTime() {
-		List<WeatherKey> toBeRefreshed = new ArrayList<>();
+		List<WeatherKey> toBeRefreshed = new ArrayList<WeatherKey>();
 		for (WeatherKey key : worldWeathers.keySet()) {
 			if (key.isOutDated()) {
 				toBeRefreshed.add(key);
@@ -145,7 +146,7 @@ public class WeatherService {
 
 	/**
 	 * When a player connects, it loads his weather
-	 *
+	 * 
 	 * @param player
 	 */
 	public void loadWeather(Player player) {
@@ -155,7 +156,7 @@ public class WeatherService {
 
 	/**
 	 * Return the correct key from the worldWeathers Map by the worldMap
-	 *
+	 * 
 	 * @param map
 	 * @return
 	 */
@@ -183,7 +184,7 @@ public class WeatherService {
 	 * Allows server to reinitialize Weathers for all regions
 	 */
 	public void resetWeather() {
-		Set<WeatherKey> loadedWeathers = new HashSet<>(worldWeathers.keySet());
+		Set<WeatherKey> loadedWeathers = new HashSet<WeatherKey>(worldWeathers.keySet());
 		worldWeathers.clear();
 		for (WeatherKey key : loadedWeathers) {
 			onWeatherChange(key.getMap(), null);
@@ -192,9 +193,11 @@ public class WeatherService {
 
 	/**
 	 * Allows server to change a specific {@link MapRegion}'s WeatherType
-	 *
-	 * @param regionId    the regionId to be changed of WeatherType
-	 * @param weatherType the new WeatherType
+	 * 
+	 * @param regionId
+	 *          the regionId to be changed of WeatherType
+	 * @param weatherType
+	 *          the new WeatherType
 	 */
 	public void changeRegionWeather(int regionId, Integer weatherType) {
 		WorldMap worldMap = World.getInstance().getWorldMap(regionId);
@@ -205,28 +208,27 @@ public class WeatherService {
 
 	/**
 	 * triggers the update of weather to all players
-	 *
+	 * 
 	 * @param world
 	 * @param worldMap
-	 * @param player   if null -> weather is broadcasted to all players in world
+	 * @param player
+	 *          if null -> weather is broadcasted to all players in world
 	 */
 	private void onWeatherChange(WorldMap worldMap, Player player) {
 		if (player == null) {
-			for (Iterator<Player> playerIterator = World.getInstance().getPlayersIterator(); playerIterator
-					.hasNext();) {
+			for (Iterator<Player> playerIterator = World.getInstance().getPlayersIterator(); playerIterator.hasNext();) {
 				Player currentPlayer = playerIterator.next();
 
-				if (!currentPlayer.isSpawned()) {
+				if (!currentPlayer.isSpawned())
 					continue;
-				}
 
 				WorldMap currentPlayerWorldMap = currentPlayer.getActiveRegion().getParent().getParent();
 				if (currentPlayerWorldMap.equals(worldMap)) {
-					PacketSendUtility.sendPacket(currentPlayer,
-							new SM_WEATHER(getWeatherTypeByRegion(currentPlayerWorldMap)));
+					PacketSendUtility.sendPacket(currentPlayer, new SM_WEATHER(getWeatherTypeByRegion(currentPlayerWorldMap)));
 				}
 			}
-		} else {
+		}
+		else {
 			PacketSendUtility.sendPacket(player, new SM_WEATHER(getWeatherTypeByRegion(worldMap)));
 		}
 	}

@@ -44,16 +44,17 @@ public class SimpleRootEffect extends EffectTemplate {
 		effect.addToEffectedController();
 		final Creature effected = effect.getEffected();
 		World.getInstance().updatePosition(effected, effect.getTargetX(), effect.getTargetY(), effect.getTargetZ(),
-				effected.getHeading());
+			effected.getHeading());
 	}
 
 	@Override
 	public void calculate(Effect effect) {
 		// Effect is applied only on moving targets, REALLY?
-		if (!effect.getEffected().getMoveController().isInMove()
-				|| !super.calculate(effect, StatEnum.STAGGER_RESISTANCE, null)) {
+		if (!effect.getEffected().getMoveController().isInMove())
 			return;
-		}
+		
+		if (!super.calculate(effect, StatEnum.STAGGER_RESISTANCE, null))
+			return;
 
 		final Creature effected = effect.getEffected();
 
@@ -65,7 +66,7 @@ public class SimpleRootEffect extends EffectTemplate {
 
 		float z = effected.getZ();
 		Vector3f closestCollision = GeoService.getInstance().getClosestCollision(effected, effected.getX() + x1,
-				effected.getY() + y1, effected.getZ(), false);
+			effected.getY() + y1, effected.getZ(), false);
 		x1 = closestCollision.x;
 		y1 = closestCollision.y;
 		z = closestCollision.z;
@@ -74,12 +75,10 @@ public class SimpleRootEffect extends EffectTemplate {
 
 	@Override
 	public void startEffect(final Effect effect) {
-		// effect.getEffected().getController().cancelCurrentSkill(); //TODO: Not sure
-		// about this
+		// effect.getEffected().getController().cancelCurrentSkill(); //TODO: Not sure about this
 		effect.getEffected().getEffectController().setAbnormal(AbnormalState.KNOCKBACK.getId());
 		effect.setAbnormal(AbnormalState.KNOCKBACK.getId());
-		PacketSendUtility.broadcastPacketAndReceive(effect.getEffected(),
-				new SM_TARGET_IMMOBILIZE(effect.getEffected()));
+		PacketSendUtility.broadcastPacketAndReceive(effect.getEffected(), new SM_TARGET_IMMOBILIZE(effect.getEffected()));
 	}
 
 	@Override

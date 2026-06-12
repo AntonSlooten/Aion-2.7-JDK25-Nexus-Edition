@@ -26,7 +26,9 @@ import javax.xml.bind.annotation.*;
 @XmlEnum
 public enum ShoutType {
 
-	BROADCAST, SAY, HEAR;
+	BROADCAST,
+	SAY,
+	HEAR;
 
 	public String value() {
 		return name();

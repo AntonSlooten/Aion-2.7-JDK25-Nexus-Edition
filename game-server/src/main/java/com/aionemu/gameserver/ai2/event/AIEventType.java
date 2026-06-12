@@ -20,12 +20,13 @@ package com.aionemu.gameserver.ai2.event;
  * @author ATracer
  */
 public enum AIEventType {
-	ACTIVATE, DEACTIVATE,
+	ACTIVATE,
+	DEACTIVATE,
 
 	/**
 	 * Creature is being attacked (internal)
 	 */
-	ATTACK,
+	ATTACK, 
 	/**
 	 * Creature's attack part is complete (internal)
 	 */
@@ -38,20 +39,35 @@ public enum AIEventType {
 	 * Some neighbor creature is being attacked (broadcast)
 	 */
 	CREATURE_ATTACKED,
-
+	
 	/**
 	 * Creature is attacking (broadcast)
 	 */
 	CREATURE_ATTACKING,
 
-	MOVE_VALIDATE, MOVE_ARRIVED, THINK, CREATURE_SEE, CREATURE_MOVED, CREATURE_AGGRO, SPAWNED, RESPAWNED, DESPAWNED,
+	MOVE_VALIDATE,
+	MOVE_ARRIVED,
+    THINK,
+	CREATURE_SEE,
+	CREATURE_MOVED,
+	CREATURE_AGGRO,
+	SPAWNED,
+	RESPAWNED,
+	DESPAWNED,
 	DIED,
 
-	TARGET_REACHED, TARGET_TOOFAR, TARGET_GIVEUP, TARGET_CHANGED, FOLLOW_ME, STOP_FOLLOW_ME,
+	TARGET_REACHED,
+	TARGET_TOOFAR,
+	TARGET_GIVEUP,
+	TARGET_CHANGED,
+	FOLLOW_ME,
+	STOP_FOLLOW_ME,
 
-	NOT_AT_HOME, BACK_HOME,
+	NOT_AT_HOME,
+	BACK_HOME,
 
-	DIALOG_START, DIALOG_FINISH,
+	DIALOG_START,
+	DIALOG_FINISH,
 
 	DROP_REGISTERED
 }

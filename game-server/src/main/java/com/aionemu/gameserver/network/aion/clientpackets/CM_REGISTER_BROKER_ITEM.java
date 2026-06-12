@@ -49,9 +49,8 @@ public class CM_REGISTER_BROKER_ITEM extends AionClientPacket {
 	protected void runImpl() {
 		Player player = getConnection().getActivePlayer();
 
-		if (player.isTrading() || price < 1 || itemCount < 1) {
+		if (player.isTrading() || price < 1 || itemCount < 1)
 			return;
-		}
 
 		BrokerService.getInstance().registerItem(player, itemUniqueId, itemCount, price);
 	}

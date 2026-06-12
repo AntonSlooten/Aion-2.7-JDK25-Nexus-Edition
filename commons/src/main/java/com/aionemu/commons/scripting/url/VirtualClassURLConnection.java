@@ -29,7 +29,7 @@ import com.aionemu.commons.scripting.ScriptClassLoader;
  * {@link com.aionemu.commons.scripting.impl.javacompiler.ScriptCompilerImpl}.<br>
  * <br>
  * TODO: Implement all methods of {@link URLConnection} to ensure valid behaviour
- *
+ * 
  * @author SoulKeeper
  */
 public class VirtualClassURLConnection extends URLConnection {
@@ -41,9 +41,11 @@ public class VirtualClassURLConnection extends URLConnection {
 
 	/**
 	 * Creates URL connections that "connects" to class binary data
-	 *
-	 * @param url class name
-	 * @param cl  classloader
+	 * 
+	 * @param url
+	 *          class name
+	 * @param cl
+	 *          classloader
 	 */
 	protected VirtualClassURLConnection(URL url, ScriptClassLoader cl) {
 		super(url);

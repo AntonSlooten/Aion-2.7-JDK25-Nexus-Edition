@@ -53,7 +53,8 @@ public class _1011DangerFromAbove extends QuestHandler {
 			int var = qs.getQuestVarById(0);
 			if (var >= 2 && var < 4) {
 				return defaultOnKillEvent(env, 700091, 2, 4); // 3, 4
-			} else if (var == 4) {
+			}
+			else if (var == 4) {
 				qs.setStatus(QuestStatus.REWARD);
 				updateQuestStatus(env);
 				return true;
@@ -77,35 +78,39 @@ public class _1011DangerFromAbove extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 203109) { // Kairon
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
-					} else if (var == 5) {
-						return sendQuestDialog(env, 1693);
+					case START_DIALOG: {
+						if (var == 0) {
+							return sendQuestDialog(env, 1011);
+						}
+						else if (var == 5) {
+							return sendQuestDialog(env, 1693);
+						}
 					}
-				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-			} else if (targetId == 203122) { // Hynops
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
+					case STEP_TO_1: {
+						return defaultCloseDialog(env, 0, 1); // 1
 					}
-				}
-				case STEP_TO_2: {
-					playQuestMovie(env, 24);
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+			else if (targetId == 203122) { // Hynops
+				switch (env.getDialog()) {
+					case START_DIALOG: {
+						if (var == 1) {
+							return sendQuestDialog(env, 1352);
+						}
+					}
+					case STEP_TO_2: {
+						playQuestMovie(env, 24);
+						return defaultCloseDialog(env, 1, 2); // 2
+					}
+				}
+			}
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203109) { // Kairon
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 1693);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

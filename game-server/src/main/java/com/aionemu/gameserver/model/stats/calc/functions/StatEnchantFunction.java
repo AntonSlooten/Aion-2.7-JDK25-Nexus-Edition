@@ -46,21 +46,22 @@ public class StatEnchantFunction extends StatAddFunction {
 
 	@Override
 	public void apply(Stat2 stat) {
-		if (!item.isEquipped()) {
+		if (!item.isEquipped())
 			return;
-		}
 		int enchantLvl = item.getEnchantLevel();
-		if ((enchantLvl == 0) || item.getEquipmentSlot() == ItemSlot.MAIN_OFF_HAND.getSlotIdMask()
-				|| item.getEquipmentSlot() == ItemSlot.SUB_OFF_HAND.getSlotIdMask()) {
+		if (enchantLvl == 0)
 			return;
-		}
+		if (item.getEquipmentSlot() == ItemSlot.MAIN_OFF_HAND.getSlotIdMask()
+			|| item.getEquipmentSlot() == ItemSlot.SUB_OFF_HAND.getSlotIdMask())
+			return;
 		stat.addToBase(getEnchantAdditionModifier(item.getEnchantLevel(), stat));
 	}
 
 	private int getEnchantAdditionModifier(int enchantLvl, Stat2 stat) {
 		if (item.getItemTemplate().isWeapon()) {
 			return getWeaponModifiers(enchantLvl);
-		} else if (item.getItemTemplate().isArmor()) {
+		}
+		else if (item.getItemTemplate().isArmor()) {
 			return getArmorModifiers(enchantLvl, stat);
 		}
 		return 0;
@@ -68,209 +69,206 @@ public class StatEnchantFunction extends StatAddFunction {
 
 	private int getWeaponModifiers(int enchantLvl) {
 		switch (stat) {
-		case MAIN_HAND_POWER:
-		case OFF_HAND_POWER:
-		case PHYSICAL_ATTACK:
-			switch (item.getItemTemplate().getWeaponType()) {
-			case DAGGER_1H:
-			case SWORD_1H:
-				return 2 * enchantLvl;
-			case POLEARM_2H:
-			case SWORD_2H:
-			case BOW:
-				return 4 * enchantLvl;
-			case MACE_1H:
-			case STAFF_2H:
-				return 3 * enchantLvl;
-			}
-			return 0;
-		case BOOST_MAGICAL_SKILL:
-			switch (item.getItemTemplate().getWeaponType()) {
-			case BOOK_2H:
-			case MACE_1H:
-			case STAFF_2H:
-			case ORB_2H:
-				return 20 * enchantLvl;
-			}
-			return 0;
-		case MAGICAL_ATTACK:
-			switch (item.getItemTemplate().getWeaponType()) {
-			case BOOK_2H:
-			case ORB_2H:
-				return 3 * enchantLvl;
-			}
-			return 0;
-		default:
-			return 0;
+			case MAIN_HAND_POWER:
+			case OFF_HAND_POWER:
+			case PHYSICAL_ATTACK:
+				switch (item.getItemTemplate().getWeaponType()) {
+					case DAGGER_1H:
+					case SWORD_1H:
+						return 2 * enchantLvl;
+					case POLEARM_2H:
+					case SWORD_2H:
+					case BOW:
+						return 4 * enchantLvl;
+					case MACE_1H:
+					case STAFF_2H:
+						return 3 * enchantLvl;
+				}
+				return 0;
+			case BOOST_MAGICAL_SKILL:
+				switch (item.getItemTemplate().getWeaponType()) {
+					case BOOK_2H:
+					case MACE_1H:
+					case STAFF_2H:
+					case ORB_2H:
+						return 20 * enchantLvl;
+				}
+				return 0;
+			case MAGICAL_ATTACK:
+				switch (item.getItemTemplate().getWeaponType()) {
+					case BOOK_2H:
+					case ORB_2H:
+						return 3 * enchantLvl;
+				}
+				return 0;
+			default:
+				return 0;
 		}
 	}
 
-	@SuppressWarnings("fallthrough")
 	private int getArmorModifiers(int enchantLvl, Stat2 applyStat) {
 		ArmorType armorType = item.getItemTemplate().getArmorType();
-		if (armorType == null) {
-			log.warn("Missing item ArmorType itemId: " + item.getItemId() + " EquipmentSlot: " + item.getEquipmentSlot()
-					+ " playerObjectId: " + applyStat.getOwner().getObjectId());
+		if (armorType == null){
+			log.warn("Missing item ArmorType itemId: " +item.getItemId() +" EquipmentSlot: "+item.getEquipmentSlot()+" playerObjectId: "+applyStat.getOwner().getObjectId());
 			return 0;
 		}
 		switch (item.getItemTemplate().getArmorType()) {
-		case ROBE:
-			switch (item.getEquipmentSlot()) {
-			case 1 << 5:
-			case 1 << 11:
-			case 1 << 4:
+			case ROBE:
+				switch (item.getEquipmentSlot()) {
+					case 1 << 5:
+					case 1 << 11:
+					case 1 << 4:
+						switch (stat) {
+							case PHYSICAL_DEFENSE:
+								return enchantLvl;
+							case MAXHP:
+								return 10 * enchantLvl;
+							case PHYSICAL_CRITICAL_RESIST:
+								return 2 * enchantLvl;
+						}
+						return 0;
+					case 1 << 12:
+						switch (stat) {
+							case PHYSICAL_DEFENSE:
+								return 2 * enchantLvl;
+							case MAXHP:
+								return 12 * enchantLvl;
+							case PHYSICAL_CRITICAL_RESIST:
+								return 3 * enchantLvl;
+						}
+						return 0;
+					case 1 << 3:
+						switch (stat) {
+							case PHYSICAL_DEFENSE:
+								return 3 * enchantLvl;
+							case MAXHP:
+								return 14 * enchantLvl;
+							case PHYSICAL_CRITICAL_RESIST:
+								return 4 * enchantLvl;
+						}
+						return 0;
+				}
+				return 0;
+			case LEATHER:
+				switch (item.getEquipmentSlot()) {
+					case 1 << 5:
+					case 1 << 11:
+					case 1 << 4:
+						switch (stat) {
+							case PHYSICAL_DEFENSE:
+								return 3 * enchantLvl;
+							case MAXHP:
+								return 8 * enchantLvl;
+							case PHYSICAL_CRITICAL_RESIST:
+								return 2 * enchantLvl;
+						}
+						return 0;
+					case 1 << 12:
+						switch (stat) {
+							case PHYSICAL_DEFENSE:
+								return 5 * enchantLvl;
+							case MAXHP:
+								return 10 * enchantLvl;
+							case PHYSICAL_CRITICAL_RESIST:
+								return 3 * enchantLvl;
+						}
+						return 0;
+					case 1 << 3:
+						switch (stat) {
+							case PHYSICAL_DEFENSE:
+								return 4 * enchantLvl;
+							case MAXHP:
+								return 12 * enchantLvl;
+							case PHYSICAL_CRITICAL_RESIST:
+								return 4 * enchantLvl;
+						}
+						return 0;
+				}
+				return 0;
+			case CHAIN:
+				switch (item.getEquipmentSlot()) {
+					case 1 << 5:
+					case 1 << 11:
+					case 1 << 4:
+						switch (stat) {
+							case PHYSICAL_DEFENSE:
+								return 3 * enchantLvl;
+							case MAXHP:
+								return 6 * enchantLvl;
+							case PHYSICAL_CRITICAL_RESIST:
+								return 2 * enchantLvl;
+						}
+						return 0;
+					case 1 << 12:
+						switch (stat) {
+							case PHYSICAL_DEFENSE:
+								return 5 * enchantLvl;
+							case MAXHP:
+								return 10 * enchantLvl;
+							case PHYSICAL_CRITICAL_RESIST:
+								return 3 * enchantLvl;
+						}
+						return 0;
+					case 1 << 3:
+						switch (stat) {
+							case PHYSICAL_DEFENSE:
+								return 5 * enchantLvl;
+							case MAXHP:
+								return 10 * enchantLvl;
+							case PHYSICAL_CRITICAL_RESIST:
+								return 4 * enchantLvl;
+						}
+						return 0;
+				}
+				return 0;
+			case PLATE:
+				switch (item.getEquipmentSlot()) {
+					case 1 << 5:
+					case 1 << 11:
+					case 1 << 4:
+						switch (stat) {
+							case PHYSICAL_DEFENSE:
+								return 4 * enchantLvl;
+							case MAXHP:
+								return 4 * enchantLvl;
+							case PHYSICAL_CRITICAL_RESIST:
+								return 2 * enchantLvl;
+						}
+						return 0;
+					case 1 << 12:
+						switch (stat) {
+							case PHYSICAL_DEFENSE:
+								return 5 * enchantLvl;
+							case MAXHP:
+								return 6 * enchantLvl;
+							case PHYSICAL_CRITICAL_RESIST:
+								return 3 * enchantLvl;
+						}
+						return 0;
+					case 1 << 3:
+						switch (stat) {
+							case PHYSICAL_DEFENSE:
+								return 6 * enchantLvl;
+							case MAXHP:
+								return 8 * enchantLvl;
+							case PHYSICAL_CRITICAL_RESIST:
+								return 4 * enchantLvl;
+						}
+						return 0;
+				}
+				return 0;
+			case SHIELD:
 				switch (stat) {
-				case PHYSICAL_DEFENSE:
-					return enchantLvl;
-				case MAXHP:
-					return 10 * enchantLvl;
-				case PHYSICAL_CRITICAL_RESIST:
-					return 2 * enchantLvl;
+					case DAMAGE_REDUCE:
+						float reduceRate = enchantLvl > 10 ? 0.2f : enchantLvl * 0.02f;
+						return Math.round(reduceRate * applyStat.getBase());
+					case BLOCK:
+						if (enchantLvl > 10)
+							return 30 * (enchantLvl - 10);
+						return 0;
 				}
+			default:
 				return 0;
-			case 1 << 12:
-				switch (stat) {
-				case PHYSICAL_DEFENSE:
-					return 2 * enchantLvl;
-				case MAXHP:
-					return 12 * enchantLvl;
-				case PHYSICAL_CRITICAL_RESIST:
-					return 3 * enchantLvl;
-				}
-				return 0;
-			case 1 << 3:
-				switch (stat) {
-				case PHYSICAL_DEFENSE:
-					return 3 * enchantLvl;
-				case MAXHP:
-					return 14 * enchantLvl;
-				case PHYSICAL_CRITICAL_RESIST:
-					return 4 * enchantLvl;
-				}
-				return 0;
-			}
-			return 0;
-		case LEATHER:
-			switch (item.getEquipmentSlot()) {
-			case 1 << 5:
-			case 1 << 11:
-			case 1 << 4:
-				switch (stat) {
-				case PHYSICAL_DEFENSE:
-					return 3 * enchantLvl;
-				case MAXHP:
-					return 8 * enchantLvl;
-				case PHYSICAL_CRITICAL_RESIST:
-					return 2 * enchantLvl;
-				}
-				return 0;
-			case 1 << 12:
-				switch (stat) {
-				case PHYSICAL_DEFENSE:
-					return 5 * enchantLvl;
-				case MAXHP:
-					return 10 * enchantLvl;
-				case PHYSICAL_CRITICAL_RESIST:
-					return 3 * enchantLvl;
-				}
-				return 0;
-			case 1 << 3:
-				switch (stat) {
-				case PHYSICAL_DEFENSE:
-					return 4 * enchantLvl;
-				case MAXHP:
-					return 12 * enchantLvl;
-				case PHYSICAL_CRITICAL_RESIST:
-					return 4 * enchantLvl;
-				}
-				return 0;
-			}
-			return 0;
-		case CHAIN:
-			switch (item.getEquipmentSlot()) {
-			case 1 << 5:
-			case 1 << 11:
-			case 1 << 4:
-				switch (stat) {
-				case PHYSICAL_DEFENSE:
-					return 3 * enchantLvl;
-				case MAXHP:
-					return 6 * enchantLvl;
-				case PHYSICAL_CRITICAL_RESIST:
-					return 2 * enchantLvl;
-				}
-				return 0;
-			case 1 << 12:
-				switch (stat) {
-				case PHYSICAL_DEFENSE:
-					return 5 * enchantLvl;
-				case MAXHP:
-					return 10 * enchantLvl;
-				case PHYSICAL_CRITICAL_RESIST:
-					return 3 * enchantLvl;
-				}
-				return 0;
-			case 1 << 3:
-				switch (stat) {
-				case PHYSICAL_DEFENSE:
-					return 5 * enchantLvl;
-				case MAXHP:
-					return 10 * enchantLvl;
-				case PHYSICAL_CRITICAL_RESIST:
-					return 4 * enchantLvl;
-				}
-				return 0;
-			}
-			return 0;
-		case PLATE:
-			switch (item.getEquipmentSlot()) {
-			case 1 << 5:
-			case 1 << 11:
-			case 1 << 4:
-				switch (stat) {
-				case PHYSICAL_DEFENSE:
-					return 4 * enchantLvl;
-				case MAXHP:
-					return 4 * enchantLvl;
-				case PHYSICAL_CRITICAL_RESIST:
-					return 2 * enchantLvl;
-				}
-				return 0;
-			case 1 << 12:
-				switch (stat) {
-				case PHYSICAL_DEFENSE:
-					return 5 * enchantLvl;
-				case MAXHP:
-					return 6 * enchantLvl;
-				case PHYSICAL_CRITICAL_RESIST:
-					return 3 * enchantLvl;
-				}
-				return 0;
-			case 1 << 3:
-				switch (stat) {
-				case PHYSICAL_DEFENSE:
-					return 6 * enchantLvl;
-				case MAXHP:
-					return 8 * enchantLvl;
-				case PHYSICAL_CRITICAL_RESIST:
-					return 4 * enchantLvl;
-				}
-				return 0;
-			}
-			return 0;
-		case SHIELD:
-			switch (stat) {
-			case DAMAGE_REDUCE:
-				float reduceRate = enchantLvl > 10 ? 0.2f : enchantLvl * 0.02f;
-				return Math.round(reduceRate * applyStat.getBase());
-			case BLOCK:
-				if (enchantLvl > 10) {
-					return 30 * (enchantLvl - 10);
-				}
-				return 0;
-			}
-		default:
-			return 0;
 		}
 	}
 

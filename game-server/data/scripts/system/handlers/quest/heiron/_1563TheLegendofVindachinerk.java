@@ -69,25 +69,25 @@ public class _1563TheLegendofVindachinerk extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798096: // Poporinerk
-				switch (dialog) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 1352);
-				case STEP_TO_2:
-					return checkQuestItems(env, 1, 0, true, 5, 1353);
-				}
-				break;
-			case 279005:
-				switch (dialog) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_2:
-					return checkQuestItems(env, 1, 2, true, 6, 1439);
-				}
+				case 798096: // Poporinerk
+					switch (dialog) {
+						case START_DIALOG:
+							return sendQuestDialog(env, 1352);
+						case STEP_TO_2:
+							return checkQuestItems(env, 1, 0, true, 5, 1353);
+					}
+					break;
+				case 279005:
+					switch (dialog) {
+						case START_DIALOG:
+							if (var == 1)
+								return sendQuestDialog(env, 1352);
+						case STEP_TO_2:
+							return checkQuestItems(env, 1, 2, true, 6, 1439);
+					}
 			}
 		}
-		if (sendQuestRewardDialog(env, 798096, 0, 0) || sendQuestRewardDialog(env, 279005, 0, 1))
+		if(sendQuestRewardDialog(env, 798096, 0, 0) || sendQuestRewardDialog(env, 279005, 0, 1))
 			return true;
 		else
 			return false;
@@ -104,14 +104,14 @@ public class _1563TheLegendofVindachinerk extends QuestHandler {
 		final QuestState qs = player.getQuestStateList().getQuestState(questId);
 		if (qs == null)
 			return HandlerResult.UNKNOWN;
-		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0, 0), true);
+		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0,
+			0), true);
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
-				PacketSendUtility.broadcastPacket(player,
-						new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+				PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+					1, 0), true);
 				qs.setQuestVar(1);
 				updateQuestStatus(env);
 			}

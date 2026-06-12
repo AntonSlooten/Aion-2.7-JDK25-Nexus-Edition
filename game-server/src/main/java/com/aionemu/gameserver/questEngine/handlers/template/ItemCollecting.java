@@ -41,14 +41,15 @@ public class ItemCollecting extends QuestHandler {
 	private final int endNpcId2;
 	private final int questMovie;
 
-	public ItemCollecting(int questId, int startNpcId, int startNpcId2, int actionItemId, int actionItem2Id,
-			int actionItem3Id, int actionItem4Id, int endNpcId, int endNpcId2, int questMovie) {
+	public ItemCollecting(int questId, int startNpcId, int startNpcId2, int actionItemId, int actionItem2Id, int actionItem3Id,
+		int actionItem4Id, int endNpcId, int endNpcId2, int questMovie) {
 		super(questId);
 		this.questId = questId;
 		this.startNpcId = startNpcId;
 		if (startNpcId2 != 0) {
 			this.startNpcId2 = startNpcId2;
-		} else {
+		}
+		else {
 			this.startNpcId2 = startNpcId;
 		}
 		this.actionItemId = actionItemId;
@@ -57,12 +58,14 @@ public class ItemCollecting extends QuestHandler {
 		this.actionItem4Id = actionItem4Id;
 		if (endNpcId != 0) {
 			this.endNpcId = endNpcId;
-		} else {
+		}
+		else {
 			this.endNpcId = startNpcId;
 		}
 		if (endNpcId2 != 0) {
 			this.endNpcId2 = endNpcId2;
-		} else {
+		}
+		else {
 			this.endNpcId2 = this.startNpcId2;
 		}
 		this.questMovie = questMovie;
@@ -119,39 +122,44 @@ public class ItemCollecting extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE || qs.canRepeat()) {
 			if (startNpcId == 0 || targetId == startNpcId || targetId == startNpcId2) {
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				case SELECT_ACTION_1012: {
-					if (questMovie != 0) {
-						playQuestMovie(env, questMovie);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
 					}
-					return sendQuestDialog(env, 1012);
-				}
-				default: {
-					return sendQuestStartDialog(env);
-				}
+					case SELECT_ACTION_1012: {
+						if (questMovie != 0) {
+							playQuestMovie(env, questMovie);
+						}
+						return sendQuestDialog(env, 1012);
+					}
+					default: {
+						return sendQuestStartDialog(env);
+					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			if (targetId == endNpcId || targetId == endNpcId2) {
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2375);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 2375);
+					}
+					case CHECK_COLLECTED_ITEMS: {
+						return checkQuestItems(env, var, var, true, 5, 2716); // reward
+					}
+					case FINISH_DIALOG: {
+						return sendQuestSelectionDialog(env);
+					}
+				default:
+					break;
 				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, var, var, true, 5, 2716); // reward
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-			} else if (targetId != 0 && (targetId == actionItemId || targetId == actionItem2Id
-					|| targetId == actionItem3Id || targetId == actionItem4Id)) {
+			}
+			else if (targetId != 0
+				&& (targetId == actionItemId || targetId == actionItem2Id || targetId == actionItem3Id || targetId == actionItem4Id)) {
 				return true; // looting
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == endNpcId || targetId == endNpcId2) {
 				return sendQuestEndDialog(env);
 			}

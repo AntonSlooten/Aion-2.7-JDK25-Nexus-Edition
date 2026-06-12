@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  *
  *  aion-lightning is free software: you can redistribute it and/or modify
@@ -16,10 +16,11 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.model.autogroup.AutoGroupsType;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author SheppeR, Guapo, nrg
@@ -69,51 +70,51 @@ public class SM_AUTO_GROUP extends AionServerPacket {
 		writeC(windowId);
 		writeD(mapId);
 		switch (windowId) {
-		case 0: // request entry
-			writeD(messageId);
-			writeD(titleId);
-			writeD(0);
-			break;
-		case 1: // waiting window
-			writeD(0);
-			writeD(0);
-			writeD(waitTime);
-			break;
-		case 2: // cancel looking
-			writeD(0);
-			writeD(0);
-			writeD(0);
-			break;
-		case 3: // pass window
-			writeD(0);
-			writeD(0);
-			writeD(waitTime);
-			break;
-		case 4: // enter window
-			writeD(0);
-			writeD(0);
-			writeD(0);
-			break;
-		case 5: // after you click enter
-			writeD(0);
-			writeD(0);
-			writeD(0);
-			break;
-		case 6: // entry icon
-			writeD(messageId);
-			writeD(titleId);
-			writeD(close ? 0 : 1);
-			break;
-		case 7: // failed window
-			writeD(messageId);
-			writeD(titleId);
-			writeD(0);
-			break;
-		case 8: // on login
-			writeD(0);
-			writeD(0);
-			writeD(waitTime);
-			break;
+			case 0: // request entry
+				writeD(messageId);
+				writeD(titleId);
+				writeD(0);
+				break;
+			case 1: // waiting window
+				writeD(0);
+				writeD(0);
+				writeD(waitTime);
+				break;
+			case 2: // cancel looking
+				writeD(0);
+				writeD(0);
+				writeD(0);
+				break;
+			case 3: // pass window
+				writeD(0);
+				writeD(0);
+				writeD(waitTime);
+				break;
+			case 4: // enter window
+				writeD(0);
+				writeD(0);
+				writeD(0);
+				break;
+			case 5: // after you click enter
+				writeD(0);
+				writeD(0);
+				writeD(0);
+				break;
+			case 6: // entry icon
+				writeD(messageId);
+				writeD(titleId);
+				writeD(close ? 0 : 1);
+				break;
+			case 7: // failed window
+				writeD(messageId);
+				writeD(titleId);
+				writeD(0);
+				break;
+			case 8: // on login
+				writeD(0);
+				writeD(0);
+				writeD(waitTime);
+				break;
 		}
 		writeC(0);
 		writeS(name);

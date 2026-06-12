@@ -36,6 +36,8 @@ import com.aionemu.gameserver.world.zone.handler.ZoneNameAnnotation;
 
 import javolution.util.FastMap;
 
+
+
 /**
  * @author MrPoke
  *
@@ -46,21 +48,21 @@ public class AbyssCore implements ZoneHandler {
 	FastMap<Integer, Observer> observed = new FastMap<Integer, Observer>();
 
 	private Node geometry;
-
+	
 	public AbyssCore() {
 		try {
-			this.geometry = (Node) GeoWorldLoader.loadMeshs("data/geo/models/na_ab_lmark_col_01a.mesh").values()
-					.toArray()[0];
+			this.geometry = (Node)GeoWorldLoader.loadMeshs("data/geo/models/na_ab_lmark_col_01a.mesh").values().toArray()[0];
 			geometry.updateModelBound();
-		} catch (IOException e) {
-			log.error("AbyssCore Geometry: " + e.toString());
+		}
+		catch (IOException e) {
+			log.error("AbyssCore Geometry: "+e.toString());
 		}
 	}
 
 	@Override
 	public void onEnterZone(Creature creature, ZoneInstance zone) {
 		Creature acting = creature.getActingCreature();
-		if (acting instanceof Player && !((Player) acting).isGM()) {
+		if (acting instanceof Player && !((Player)acting).isGM()){
 
 			Observer observer = new Observer(creature, geometry);
 			creature.getObserveController().addObserver(observer);
@@ -71,21 +73,20 @@ public class AbyssCore implements ZoneHandler {
 	@Override
 	public void onLeaveZone(Creature creature, ZoneInstance zone) {
 		Creature acting = creature.getActingCreature();
-		if (acting instanceof Player && !((Player) acting).isGM()) {
+		if (acting instanceof Player && !((Player)acting).isGM()){
 			Observer observer = observed.get(creature.getObjectId());
-			if (observer != null) {
+			if (observer != null){
 				creature.getObserveController().removeObserver(observer);
 				observed.remove(creature.getObjectId());
 			}
 		}
 	}
 
-	class Observer extends ActionObserver {
+	class Observer extends ActionObserver{
 
 		private Creature creature;
 		private Vector3f oldPos;
 		private Node geometry;
-
 		/**
 		 * @param observerType
 		 */
@@ -96,6 +97,7 @@ public class AbyssCore implements ZoneHandler {
 			this.oldPos = new Vector3f(creature.getX(), creature.getY(), creature.getZ());
 		}
 
+		
 		@Override
 		public void moved() {
 			Vector3f pos = new Vector3f(creature.getX(), creature.getY(), creature.getZ());
@@ -107,7 +109,7 @@ public class AbyssCore implements ZoneHandler {
 			CollisionResults results = new CollisionResults();
 			results.setOnlyFirst(true);
 			geometry.collideWith(r, results, creature.getInstanceId());
-			if (results.size() != 0) {
+			if (results.size() != 0){
 				creature.getController().die();
 			}
 			oldPos = pos;

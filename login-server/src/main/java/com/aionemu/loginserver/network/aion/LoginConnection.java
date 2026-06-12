@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -21,12 +21,10 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.security.interfaces.RSAPrivateKey;
 import java.util.ArrayDeque;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.Deque;
 import javax.crypto.SecretKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.aionemu.commons.network.AConnection;
 import com.aionemu.commons.network.Dispatcher;
 import com.aionemu.commons.network.PacketProcessor;
@@ -53,18 +51,16 @@ public class LoginConnection extends AConnection {
 	/**
 	 * PacketProcessor for executing packets.
 	 */
-	private final static PacketProcessor<LoginConnection> processor = new PacketProcessor<>(1, 8, 50, 3);
+	private final static PacketProcessor<LoginConnection> processor = new PacketProcessor<LoginConnection>(1, 8, 50, 3);
 	/**
 	 * Server Packet "to send" Queue
 	 */
-	private final Deque<AionServerPacket> sendMsgQueue = new ArrayDeque<>();
-	
-	private static final AtomicInteger SESSION_ID_FACTORY = new AtomicInteger(1);
+	private final Deque<AionServerPacket> sendMsgQueue = new ArrayDeque<AionServerPacket>();
 
 	/**
 	 * Unique Session Id of this connection
 	 */
-	private final int sessionId = SESSION_ID_FACTORY.getAndIncrement();
+	private int sessionId = hashCode();
 
 	/**
 	 * Account object for this connection. if state = AUTHED_LOGIN account cant be null.

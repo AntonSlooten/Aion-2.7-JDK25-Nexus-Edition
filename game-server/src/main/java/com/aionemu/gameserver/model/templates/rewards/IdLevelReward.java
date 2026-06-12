@@ -19,13 +19,14 @@ package com.aionemu.gameserver.model.templates.rewards;
 import javax.xml.bind.annotation.*;
 
 /**
- * <p>
- * Java class for IdLevelReward complex type.
- *
- * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
- *
+ * @author Rolandas
+ */
+
+/**
+ * <p>Java class for IdLevelReward complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
  * <pre>
  * &lt;complexType name="IdLevelReward">
  *   &lt;complexContent>
@@ -35,8 +36,8 @@ import javax.xml.bind.annotation.*;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- *
- *
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "IdLevelReward")

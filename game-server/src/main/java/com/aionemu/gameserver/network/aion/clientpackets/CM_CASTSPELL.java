@@ -15,8 +15,7 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 public class CM_CASTSPELL extends AionClientPacket {
 
 	private int spellid;
-	// 0 - obj id, 1 - point location, 2 - unk, 3 - object not in sight(skill 1606)?
-	// 4 - unk
+	// 0 - obj id, 1 - point location, 2 - unk, 3 - object not in sight(skill 1606)? 4 - unk
 	private int targetType;
 	private float x, y, z;
 
@@ -28,7 +27,7 @@ public class CM_CASTSPELL extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_CM_REQUEST_DIALOG </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_CASTSPELL(int opcode, State state, State... restStates) {
@@ -43,29 +42,29 @@ public class CM_CASTSPELL extends AionClientPacket {
 		targetType = readC();
 
 		switch (targetType) {
-		case 0:
-		case 3:
-		case 4:
-			targetObjectId = readD();
-			break;
-		case 1:
-			x = readF();
-			y = readF();
-			z = readF();
-			break;
-		case 2:
-			x = readF();
-			y = readF();
-			z = readF();
-			readF();// unk1
-			readF();// unk2
-			readF();// unk3
-			readF();// unk4
-			readF();// unk5
-			readF();// unk6
-			readF();// unk7
-			readF();// unk8
-			break;
+			case 0:
+			case 3:
+			case 4:
+				targetObjectId = readD();
+				break;
+			case 1:
+				x = readF();
+				y = readF();
+				z = readF();
+				break;
+			case 2:
+				x = readF();
+				y = readF();
+				z = readF();
+				readF();// unk1
+				readF();// unk2
+				readF();// unk3
+				readF();// unk4
+				readF();// unk5
+				readF();// unk6
+				readF();// unk7
+				readF();// unk8
+				break;
 		}
 
 		hitTime = readH();
@@ -76,9 +75,8 @@ public class CM_CASTSPELL extends AionClientPacket {
 		Player player = getConnection().getActivePlayer();
 
 		SkillTemplate template = DataManager.SKILL_DATA.getSkillTemplate(spellid);
-		if (template == null || template.isPassive()) {
+		if (template == null || template.isPassive())
 			return;
-		}
 
 		if (player.isProtectionActive()) {
 			player.getController().stopProtectionActiveTask();
@@ -91,9 +89,8 @@ public class CM_CASTSPELL extends AionClientPacket {
 		}
 
 		if (!player.getLifeStats().isAlreadyDead()) {
-			if (!player.getSkillList().isSkillPresent(spellid)) {
+			if (!player.getSkillList().isSkillPresent(spellid))
 				return;
-			}
 			player.getController().useSkill(template, targetType, x, y, z, hitTime);
 		}
 	}

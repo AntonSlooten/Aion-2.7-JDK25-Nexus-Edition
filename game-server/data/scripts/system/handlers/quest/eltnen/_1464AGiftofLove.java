@@ -56,30 +56,33 @@ public class _1464AGiftofLove extends QuestHandler {
 			if (targetId == 204424) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
 
 		else if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204424: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(152000455);
-					if (qs.getQuestVarById(0) == 0 && itemCount1 >= 15) {
-						qs.setQuestVar(0);
-						qs.setStatus(QuestStatus.REWARD);
-						removeQuestItem(env, 152000455, 1);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 10000);
-					} else
-						return sendQuestDialog(env, 10001);
-				}
+				case 204424: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(152000455);
+							if (qs.getQuestVarById(0) == 0 && itemCount1 >= 15) {
+								qs.setQuestVar(0);
+								qs.setStatus(QuestStatus.REWARD);
+								removeQuestItem(env, 152000455, 1);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 10000);
+							}
+							else
+								return sendQuestDialog(env, 10001);
+						}
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203755) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

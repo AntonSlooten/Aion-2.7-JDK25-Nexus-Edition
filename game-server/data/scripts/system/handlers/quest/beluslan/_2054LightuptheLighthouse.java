@@ -86,73 +86,75 @@ public class _2054LightuptheLighthouse extends QuestHandler {
 					return sendQuestEndDialog(env);
 			}
 			return false;
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 204768) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-			case STEP_TO_1:
-				if (var == 0) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			}
-		} else if (targetId == 204739) {
-			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-			case SELECT_ACTION_1353:
-				playQuestMovie(env, 237);
-				break;
-			case STEP_TO_2:
-				if (var == 1) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			}
-		} else if (targetId == 730109) {
-			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 3)
-					return sendQuestDialog(env, 2034);
-			case STEP_TO_4:
-				if (var == 3) {
-					QuestService.addNewSpawn(220040000, 1, 213912, npc.getX(), npc.getY(), npc.getZ(), (byte) 0);
-					npc.getController().scheduleRespawn();
-					npc.getController().onDelete();
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-					return true;
-				}
-			}
-		} else if (targetId == 730140) {
-			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 3)
-					return sendQuestDialog(env, 2120);
-			case STEP_TO_5:
-				if (var == 3) {
-					if (!giveQuestItem(env, 182204309, 1))
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+				case STEP_TO_1:
+					if (var == 0) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 						return true;
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					npc.getController().scheduleRespawn();
-					npc.getController().onDelete();
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
+					}
 			}
-		} else if (targetId == 700287 && qs.getStatus() == QuestStatus.START) {
+		}
+		else if (targetId == 204739) {
+			switch (env.getDialog()) {
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+				case SELECT_ACTION_1353:
+					playQuestMovie(env, 237);
+					break;
+				case STEP_TO_2:
+					if (var == 1) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+			}
+		}
+		else if (targetId == 730109) {
+			switch (env.getDialog()) {
+				case START_DIALOG:
+					if (var == 3)
+						return sendQuestDialog(env, 2034);
+				case STEP_TO_4:
+					if (var == 3) {
+						QuestService.addNewSpawn(220040000, 1, 213912, npc.getX(), npc.getY(), npc.getZ(), (byte) 0);
+						npc.getController().scheduleRespawn();
+						npc.getController().onDelete();
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+						return true;
+					}
+			}
+		}
+		else if (targetId == 730140) {
+			switch (env.getDialog()) {
+				case START_DIALOG:
+					if (var == 3)
+						return sendQuestDialog(env, 2120);
+				case STEP_TO_5:
+					if (var == 3) {
+						if (!giveQuestItem(env, 182204309, 1))
+							return true;
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						npc.getController().scheduleRespawn();
+						npc.getController().onDelete();
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+			}
+		}
+		else if (targetId == 700287 && qs.getStatus() == QuestStatus.START) {
 			if (env.getDialog() == QuestDialog.USE_OBJECT) {
 				return useQuestObject(env, 4, 4, true, 0, 0, 0, 182204309, 1, 238, false); // movie + reward
 			}
@@ -172,14 +174,14 @@ public class _2054LightuptheLighthouse extends QuestHandler {
 		final QuestState qs = player.getQuestStateList().getQuestState(questId);
 		if (qs == null || qs.getQuestVarById(0) != 2)
 			return HandlerResult.FAILED;
-		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 1000, 0, 0), true);
+		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 1000, 0,
+			0), true);
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
-				PacketSendUtility.broadcastPacket(player,
-						new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+				PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+					1, 0), true);
 				removeQuestItem(env, 182204308, 1);
 				qs.setQuestVarById(0, 3);
 				updateQuestStatus(env);

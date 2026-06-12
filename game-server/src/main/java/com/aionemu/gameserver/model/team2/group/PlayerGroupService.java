@@ -61,24 +61,23 @@ public class PlayerGroupService {
 
 	private static final Logger log = LoggerFactory.getLogger(PlayerGroupService.class);
 
-	private static final Map<Integer, PlayerGroup> groups = new ConcurrentHashMap<>();
+	private static final Map<Integer, PlayerGroup> groups = new ConcurrentHashMap<Integer, PlayerGroup>();
 	private static final AtomicBoolean offlineCheckStarted = new AtomicBoolean();
-	private static FastMap<Integer, PlayerGroup> groupMembers;
+        private static FastMap<Integer, PlayerGroup> groupMembers;
 
 	public static final void inviteToGroup(final Player inviter, final Player invited) {
 		if (canInvite(inviter, invited)) {
 			PlayerGroupInvite invite = new PlayerGroupInvite(inviter, invited);
 			if (invited.getResponseRequester().putRequest(SM_QUESTION_WINDOW.STR_REQUEST_GROUP_INVITE, invite)) {
-				PacketSendUtility.sendPacket(invited,
-						new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_REQUEST_GROUP_INVITE, 0, inviter.getName()));
+				PacketSendUtility.sendPacket(invited, new SM_QUESTION_WINDOW(SM_QUESTION_WINDOW.STR_REQUEST_GROUP_INVITE, 0,
+					inviter.getName()));
 			}
 		}
 	}
-
-	private PlayerGroupService() {
-		groupMembers = new FastMap<>();
-		// playerGroup = new FastMap<Integer, ScheduledFuture<?>>();
-	}
+        private PlayerGroupService() {
+        groupMembers = new FastMap<Integer, PlayerGroup>();
+       // playerGroup = new FastMap<Integer, ScheduledFuture<?>>();
+       }
 
 	public static final boolean canInvite(Player inviter, Player invited) {
 		return RestrictionsManager.canInviteToGroup(inviter, invited);
@@ -174,7 +173,8 @@ public class PlayerGroupService {
 		if (group != null) {
 			if (group.hasMember(bannedPlayer.getObjectId())) {
 				group.onEvent(new PlayerGroupLeavedEvent(group, bannedPlayer, LeaveReson.BAN, banGiver.getName()));
-			} else {
+			}
+			else {
 				log.warn("TEAM2: banning player not in group {}", group.onlineMembers());
 			}
 		}
@@ -196,7 +196,7 @@ public class PlayerGroupService {
 	public static void distributeKinah(Player player, long kinah) {
 		PlayerGroup group = player.getPlayerGroup2();
 		if (group != null) {
-			group.onEvent(new TeamKinahDistributionEvent<>(group, player, kinah));
+			group.onEvent(new TeamKinahDistributionEvent<PlayerGroup>(group, player, kinah));
 		}
 	}
 
@@ -206,7 +206,7 @@ public class PlayerGroupService {
 	public static void showBrand(Player player, int targetObjId, int brandId) {
 		PlayerGroup group = player.getPlayerGroup2();
 		if (group != null) {
-			group.onEvent(new ShowBrandEvent<>(group, targetObjId, brandId));
+			group.onEvent(new ShowBrandEvent<PlayerGroup>(group, targetObjId, brandId));
 		}
 	}
 
@@ -270,8 +270,7 @@ public class PlayerGroupService {
 
 		@Override
 		public boolean apply(PlayerGroupMember member) {
-			if (!member.isOnline()
-					&& TimeUtil.isExpired(member.getLastOnlineTime() + GroupConfig.GROUP_REMOVE_TIME * 1000)) {
+			if (!member.isOnline() && TimeUtil.isExpired(member.getLastOnlineTime() + GroupConfig.GROUP_REMOVE_TIME * 1000)) {
 				// TODO LEAVE_TIMEOUT type
 				currentGroup.onEvent(new PlayerGroupLeavedEvent(currentGroup, member.getObject()));
 			}
@@ -279,16 +278,17 @@ public class PlayerGroupService {
 		}
 
 	}
-
+	
 	public static void addGroupMemberToCache(Player player) {
-		if (!groupMembers.containsKey(player.getObjectId())) {
-			groupMembers.put(player.getObjectId(), player.getPlayerGroup2());
-		}
+		if (!groupMembers.containsKey(player.getObjectId()))
+            groupMembers.put(player.getObjectId(), player.getPlayerGroup2());
 	}
 
-	/*
-	 * private void removeGroupMemberFromCache(int playerObjId) { if
-	 * (groupMembers.containsKey(playerObjId)) { groupMembers.remove(playerObjId); }
-	 * }
-	 */
+    /*
+	private void removeGroupMemberFromCache(int playerObjId) {
+		if (groupMembers.containsKey(playerObjId)) {
+			groupMembers.remove(playerObjId);
+		}
+	}
+    */
 }

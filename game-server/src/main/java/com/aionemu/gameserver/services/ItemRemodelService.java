@@ -62,8 +62,7 @@ public class ItemRemodelService {
 
 		// Check Kinah
 		if (player.getInventory().getKinah() < remodelCost) {
-			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE
-					.STR_CHANGE_ITEM_SKIN_NOT_ENOUGH_GOLD(new DescriptionId(keepItem.getItemTemplate().getNameId())));
+			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CHANGE_ITEM_SKIN_NOT_ENOUGH_GOLD(new DescriptionId(keepItem.getItemTemplate().getNameId())));
 			return;
 		}
 
@@ -83,38 +82,33 @@ public class ItemRemodelService {
 			keepItem.setItemSkinTemplate(keepItem.getItemTemplate());
 
 			// Remove dye color if item can not be dyed.
-			if (!keepItem.getItemTemplate().isItemDyePermitted()) {
+			if (!keepItem.getItemTemplate().isItemDyePermitted())
 				keepItem.setItemColor(0);
-			}
 
 			// Notify Player
 			ItemPacketService.updateItemAfterInfoChange(player, keepItem);
-			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE
-					.STR_CHANGE_ITEM_SKIN_SUCCEED(new DescriptionId(keepItem.getItemTemplate().getNameId())));
+			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CHANGE_ITEM_SKIN_SUCCEED(new DescriptionId(keepItem.getItemTemplate().getNameId())));
 			return;
 		}
 		// Check that types match.
 		if (keepItem.getItemTemplate().getWeaponType() != extractItem.getItemSkinTemplate().getWeaponType()
-				|| (extractItem.getItemSkinTemplate().getArmorType() != ArmorType.CLOTHES && keepItem.getItemTemplate()
-						.getArmorType() != extractItem.getItemSkinTemplate().getArmorType())
-				|| keepItem.getItemTemplate().getArmorType() == ArmorType.CLOTHES
-				|| keepItem.getItemTemplate().getItemSlot() != extractItem.getItemSkinTemplate().getItemSlot()) {
-			PacketSendUtility.sendPacket(player,
-					SM_SYSTEM_MESSAGE.STR_CHANGE_ITEM_SKIN_NOT_COMPATIBLE(
-							new DescriptionId(keepItem.getItemTemplate().getNameId()),
-							new DescriptionId(extractItem.getItemSkinTemplate().getNameId())));
+			|| (extractItem.getItemSkinTemplate().getArmorType() != ArmorType.CLOTHES && keepItem.getItemTemplate()
+				.getArmorType() != extractItem.getItemSkinTemplate().getArmorType())
+			|| keepItem.getItemTemplate().getArmorType() == ArmorType.CLOTHES
+			|| keepItem.getItemTemplate().getItemSlot() != extractItem.getItemSkinTemplate().getItemSlot()) {
+			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_CHANGE_ITEM_SKIN_NOT_COMPATIBLE(new DescriptionId(keepItem.getItemTemplate().getNameId()), new DescriptionId(extractItem.getItemSkinTemplate().getNameId())));
 			return;
 		}
 
 		if (!keepItem.isRemodelable(player)) {
-			PacketSendUtility.sendPacket(player,
-					new SM_SYSTEM_MESSAGE(1300478, new DescriptionId(keepItem.getItemTemplate().getNameId())));
+			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300478, new DescriptionId(keepItem.getItemTemplate()
+				.getNameId())));
 			return;
 		}
 
 		if (!extractItem.isRemodelable(player)) {
-			PacketSendUtility.sendPacket(player,
-					new SM_SYSTEM_MESSAGE(1300482, new DescriptionId(extractItem.getItemTemplate().getNameId())));
+			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300482, new DescriptionId(extractItem
+				.getItemTemplate().getNameId())));
 			return;
 		}
 
@@ -134,81 +128,83 @@ public class ItemRemodelService {
 
 		// Notify Player
 		ItemPacketService.updateItemAfterInfoChange(player, keepItem);
-		PacketSendUtility.sendPacket(player,
-				new SM_SYSTEM_MESSAGE(1300483, new DescriptionId(keepItem.getItemTemplate().getNameId())));
+		PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300483, new DescriptionId(keepItem.getItemTemplate()
+			.getNameId())));
 	}
-
+	
 	public static boolean commandPreviewRemodelItem(Player player, int itemId, int duration) {
-		ItemTemplate template = DataManager.ITEM_DATA.getItemTemplate(itemId);
-		if (template == null) {
-			return false;
-		}
+        ItemTemplate template = DataManager.ITEM_DATA.getItemTemplate(itemId);
+        if (template == null) {
+            return false;
+        }
 
-		Equipment equip = player.getEquipment();
-		if (equip == null) {
-			return false;
-		}
+        Equipment equip = player.getEquipment();
+        if (equip == null) {
+            return false;
+        }
 
-		for (Item item : equip.getEquippedItemsWithoutStigma()) {
-			if (item.getEquipmentSlot() == ItemSlot.MAIN_OFF_HAND.getSlotIdMask()
-					|| item.getEquipmentSlot() == ItemSlot.SUB_OFF_HAND.getSlotIdMask()) {
-				continue;
-			}
+        for (Item item : equip.getEquippedItemsWithoutStigma()) {
+            if (item.getEquipmentSlot() == ItemSlot.MAIN_OFF_HAND.getSlotIdMask()
+                    || item.getEquipmentSlot() == ItemSlot.SUB_OFF_HAND.getSlotIdMask()) {
+                continue;
+            }
 
-			if (item.getItemTemplate().isWeapon()) {
-				if (item.getItemTemplate().getWeaponType() == template.getWeaponType()
-						&& item.getItemSkinTemplate().getTemplateId() != itemId) {
-					systemPreviewRemodelItem(player, item, template, duration);
-					return true;
-				} else if (template.isWeapon()) {
-					PacketSendUtility.sendBrightYellowMessage(player,
-							"[Preview] Vous avez en main une arme de type " + item.getItemTemplate().getWeaponType()
-									+ ", " + "vous ne pouvez pas afficher un apper\u00E7u d'une arme de type "
-									+ template.getWeaponType());
-				}
-			} else if (item.getItemTemplate().isArmor()) {
-				if (item.getItemTemplate().getItemSlot() == template.getItemSlot()
-						&& item.getItemSkinTemplate().getTemplateId() != itemId) {
-					systemPreviewRemodelItem(player, item, template, duration);
-					return true;
-				}
-			} else {
-				PacketSendUtility.sendBrightYellowMessage(player, "[Preview] L'objet [item: " + itemId
-						+ "] n'a aucun apper\u00E7u disponible. "
-						+ "Veuillez utiliser cette commande uniquement pour des armes / armures / costumes / ailes.");
-			}
-		}
+            if (item.getItemTemplate().isWeapon()) {
+                if (item.getItemTemplate().getWeaponType() == template.getWeaponType()
+                        && item.getItemSkinTemplate().getTemplateId() != itemId) {
+                    systemPreviewRemodelItem(player, item, template, duration);
+                    return true;
+                }
+                else if (template.isWeapon()){
+                	PacketSendUtility.sendBrightYellowMessage(player, 
+                			"[Preview] Vous avez en main une arme de type " + item.getItemTemplate().getWeaponType() + ", " +
+                			"vous ne pouvez pas afficher un apper\u00E7u d'une arme de type " + template.getWeaponType());
+                }
+            }
+            else if (item.getItemTemplate().isArmor()) {
+                if (item.getItemTemplate().getItemSlot() == template.getItemSlot()
+                        && item.getItemSkinTemplate().getTemplateId() != itemId) {
+                    systemPreviewRemodelItem(player, item, template, duration);
+                    return true;
+                }
+            }
+            else {
+            	PacketSendUtility.sendBrightYellowMessage(player, 
+            			"[Preview] L'objet [item: " + itemId + "] n'a aucun apper\u00E7u disponible. " + 
+            			"Veuillez utiliser cette commande uniquement pour des armes / armures / costumes / ailes.");
+            }
+        }
 
-		return false;
+        return false;
 	}
-
-	public static void systemPreviewRemodelItem(final Player player, final Item item, ItemTemplate template,
-			int duration) {
+	
+	public static void systemPreviewRemodelItem(final Player player, final Item item,
+        ItemTemplate template, int duration) {
 		final ItemTemplate oldTemplate = item.getItemSkinTemplate();
 		item.setItemSkinTemplate(template);
-
-		PacketSendUtility.sendPacket(player,
-				new SM_UPDATE_PLAYER_APPEARANCE(player.getObjectId(), player.getEquipment().getEquippedForApparence()));
-		PacketSendUtility.sendPacket(player,
-				new SM_SYSTEM_MESSAGE(1300483, new DescriptionId(item.getItemTemplate().getNameId())));
-
-		PacketSendUtility.broadcastPacket(player, new SM_UPDATE_PLAYER_APPEARANCE(player.getObjectId(),
-				player.getEquipment().getEquippedItemsWithoutStigma()), true);
-
+		
+		PacketSendUtility.sendPacket(player, 
+			new SM_UPDATE_PLAYER_APPEARANCE(player.getObjectId(), player.getEquipment().getEquippedForApparence()));
+		PacketSendUtility.sendPacket(player, 
+			new SM_SYSTEM_MESSAGE(1300483, new DescriptionId(item.getItemTemplate().getNameId())));
+		
+		PacketSendUtility.broadcastPacket(player,
+			new SM_UPDATE_PLAYER_APPEARANCE(player.getObjectId(), player.getEquipment().getEquippedItemsWithoutStigma()), true);
+		
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
 			public void run() {
 				item.setItemSkinTemplate(oldTemplate);
 			}
 		}, 50);
-
+		
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
 			public void run() {
-				PacketSendUtility.sendPacket(player, new SM_UPDATE_PLAYER_APPEARANCE(player.getObjectId(),
-						player.getEquipment().getEquippedForApparence()));
-				PacketSendUtility.broadcastPacket(player, new SM_UPDATE_PLAYER_APPEARANCE(player.getObjectId(),
-						player.getEquipment().getEquippedItemsWithoutStigma()), true);
+				PacketSendUtility.sendPacket(player, 
+						new SM_UPDATE_PLAYER_APPEARANCE(player.getObjectId(), player.getEquipment().getEquippedForApparence()));
+				PacketSendUtility.broadcastPacket(player,
+						new SM_UPDATE_PLAYER_APPEARANCE(player.getObjectId(), player.getEquipment().getEquippedItemsWithoutStigma()), true);
 			}
 		}, duration * 1000);
 	}

@@ -23,18 +23,19 @@ import com.aionemu.gameserver.network.aion.iteminfo.ItemInfoBlob.ItemBlobType;
 
 /**
  * This blob contains stigma info.
- *
+ * 
  * @author -Nemesiss-
  *
  */
-public class StigmaInfoBlobEntry extends ItemBlobEntry {
+public class StigmaInfoBlobEntry extends ItemBlobEntry{
 
 	StigmaInfoBlobEntry() {
 		super(ItemBlobType.STIGMA_INFO);
 	}
 
 	@Override
-	public void writeThisBlob(ByteBuffer buf) {
+	public
+	void writeThisBlob(ByteBuffer buf) {
 		Item item = parent.item;
 
 		writeH(buf, item.getItemTemplate().getStigma().getSkillid()); // skill id

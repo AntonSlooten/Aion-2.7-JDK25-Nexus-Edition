@@ -49,8 +49,8 @@ public class PlayerConnectedEvent extends AlwaysTrueTeamEvent implements Predica
 		alliance.addMember(connectedMember);
 
 		PacketSendUtility.sendPacket(connected, new SM_ALLIANCE_INFO(alliance));
-		PacketSendUtility.sendPacket(connected,
-				new SM_ALLIANCE_MEMBER_INFO(connectedMember, PlayerAllianceEvent.RECONNECT));
+		PacketSendUtility
+			.sendPacket(connected, new SM_ALLIANCE_MEMBER_INFO(connectedMember, PlayerAllianceEvent.RECONNECT));
 		PacketSendUtility.sendPacket(connected, new SM_SHOW_BRAND(0, 0));
 
 		alliance.apply(this);
@@ -60,8 +60,7 @@ public class PlayerConnectedEvent extends AlwaysTrueTeamEvent implements Predica
 	public boolean apply(PlayerAllianceMember member) {
 		Player player = member.getObject();
 		if (!connected.getObjectId().equals(player.getObjectId())) {
-			PacketSendUtility.sendPacket(player,
-					new SM_ALLIANCE_MEMBER_INFO(connectedMember, PlayerAllianceEvent.RECONNECT));
+			PacketSendUtility.sendPacket(player, new SM_ALLIANCE_MEMBER_INFO(connectedMember, PlayerAllianceEvent.RECONNECT));
 			PacketSendUtility.sendPacket(player, new SM_INSTANCE_INFO(connected, true, true));
 
 			PacketSendUtility.sendPacket(connected, new SM_ALLIANCE_MEMBER_INFO(member, PlayerAllianceEvent.RECONNECT));

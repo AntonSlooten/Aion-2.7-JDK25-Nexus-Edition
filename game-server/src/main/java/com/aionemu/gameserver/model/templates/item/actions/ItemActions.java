@@ -32,50 +32,58 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "ItemActions")
 public class ItemActions {
 
-	@XmlElements({ @XmlElement(name = "skilllearn", type = SkillLearnAction.class),
-			@XmlElement(name = "extract", type = ExtractAction.class),
-			@XmlElement(name = "skilluse", type = SkillUseAction.class),
-			@XmlElement(name = "enchant", type = EnchantItemAction.class),
-			@XmlElement(name = "queststart", type = QuestStartAction.class),
-			@XmlElement(name = "dye", type = DyeAction.class),
-			@XmlElement(name = "craftlearn", type = CraftLearnAction.class),
-			@XmlElement(name = "toypetspawn", type = ToyPetSpawnAction.class),
-			@XmlElement(name = "decompose", type = DecomposeAction.class),
-			@XmlElement(name = "titleadd", type = TitleAddAction.class),
-			@XmlElement(name = "learnemotion", type = EmotionLearnAction.class),
-			@XmlElement(name = "read", type = ReadAction.class),
-			@XmlElement(name = "fireworkact", type = FireworksUseAction.class),
-			@XmlElement(name = "instancetimeclear", type = InstanceTimeClear.class),
-			@XmlElement(name = "expandinventory", type = ExpandInventoryAction.class),
-			@XmlElement(name = "animation", type = AnimationAddAction.class),
-			@XmlElement(name = "changecolor", type = CosmeticItemAction.class),
-			@XmlElement(name = "charge", type = ChargeAction.class) })
+	@XmlElements({
+		@XmlElement(name = "skilllearn", type = SkillLearnAction.class),
+		@XmlElement(name = "extract", type = ExtractAction.class),
+		@XmlElement(name = "skilluse", type = SkillUseAction.class),
+		@XmlElement(name = "enchant", type = EnchantItemAction.class),
+		@XmlElement(name = "queststart", type = QuestStartAction.class),
+		@XmlElement(name = "dye", type = DyeAction.class),
+		@XmlElement(name = "craftlearn", type = CraftLearnAction.class),
+		@XmlElement(name = "toypetspawn", type = ToyPetSpawnAction.class),
+		@XmlElement(name = "decompose", type = DecomposeAction.class),
+		@XmlElement(name = "titleadd", type = TitleAddAction.class),
+		@XmlElement(name = "learnemotion", type = EmotionLearnAction.class),
+		@XmlElement(name = "read", type = ReadAction.class),
+		@XmlElement(name = "fireworkact", type = FireworksUseAction.class),
+		@XmlElement(name = "instancetimeclear", type = InstanceTimeClear.class),
+		@XmlElement(name = "expandinventory", type = ExpandInventoryAction.class),
+		@XmlElement(name = "animation", type = AnimationAddAction.class),
+		@XmlElement(name = "changecolor", type = CosmeticItemAction.class),
+		@XmlElement(name = "charge", type = ChargeAction.class)})
 
 	protected List<AbstractItemAction> itemActions;
 
 	/**
-	 * Gets the value of the itemActions property. Objects of the following type(s)
-	 * are allowed in the list {@link SkillLearnAction } {@link SkillUseAction }
+	 * Gets the value of the itemActions property. Objects of the following type(s) are allowed in the list
+	 * {@link SkillLearnAction } {@link SkillUseAction }
 	 */
 	public List<AbstractItemAction> getItemActions() {
 		if (itemActions == null) {
-			itemActions = new ArrayList<>();
+			itemActions = new ArrayList<AbstractItemAction>();
 		}
 		return this.itemActions;
 	}
 
 	public List<ToyPetSpawnAction> getToyPetSpawnActions() {
-		List<ToyPetSpawnAction> result = new ArrayList<>();
-		if (itemActions == null) {
+		List<ToyPetSpawnAction> result = new ArrayList<ToyPetSpawnAction>();
+		if (itemActions == null)
 			return result;
-		}
 
-		for (AbstractItemAction action : itemActions) {
-			if (action instanceof ToyPetSpawnAction) {
+		for (AbstractItemAction action : itemActions)
+			if (action instanceof ToyPetSpawnAction)
 				result.add((ToyPetSpawnAction) action);
-			}
-		}
 		return result;
+	}
+
+	public AdoptPetAction getAdoptPetAction() {
+		if (itemActions == null)
+			return null;
+		for (AbstractItemAction action : itemActions) {
+			if (action instanceof AdoptPetAction)
+				return (AdoptPetAction) action;
+		}
+		return null;
 	}
 
 }

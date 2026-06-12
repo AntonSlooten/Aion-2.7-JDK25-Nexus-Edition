@@ -58,7 +58,8 @@ public class _1194ReducingTursinStrength extends QuestHandler {
 			if (targetId == 203098) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -69,17 +70,18 @@ public class _1194ReducingTursinStrength extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203098) {
 				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					return sendQuestDialog(env, 1352);
-				}
-				case SELECT_REWARD: {
-					return sendQuestDialog(env, 5);
-				}
-				default:
-					return sendQuestEndDialog(env);
+					case USE_OBJECT: {
+						return sendQuestDialog(env, 1352);
+					}
+					case SELECT_REWARD: {
+						return sendQuestDialog(env, 5);
+					}
+					default:
+						return sendQuestEndDialog(env);
 				}
 			}
 		}
@@ -124,27 +126,27 @@ public class _1194ReducingTursinStrength extends QuestHandler {
 
 		if (targetId == 210185 || targetId == 210186) {
 			switch (qs.getQuestVarById(0)) {
-			case 1:
-			case 2:
-			case 3:
-			case 4:
-			case 5:
-			case 6:
-			case 7:
-			case 8:
-			case 9: {
-				qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-				updateQuestStatus(env);
-				return true;
-			}
-			case 10: {
-				if (var == 0) {
-					var = 1;
-					qs.setStatus(QuestStatus.REWARD);
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+				case 5:
+				case 6:
+				case 7:
+				case 8:
+				case 9: {
+					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					updateQuestStatus(env);
 					return true;
 				}
-			}
+				case 10: {
+					if (var == 0) {
+						var = 1;
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						return true;
+					}
+				}
 			}
 		}
 		return false;

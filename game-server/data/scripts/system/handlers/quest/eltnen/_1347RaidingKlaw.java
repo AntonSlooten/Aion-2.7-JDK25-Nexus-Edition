@@ -73,7 +73,8 @@ public class _1347RaidingKlaw extends QuestHandler {
 				}
 			}
 			return false;
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203966) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

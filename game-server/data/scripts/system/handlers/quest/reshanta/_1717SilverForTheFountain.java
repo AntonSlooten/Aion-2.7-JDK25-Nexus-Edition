@@ -47,55 +47,60 @@ public class _1717SilverForTheFountain extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE || qs.canRepeat()) {
 			if (targetId == 730142) { // Teminon Coin Fountain
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				case STEP_TO_1: {
-					long silverMedals = player.getInventory().getItemCountByItemId(186000031);
-					if (silverMedals > 0) {
-						if (!player.getInventory().isFull()) {
-							if (QuestService.startQuest(env)) {
-								changeQuestStep(env, 0, 0, true);
-								return sendQuestDialog(env, 5);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					case STEP_TO_1: {
+						long silverMedals = player.getInventory().getItemCountByItemId(186000031);
+						if (silverMedals > 0) {
+							if (!player.getInventory().isFull()) {
+								if (QuestService.startQuest(env)) {
+									changeQuestStep(env, 0, 0, true);
+									return sendQuestDialog(env, 5);
+								}
 							}
-						} else {
-							PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_FULL_INVENTORY);
+							else {
+								PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_FULL_INVENTORY);
+								return sendQuestSelectionDialog(env);
+							}
+						}
+						else {
 							return sendQuestSelectionDialog(env);
 						}
-					} else {
-						return sendQuestSelectionDialog(env);
 					}
 				}
-				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 730142) { // Teminon Coin Fountain
 				if (dialog == QuestDialog.SELECT_NO_REWARD) {
 					if (QuestService.finishQuest(env)) {
-						if (removeQuestItem(env, 186000031, 1)) {
+						if(removeQuestItem(env, 186000031, 1)) {
 							if (isRewardSuccessful()) {
 								switch (determineReward()) {
-								case 0: {
-									ItemService.addItem(player, 186000031, rewards.get(186000031));
-									break;
-								}
-								case 1: {
-									ItemService.addItem(player, 186000030, rewards.get(186000030));
-									break;
-								}
-								case 2: {
-									ItemService.addItem(player, 182202156, rewards.get(182202156));
-									break;
-								}
+									case 0: {
+										ItemService.addItem(player, 186000031, rewards.get(186000031));
+										break;
+									}
+									case 1: {
+										ItemService.addItem(player, 186000030, rewards.get(186000030));
+										break;
+									}
+									case 2: {
+										ItemService.addItem(player, 182202156, rewards.get(182202156));
+										break;
+									}
 								}
 								return sendQuestDialog(env, 1008);
-							} else {
+							}
+							else {
 								ItemService.addItem(player, 182005205, 1);
 								return sendQuestDialog(env, 1008);
 							}
 						}
 					}
-				} else {
+				}
+				else {
 					return QuestService.abandonQuest(player, questId);
 				}
 			}
@@ -119,9 +124,11 @@ public class _1717SilverForTheFountain extends QuestHandler {
 		int random = Rnd.get(1, 100);
 		if (random <= 43) {
 			return 1;
-		} else if (random > 43 && random < 96) {
+		}
+		else if (random > 43 && random < 96) {
 			return 0;
-		} else {
+		}
+		else {
 			return 2;
 		}
 	}

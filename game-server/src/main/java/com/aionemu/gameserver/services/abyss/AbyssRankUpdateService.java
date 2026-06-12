@@ -50,7 +50,7 @@ public class AbyssRankUpdateService {
 	public void scheduleUpdate() {
 		ServerVariablesDAO dao = DAOManager.getDAO(ServerVariablesDAO.class);
 		int nextTime = dao.load("abyssRankUpdate");
-		if (nextTime < System.currentTimeMillis() / 1000) {
+		if (nextTime < System.currentTimeMillis()/1000){
 			performUpdate();
 		}
 
@@ -68,8 +68,8 @@ public class AbyssRankUpdateService {
 	 */
 	public void performUpdate() {
 		log.info("AbyssRankUpdateService: executing rank update");
-		long startTime = System.currentTimeMillis();
-
+		long startTime = System.currentTimeMillis();		
+		
 		World.getInstance().doOnAllPlayers(new Visitor<Player>() {
 
 			@Override
@@ -94,7 +94,7 @@ public class AbyssRankUpdateService {
 
 	private void updateAllRanksForRace(Race race, int apLimit) {
 		Map<Integer, Integer> playerApMap = DAOManager.getDAO(AbyssRankDAO.class).loadPlayersAp(race, apLimit);
-		List<Entry<Integer, Integer>> playerApEntries = new ArrayList<>(playerApMap.entrySet());
+		List<Entry<Integer, Integer>> playerApEntries = new ArrayList<Entry<Integer, Integer>>(playerApMap.entrySet());
 		Collections.sort(playerApEntries, new PlayerApComparator<Integer, Integer>());
 
 		selectRank(AbyssRankEnum.SUPREME_COMMANDER, playerApEntries);
@@ -149,7 +149,8 @@ public class AbyssRankUpdateService {
 				abyssRank.setRank(newRank);
 				AbyssPointsService.checkRankChanged(onlinePlayer, currentRank, newRank);
 			}
-		} else {
+		}
+		else {
 			DAOManager.getDAO(AbyssRankDAO.class).updateAbyssRank(playerId, newRank);
 		}
 	}

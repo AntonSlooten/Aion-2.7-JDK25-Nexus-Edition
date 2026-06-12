@@ -117,9 +117,8 @@ public class FortressLocation extends SiegeLocation {
 	@Override
 	public void onLeaveZone(Creature creature, ZoneInstance zone) {
 		super.onLeaveZone(creature, zone);
-		if (this.isVulnerable()) {
+		if (this.isVulnerable())
 			creature.unsetInsideZoneType(ZoneType.SIEGE);
-		}
 	}
 
 	@SuppressWarnings("deprecation")
@@ -129,31 +128,32 @@ public class FortressLocation extends SiegeLocation {
 		if (!this.isVulnerable()) {
 			return;
 		}
-
+		
 		// On login move to bind
 		creature.setInsideZoneType(ZoneType.SIEGE);
 		if (!(creature instanceof Player)) {
 			return;
 		}
-
+		
 		Player player = (Player) creature;
-		if (player.getOnlineTime() >= 5) {
+		if (player.getOnlineTime() >= 5){
 			return;
 		}
+		
+		PlayerAccountData playerAccData = player.getClientConnection().getAccount().getPlayerAccountData(player.getObjectId());
+        long lastOnline = playerAccData.getPlayerCommonData().getLastOnline().getTime();
+        
+        Date lastCo = new Date(lastOnline);
+        Date now = new Date(System.currentTimeMillis());
+        
+        if(lastCo.getHours() == now.getHours()){
+               return;
+        }
 
-		PlayerAccountData playerAccData = player.getClientConnection().getAccount()
-				.getPlayerAccountData(player.getObjectId());
-		long lastOnline = playerAccData.getPlayerCommonData().getLastOnline().getTime();
-
-		Date lastCo = new Date(lastOnline);
-		Date now = new Date(System.currentTimeMillis());
-
-		if (lastCo.getHours() == now.getHours()) {
-			return;
-		}
-
+		
 		isEnemy(player); // move to bind point enemys (on login) from fortress
 	}
+
 
 	@Override
 	public void clearLocation() {
@@ -164,7 +164,7 @@ public class FortressLocation extends SiegeLocation {
 			}
 		}
 
-		for (Player player : getPlayers().values()) {
+		for (Player player : getPlayers().values()){
 			isEnemy(player);
 		}
 	}

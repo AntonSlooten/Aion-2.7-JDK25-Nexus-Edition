@@ -54,36 +54,33 @@ public class CraftingTask extends AbstractCraftTask {
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see
-	 * com.aionemu.gameserver.skillengine.task.AbstractCraftTask#onFailureFinish()
+	 * @see com.aionemu.gameserver.skillengine.task.AbstractCraftTask#onFailureFinish()
 	 */
 	@Override
 	protected void onFailureFinish() {
 		PacketSendUtility.sendPacket(requestor, new SM_CRAFT_UPDATE(recipeTemplate.getSkillid(), itemTemplate,
-				currentSuccessValue, currentFailureValue, 6));
+			currentSuccessValue, currentFailureValue, 6));
 		PacketSendUtility.broadcastPacket(requestor,
-				new SM_CRAFT_ANIMATION(requestor.getObjectId(), responder.getObjectId(), 0, 3), true);
+			new SM_CRAFT_ANIMATION(requestor.getObjectId(), responder.getObjectId(), 0, 3), true);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see
-	 * com.aionemu.gameserver.skillengine.task.AbstractCraftTask#onSuccessFinish()
+	 * @see com.aionemu.gameserver.skillengine.task.AbstractCraftTask#onSuccessFinish()
 	 */
 	@Override
 	protected boolean onSuccessFinish() {
 		if (crit && recipeTemplate.getComboProduct(critCount) != null) {
 			PacketSendUtility.sendPacket(requestor,
-					new SM_CRAFT_UPDATE(recipeTemplate.getSkillid(), itemTemplate, 0, 0, 3));
+				new SM_CRAFT_UPDATE(recipeTemplate.getSkillid(), itemTemplate, 0, 0, 3));
 			onInteractionStart();
 			return false;
-		} else {
+		}
+		else {
 			PacketSendUtility.sendPacket(requestor, new SM_CRAFT_UPDATE(recipeTemplate.getSkillid(), itemTemplate,
-					currentSuccessValue, currentFailureValue, 5));
+				currentSuccessValue, currentFailureValue, 5));
 			PacketSendUtility.broadcastPacket(requestor,
-					new SM_CRAFT_ANIMATION(requestor.getObjectId(), responder.getObjectId(), 0, 2), true);
+				new SM_CRAFT_ANIMATION(requestor.getObjectId(), responder.getObjectId(), 0, 2), true);
 			CraftService.finishCrafting(requestor, recipeTemplate, critCount);
 			return true;
 		}
@@ -91,36 +88,29 @@ public class CraftingTask extends AbstractCraftTask {
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see com.aionemu.gameserver.skillengine.task.AbstractCraftTask#
-	 * sendInteractionUpdate()
+	 * @see com.aionemu.gameserver.skillengine.task.AbstractCraftTask#sendInteractionUpdate()
 	 */
 	@Override
 	protected void sendInteractionUpdate() {
 		PacketSendUtility.sendPacket(requestor, new SM_CRAFT_UPDATE(recipeTemplate.getSkillid(), itemTemplate,
-				currentSuccessValue, currentFailureValue, 1));
+			currentSuccessValue, currentFailureValue, 1));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see com.aionemu.gameserver.skillengine.task.AbstractInteractionTask#
-	 * onInteractionAbort()
+	 * @see com.aionemu.gameserver.skillengine.task.AbstractInteractionTask#onInteractionAbort()
 	 */
 	@Override
 	protected void onInteractionAbort() {
-		PacketSendUtility.sendPacket(requestor,
-				new SM_CRAFT_UPDATE(recipeTemplate.getSkillid(), itemTemplate, 0, 0, 4));
+		PacketSendUtility.sendPacket(requestor, new SM_CRAFT_UPDATE(recipeTemplate.getSkillid(), itemTemplate, 0, 0, 4));
 		PacketSendUtility.broadcastPacket(requestor,
-				new SM_CRAFT_ANIMATION(requestor.getObjectId(), responder.getObjectId(), 0, 2), true);
+			new SM_CRAFT_ANIMATION(requestor.getObjectId(), responder.getObjectId(), 0, 2), true);
 		requestor.setCraftingTask(null);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see com.aionemu.gameserver.skillengine.task.AbstractInteractionTask#
-	 * onInteractionFinish()
+	 * @see com.aionemu.gameserver.skillengine.task.AbstractInteractionTask#onInteractionFinish()
 	 */
 	@Override
 	protected void onInteractionFinish() {
@@ -129,16 +119,14 @@ public class CraftingTask extends AbstractCraftTask {
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see com.aionemu.gameserver.skillengine.task.AbstractInteractionTask#
-	 * onInteractionStart()
+	 * @see com.aionemu.gameserver.skillengine.task.AbstractInteractionTask#onInteractionStart()
 	 */
 	@Override
 	protected void onInteractionStart() {
 		currentSuccessValue = 0;
 		currentFailureValue = 0;
 		// TODO: check if there could be a better way for morphing skill
-		if (recipeTemplate.getSkillid() == 40009) {
+		if(recipeTemplate.getSkillid() == 40009) {
 			currentSuccessValue = 99;
 		}
 		checkCrit();
@@ -148,20 +136,20 @@ public class CraftingTask extends AbstractCraftTask {
 		}
 
 		PacketSendUtility.sendPacket(requestor,
-				new SM_CRAFT_UPDATE(recipeTemplate.getSkillid(), itemTemplate, completeValue, completeValue, 0));
-		PacketSendUtility.sendPacket(requestor,
-				new SM_CRAFT_UPDATE(recipeTemplate.getSkillid(), itemTemplate, 0, 0, 1));
-		PacketSendUtility.broadcastPacket(requestor, new SM_CRAFT_ANIMATION(requestor.getObjectId(),
-				responder.getObjectId(), recipeTemplate.getSkillid(), 0), true);
-		PacketSendUtility.broadcastPacket(requestor, new SM_CRAFT_ANIMATION(requestor.getObjectId(),
-				responder.getObjectId(), recipeTemplate.getSkillid(), 1), true);
+			new SM_CRAFT_UPDATE(recipeTemplate.getSkillid(), itemTemplate, completeValue, completeValue, 0));
+		PacketSendUtility.sendPacket(requestor, new SM_CRAFT_UPDATE(recipeTemplate.getSkillid(), itemTemplate, 0, 0, 1));
+		PacketSendUtility.broadcastPacket(requestor,
+			new SM_CRAFT_ANIMATION(requestor.getObjectId(), responder.getObjectId(), recipeTemplate.getSkillid(), 0), true);
+		PacketSendUtility.broadcastPacket(requestor,
+			new SM_CRAFT_ANIMATION(requestor.getObjectId(), responder.getObjectId(), recipeTemplate.getSkillid(), 1), true);
 	}
-
+	
 	protected void checkCrit() {
 		if (crit) {
 			crit = false;
 			this.itemTemplate = DataManager.ITEM_DATA.getItemTemplate(recipeTemplate.getComboProduct(critCount));
-		} else {
+		}
+		else {
 			this.itemTemplate = DataManager.ITEM_DATA.getItemTemplate(recipeTemplate.getProductid());
 		}
 	}

@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
@@ -38,8 +39,9 @@ public class SM_LEGION_UPDATE_MEMBER extends AionServerPacket {
 		this.text = text;
 		this.isOnline = player.isOnline() ? ONLINE : OFFLINE;
 	}
-
-	public SM_LEGION_UPDATE_MEMBER(Player player) {
+	
+	public SM_LEGION_UPDATE_MEMBER(Player player)
+	{
 		this.player = player;
 		this.isOnline = OFFLINE;
 	}
@@ -52,7 +54,7 @@ public class SM_LEGION_UPDATE_MEMBER extends AionServerPacket {
 		writeC(player.getLevel());
 		writeD(player.getPosition().getMapId());
 		writeC(isOnline);
-		writeD(player.isOnline() ? 0 : player.getLastOnline());
+		writeD(player.isOnline()? 0 :player.getLastOnline());
 		writeD(msgId);
 		writeS(text);
 	}

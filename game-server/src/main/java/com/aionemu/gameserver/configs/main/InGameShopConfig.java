@@ -88,7 +88,7 @@ public class InGameShopConfig {
 
 	@Property(key = "gameserver.ingameshop.category19", defaultValue = "Emotion")
 	public static String CATEGORY_19;
-
+	
 	@Property(key = "gameserver.ingameshop.allow.gift", defaultValue = "true")
 	public static boolean ALLOW_GIFTS;
 }

@@ -40,37 +40,37 @@ public class GroupGateAI2 extends NpcAI2 {
 		int creatorId = getCreatorId();
 		if (player.getObjectId().equals(creatorId)) {
 			isMember = true;
-		} else if (player.isInGroup2()) {
+		}
+		else if (player.isInGroup2()) {
 			isMember = player.getPlayerGroup2().hasMember(creatorId);
 		}
 
 		if (isMember && player.getLevel() >= 10) {
 
 			AI2Actions.addRequest(this, player, SM_QUESTION_WINDOW.STR_ASK_GROUP_GATE_DO_YOU_ACCEPT_MOVE, 0,
-					new AI2Request() {
+				new AI2Request() {
 
-						@Override
-						public void acceptRequest(Creature requester, Player responder) {
-							switch (getNpcId()) {
-							// Group Gates
+					@Override
+					public void acceptRequest(Creature requester, Player responder) {
+						switch (getNpcId()) {
+						// Group Gates
 							case 749017:
-								TeleportService.teleportTo(responder, 110010000, 1, 1444.9f, 1577.2f, 572.9f, 3000,
-										true);
+								TeleportService.teleportTo(responder, 110010000, 1, 1444.9f, 1577.2f, 572.9f, 3000, true);
 								break;
 							case 749083:
-								TeleportService.teleportTo(responder, 120010000, 1, 1657.5f, 1398.7f, 194.7f, 3000,
-										true);
+								TeleportService.teleportTo(responder, 120010000, 1, 1657.5f, 1398.7f, 194.7f, 3000, true);
 								break;
 							// Binding Group Gates
 							case 749131:
 							case 749132:
 								TeleportService.moveToBindLocation(responder, true);
 								break;
-							}
 						}
-					});
+					}
+				});
 
-		} else {
+		}
+		else {
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_SKILL_CAN_NOT_USE_GROUPGATE_NO_RIGHT);
 		}
 	}

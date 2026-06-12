@@ -41,16 +41,13 @@ public class QuestNpc {
 
 	public boolean operate(QuestEnv env, QuestState qs) {
 		int npcId = -1;
-		if (env.getVisibleObject() instanceof Npc) {
+		if (env.getVisibleObject() instanceof Npc)
 			npcId = ((Npc) env.getVisibleObject()).getNpcId();
-		}
-		if (npcId != id) {
+		if (npcId != id)
 			return false;
-		}
 		for (QuestDialog questDialog : dialog) {
-			if (questDialog.operate(env, qs)) {
+			if (questDialog.operate(env, qs))
 				return true;
-			}
 		}
 		return false;
 	}

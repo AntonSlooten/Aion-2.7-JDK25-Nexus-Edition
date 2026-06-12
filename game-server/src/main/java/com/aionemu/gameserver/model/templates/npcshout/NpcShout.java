@@ -19,12 +19,15 @@ package com.aionemu.gameserver.model.templates.npcshout;
 import javax.xml.bind.annotation.*;
 
 /**
+ * @author Rolandas
+ */
+
+/**
  * <p>
  * Java class for NpcShout complex type.
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
- *
+ * The following schema fragment specifies the expected content contained within this class.
+ * 
  * <pre>
  * &lt;complexType name="NpcShout">
  *   &lt;complexContent>
@@ -47,22 +50,22 @@ public class NpcShout {
 
 	@XmlAttribute(name = "string_id", required = true)
 	protected int stringId;
-
+	
 	@XmlAttribute(name = "when", required = true)
 	protected ShoutEventType when;
-
+	
 	@XmlAttribute(name = "pattern")
 	protected String pattern;
-
+	
 	@XmlAttribute(name = "param")
 	protected String param;
-
+	
 	@XmlAttribute(name = "type")
 	protected ShoutType type;
-
+	
 	@XmlAttribute(name = "skill_no")
 	protected Integer skillNo;
-
+	
 	@XmlAttribute(name = "poll_delay")
 	protected Integer pollDelay;
 
@@ -75,7 +78,7 @@ public class NpcShout {
 
 	/**
 	 * Gets the value of the when property.
-	 *
+	 * 
 	 * @return possible object is {@link ShoutEventType }
 	 */
 	public ShoutEventType getWhen() {
@@ -84,7 +87,7 @@ public class NpcShout {
 
 	/**
 	 * Gets the value of the pattern property.
-	 *
+	 * 
 	 * @return possible object is {@link String }
 	 */
 	public String getPattern() {
@@ -93,7 +96,7 @@ public class NpcShout {
 
 	/**
 	 * Gets the value of the param property.
-	 *
+	 * 
 	 * @return possible object is {@link String }
 	 */
 	public String getParam() {
@@ -102,32 +105,29 @@ public class NpcShout {
 
 	/**
 	 * Gets the value of the type property.
-	 *
+	 * 
 	 * @return possible object is {@link ShoutType }
 	 */
 	public ShoutType getShoutType() {
-		if (type == null) {
+		if (type == null)
 			return ShoutType.BROADCAST;
-		}
 		return type;
 	}
 
 	/**
 	 * Gets the value of the skillNo property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public int getSkillNo() {
-		if (skillNo == null) {
+		if (skillNo == null)
 			return 0;
-		}
 		return skillNo;
 	}
-
+	
 	public int getPollDelay() {
-		if (pollDelay == null) {
+		if (pollDelay == null)
 			return 0;
-		}
 		return pollDelay;
 	}
 

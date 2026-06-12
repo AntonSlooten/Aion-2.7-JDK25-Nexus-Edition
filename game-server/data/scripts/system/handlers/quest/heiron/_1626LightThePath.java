@@ -60,18 +60,18 @@ public class _1626LightThePath extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 204592) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 4762);
-				}
-				case ACCEPT_QUEST: {
-					if (player.getInventory().getItemCountByItemId(182201788) == 0) {
-						if (!giveQuestItem(env, 182201788, 1)) {
-							return true;
+					case START_DIALOG: {
+						return sendQuestDialog(env, 4762);
+					}
+					case ACCEPT_QUEST: {
+						if (player.getInventory().getItemCountByItemId(182201788) == 0) {
+							if (!giveQuestItem(env, 182201788, 1)) {
+								return true;
+							}
 						}
 					}
-				}
-				default:
-					return sendQuestStartDialog(env);
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
@@ -81,80 +81,81 @@ public class _1626LightThePath extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 700221: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(182201788);
-					if (itemCount1 == 1) {
-						return useQuestObject(env, 0, 1, false, 0); // 1
+				case 700221: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182201788);
+							if (itemCount1 == 1) {
+								return useQuestObject(env, 0, 1, false, 0); // 1
+							}
+						}
+					}
+					break;
+				}
+				case 700222: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182201788);
+							if (itemCount1 == 1) {
+								return useQuestObject(env, 1, 2, false, 0); // 2
+							}
+						}
+					}
+					break;
+				}
+				case 700223: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182201788);
+							if (itemCount1 == 1) {
+								return useQuestObject(env, 2, 3, false, 0); // 3
+							}
+						}
 					}
 				}
-				}
-				break;
-			}
-			case 700222: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(182201788);
-					if (itemCount1 == 1) {
-						return useQuestObject(env, 1, 2, false, 0); // 2
+				case 700224: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182201788);
+							if (itemCount1 == 1) {
+								return useQuestObject(env, 3, 4, false, 0); // 4
+							}
+						}
 					}
 				}
-				}
-				break;
-			}
-			case 700223: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(182201788);
-					if (itemCount1 == 1) {
-						return useQuestObject(env, 2, 3, false, 0); // 3
+				case 700225: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182201788);
+							if (itemCount1 == 1) {
+								return useQuestObject(env, 4, 5, false, 0); // 5
+							}
+						}
 					}
 				}
-				}
-			}
-			case 700224: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(182201788);
-					if (itemCount1 == 1) {
-						return useQuestObject(env, 3, 4, false, 0); // 4
+				case 700226: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182201788);
+							if (itemCount1 == 1) {
+								return useQuestObject(env, 5, 6, false, 0); // 6
+							}
+						}
 					}
 				}
-				}
-			}
-			case 700225: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(182201788);
-					if (itemCount1 == 1) {
-						return useQuestObject(env, 4, 5, false, 0); // 5
+				case 700227: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(182201788);
+							if (itemCount1 == 1) {
+								return useQuestObject(env, 6, 6, true, 0); // reward
+							}
+						}
 					}
 				}
-				}
 			}
-			case 700226: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(182201788);
-					if (itemCount1 == 1) {
-						return useQuestObject(env, 5, 6, false, 0); // 6
-					}
-				}
-				}
-			}
-			case 700227: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(182201788);
-					if (itemCount1 == 1) {
-						return useQuestObject(env, 6, 6, true, 0); // reward
-					}
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204592) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

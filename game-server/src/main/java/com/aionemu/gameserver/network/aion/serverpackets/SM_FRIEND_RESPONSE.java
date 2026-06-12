@@ -16,12 +16,13 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * Replies to a request to add or delete a friend
- *
+ * 
  * @author Ben
  */
 public class SM_FRIEND_RESPONSE extends AionServerPacket {

@@ -41,7 +41,7 @@ public class PlayerGroupLeavedEvent extends PlayerLeavedEvent<PlayerGroupMember,
 	}
 
 	public PlayerGroupLeavedEvent(PlayerGroup team, Player player, PlayerLeavedEvent.LeaveReson reason,
-			String banPersonName) {
+		String banPersonName) {
 		super(team, player, reason, banPersonName);
 	}
 
@@ -61,24 +61,24 @@ public class PlayerGroupLeavedEvent extends PlayerLeavedEvent<PlayerGroupMember,
 
 		PacketSendUtility.sendPacket(leavedPlayer, new SM_LEAVE_GROUP_MEMBER());
 		switch (reason) {
-		case BAN:
-		case LEAVE:
-			// PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_PARTY_SECEDE); //
-			// client side?
-			if (team.onlineMembers() <= 1) {
-				PlayerGroupService.disband(team);
-			} else {
-				if (leavedPlayer.equals(team.getLeader().getObject())) {
-					team.onEvent(new ChangeGroupLeaderEvent(team));
+			case BAN:
+			case LEAVE:
+				// PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_PARTY_SECEDE); // client side?
+				if (team.onlineMembers() <= 1) {
+					PlayerGroupService.disband(team);
 				}
-			}
-			if (reason == LeaveReson.BAN) {
-				PacketSendUtility.sendPacket(leavedPlayer, SM_SYSTEM_MESSAGE.STR_PARTY_YOU_ARE_BANISHED);
-			}
-			break;
-		case DISBAND:
-			PacketSendUtility.sendPacket(leavedPlayer, SM_SYSTEM_MESSAGE.STR_PARTY_IS_DISPERSED);
-			break;
+				else {
+					if (leavedPlayer.equals(team.getLeader().getObject())) {
+						team.onEvent(new ChangeGroupLeaderEvent(team));
+					}
+				}
+				if (reason == LeaveReson.BAN) {
+					PacketSendUtility.sendPacket(leavedPlayer, SM_SYSTEM_MESSAGE.STR_PARTY_YOU_ARE_BANISHED);
+				}
+				break;
+			case DISBAND:
+				PacketSendUtility.sendPacket(leavedPlayer, SM_SYSTEM_MESSAGE.STR_PARTY_IS_DISPERSED);
+				break;
 		}
 
 		if (leavedPlayer.isInInstance()) {
@@ -87,11 +87,10 @@ public class PlayerGroupLeavedEvent extends PlayerLeavedEvent<PlayerGroupMember,
 				@Override
 				public void run() {
 					if (!leavedPlayer.isInGroup2()) {
-						PortalTemplate portalTemplate = DataManager.PORTAL_DATA
-								.getInstancePortalTemplate(leavedPlayer.getWorldId(), leavedPlayer.getRace());
-						if (portalTemplate != null && portalTemplate.getPlayerSize() == 6) {
+						PortalTemplate portalTemplate = DataManager.PORTAL_DATA.getInstancePortalTemplate(
+							leavedPlayer.getWorldId(), leavedPlayer.getRace());
+						if (portalTemplate != null && portalTemplate.getPlayerSize() == 6)
 							InstanceService.moveToEntryPoint(leavedPlayer, portalTemplate, true);
-						}
 					}
 				}
 			}, 10000);
@@ -104,14 +103,14 @@ public class PlayerGroupLeavedEvent extends PlayerLeavedEvent<PlayerGroupMember,
 		PacketSendUtility.sendPacket(player, new SM_GROUP_MEMBER_INFO(team, leavedPlayer, GroupEvent.LEAVE));
 
 		switch (reason) {
-		case LEAVE:
-		case DISBAND:
-			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_PARTY_HE_LEAVE_PARTY(leavedPlayer.getName()));
-			break;
-		case BAN:
-			// TODO find out empty strings (Retail has +2 empty strings
-			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_PARTY_HE_IS_BANISHED(leavedPlayer.getName()));
-			break;
+			case LEAVE:
+			case DISBAND:
+				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_PARTY_HE_LEAVE_PARTY(leavedPlayer.getName()));
+				break;
+			case BAN:
+				// TODO find out empty strings (Retail has +2 empty strings
+				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_PARTY_HE_IS_BANISHED(leavedPlayer.getName()));
+				break;
 		}
 
 		return true;

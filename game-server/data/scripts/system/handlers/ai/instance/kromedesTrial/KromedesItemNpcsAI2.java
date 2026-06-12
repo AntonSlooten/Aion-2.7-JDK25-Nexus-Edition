@@ -41,36 +41,36 @@ public class KromedesItemNpcsAI2 extends ActionItemNpcAI2 {
 	public boolean onDialogSelect(final Player player, int dialogId, int questId) {
 		if (dialogId == 1012) {
 			switch (getNpcId()) {
-			case 730325:
-				if (player.getInventory().getItemCountByItemId(164000142) < 1) {
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 1012));
-					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400701)); // TODO: more sys messages,
-																							// but for
-																							// now not needed!
-					ItemService.addItem(player, 164000142, 1);
-				} else
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 27));
-				break;
-			case 730340:
-				if (player.getInventory().getItemCountByItemId(164000140) < 1) {
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 1012));
-					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400701)); // TODO: more sys messages,
-																							// but for
-																							// now not needed!
-					ItemService.addItem(player, 164000140, 1);
-				} else
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 27));
-				break;
-			case 730341:
-				if (player.getInventory().getItemCountByItemId(164000143) < 1) {
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 1012));
-					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400701)); // TODO: more sys messages,
-																							// but for
-																							// now not needed!
-					ItemService.addItem(player, 164000143, 1);
-				} else
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 27));
-				break;
+				case 730325:
+					if (player.getInventory().getItemCountByItemId(164000142) < 1) {
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 1012));
+						PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400701)); // TODO: more sys messages, but for
+																																									// now not needed!
+						ItemService.addItem(player, 164000142, 1);
+					}
+					else
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 27));
+					break;
+				case 730340:
+					if (player.getInventory().getItemCountByItemId(164000140) < 1) {
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 1012));
+						PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400701)); // TODO: more sys messages, but for
+																																									// now not needed!
+						ItemService.addItem(player, 164000140, 1);
+					}
+					else
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 27));
+					break;
+				case 730341:
+					if (player.getInventory().getItemCountByItemId(164000143) < 1) {
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 1012));
+						PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400701)); // TODO: more sys messages, but for
+																																									// now not needed!
+						ItemService.addItem(player, 164000143, 1);
+					}
+					else
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 27));
+					break;
 			}
 		}
 		return true;

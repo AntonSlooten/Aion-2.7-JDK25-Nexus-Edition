@@ -1,5 +1,6 @@
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import java.util.Collection;
 
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -20,9 +21,8 @@ public class SM_CHAT_WINDOW extends AionServerPacket {
 
 	@Override
 	protected void writeImpl(AionConnection con) {
-		if (target == null) {
+		if (target == null)
 			return;
-		}
 
 		PlayerGroup group = target.getPlayerGroup2();
 
@@ -33,28 +33,25 @@ public class SM_CHAT_WINDOW extends AionServerPacket {
 			writeC(target.getPlayerClass().getClassId());
 			writeC(target.getLevel());
 			writeC(0); // unk
-		} else {
+		}
+		else {
 			writeC(2); // group
 			writeS(target.getName());
 			writeD(group.getTeamId());
 			writeS(group.getLeader().getName());
 
 			Collection<Player> members = group.getMembers();
-			for (Player groupMember : members) {
+			for (Player groupMember : members)
 				writeC(groupMember.getLevel());
-			}
 
-			for (int i = group.size(); i < 6; i++) {
+			for (int i = group.size(); i < 6; i++)
 				writeC(0);
-			}
 
-			for (Player groupMember : members) {
+			for (Player groupMember : members)
 				writeC(groupMember.getPlayerClass().getClassId());
-			}
 
-			for (int i = group.size(); i < 6; i++) {
+			for (int i = group.size(); i < 6; i++)
 				writeC(0);
-			}
 		}
 	}
 }

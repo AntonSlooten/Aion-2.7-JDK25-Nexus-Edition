@@ -36,14 +36,12 @@ public class OnTalkEvent extends QuestEvent {
 
 	protected List<QuestVar> var;
 
-	@Override
 	public boolean operate(QuestEnv env) {
 		if (conditions == null || conditions.checkConditionOfSet(env)) {
 			QuestState qs = env.getPlayer().getQuestStateList().getQuestState(env.getQuestId());
 			for (QuestVar questVar : var) {
-				if (questVar.operate(env, qs)) {
+				if (questVar.operate(env, qs))
 					return true;
-				}
 			}
 		}
 		return false;

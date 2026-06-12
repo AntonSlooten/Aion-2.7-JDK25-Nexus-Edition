@@ -37,33 +37,29 @@ import com.aionemu.gameserver.skillengine.model.HealType;
 public abstract class HealOverTimeEffect extends AbstractOverTimeEffect {
 
 	public void calculate(Effect effect, HealType healType) {
-		if (!super.calculate(effect, null, null)) {
+		if (!super.calculate(effect, null, null))
 			return;
-		}
-
+		
 		Creature effector = effect.getEffector();
 
 		int valueWithDelta = value + delta * effect.getSkillLevel();
 		int maxCurValue = getMaxStatValue(effect);
 		int possibleHealValue = 0;
-		if (percent) {
+		if (percent)
 			possibleHealValue = maxCurValue * valueWithDelta / 100;
-		} else {
+		else
 			possibleHealValue = valueWithDelta;
-		}
-
+		
 		int finalHeal = possibleHealValue;
-
+		
 		if (!percent && healType == HealType.HP && effect.getItemTemplate() == null) {
 			int baseHeal = possibleHealValue;
 			int boostHealAdd = effector.getGameStats().getStat(StatEnum.HEAL_BOOST, 0).getCurrent();
 			// Apply percent Heal Boost bonus (ex. Passive skills)
-			int boostHeal = (effector.getGameStats().getStat(StatEnum.HEAL_BOOST, baseHeal).getCurrent()
-					- boostHealAdd);
+			int boostHeal = (effector.getGameStats().getStat(StatEnum.HEAL_BOOST, baseHeal).getCurrent() - boostHealAdd);
 			// Apply Add Heal Boost bonus (ex. Skills like Benevolence)
-			if (boostHealAdd > 0) {
+			if (boostHealAdd > 0)
 				boostHeal += Math.round(boostHeal * boostHealAdd / 1000);
-			}
 			finalHeal = effect.getEffected().getGameStats().getStat(StatEnum.HEAL_SKILL_BOOST, boostHeal).getCurrent();
 		}
 		effect.setReservedInt(position, finalHeal);
@@ -76,32 +72,29 @@ public abstract class HealOverTimeEffect extends AbstractOverTimeEffect {
 		int currentValue = getCurrentStatValue(effect);
 		int maxCurValue = getMaxStatValue(effect);
 		int possibleHealValue = effect.getReservedInt(position);
-
-		int healValue = maxCurValue - currentValue < possibleHealValue ? (maxCurValue - currentValue)
-				: possibleHealValue;
-
-		if (healValue <= 0) {
+		
+		int healValue = maxCurValue - currentValue < possibleHealValue ? (maxCurValue - currentValue) : possibleHealValue;
+		
+		if (healValue <= 0)
 			return;
-		}
-
+		
 		switch (healType) {
-		case HP:
-			effected.getLifeStats().increaseHp(TYPE.HP, healValue, effect.getSkillId(), LOG.HEAL);
-			break;
-		case MP:
-			effected.getLifeStats().increaseMp(TYPE.MP, healValue, effect.getSkillId(), LOG.MPHEAL);
-			break;
-		case FP:
-			((Player) effected).getLifeStats().increaseFp(TYPE.FP, healValue, effect.getSkillId(), LOG.FPHEAL);
-			break;
-		case DP:
-			((Player) effected).getCommonData().addDp(healValue);
-			break;
+			case HP:
+				effected.getLifeStats().increaseHp(TYPE.HP, healValue, effect.getSkillId(), LOG.HEAL);
+				break;
+			case MP:
+				effected.getLifeStats().increaseMp(TYPE.MP, healValue, effect.getSkillId(), LOG.MPHEAL);
+				break;
+			case FP:
+				((Player)effected).getLifeStats().increaseFp(TYPE.FP, healValue, effect.getSkillId(), LOG.FPHEAL);
+				break;
+			case DP:
+				((Player)effected).getCommonData().addDp(healValue);
+				break;
 		}
 
 	}
-
+	
 	protected abstract int getCurrentStatValue(Effect effect);
-
 	protected abstract int getMaxStatValue(Effect effect);
 }

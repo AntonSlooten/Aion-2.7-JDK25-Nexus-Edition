@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -25,7 +25,7 @@ import com.aionemu.gameserver.services.player.PlayerService;
 
 /**
  * In this packets aion client is requesting cancellation of character deleting.
- *
+ * 
  * @author -Nemesiss-
  */
 public class CM_RESTORE_CHARACTER extends AionClientPacket {
@@ -42,7 +42,7 @@ public class CM_RESTORE_CHARACTER extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_RESTORE_CHARACTER </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_RESTORE_CHARACTER(int opcode, State state, State... restStates) {

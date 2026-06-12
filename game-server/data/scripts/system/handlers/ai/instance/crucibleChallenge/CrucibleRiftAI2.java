@@ -43,15 +43,14 @@ public class CrucibleRiftAI2 extends ActionItemNpcAI2 {
 	@Override
 	protected void handleUseItemFinish(Player player) {
 		switch (getNpcId()) {
-		case 730459:
-			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 1011));
-			break;
-		case 730460:
-			TeleportService.teleportTo(player, 300320000, getPosition().getInstanceId(), 1759.5004f, 1273.5414f,
-					389.11743f, (byte) 10, 3000, true);
-			spawn(205679, 1765.522f, 1282.1051f, 389.11743f, (byte) 0);
-			AI2Actions.deleteOwner(this);
-			break;
+			case 730459:
+				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 1011));
+				break;
+			case 730460:
+				TeleportService.teleportTo(player, 300320000, getPosition().getInstanceId(), 1759.5004f, 1273.5414f, 389.11743f, (byte) 10, 3000, true);
+				spawn(205679, 1765.522f, 1282.1051f, 389.11743f, (byte) 0);
+				AI2Actions.deleteOwner(this);
+				break;
 		}
 	}
 
@@ -67,8 +66,7 @@ public class CrucibleRiftAI2 extends ActionItemNpcAI2 {
 	public boolean onDialogSelect(Player player, int dialogId, int questId) {
 		if (dialogId == 10000 && getNpcId() == 730459) {
 			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 0));
-			TeleportService.teleportTo(player, 300320000, getPosition().getInstanceId(), 1759.5946f, 1768.6449f,
-					389.11758f, (byte) 16, 3000, true);
+			TeleportService.teleportTo(player, 300320000, getPosition().getInstanceId(), 1759.5946f, 1768.6449f, 389.11758f, (byte) 16, 3000, true);
 			spawn(218190, 1760.8701f, 1774.7711f, 389.11743f, (byte) 110);
 			spawn(218185, 1762.6906f, 1773.863f, 389.11743f, (byte) 80);
 			spawn(218191, 1763.9441f, 1775.2466f, 389.1175f, (byte) 80);
@@ -83,11 +81,10 @@ public class CrucibleRiftAI2 extends ActionItemNpcAI2 {
 			@Override
 			public void visit(Player player) {
 				if (player.isOnline()) {
-					PacketSendUtility.sendPacket(player,
-							new SM_SYSTEM_MESSAGE(false, 1111482, player.getObjectId(), 2));
+					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(false, 1111482, player.getObjectId(), 2));
 				}
 			}
-
+	
 		});
 	}
 

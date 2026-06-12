@@ -26,13 +26,14 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 
 import ai.GeneralNpcAI2;
 
+
 /**
  * @author Cheatkiller Modified by Seita
  *
  */
 @AIName("sealedakaimum")
 public class SealedAkaimumAI2 extends GeneralNpcAI2 {
-
+	
 	@Override
 	protected void handleSpawned() {
 		super.handleSpawned();
@@ -43,8 +44,7 @@ public class SealedAkaimumAI2 extends GeneralNpcAI2 {
 				if (!isAlreadyDead()) {
 					getOwner().getSpawn().setWalkerId("sealedakaimum");
 					WalkManager.startWalking((NpcAI2) getOwner().getAi2());
-					PacketSendUtility.broadcastPacket(getOwner(),
-							new SM_EMOTION(getOwner(), EmotionType.START_EMOTE2, 0, getOwner().getObjectId()));
+					PacketSendUtility.broadcastPacket(getOwner(), new SM_EMOTION(getOwner(), EmotionType.START_EMOTE2, 0, getOwner().getObjectId()));
 				}
 			}
 

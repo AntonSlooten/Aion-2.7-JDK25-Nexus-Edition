@@ -21,7 +21,7 @@ public class SurkanaAI2 extends OneDmgPerHitAI2 {
 	@Override
 	protected void handleAttack(Creature creature) {
 		super.handleAttack(creature);
-		// roomaggro
+		//roomaggro
 		checkForSupport(creature);
 	}
 

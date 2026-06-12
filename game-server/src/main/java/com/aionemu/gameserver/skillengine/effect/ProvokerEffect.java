@@ -55,42 +55,40 @@ public class ProvokerEffect extends ShieldEffect {
 		final int prob2 = this.hitTypeProb;
 		final int radius = this.radius;
 		switch (this.hitType) {
-		case NMLATK:// ATTACK
-			observer = new ActionObserver(ObserverType.ATTACK) {
+			case NMLATK://ATTACK
+				observer = new ActionObserver(ObserverType.ATTACK) {
 
-				@Override
-				public void attack(Creature creature) {
-					if (Rnd.get(0, 100) <= prob2) {
-						Creature target = getProvokeTarget(provokeTarget, effector, creature);
-						createProvokedEffect(effector, target, creature);
-					}
-				}
-
-			};
-			break;
-		case EVERYHIT:// ATTACKED
-			observer = new ActionObserver(ObserverType.ATTACKED) {
-
-				@Override
-				public void attacked(Creature creature) {
-					if (radius > 0) {
-						if (!MathUtil.isIn3dRange(effector, creature, radius)) {
-							return;
+					@Override
+					public void attack(Creature creature) {
+						if (Rnd.get(0, 100) <= prob2) {
+							Creature target = getProvokeTarget(provokeTarget, effector, creature);
+							createProvokedEffect(effector, target, creature);
 						}
 					}
-					if (Rnd.get(0, 100) <= prob2) {
-						Creature target = getProvokeTarget(provokeTarget, effector, creature);
-						createProvokedEffect(effector, target, creature);
+
+				};
+				break;
+			case EVERYHIT://ATTACKED
+				observer = new ActionObserver(ObserverType.ATTACKED) {
+
+					@Override
+					public void attacked(Creature creature) {
+						if (radius > 0) {
+							if (!MathUtil.isIn3dRange(effector, creature, radius))
+								return;
+						}
+						if (Rnd.get(0, 100) <= prob2) {
+							Creature target = getProvokeTarget(provokeTarget, effector, creature);
+							createProvokedEffect(effector, target, creature);
+						}
 					}
-				}
-			};
-			break;
-		// TODO MAHIT and PHHIT
+				};
+				break;
+				//TODO MAHIT and PHHIT
 		}
 
-		if (observer == null) {
+		if (observer == null)
 			return;
-		}
 
 		effect.setActionObserver(observer, position);
 		effect.getEffected().getObserveController().addObserver(observer);
@@ -103,15 +101,14 @@ public class ProvokerEffect extends ShieldEffect {
 	private void createProvokedEffect(final Creature effector, Creature target, final Creature attacker) {
 		SkillTemplate template = DataManager.SKILL_DATA.getSkillTemplate(skillId);
 		/**
-		 * I dont see a reason for such code boolean isTargetRelationEnemy =
-		 * (template.getProperties() == null) ? false :
-		 * (template.getProperties().getTargetRelation() ==
-		 * TargetRelationAttribute.ENEMY); Effect e = null; if ((isTargetRelationEnemy)
-		 * && (provokeTarget == ProvokeTarget.ME)) e = new Effect(attacker, target,
-		 * template, template.getLvl(), template.getEffectsDuration()); else e = new
-		 * Effect(effector, target, template, template.getLvl(),
-		 * template.getEffectsDuration());
-		 */
+		I dont see a reason for such code
+		boolean isTargetRelationEnemy = (template.getProperties() == null) ? false : (template.getProperties().getTargetRelation() == TargetRelationAttribute.ENEMY);
+		Effect e = null;
+		if ((isTargetRelationEnemy) && (provokeTarget == ProvokeTarget.ME))
+			e = new Effect(attacker, target, template, template.getLvl(), template.getEffectsDuration());
+		else
+			e = new Effect(effector, target, template, template.getLvl(), template.getEffectsDuration());
+		*/
 		Effect e = new Effect(effector, target, template, template.getLvl(), template.getEffectsDuration());
 		e.initialize();
 		e.applyEffect();
@@ -125,10 +122,10 @@ public class ProvokerEffect extends ShieldEffect {
 	 */
 	private Creature getProvokeTarget(ProvokeTarget provokeTarget, Creature effector, Creature target) {
 		switch (provokeTarget) {
-		case ME:
-			return effector;
-		case OPPONENT:
-			return target;
+			case ME:
+				return effector;
+			case OPPONENT:
+				return target;
 		}
 		throw new IllegalArgumentException("Provoker target is invalid " + provokeTarget);
 	}
@@ -136,8 +133,7 @@ public class ProvokerEffect extends ShieldEffect {
 	@Override
 	public void endEffect(Effect effect) {
 		ActionObserver observer = effect.getActionObserver(position);
-		if (observer != null) {
+		if (observer != null)
 			effect.getEffected().getObserveController().removeObserver(observer);
-		}
 	}
 }

@@ -59,7 +59,8 @@ public class _1482ATeleportationAdventure extends QuestHandler {
 			if (targetId == 203919) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -68,50 +69,51 @@ public class _1482ATeleportationAdventure extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203337: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					switch (qs.getQuestVarById(0)) {
-					case 0: {
-						return sendQuestDialog(env, 1011);
-					}
-					case 1: {
-						long itemCount1 = player.getInventory().getItemCountByItemId(182201399);
-						if (itemCount1 >= 3) {
+				case 203337: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							switch (qs.getQuestVarById(0)) {
+								case 0: {
+									return sendQuestDialog(env, 1011);
+								}
+								case 1: {
+									long itemCount1 = player.getInventory().getItemCountByItemId(182201399);
+									if (itemCount1 >= 3) {
+										qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+										updateQuestStatus(env);
+										return sendQuestDialog(env, 1352);
+									}
+									else
+										return sendQuestDialog(env, 10001);
+								}
+								case 2: {
+									return sendQuestDialog(env, 1693);
+								}
+								case 3: {
+									return sendQuestDialog(env, 10002);
+								}
+							}
+						}
+						case STEP_TO_1: {
 							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 							updateQuestStatus(env);
-							return sendQuestDialog(env, 1352);
-						} else
-							return sendQuestDialog(env, 10001);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
+						case STEP_TO_3: {
+							qs.setQuestVar(3);
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							TeleportService.teleportTo(player, 220020000, 1, 638, 2337, 425, (byte) 20, 3000, true);
+							return true;
+						}
+						default:
+							return sendQuestStartDialog(env);
 					}
-					case 2: {
-						return sendQuestDialog(env, 1693);
-					}
-					case 3: {
-						return sendQuestDialog(env, 10002);
-					}
-					}
-				}
-				case STEP_TO_1: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				case STEP_TO_3: {
-					qs.setQuestVar(3);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					TeleportService.teleportTo(player, 220020000, 1, 638, 2337, 425, (byte) 20, 3000, true);
-					return true;
-				}
-				default:
-					return sendQuestStartDialog(env);
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203337) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

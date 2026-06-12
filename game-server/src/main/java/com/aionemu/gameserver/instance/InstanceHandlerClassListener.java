@@ -27,7 +27,7 @@ import java.lang.reflect.Modifier;
 /**
  * @author ATracer
  */
-public class InstanceHandlerClassListener implements ClassListener {
+public class InstanceHandlerClassListener implements ClassListener{
 
 	private static final Logger log = LoggerFactory.getLogger(InstanceHandlerClassListener.class);
 
@@ -35,13 +35,11 @@ public class InstanceHandlerClassListener implements ClassListener {
 	@Override
 	public void postLoad(Class<?>[] classes) {
 		for (Class<?> c : classes) {
-			if (log.isDebugEnabled()) {
+			if (log.isDebugEnabled())
 				log.debug("Load class " + c.getName());
-			}
 
-			if (!isValidClass(c)) {
+			if (!isValidClass(c))
 				continue;
-			}
 
 			if (ClassUtils.isSubclass(c, InstanceHandler.class)) {
 				Class<? extends InstanceHandler> tmp = (Class<? extends InstanceHandler>) c;
@@ -55,18 +53,19 @@ public class InstanceHandlerClassListener implements ClassListener {
 	@Override
 	public void preUnload(Class<?>[] classes) {
 		if (log.isDebugEnabled()) {
-			for (Class<?> c : classes) {
+			for (Class<?> c : classes)
 				log.debug("Unload class " + c.getName());
-			}
 		}
 	}
 
 	public boolean isValidClass(Class<?> clazz) {
 		final int modifiers = clazz.getModifiers();
 
-		if (Modifier.isAbstract(modifiers) || Modifier.isInterface(modifiers) || !Modifier.isPublic(modifiers)) {
+		if (Modifier.isAbstract(modifiers) || Modifier.isInterface(modifiers))
 			return false;
-		}
+
+		if (!Modifier.isPublic(modifiers))
+			return false;
 
 		return true;
 	}

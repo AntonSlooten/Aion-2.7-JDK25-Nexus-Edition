@@ -14,21 +14,21 @@ import com.aionemu.gameserver.world.World;
  * @author synchro2
  */
 public class CmdMarry extends BaseCommand {
-
-	@Override
+	
+	
 	public void execute(Player admin, String... params) {
 		if (!WeddingsConfig.WEDDINGS_ENABLE) {
 			PacketSendUtility.sendMessage(admin, "Weddings disabled.");
 			return;
 		}
 
-		if (params == null || params.length != 3) {
+		if (params == null || params.length != 2) {
 			showHelp(admin);
 			return;
 		}
 
-		Player partner1 = World.getInstance().findPlayer(Util.convertName(params[1]));
-		Player partner2 = World.getInstance().findPlayer(Util.convertName(params[2]));
+		Player partner1 = World.getInstance().findPlayer(Util.convertName(params[0]));
+		Player partner2 = World.getInstance().findPlayer(Util.convertName(params[1]));
 		if (partner1 == null || partner2 == null) {
 			PacketSendUtility.sendMessage(admin, "The specified player is not online.");
 			return;
@@ -37,8 +37,7 @@ public class CmdMarry extends BaseCommand {
 			PacketSendUtility.sendMessage(admin, "You can't marry player on himself.");
 			return;
 		}
-		if (partner1.getWorldId() == 510010000 || partner1.getWorldId() == 520010000
-				|| partner2.getWorldId() == 510010000 || partner2.getWorldId() == 520010000) {
+		if (partner1.getWorldId() == 510010000 || partner1.getWorldId() == 520010000 || partner2.getWorldId() == 510010000 || partner2.getWorldId() == 520010000) {
 			PacketSendUtility.sendMessage(admin, "One of the players is in prison.");
 			return;
 		}

@@ -84,6 +84,12 @@
 		<import file="pet_skills" skipRoot="true"/>
 	</pet_skill_templates>
 	<import file="pets/pets.xml"/>
+	<pet_feed>
+		<import file="pets/pet_feed.xml" skipRoot="true"/>
+	</pet_feed>
+	<dopings>
+		<import file="pets/pet_doping.xml" skipRoot="true"/>
+	</dopings>
 	<import file="portals/portal_templates.xml"/>
 	<import file="quest_data/quest_data.xml"/>
 	<quest_scripts>

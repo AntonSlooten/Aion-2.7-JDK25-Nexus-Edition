@@ -27,49 +27,49 @@ import com.aionemu.gameserver.model.instance.playerreward.InstancePlayerReward;
  */
 public class TvtReward extends InstanceReward<InstancePlayerReward> {
 
-	private int asmosPoints;
-	private int elyosPoints;
+    private int asmosPoints;
+    private int elyosPoints;
 
-	public TvtReward(Integer mapId, int instanceId) {
-		super(mapId, instanceId);
-	}
+    public TvtReward(Integer mapId, int instanceId) {
+        super(mapId, instanceId);
+    }
 
-	public int getPoints(Race race) {
-		switch (race) {
-		case ASMODIANS:
-			return asmosPoints;
-		case ELYOS:
-			return elyosPoints;
-		default:
-			return 0;
-		}
-	}
+    public int getPoints(Race race) {
+        switch (race) {
+            case ASMODIANS:
+                return asmosPoints;
+            case ELYOS:
+                return elyosPoints;
+            default:
+                return 0;
+        }
+    }
 
-	public void addScore(Player player) {
-		switch (player.getRace()) {
-		case ASMODIANS:
-			if (player.getClientConnection().getAccount().getMembership() > 0) {
-				asmosPoints++;
-			}
-			asmosPoints++;
-			break;
-		case ELYOS:
-			if (player.getClientConnection().getAccount().getMembership() > 0) {
-				elyosPoints++;
-			}
-			elyosPoints++;
-			break;
-		}
-	}
-
-	public void addScore(Npc npc) {
-		switch (npc.getObjectTemplate().getRace()) {
-		case ASMODIANS:
-			asmosPoints++;
-			break;
-		case ELYOS:
-			elyosPoints++;
-			break;
-		}
-	}
+    public void addScore(Player player) {
+        switch (player.getRace()) {
+            case ASMODIANS:
+                if (player.getClientConnection().getAccount().getMembership() > 0) {
+                    asmosPoints ++;
+                }
+                asmosPoints++;
+                break;
+            case ELYOS:
+                if (player.getClientConnection().getAccount().getMembership() > 0) {
+                    elyosPoints ++;
+                }
+                elyosPoints++;
+                break;
+        }
+    }
+    
+    public void addScore(Npc npc) {
+        switch (npc.getObjectTemplate().getRace()) {
+            case ASMODIANS:
+                asmosPoints++;
+                break;
+            case ELYOS:
+                elyosPoints++;
+                break;
+        }
+    }
 }

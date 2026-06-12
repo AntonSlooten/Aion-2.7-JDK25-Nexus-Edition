@@ -58,18 +58,18 @@ public class _3100AShugosBestFriend extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 203792) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				case ACCEPT_QUEST: {
-					if (player.getInventory().getItemCountByItemId(182208072) == 0) {
-						if (!giveQuestItem(env, 182208072, 1)) {
-							return true;
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					case ACCEPT_QUEST: {
+						if (player.getInventory().getItemCountByItemId(182208072) == 0) {
+							if (!giveQuestItem(env, 182208072, 1)) {
+								return true;
+							}
 						}
 					}
-				}
-				default:
-					return sendQuestStartDialog(env);
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
@@ -79,26 +79,26 @@ public class _3100AShugosBestFriend extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798168: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 0) {
-						return sendQuestDialog(env, 1352);
+				case 798168: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 0) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_1: {
+							removeQuestItem(env, 182208072, 1);
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
 					}
 				}
-				case STEP_TO_1: {
-					removeQuestItem(env, 182208072, 1);
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798169) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

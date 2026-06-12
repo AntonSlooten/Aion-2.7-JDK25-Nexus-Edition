@@ -57,34 +57,39 @@ public class _2207ConversingWithaSkurv extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (targetId == 203591) {
+		}
+		else if (targetId == 203591) {
 			if (qs != null && qs.getStatus() == QuestStatus.START && qs.getQuestVarById(0) == 0) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 1352);
 				else if (env.getDialog() == QuestDialog.STEP_TO_1) {
 					return defaultCloseDialog(env, 0, 1); // 1
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 			if (qs != null && (qs.getQuestVarById(0) == 2 || qs.getQuestVarById(0) == 3)) {
 				if (env.getDialog() == QuestDialog.START_DIALOG && qs.getStatus() == QuestStatus.START)
 					return sendQuestDialog(env, 2375);
 				else if (env.getDialogId() == 1009 && qs.getStatus() != QuestStatus.COMPLETE
-						&& qs.getStatus() != QuestStatus.NONE) {
+					&& qs.getStatus() != QuestStatus.NONE) {
 					qs.setQuestVar(3);
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
 					return sendQuestEndDialog(env);
-				} else
+				}
+				else
 					return sendQuestEndDialog(env);
 			}
-		} else if (targetId == 203557) {
+		}
+		else if (targetId == 203557) {
 			if (qs != null && qs.getStatus() == QuestStatus.START && qs.getQuestVarById(0) == 1) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 1693);
 				else if (env.getDialog() == QuestDialog.STEP_TO_2) {
 					return defaultCloseDialog(env, 1, 2); // 2
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}

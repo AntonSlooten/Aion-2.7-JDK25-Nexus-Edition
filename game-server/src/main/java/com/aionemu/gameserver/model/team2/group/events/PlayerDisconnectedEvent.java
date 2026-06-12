@@ -51,7 +51,8 @@ public class PlayerDisconnectedEvent implements Predicate<Player>, TeamEvent {
 	public void handleEvent() {
 		if (group.onlineMembers() <= 1) {
 			PlayerGroupService.disband(group);
-		} else {
+		}
+		else {
 			if (player.equals(group.getLeader().getObject())) {
 				group.onEvent(new ChangeGroupLeaderEvent(group));
 			}

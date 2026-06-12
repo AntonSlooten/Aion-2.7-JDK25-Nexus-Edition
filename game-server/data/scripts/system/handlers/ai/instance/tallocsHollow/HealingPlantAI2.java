@@ -38,12 +38,12 @@ public class HealingPlantAI2 extends ActionItemNpcAI2 {
 	@Override
 	protected void handleUseItemFinish(Player player) {
 		switch (getNpcId()) {
-		case 700940:
-			player.getLifeStats().increaseHp(TYPE.HP, 20000);
-			break;
-		case 700941:
-			player.getLifeStats().increaseHp(TYPE.HP, 30000);
-			break;
+			case 700940:
+				player.getLifeStats().increaseHp(TYPE.HP, 20000);
+				break;
+			case 700941:
+				player.getLifeStats().increaseHp(TYPE.HP, 30000);
+				break;
 		}
 		AI2Actions.deleteOwner(this);
 	}

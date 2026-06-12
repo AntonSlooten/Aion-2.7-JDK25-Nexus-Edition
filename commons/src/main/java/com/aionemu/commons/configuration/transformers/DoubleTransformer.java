@@ -23,7 +23,7 @@ import com.aionemu.commons.configuration.TransformationException;
 
 /**
  * Transformes decimal that is represented as string to double
- *
+ * 
  * @author SoulKeeper
  */
 public class DoubleTransformer implements PropertyTransformer<Double> {
@@ -35,17 +35,21 @@ public class DoubleTransformer implements PropertyTransformer<Double> {
 
 	/**
 	 * Transforms string to required double
-	 *
-	 * @param value value that will be transformed
-	 * @param field value will be assigned to this field
+	 * 
+	 * @param value
+	 *          value that will be transformed
+	 * @param field
+	 *          value will be assigned to this field
 	 * @return Double that represents transformed string
-	 * @throws TransformationException if something went wrong
+	 * @throws TransformationException
+	 *           if something went wrong
 	 */
 	@Override
 	public Double transform(String value, Field field) throws TransformationException {
 		try {
 			return Double.parseDouble(value);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new TransformationException(e);
 		}
 	}

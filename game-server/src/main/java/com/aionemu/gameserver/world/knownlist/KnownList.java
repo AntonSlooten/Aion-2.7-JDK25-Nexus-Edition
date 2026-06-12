@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -33,7 +33,7 @@ import com.aionemu.gameserver.world.MapRegion;
 
 /**
  * KnownList.
- *
+ * 
  * @author -Nemesiss-
  * @modified kosyachok
  */
@@ -75,9 +75,8 @@ public class KnownList {
 	 * Do KnownList update.
 	 */
 	public void doUpdate() {
-		if ((System.currentTimeMillis() - lastUpdate) < 1000) {
+		if ((System.currentTimeMillis() - lastUpdate) < 1000)
 			return;
-		}
 
 		forgetObjects();
 		findVisibleObjects();
@@ -100,7 +99,7 @@ public class KnownList {
 
 	/**
 	 * Check if object is known
-	 *
+	 * 
 	 * @param object
 	 * @return true if object is known
 	 */
@@ -110,7 +109,7 @@ public class KnownList {
 
 	/**
 	 * Add VisibleObject to this KnownList.
-	 *
+	 * 
 	 * @param object
 	 */
 	protected boolean add(VisibleObject object) {
@@ -130,7 +129,7 @@ public class KnownList {
 
 	/**
 	 * Delete VisibleObject from this KnownList.
-	 *
+	 * 
 	 * @param object
 	 */
 	private void del(VisibleObject object, boolean isOutOfRange) {
@@ -142,7 +141,7 @@ public class KnownList {
 			if (knownPlayers != null) {
 				knownPlayers.remove(object.getObjectId());
 			}
-		}
+		};
 	}
 
 	/**
@@ -161,24 +160,26 @@ public class KnownList {
 	 * Find objects that are in visibility range.
 	 */
 	protected void findVisibleObjects() {
-		if (owner == null || !owner.isSpawned()) {
+		if (owner == null || !owner.isSpawned())
 			return;
-		}
 
 		MapRegion[] regions = owner.getActiveRegion().getNeighbours();
-		for (MapRegion r : regions) {
+		for (int i = 0; i < regions.length; i++) {
+			MapRegion r = regions[i];
 			FastMap<Integer, VisibleObject> objects = r.getObjects();
-			for (FastMap.Entry<Integer, VisibleObject> e = objects.head(),
-					mapEnd = objects.tail(); (e = e.getNext()) != mapEnd;) {
+			for (FastMap.Entry<Integer, VisibleObject> e = objects.head(), mapEnd = objects.tail(); (e = e.getNext()) != mapEnd;) {
 				VisibleObject newObject = e.getValue();
-				if (newObject == owner || newObject == null || !isAwareOf(newObject)
-						|| knownObjects.containsKey(newObject.getObjectId())) {
+				if (newObject == owner || newObject == null)
 					continue;
-				}
 
-				if (!checkObjectInRange(newObject) && !newObject.getKnownList().checkReversedObjectInRange(owner)) {
+				if (!isAwareOf(newObject)) {
 					continue;
 				}
+				if (knownObjects.containsKey(newObject.getObjectId()))
+					continue;
+
+				if (!checkObjectInRange(newObject) && !newObject.getKnownList().checkReversedObjectInRange(owner))
+					continue;
 
 				/**
 				 * New object is not known.
@@ -192,7 +193,7 @@ public class KnownList {
 
 	/**
 	 * Whether knownlist owner aware of found object (should be kept in knownlist)
-	 *
+	 * 
 	 * @param newObject
 	 * @return
 	 */
@@ -202,17 +203,14 @@ public class KnownList {
 
 	protected boolean checkObjectInRange(VisibleObject newObject) {
 		// check if Z distance is greater than maxZvisibleDistance
-		if (Math.abs(owner.getZ() - newObject.getZ()) > maxZvisibleDistance) {
+		if (Math.abs(owner.getZ() - newObject.getZ()) > maxZvisibleDistance)
 			return false;
-		}
-
+		
 		return MathUtil.isInRange(owner, newObject, VisibilityDistance);
 	}
-
+	
 	/**
-	 * Check can be overriden if new object has different known range and that value
-	 * should be used
-	 *
+	 * Check can be overriden if new object has different known range and that value should be used
 	 * @param newObject
 	 * @return
 	 */
@@ -222,28 +220,30 @@ public class KnownList {
 
 	public void doOnAllNpcs(Visitor<Npc> visitor) {
 		try {
-			for (FastMap.Entry<Integer, VisibleObject> e = knownObjects.head(),
-					mapEnd = knownObjects.tail(); (e = e.getNext()) != mapEnd;) {
+			for (FastMap.Entry<Integer, VisibleObject> e = knownObjects.head(), mapEnd = knownObjects.tail(); (e = e
+				.getNext()) != mapEnd;) {
 				VisibleObject newObject = e.getValue();
 				if (newObject instanceof Npc) {
 					visitor.visit((Npc) newObject);
 				}
 			}
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			log.error("Exception when running visitor on all npcs" + ex);
 		}
 	}
 
 	public void doOnAllNpcsWithOwner(VisitorWithOwner<Npc, VisibleObject> visitor) {
 		try {
-			for (FastMap.Entry<Integer, VisibleObject> e = knownObjects.head(),
-					mapEnd = knownObjects.tail(); (e = e.getNext()) != mapEnd;) {
+			for (FastMap.Entry<Integer, VisibleObject> e = knownObjects.head(), mapEnd = knownObjects.tail(); (e = e
+				.getNext()) != mapEnd;) {
 				VisibleObject newObject = e.getValue();
 				if (newObject instanceof Npc) {
 					visitor.visit((Npc) newObject, owner);
 				}
 			}
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			log.error("Exception when running visitor on all npcs" + ex);
 		}
 	}
@@ -253,28 +253,29 @@ public class KnownList {
 			return;
 		}
 		try {
-			for (FastMap.Entry<Integer, Player> e = knownPlayers.head(),
-					mapEnd = knownPlayers.tail(); (e = e.getNext()) != mapEnd;) {
+			for (FastMap.Entry<Integer, Player> e = knownPlayers.head(), mapEnd = knownPlayers.tail(); (e = e.getNext()) != mapEnd;) {
 				Player player = e.getValue();
 				if (player != null) {
 					visitor.visit(player);
 				}
 			}
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			log.error("Exception when running visitor on all players" + ex);
 		}
 	}
 
 	public void doOnAllObjects(Visitor<VisibleObject> visitor) {
 		try {
-			for (FastMap.Entry<Integer, VisibleObject> e = knownObjects.head(),
-					mapEnd = knownObjects.tail(); (e = e.getNext()) != mapEnd;) {
+			for (FastMap.Entry<Integer, VisibleObject> e = knownObjects.head(), mapEnd = knownObjects.tail(); (e = e
+				.getNext()) != mapEnd;) {
 				VisibleObject newObject = e.getValue();
 				if (newObject != null) {
 					visitor.visit(newObject);
 				}
 			}
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			log.error("Exception when running visitor on all objects" + ex);
 		}
 	}
@@ -284,7 +285,7 @@ public class KnownList {
 	}
 
 	public Map<Integer, Player> getKnownPlayers() {
-		return knownPlayers != null ? knownPlayers : Collections.<Integer, Player>emptyMap();
+		return knownPlayers != null ? knownPlayers : Collections.<Integer, Player> emptyMap();
 	}
 
 	final void checkKnownPlayersInitialized() {

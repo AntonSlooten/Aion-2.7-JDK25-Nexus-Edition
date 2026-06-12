@@ -49,15 +49,14 @@ public class RiftController extends NpcController {
 	private RiftEnum riftTemplate;
 
 	private int deSpawnedTime;
-
 	/**
 	 * Used to create master rifts or slave rifts (slave == null)
-	 *
+	 * 
 	 * @param slaveSpawnTemplate
 	 */
 
 	public RiftController(Npc slave, RiftEnum riftTemplate) {
-		this.deSpawnedTime = ((int) (System.currentTimeMillis() / 1000)) + 60 * 60;
+		this.deSpawnedTime = ((int)(System.currentTimeMillis()/1000))+60*60;
 		this.riftTemplate = riftTemplate;
 		this.maxEntries = riftTemplate.getEntries();
 		if (slave != null)// master rift should be created
@@ -73,17 +72,18 @@ public class RiftController extends NpcController {
 
 	@Override
 	public void onDialogRequest(Player player) {
-		if (!isMaster && !isAccepting) {
+		if (!isMaster && !isAccepting)
 			return;
-		}
 
 		RequestResponseHandler responseHandler = new RequestResponseHandler(getOwner()) {
 
 			@Override
 			public void acceptRequest(Creature requester, Player responder) {
-				if (!isAccepting || !getOwner().isSpawned()) {
+				if (!isAccepting)
 					return;
-				}
+
+				if(!getOwner().isSpawned())
+					return;
 
 				int worldId = slaveSpawnTemplate.getWorldId();
 				float x = slaveSpawnTemplate.getX();
@@ -135,27 +135,26 @@ public class RiftController extends NpcController {
 				}
 			}
 		});
-
+	
 		super.onDelete();
 	}
-
 	/**
 	 * @param activePlayer
 	 */
 	public void sendMessage(Player activePlayer) {
-		if (!getOwner().isSpawned()) {
+		if (!getOwner().isSpawned())
 			return;
-		}
-		if (isMaster) {
+		if (isMaster){
 			PacketSendUtility.sendPacket(activePlayer, new SM_RIFT_ANNOUNCE(this, isMaster));
 			PacketSendUtility.sendPacket(activePlayer, new SM_RIFT_ANNOUNCE(riftTemplate.getDestination()));
-		} else {
+		}
+		else{
 			PacketSendUtility.sendPacket(activePlayer, new SM_RIFT_ANNOUNCE(this, isMaster));
 		}
 	}
 
 	/**
-	 *
+	 * 
 	 */
 	public void sendAnnounce() {
 		if (getOwner().isSpawned()) {
@@ -167,10 +166,11 @@ public class RiftController extends NpcController {
 				@Override
 				public void visit(Player player) {
 					if (player.isSpawned()) {
-						if (isMaster) {
+						if (isMaster){
 							PacketSendUtility.sendPacket(player, masterPacket);
 							PacketSendUtility.sendPacket(player, announcePacket);
-						} else {
+						}
+						else{
 							PacketSendUtility.sendPacket(player, slavePacket);
 						}
 					}
@@ -179,6 +179,7 @@ public class RiftController extends NpcController {
 		}
 	}
 
+	
 	/**
 	 * @return the maxEntries
 	 */
@@ -186,6 +187,7 @@ public class RiftController extends NpcController {
 		return maxEntries;
 	}
 
+	
 	/**
 	 * @return the minLevel
 	 */
@@ -193,6 +195,7 @@ public class RiftController extends NpcController {
 		return minLevel;
 	}
 
+	
 	/**
 	 * @return the maxLevel
 	 */
@@ -200,6 +203,7 @@ public class RiftController extends NpcController {
 		return maxLevel;
 	}
 
+	
 	/**
 	 * @return the riftTemplate
 	 */
@@ -207,18 +211,18 @@ public class RiftController extends NpcController {
 		return riftTemplate;
 	}
 
+	
 	/**
 	 * @return the usedEntries
 	 */
 	public int getUsedEntries() {
 		return usedEntries;
 	}
-
-	private RiftController getThis() {
+	
+	private RiftController getThis(){
 		return this;
 	}
-
-	public int getRemainTime() {
-		return deSpawnedTime - (int) (System.currentTimeMillis() / 1000);
+	public int getRemainTime(){
+		return deSpawnedTime -(int)(System.currentTimeMillis()/1000);
 	}
 }

@@ -36,7 +36,6 @@ public final class PacketBroadcaster extends AbstractFIFOPeriodicTaskManager<Cre
 
 	private PacketBroadcaster() {
 		super(200);
-		registerStartupHook();
 	}
 
 	public static enum BroadcastMode {

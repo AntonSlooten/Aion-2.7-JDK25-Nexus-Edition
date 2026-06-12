@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -24,7 +24,7 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * In this packet Server is sending Skill Info?
- *
+ * 
  * @author modified by ATracer,MrPoke
  */
 public class SM_SKILL_LIST extends AionServerPacket {
@@ -37,8 +37,7 @@ public class SM_SKILL_LIST extends AionServerPacket {
 	boolean isNew = false;
 
 	/**
-	 * This constructor is used on player entering the world Constructs new
-	 * <tt>SM_SKILL_LIST </tt> packet
+	 * This constructor is used on player entering the world Constructs new <tt>SM_SKILL_LIST </tt> packet
 	 */
 	public SM_SKILL_LIST(Player player) {
 		this.skillList = player.getSkillList().getAllSkills();
@@ -65,11 +64,10 @@ public class SM_SKILL_LIST extends AionServerPacket {
 				writeH(entry.getSkillLevel());// lvl
 				writeC(0x00);
 				writeC(entry.getExtraLvl());
-				if (isNew) {
+				if (isNew)
 					writeD((int) (System.currentTimeMillis() / 1000)); // Learned date NCSoft......
-				} else {
+				else
 					writeD(0);
-				}
 				writeC(entry.isStigma() ? 1 : 0); // stigma
 			}
 		}

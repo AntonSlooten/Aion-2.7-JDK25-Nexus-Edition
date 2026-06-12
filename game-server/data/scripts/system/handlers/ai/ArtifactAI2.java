@@ -78,8 +78,8 @@ public class ArtifactAI2 extends NpcAI2 {
 						onActivate(responder);
 					}
 
-				}, new DescriptionId(2 * 716570 + 1), SiegeService.getInstance()
-						.getArtifact(getSpawnTemplate().getSiegeId()).getTemplate().getActivation().getCount());
+				}, new DescriptionId(2 * 716570 + 1), SiegeService.getInstance().getArtifact(getSpawnTemplate().getSiegeId())
+					.getTemplate().getActivation().getCount());
 
 			}
 
@@ -112,7 +112,7 @@ public class ArtifactAI2 extends NpcAI2 {
 
 		if (loc.getLegionId() != 0)
 			if (!player.isLegionMember() || player.getLegion().getLegionId() != loc.getLegionId()
-					|| !player.getLegionMember().hasRights(LegionPermissionsMask.ARTIFACT)) {
+				|| !player.getLegionMember().hasRights(LegionPermissionsMask.ARTIFACT)) {
 				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300703)); // you dont have rights to use
 				return;
 			}
@@ -120,13 +120,13 @@ public class ArtifactAI2 extends NpcAI2 {
 			return;
 		}
 		LoggerFactory.getLogger(ArtifactAI2.class).debug("Artifact {} actived by {}.", getSpawnTemplate().getSiegeId(),
-				player.getName());
+			player.getName());
 		if (!IDLE)
 			return;
 		IDLE = false;
 		// Brodcast start activation.
 		final SM_SYSTEM_MESSAGE startMessage = SM_SYSTEM_MESSAGE.STR_ARTIFACT_CASTING(loc.getRace().getDescriptionId(),
-				player.getName(), new DescriptionId(skillTemplate.getNameId()));
+			player.getName(), new DescriptionId(skillTemplate.getNameId()));
 		final SM_ABYSS_ARTIFACT_INFO3 artifactInfo = new SM_ABYSS_ARTIFACT_INFO3(loc.getLocationId(), 1);
 		player.getPosition().getWorldMapInstance().doOnAllPlayers(new Visitor<Player>() {
 
@@ -139,18 +139,18 @@ public class ArtifactAI2 extends NpcAI2 {
 
 		PacketSendUtility.sendPacket(player, new SM_USE_OBJECT(player.getObjectId(), getObjectId(), 10000, 1));
 		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.START_QUESTLOOT, 0, getObjectId()),
-				true);
+			true);
 
 		ItemUseObserver observer = new ItemUseObserver() {
 
 			@Override
 			public void abort() {
 				player.getController().cancelTask(TaskId.ACTION_ITEM_NPC);
-				PacketSendUtility.broadcastPacket(player,
-						new SM_EMOTION(player, EmotionType.END_QUESTLOOT, 0, getObjectId()), true);
+				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.END_QUESTLOOT, 0, getObjectId()),
+					true);
 				PacketSendUtility.sendPacket(player, new SM_USE_OBJECT(player.getObjectId(), getObjectId(), 10000, 0));
-				final SM_SYSTEM_MESSAGE message = SM_SYSTEM_MESSAGE.STR_ARTIFACT_CANCELED(
-						loc.getRace().getDescriptionId(), new DescriptionId(skillTemplate.getNameId()));
+				final SM_SYSTEM_MESSAGE message = SM_SYSTEM_MESSAGE.STR_ARTIFACT_CANCELED(loc.getRace().getDescriptionId(),
+					new DescriptionId(skillTemplate.getNameId()));
 				final SM_ABYSS_ARTIFACT_INFO3 artifactInfo = new SM_ABYSS_ARTIFACT_INFO3(loc.getLocationId(), 0);
 				getOwner().getPosition().getWorldMapInstance().doOnAllPlayers(new Visitor<Player>() {
 
@@ -173,12 +173,12 @@ public class ArtifactAI2 extends NpcAI2 {
 					player.getObserveController().removeObserver(observer);
 				}
 				PacketSendUtility.sendPacket(player, new SM_USE_OBJECT(player.getObjectId(), getObjectId(), 10000, 0));
-				PacketSendUtility.broadcastPacket(player,
-						new SM_EMOTION(player, EmotionType.END_QUESTLOOT, 0, getObjectId()), true);
+				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.END_QUESTLOOT, 0, getObjectId()),
+					true);
 				if (!player.getInventory().decreaseByItemId(itemId, count))
 					return;
-				final SM_SYSTEM_MESSAGE message = SM_SYSTEM_MESSAGE.STR_ARTIFACT_CORE_CASTING(
-						loc.getRace().getDescriptionId(), new DescriptionId(skillTemplate.getNameId()));
+				final SM_SYSTEM_MESSAGE message = SM_SYSTEM_MESSAGE.STR_ARTIFACT_CORE_CASTING(loc.getRace().getDescriptionId(),
+					new DescriptionId(skillTemplate.getNameId()));
 				final SM_ABYSS_ARTIFACT_INFO3 artifactInfo = new SM_ABYSS_ARTIFACT_INFO3(loc.getLocationId(), 2);
 				player.getPosition().getWorldMapInstance().doOnAllPlayers(new Visitor<Player>() {
 
@@ -193,11 +193,12 @@ public class ArtifactAI2 extends NpcAI2 {
 				final ScheduledFuture<?> s;
 				if (loc.getTemplate().getRepeatCount() == 1) {
 					s = ThreadPoolManager.getInstance().schedule(new ArtifactUseSkill(loc, player, skillTemplate),
-							13000);
-				} else {
+						13000);
+				}
+				else {
 					s = ThreadPoolManager.getInstance().scheduleAtFixedRate(
-							new ArtifactUseSkill(loc, player, skillTemplate),
-							loc.getTemplate().getRepeatInterval() * 1000, 13000);
+						new ArtifactUseSkill(loc, player, skillTemplate), loc.getTemplate().getRepeatInterval() * 1000,
+						13000);
 					ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 						@Override
@@ -232,7 +233,7 @@ public class ArtifactAI2 extends NpcAI2 {
 			this.artifactFire = new SM_ABYSS_ARTIFACT_INFO3(artifact.getLocationId(), 3);
 			this.artifactIdle = new SM_ABYSS_ARTIFACT_INFO3(artifact.getLocationId(), 0);
 			this.message = SM_SYSTEM_MESSAGE.STR_ARTIFACT_FIRE(artifact.getRace().getDescriptionId(), player.getName(),
-					new DescriptionId(skill.getNameId()));
+				new DescriptionId(skill.getNameId()));
 		}
 
 		@Override
@@ -258,17 +259,17 @@ public class ArtifactAI2 extends NpcAI2 {
 				}
 			});
 			boolean pc = skill.getStartconditions().onlyPC();
-			System.out.println("In artifact zone count: " + artifact.getCreatures().size());
+			System.out.println("In artifact zone count: "+artifact.getCreatures().size());
 			for (Creature creature : artifact.getCreatures().values()) {
 				if (creature.getActingCreature() instanceof Player || (creature instanceof SiegeNpc && !pc)) {
 					switch (skill.getProperties().getTargetRelation()) {
-					case FRIEND:
-						if (player.isEnemy(creature))
-							continue;
-						break;
-					case ENEMY:
-						if (!player.isEnemy(creature))
-							continue;
+						case FRIEND:
+							if (player.isEnemy(creature))
+								continue;
+							break;
+						case ENEMY:
+							if (!player.isEnemy(creature))
+								continue;
 					}
 					AI2Actions.applyEffect(ArtifactAI2.this, skill, creature);
 				}

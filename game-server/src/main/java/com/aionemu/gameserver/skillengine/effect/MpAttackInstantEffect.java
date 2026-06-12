@@ -38,9 +38,8 @@ public class MpAttackInstantEffect extends EffectTemplate {
 		int maxMP = effect.getEffected().getLifeStats().getMaxMp();
 		int newValue = value;
 		// Support for values in percentage
-		if (percent) {
+		if (percent)
 			newValue = ((maxMP * value) / 100);
-		}
 		effect.getEffected().getLifeStats().reduceMp(newValue);
 	}
 }

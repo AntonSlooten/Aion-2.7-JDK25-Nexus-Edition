@@ -11,16 +11,15 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
  */
 
 public class CmdId extends BaseCommand {
-
-	@Override
+	
 	public void execute(final Player player, String... params) {
-
+		
 		if (params.length > 1) {
 			showHelp(player);
 			return;
 		}
-
-		if (params.length == 0) {
+		
+		if(params.length == 0) {
 			VisibleObject visibleObject = player.getTarget();
 			if (visibleObject == null) {
 				PacketSendUtility.sendMessage(player, "You should target some NPC first !");
@@ -31,7 +30,8 @@ public class CmdId extends BaseCommand {
 				Npc npc = (Npc) player.getTarget();
 				PacketSendUtility.sendMessage(player, "ID of selected NPC : " + npc.getNpcId());
 				return;
-			} else {
+			}
+			else {
 				PacketSendUtility.sendMessage(player, "You should target some NPC first !");
 				return;
 			}

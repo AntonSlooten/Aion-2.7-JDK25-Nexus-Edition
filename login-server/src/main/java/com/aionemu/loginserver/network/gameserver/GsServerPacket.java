@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -17,7 +17,6 @@
 package com.aionemu.loginserver.network.gameserver;
 
 import java.nio.ByteBuffer;
-
 import com.aionemu.commons.network.packet.BaseServerPacket;
 
 /**

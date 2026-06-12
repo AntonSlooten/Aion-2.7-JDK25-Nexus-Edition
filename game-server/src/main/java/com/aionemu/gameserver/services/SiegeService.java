@@ -62,13 +62,13 @@ public class SiegeService {
 	@Deprecated
 	private static final String BALAUR_PROTECTOR_SPAWN_SCHEDULE = "0 0 21 ? * *";
 	/**
-	 * We should broadcast fortress status every hour Actually only influence packet
-	 * must be sent, but that doesn't matter
+	 * We should broadcast fortress status every hour Actually only influence
+	 * packet must be sent, but that doesn't matter
 	 */
 	private static final String SIEGE_LOCATION_STATUS_BROADCAST_SCHEDULE = "0 0 * ? * *";
 	/**
-	 * Singleton that is loaded on the class initialization. Guys, we really do not
-	 * SingletonHolder classes
+	 * Singleton that is loaded on the class initialization. Guys, we really do
+	 * not SingletonHolder classes
 	 */
 	private static final SiegeService instance = new SiegeService();
 	/**
@@ -77,8 +77,8 @@ public class SiegeService {
 	 */
 	private final Map<Integer, Siege<?>> activeSieges = new FastMap<Integer, Siege<?>>().shared();
 	/**
-	 * Object that holds siege schedule.<br>
-	 * And maybe other useful information (in future).
+	 * Object that holds siege schedule.<br> And maybe other useful information
+	 * (in future).
 	 */
 	private SiegeSchedule siegeSchedule;
 
@@ -114,7 +114,8 @@ public class SiegeService {
 			outposts = DataManager.SIEGE_LOCATION_DATA.getOutpost();
 			locations = DataManager.SIEGE_LOCATION_DATA.getSiegeLocations();
 			DAOManager.getDAO(SiegeDAO.class).loadSiegeLocations(locations);
-		} else {
+		}
+		else {
 			artifacts = Collections.emptyMap();
 			fortresses = Collections.emptyMap();
 			outposts = Collections.emptyMap();
@@ -183,7 +184,8 @@ public class SiegeService {
 			if (artifact.isStandAlone()) {
 				log.info("Starting siege of artifact #" + artifact.getLocationId());
 				startSiege(artifact.getLocationId());
-			} else {
+			}
+			else {
 				log.info("Artifact #" + artifact.getLocationId() + " siege was not started, it belongs to fortress");
 			}
 		}
@@ -195,7 +197,6 @@ public class SiegeService {
 		// Schedule siege status broadcast (every hour)
 		CronService.getInstance().schedule(new Runnable() {
 
-			@Override
 			public void run() {
 				updateFortressNextState();
 				SiegeService.getInstance().broadcastUpdate();
@@ -251,12 +252,10 @@ public class SiegeService {
 		}
 
 		// We need synchronization here for that 1% of cases :)
-		// It may happen that fortresses siege is stopping in the same time by 2
-		// different threads
+		// It may happen that fortresses siege is stopping in the same time by 2 different threads
 		// 1 is for killing the boss
 		// 2 is for the schedule
-		// it might happen that siege will be stopping by other thread, but in such case
-		// siege object will be null
+		// it might happen that siege will be stopping by other thread, but in such case siege object will be null
 		Siege<?> siege;
 		synchronized (this) {
 			siege = activeSieges.remove(siegeLocationId);
@@ -325,7 +324,8 @@ public class SiegeService {
 			FortressLocation fortress = getFortressById(entry.getKey());
 			if (currentHourPlus1.getTimeInMillis() == siegeStartHour.getTimeInMillis()) {
 				fortress.setNextState(SiegeLocation.STATE_VULNERABLE);
-			} else {
+			}
+			else {
 				fortress.setNextState(SiegeLocation.STATE_INVULNERABLE);
 			}
 		}
@@ -386,10 +386,10 @@ public class SiegeService {
 	public boolean isSiegeInProgress(int fortressId) {
 		return activeSieges.containsKey(fortressId);
 	}
-
-	private List<Integer> getForteresseId() {
-		List<Integer> res = new ArrayList<>();
-
+	
+	private List<Integer> getForteresseId(){
+		List<Integer> res = new ArrayList<Integer>();
+		
 		res.add(1131);
 		res.add(1132);
 		res.add(1141);
@@ -403,13 +403,13 @@ public class SiegeService {
 		res.add(2021);
 		res.add(3011);
 		res.add(3021);
-
+		
 		return res;
 	}
 
 	public boolean isAtLeastOneSiegeInProgress() {
 		for (int id : getForteresseId()) {
-			if (isSiegeInProgress(id)) {
+			if(isSiegeInProgress(id)){
 				return true;
 			}
 		}
@@ -477,11 +477,14 @@ public class SiegeService {
 	protected Siege<?> newSiege(int siegeLocationId) {
 		if (fortresses.containsKey(siegeLocationId)) {
 			return new FortressSiege(fortresses.get(siegeLocationId));
-		} else if (outposts.containsKey(siegeLocationId)) {
+		}
+		else if (outposts.containsKey(siegeLocationId)) {
 			return new OutpostSiege(outposts.get(siegeLocationId));
-		} else if (artifacts.containsKey(siegeLocationId)) {
+		}
+		else if (artifacts.containsKey(siegeLocationId)) {
 			return new ArtifactSiege(artifacts.get(siegeLocationId));
-		} else {
+		}
+		else {
 			throw new SiegeException("Unknown siege handler for siege location: " + siegeLocationId);
 		}
 	}
@@ -545,9 +548,9 @@ public class SiegeService {
 		if (npc instanceof SiegeNpc) {
 			FortressLocation fort = getFortress(((SiegeNpc) npc).getSiegeId());
 			if (fort != null) {
-				if (fort.isVulnerable()) {
+				if (fort.isVulnerable())
 					return true;
-				} else if (fort.getNextState() == 1) {
+				else if (fort.getNextState() == 1) {
 					return npc.getSpawn().getRespawnTime() >= getSecondsBeforeHourEnd();
 				}
 			}
@@ -581,16 +584,13 @@ public class SiegeService {
 		PacketSendUtility.sendPacket(player, new SM_ABYSS_ARTIFACT_INFO(getSiegeLocations().values()));
 		PacketSendUtility.sendPacket(player, new SM_ABYSS_ARTIFACT_INFO2(getSiegeLocations().values()));
 		PacketSendUtility.sendPacket(player, new SM_ABYSS_ARTIFACT_INFO3(getSiegeLocations().values()));
-		// PacketSendUtility.sendPacket(player, new SM_FORTRESS_STATUS()); // TODO when
-		// send on retail?
+		//PacketSendUtility.sendPacket(player, new SM_FORTRESS_STATUS()); // TODO when send on retail?
 		PacketSendUtility.sendPacket(player, new SM_SHIELD_EFFECT());
 
 		for (FortressLocation loc : getFortresses().values()) {
 			// remove teleportation to dead teleporters
-			if (!loc.isCanTeleport(player)) {
-				PacketSendUtility.sendPacket(player,
-						new SM_FORTRESS_INFO(loc.getLocationId(), loc.isCanTeleport(player)));
-			}
+			if (!loc.isCanTeleport(player))
+				PacketSendUtility.sendPacket(player, new SM_FORTRESS_INFO(loc.getLocationId(), loc.isCanTeleport(player)));
 		}
 	}
 

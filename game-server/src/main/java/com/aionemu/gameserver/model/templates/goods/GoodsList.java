@@ -46,10 +46,9 @@ public class GoodsList {
 	private List<Integer> itemIdList;
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
-		itemIdList = new ArrayList<>();
-		if (items == null) {
+		itemIdList = new ArrayList<Integer>();
+		if (items == null)
 			return;
-		}
 
 		for (Item item : items) {
 			itemIdList.add(item.getId());
@@ -60,7 +59,7 @@ public class GoodsList {
 	 * return the limitedItems.
 	 */
 	public FastList<LimitedItem> getLimitedItems() {
-		FastList<LimitedItem> limitedItems = new FastList<>();
+		FastList<LimitedItem> limitedItems = new FastList<LimitedItem>();
 		if (items != null) {
 			for (Item item : items) {
 				if (item.getBuyLimit() != null && item.getSellLimit() != null) {
@@ -89,9 +88,8 @@ public class GoodsList {
 	 * <p>
 	 * Java class for anonymous complex type.
 	 * <p>
-	 * The following schema fragment specifies the expected content contained within
-	 * this class.
-	 *
+	 * The following schema fragment specifies the expected content contained within this class.
+	 * 
 	 * <pre>
 	 * &lt;complexType>
 	 *   &lt;complexContent>

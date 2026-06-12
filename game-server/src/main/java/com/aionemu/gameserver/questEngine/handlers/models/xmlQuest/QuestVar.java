@@ -40,16 +40,13 @@ public class QuestVar {
 
 	public boolean operate(QuestEnv env, QuestState qs) {
 		int var = -1;
-		if (qs != null) {
+		if (qs != null)
 			var = qs.getQuestVars().getQuestVars();
-		}
-		if (var != value) {
+		if (var != value)
 			return false;
-		}
 		for (QuestNpc questNpc : npc) {
-			if (questNpc.operate(env, qs)) {
+			if (questNpc.operate(env, qs))
 				return true;
-			}
 		}
 		return false;
 	}

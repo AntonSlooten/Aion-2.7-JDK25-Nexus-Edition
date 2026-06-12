@@ -56,11 +56,10 @@ public class _28618KaligasCollection extends QuestHandler {
 		QuestState qs = player.getQuestStateList().getQuestState(questId);
 		if (targetId == 730326) {
 			PlayerClass playerClass = player.getCommonData().getPlayerClass();
-			if ((playerClass == PlayerClass.RANGER || playerClass == PlayerClass.ASSASSIN
-					|| playerClass == PlayerClass.MAGE || playerClass == PlayerClass.PRIEST
-					|| playerClass == PlayerClass.GLADIATOR || playerClass == PlayerClass.TEMPLAR
-					|| playerClass == PlayerClass.WARRIOR || playerClass == PlayerClass.SCOUT)
-					&& player.getRace() == Race.ASMODIANS) {
+			if ((playerClass == PlayerClass.RANGER || playerClass == PlayerClass.ASSASSIN || playerClass == PlayerClass.MAGE
+				|| playerClass == PlayerClass.PRIEST || playerClass == PlayerClass.GLADIATOR
+				|| playerClass == PlayerClass.TEMPLAR || playerClass == PlayerClass.WARRIOR || playerClass == PlayerClass.SCOUT)
+				&& player.getRace() == Race.ASMODIANS) {
 				if (qs == null || qs.getStatus() == QuestStatus.NONE || qs.canRepeat()) {
 					if (env.getDialog() == QuestDialog.USE_OBJECT)
 						return sendQuestDialog(env, 1011);
@@ -79,20 +78,21 @@ public class _28618KaligasCollection extends QuestHandler {
 							qs.setCompleteCount(0);
 							updateQuestStatus(env);
 							return sendQuestDialog(env, 5);
-						} else
+						}
+						else
 							return sendQuestDialog(env, 2716);
 					}
-				} else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
+				}
+				else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
 					int var = qs.getQuestVarById(0);
 					switch (env.getDialog()) {
-					case USE_OBJECT:
-						if (var == 1)
-							return sendQuestDialog(env, 5);
-					case SELECT_NO_REWARD:
-						QuestService.finishQuest(env, qs.getQuestVars().getQuestVars() - 1);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
+						case USE_OBJECT:
+							if (var == 1)
+								return sendQuestDialog(env, 5);
+						case SELECT_NO_REWARD:
+							QuestService.finishQuest(env, qs.getQuestVars().getQuestVars() - 1);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
 					}
 				}
 			}

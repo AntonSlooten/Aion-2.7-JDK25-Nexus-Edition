@@ -12,12 +12,13 @@ import com.aionemu.gameserver.skillengine.SkillEngine;
 
 import ai.AggressiveNpcAI2;
 
+
 @AIName("rukrilebonsoul")
 public class RukrilEbonsoul extends AggressiveNpcAI2 {
 	private AtomicBoolean isHome = new AtomicBoolean(true);
 	private Future<?> task;
 	private static final int SHIELD_TIME = 50; // 50 sec
-
+	
 	private boolean isLight = false;
 
 	@Override
@@ -35,7 +36,7 @@ public class RukrilEbonsoul extends AggressiveNpcAI2 {
 		cancelTask();
 		isHome.set(true);
 	}
-
+	
 	@Override
 	protected void handleDied() {
 		super.handleDied();
@@ -48,8 +49,8 @@ public class RukrilEbonsoul extends AggressiveNpcAI2 {
 		cancelTask();
 		super.handleDespawned();
 	}
-
-	private void schedulTask() {
+	
+	private void schedulTask(){
 		task = ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
 			public void run() {
@@ -57,15 +58,16 @@ public class RukrilEbonsoul extends AggressiveNpcAI2 {
 			}
 		}, SHIELD_TIME * 1000);
 	}
-
+	
 	private void startTask() {
-		if (getPosition().getWorldMapInstance().getNpc(isLight ? 281907 : 281908) == null) {
+		if(getPosition().getWorldMapInstance().getNpc(isLight ? 281907 : 281908) == null){
 			spawn(isLight ? 281907 : 281908, getOwner().getX(), getOwner().getY(), getOwner().getZ(), (byte) 0);
 		}
 		SkillEngine.getInstance().getSkill(getOwner(), isLight ? 19266 : 19159, 55, getOwner()).useSkill();
-
+		
 		schedulTask();
 	}
+
 
 	private void cancelTask() {
 		if (task != null && !task.isCancelled()) {
@@ -73,7 +75,7 @@ public class RukrilEbonsoul extends AggressiveNpcAI2 {
 		}
 
 		getOwner().getEffectController().removeAllEffects();
-
+		
 		for (Npc npc : getPosition().getWorldMapInstance().getNpcs(281907)) {
 			if (npc != null) {
 				npc.getController().onDelete();

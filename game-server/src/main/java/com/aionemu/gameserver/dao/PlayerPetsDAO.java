@@ -20,6 +20,7 @@ import java.util.List;
 
 import com.aionemu.commons.database.dao.DAO;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.templates.pet.PetDopingBag;
 import com.aionemu.gameserver.model.gameobjects.player.PetCommonData;
 
 /**
@@ -44,5 +45,10 @@ public abstract class PlayerPetsDAO implements DAO {
 
 	public abstract void setHungryLevel(Player player, int petId, int hungryLevel);
 
+	public abstract void saveFeedStatus(Player player, int petId, int hungryLevel, int feedProgress, long reuseTime);
+
 	public abstract boolean savePetMoodData(PetCommonData petCommonData);
+
+	public abstract void saveDopingBag(Player player, int petId, PetDopingBag bag);
+	
 }

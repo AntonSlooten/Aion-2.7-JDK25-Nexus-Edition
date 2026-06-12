@@ -43,14 +43,13 @@ public class PortalData {
 	private List<PortalTemplate> portals;
 
 	/** A map containing all npc templates */
-	private TIntObjectHashMap<PortalTemplate> portalData = new TIntObjectHashMap<>();
-	private HashMap<Integer, ArrayList<PortalTemplate>> instancesMap = new HashMap<>();
-	private HashMap<String, PortalTemplate> namedPortals = new HashMap<>();
+	private TIntObjectHashMap<PortalTemplate> portalData = new TIntObjectHashMap<PortalTemplate>();
+	private HashMap<Integer, ArrayList<PortalTemplate>> instancesMap = new HashMap<Integer, ArrayList<PortalTemplate>>();
+	private HashMap<String, PortalTemplate> namedPortals = new HashMap<String, PortalTemplate>();
 
 	/**
-	 * - Inititialize all maps for subsequent use - Don't nullify initial portal
-	 * list as it will be used during reload
-	 *
+	 * - Inititialize all maps for subsequent use - Don't nullify initial portal list as it will be used during reload
+	 * 
 	 * @param u
 	 * @param parent
 	 */
@@ -65,14 +64,13 @@ public class PortalData {
 				int mapId = TeleportService.getInstanceMap(portal);
 				ArrayList<PortalTemplate> templates = instancesMap.get(mapId);
 				if (templates == null) {
-					templates = new ArrayList<>();
+					templates = new ArrayList<PortalTemplate>();
 					instancesMap.put(mapId, templates);
 				}
 				templates.add(portal);
 			}
-			if (portal.getName() != null && !portal.getName().isEmpty()) {
+			if (portal.getName() != null && !portal.getName().isEmpty())
 				namedPortals.put(portal.getName(), portal);
-			}
 		}
 	}
 
@@ -101,9 +99,8 @@ public class PortalData {
 		}
 
 		for (PortalTemplate portal : portals) {
-			if (portal.existsExitForRace(race)) {
+			if (portal.existsExitForRace(race))
 				return portal;
-			}
 		}
 
 		throw new IllegalArgumentException("There is no portal template for: " + worldId + " " + race);
@@ -117,9 +114,8 @@ public class PortalData {
 	public PortalTemplate getTemplateByNameAndWorld(int worldId, String name) {
 		PortalTemplate portal = namedPortals.get(name);
 
-		if (portal != null && !portal.leadsToMap(worldId)) {
+		if (portal != null && !portal.leadsToMap(worldId))
 			throw new IllegalArgumentException("Invalid combination of world and name: " + worldId + " " + name);
-		}
 
 		return portal;
 	}
@@ -132,7 +128,8 @@ public class PortalData {
 	}
 
 	/**
-	 * @param portals the portals to set
+	 * @param portals
+	 *          the portals to set
 	 */
 	public void setPortals(List<PortalTemplate> portals) {
 		this.portals = portals;

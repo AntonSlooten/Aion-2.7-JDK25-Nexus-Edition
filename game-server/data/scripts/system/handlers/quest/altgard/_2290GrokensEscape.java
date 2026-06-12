@@ -73,16 +73,19 @@ public class _2290GrokensEscape extends QuestHandler {
 					if (QuestService.startQuest(env)) {
 						return defaultStartFollowEvent(env, 700178, 0, 1); // 1
 					}
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 203608) { // Groken
 				if (env.getDialog() == QuestDialog.START_DIALOG && qs.getQuestVarById(0) == 0) {
 					return defaultStartFollowEvent(env, 700178, 0, 1); // 1
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203607) { // Manir
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 1693);

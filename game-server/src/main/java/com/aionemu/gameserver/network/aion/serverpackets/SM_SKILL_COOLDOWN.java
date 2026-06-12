@@ -41,24 +41,24 @@ public class SM_SKILL_COOLDOWN extends AionServerPacket {
 	 */
 	@Override
 	protected void writeImpl(AionConnection con) {
-		writeH(calculateSize());
-		long currentTime = System.currentTimeMillis();
-		for (Map.Entry<Integer, Long> entry : cooldowns.entrySet()) {
-			int left = Math.round((entry.getValue() - currentTime) / 1000);
-			ArrayList<Integer> skillsWithCooldown = DataManager.SKILL_DATA.getSkillsForCooldownId(entry.getKey());
+        writeH(calculateSize());
+        long currentTime = System.currentTimeMillis();
+        for (Map.Entry<Integer, Long> entry : cooldowns.entrySet()) {
+            int left = Math.round((entry.getValue() - currentTime) / 1000);
+            ArrayList<Integer> skillsWithCooldown = DataManager.SKILL_DATA.getSkillsForCooldownId(entry.getKey());
 
-			for (Integer element : skillsWithCooldown) {
-				writeH(element);
-				writeD(left > 0 ? left : 0);
-			}
-		}
+            for (int index = 0; index < skillsWithCooldown.size(); index++) {
+                writeH(skillsWithCooldown.get(index));
+                writeD(left > 0 ? left : 0);       
+            }
+        }
 	}
-
-	private int calculateSize() {
-		int size = 0;
-		for (Map.Entry<Integer, Long> entry : cooldowns.entrySet()) {
-			size += DataManager.SKILL_DATA.getSkillsForCooldownId(entry.getKey()).size();
-		}
-		return size;
-	}
+	
+    private int calculateSize() {
+        int size = 0;
+        for(Map.Entry<Integer, Long> entry : cooldowns.entrySet()) {
+            size += DataManager.SKILL_DATA.getSkillsForCooldownId(entry.getKey()).size();
+        }
+        return size;
+    }
 }

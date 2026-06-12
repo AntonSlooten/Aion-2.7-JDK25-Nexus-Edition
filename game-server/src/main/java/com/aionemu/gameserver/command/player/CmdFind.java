@@ -15,17 +15,16 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public class CmdFind extends BaseCommand {
 
-	@Override
 	public void execute(Player player, String... params) {
 		if (params.length < 1 || params.length > 3) {
 			PacketSendUtility.sendMessage(player, "Syntax : .find <objectID> <rateMin> <rateMax>");
 			return;
 		}
 
-		List<String> legendaryMobs = new ArrayList<>();
-		List<String> heroMobs = new ArrayList<>();
-		List<String> eliteMobs = new ArrayList<>();
-		List<String> commonMobs = new ArrayList<>();
+		List<String> legendaryMobs = new ArrayList<String>();
+		List<String> heroMobs = new ArrayList<String>();
+		List<String> eliteMobs = new ArrayList<String>();
+		List<String> commonMobs = new ArrayList<String>();
 
 		float rateMin = 0;
 		float rateMax = 100;
@@ -45,11 +44,10 @@ public class CmdFind extends BaseCommand {
 					if (drop.getItemId() != itemId) {
 						continue;
 					}
-
-					float chance = drop.modifRatio(drop.getItemId(), npcDrop.getNpcId())
-							* npcDropGroup.getDropModifier() * player.getRates().getDropRate();
+					
+					float chance = drop.modifRatio(drop.getItemId(), npcDrop.getNpcId()) * npcDropGroup.getDropModifier() * player.getRates().getDropRate();
 					chance = Math.min(100, chance);
-
+					
 					if (chance < rateMin || chance > rateMax) {
 						continue;
 					}

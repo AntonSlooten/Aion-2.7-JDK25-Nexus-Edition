@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
@@ -32,7 +33,7 @@ public class SM_L2AUTH_LOGIN_CHECK extends AionServerPacket {
 
 	/**
 	 * Constructs new <tt>SM_L2AUTH_LOGIN_CHECK </tt> packet
-	 *
+	 * 
 	 * @param ok
 	 */
 	public SM_L2AUTH_LOGIN_CHECK(boolean ok, String accountName) {

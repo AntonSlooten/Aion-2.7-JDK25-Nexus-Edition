@@ -36,21 +36,19 @@ public class HpCondition extends Condition {
 
 	@XmlAttribute
 	protected int delta;
-
+	
 	@XmlAttribute
 	protected boolean ratio;
 
 	@Override
 	public boolean validate(Skill skill) {
-		// exception for Servants, Totems to let them cast last skill and die
-		if (skill.getEffector() instanceof SummonedObject) {
+		//exception for Servants, Totems to let them cast last skill and die
+		if (skill.getEffector() instanceof SummonedObject)
 			return true;
-		}
-
+		
 		int valueWithDelta = value + delta * skill.getSkillLevel();
-		if (ratio) {
-			valueWithDelta = (skill.getEffector().getLifeStats().getMaxHp() * valueWithDelta) / 100;
-		}
+		if (ratio)
+			valueWithDelta = (int) ((skill.getEffector().getLifeStats().getMaxHp() * valueWithDelta) / 100);
 		return skill.getEffector().getLifeStats().getCurrentHp() > valueWithDelta;
 	}
 }

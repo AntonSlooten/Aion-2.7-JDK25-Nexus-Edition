@@ -26,5 +26,12 @@ import javax.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum QuestRepeatCycle {
 
-	ALL, MON, TUE, WED, THU, FRI, SAT, SUN;
+	ALL,
+	MON,
+	TUE,
+	WED,
+	THU,
+	FRI,
+	SAT,
+	SUN;
 }

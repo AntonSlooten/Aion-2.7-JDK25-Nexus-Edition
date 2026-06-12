@@ -49,7 +49,7 @@ public class SM_SIEGE_LOCATION_INFO extends AionServerPacket {
 
 	public SM_SIEGE_LOCATION_INFO(SiegeLocation loc) {
 		this.infoType = 1;
-		locations = new FastMap<>();
+		locations = new FastMap<Integer, SiegeLocation>();
 		locations.put(loc.getLocationId(), loc);
 	}
 
@@ -72,13 +72,11 @@ public class SM_SIEGE_LOCATION_INFO extends AionServerPacket {
 			int legionId = loc.getLegionId();
 			writeD(legionId);
 
-			if (legionId != 0) {
-				if (LegionService.getInstance().getLegion(legionId) == null) {
+			if (legionId != 0)
+				if (LegionService.getInstance().getLegion(legionId) == null)
 					log.error("Can't find or load legion with id " + legionId);
-				} else {
+				else
 					emblem = LegionService.getInstance().getLegion(legionId).getLegionEmblem();
-				}
-			}
 
 			if (emblem.getEmblemType() == LegionEmblemType.DEFAULT) {
 				writeD(emblem.getEmblemId());
@@ -86,7 +84,8 @@ public class SM_SIEGE_LOCATION_INFO extends AionServerPacket {
 				writeC(emblem.getColor_r());
 				writeC(emblem.getColor_g());
 				writeC(emblem.getColor_b());
-			} else {
+			}
+			else {
 				writeD(emblem.getCustomEmblemData().length);
 				writeC(255);
 				writeC(emblem.getColor_r());
@@ -100,7 +99,7 @@ public class SM_SIEGE_LOCATION_INFO extends AionServerPacket {
 			writeC(loc.isVulnerable() ? 2 : 0);
 
 			// faction can teleport (0 - no, 1 - yes)
-			writeC(loc.isCanTeleport(player) ? 1 : 0);
+			writeC(loc.isCanTeleport(player)? 1 : 0);
 
 			// Next State (0 - invulnerable, 1 - vulnerable)
 			writeC(loc.getNextState());
@@ -108,13 +107,13 @@ public class SM_SIEGE_LOCATION_INFO extends AionServerPacket {
 			writeH(0); // unk
 			writeH(1);
 			switch (loc.getLocationId()) {
-			case 2111: // veille timer
-			case 3111: // mastarius timer
-				writeD(SiegeService.getInstance().getRemainingSiegeTimeInSeconds(loc.getLocationId()));
-				break;
-			default:
-				writeD(10000);
-				break;
+				case 2111: // veille timer
+				case 3111: // mastarius timer
+					writeD(SiegeService.getInstance().getRemainingSiegeTimeInSeconds(loc.getLocationId()));
+					break;
+				default:
+					writeD(10000);
+					break;
 			}
 		}
 	}

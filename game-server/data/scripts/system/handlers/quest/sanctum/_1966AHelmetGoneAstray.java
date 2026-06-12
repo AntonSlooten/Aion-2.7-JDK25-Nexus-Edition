@@ -62,14 +62,17 @@ public class _1966AHelmetGoneAstray extends QuestHandler {
 					return true;
 				}
 			}
-		} else if (qs != null && qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.START) {
 			if (dialog == QuestDialog.START_DIALOG) {
 				return sendQuestDialog(env, 2375);
-			} else if (dialog == QuestDialog.SELECT_REWARD) {
-				changeQuestStep(env, 0, 1, true);
-				return sendQuestDialog(env, 5);
 			}
-		} else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
+			else if (dialog == QuestDialog.SELECT_REWARD) {
+				changeQuestStep(env, 0, 1, true);
+				return sendQuestDialog(env,5);
+			}
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
 			return sendQuestEndDialog(env);
 		}
 		return false;
@@ -83,14 +86,14 @@ public class _1966AHelmetGoneAstray extends QuestHandler {
 
 		if (id != 182206035)
 			return HandlerResult.UNKNOWN;
-		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0, 0), true);
+		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0,
+			0), true);
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
-				PacketSendUtility.broadcastPacket(player,
-						new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+				PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+					1, 0), true);
 				sendQuestDialog(env, 4);
 			}
 		}, 3000);

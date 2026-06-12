@@ -16,6 +16,9 @@
  */
 package com.aionemu.gameserver.model.templates.spawns;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.aionemu.commons.utils.Rnd;
 import com.aionemu.gameserver.model.siege.SiegeModType;
 import com.aionemu.gameserver.model.siege.SiegeRace;
@@ -30,22 +33,24 @@ import java.util.List;
  */
 public class SpawnGroup2 {
 
+	private static final Logger log = LoggerFactory.getLogger(SpawnGroup2.class);
+
 	private int worldId;
 	private int npcId;
 	private int pool;
 	private SpawnTime spawnTime = SpawnTime.ALL;
+	private TemporarySpawn temporarySpawn;
 	private int respawnTime;
 	private SpawnHandlerType handlerType;
-	private List<SpawnTemplate> spots = new ArrayList<>();
+	private List<SpawnTemplate> spots = new ArrayList<SpawnTemplate>();
 
 	public SpawnGroup2(int worldId, Spawn spawn) {
 		this.worldId = worldId;
 		initializing(spawn);
 		for (SpawnSpotTemplate template : spawn.getSpawnSpotTemplates()) {
 			SpawnTemplate spawnTemplate = new SpawnTemplate(this, template);
-			if (spawn.isEventSpawn()) {
+			if (spawn.isEventSpawn())
 				spawnTemplate.setEventTemplate(spawn.getEventTemplate());
-			}
 			spots.add(spawnTemplate);
 		}
 	}
@@ -63,6 +68,7 @@ public class SpawnGroup2 {
 	}
 
 	private void initializing(Spawn spawn) {
+		temporarySpawn = spawn.getTemporarySpawn();
 		spawnTime = spawn.getSpawnTime();
 		respawnTime = spawn.getRespawnTime();
 		pool = spawn.getPool();
@@ -91,6 +97,10 @@ public class SpawnGroup2 {
 		return npcId;
 	}
 
+	public TemporarySpawn geTemporarySpawn() {
+		return temporarySpawn;
+	}
+
 	public SpawnTime getSpawnTime() {
 		return spawnTime;
 	}
@@ -111,8 +121,13 @@ public class SpawnGroup2 {
 		this.respawnTime = respawnTime;
 	}
 
+	@Deprecated
 	public boolean isPartialDaySpawn() {
 		return !getSpawnTime().equals(SpawnTime.ALL);
+	}
+
+	public boolean isTemporarySpawn() {
+		return temporarySpawn != null;
 	}
 
 	public SpawnHandlerType getHandlerType() {
@@ -120,11 +135,15 @@ public class SpawnGroup2 {
 	}
 
 	public synchronized SpawnTemplate getRndTemplate() {
-		List<SpawnTemplate> templates = new ArrayList<>();
+		List<SpawnTemplate> templates = new ArrayList<SpawnTemplate>();
 		for (SpawnTemplate template : spots) {
 			if (!template.isUsed()) {
 				templates.add(template);
 			}
+		}
+		if(templates.size() == 0) {
+			log.warn("Pool size more then spots, npcId: " + npcId + ", worldId: " + worldId);
+			return null;
 		}
 		SpawnTemplate spawnTemplate = templates.get(Rnd.get(0, templates.size() - 1));
 		spawnTemplate.setUse(true);

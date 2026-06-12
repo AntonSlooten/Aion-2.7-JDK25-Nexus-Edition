@@ -11,7 +11,6 @@ import com.aionemu.gameserver.network.loginserver.LsServerPacket;
 public class SM_PREMIUM_CONTROL extends LsServerPacket {
 	private IGRequest request;
 	private long cost;
-
 	public SM_PREMIUM_CONTROL(IGRequest request, long cost) {
 		super(11);
 		this.request = request;

@@ -74,28 +74,29 @@ public class _2633DestroyingBalaurWeapons extends QuestHandler {
 				else
 					return sendQuestEndDialog(env);
 			}
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 204807) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-			case STEP_TO_1:
-				if (var == 0) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+				case STEP_TO_1:
+					if (var == 0) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
 			}
-		} else if (targetId == 700296) {
+		}
+		else if (targetId == 700296) {
 			switch (env.getDialog()) {
-			case USE_OBJECT:
-				return useQuestObject(env, 1, 2, false, 0); // 2
+				case USE_OBJECT:
+					return useQuestObject(env, 1, 2, false, 0); // 2
 			}
 		}
 		return false;
@@ -116,12 +117,12 @@ public class _2633DestroyingBalaurWeapons extends QuestHandler {
 		if (qs.getStatus() != QuestStatus.START)
 			return false;
 		switch (targetId) {
-		case 213933:
-			if (var == 2) {
-				qs.setStatus(QuestStatus.REWARD);
-				updateQuestStatus(env);
-				return true;
-			}
+			case 213933:
+				if (var == 2) {
+					qs.setStatus(QuestStatus.REWARD);
+					updateQuestStatus(env);
+					return true;
+				}
 		}
 		return false;
 	}

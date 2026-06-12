@@ -24,7 +24,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_FRIEND_LIST;
 
 /**
  * Received when a player sets his note
- *
+ * 
  * @author Ben
  */
 public class CM_SET_NOTE extends AionClientPacket {
@@ -60,9 +60,8 @@ public class CM_SET_NOTE extends AionClientPacket {
 				Player frienPlayer = friend.getPlayer();
 				if (friend.isOnline() && frienPlayer != null) // If the player is online
 				{
-					friend.getPlayer().getClientConnection().sendPacket(new SM_FRIEND_LIST()); // Send him a new friend
-																								// list
-																								// packet
+					friend.getPlayer().getClientConnection().sendPacket(new SM_FRIEND_LIST()); // Send him a new friend list
+																																											// packet
 				}
 			}
 

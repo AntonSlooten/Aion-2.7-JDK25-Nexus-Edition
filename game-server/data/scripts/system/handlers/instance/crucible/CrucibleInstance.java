@@ -52,7 +52,8 @@ public class CrucibleInstance extends GeneralInstanceHandler {
 	public void onEnterInstance(Player player) {
 		if (!instanceReward.containPlayer(player)) {
 			addPlayerReward(player);
-		} else {
+		}
+		else {
 			getPlayerReward(player).setPlayer(player);
 		}
 	}
@@ -118,9 +119,8 @@ public class CrucibleInstance extends GeneralInstanceHandler {
 			summon.getController().release(UnsummonType.UNSPECIFIED);
 		}
 
-		PacketSendUtility.broadcastPacket(player,
-				new SM_EMOTION(player, EmotionType.DIE, 0, lastAttacker == null ? 0 : lastAttacker.getObjectId()),
-				true);
+		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.DIE, 0, lastAttacker == null ? 0
+			: lastAttacker.getObjectId()), true);
 
 		PacketSendUtility.sendPacket(player, new SM_DIE(false, false, 0, 8));
 		return true;
@@ -141,7 +141,8 @@ public class CrucibleInstance extends GeneralInstanceHandler {
 	protected void teleport(Player player, float x, float y, float z, byte h) {
 		if (player != null) {
 			TeleportService.teleportTo(player, mapId, instanceId, x, y, z, h, 0, true);
-		} else {
+		}
+		else {
 			for (Player playerInside : instance.getPlayersInside()) {
 				if (playerInside.isOnline()) {
 					TeleportService.teleportTo(playerInside, mapId, instanceId, x, y, z, h, 0, true);

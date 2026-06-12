@@ -58,33 +58,35 @@ public class WorkOrders extends QuestHandler {
 			QuestState qs = player.getQuestStateList().getQuestState(workOrdersData.getId());
 			if (qs == null || qs.getStatus() == QuestStatus.NONE || qs.canRepeat()) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 4);
-				}
-				case ACCEPT_QUEST: {
-					if (RecipeService.validateNewRecipe(player, workOrdersData.getRecipeId()) != null) {
-						if (QuestService.startQuest(env)) {
-							if (ItemService.addQuestItems(player, workOrdersData.getGiveComponent())) {
-								RecipeService.addRecipe(player, workOrdersData.getRecipeId(), false);
-								PacketSendUtility.sendPacket(player,
-										new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+					case START_DIALOG: {
+						return sendQuestDialog(env, 4);
+					}
+					case ACCEPT_QUEST: {
+						if (RecipeService.validateNewRecipe(player, workOrdersData.getRecipeId()) != null) {
+							if (QuestService.startQuest(env)) {
+								if (ItemService.addQuestItems(player, workOrdersData.getGiveComponent())) {
+									RecipeService.addRecipe(player, workOrdersData.getRecipeId(), false);
+									PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+								}
+								return true;
 							}
-							return true;
 						}
 					}
 				}
-				}
-			} else if (qs.getStatus() == QuestStatus.START) {
+			}
+			else if (qs.getStatus() == QuestStatus.START) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					int var = qs.getQuestVarById(0);
 					if (QuestService.collectItemCheck(env, false)) {
 						changeQuestStep(env, var, var, true); // reward
 						return sendQuestDialog(env, 5);
-					} else {
+					}
+					else {
 						return sendQuestSelectionDialog(env);
 					}
 				}
-			} else if (qs.getStatus() == QuestStatus.REWARD) {
+			}
+			else if (qs.getStatus() == QuestStatus.REWARD) {
 				if (QuestService.collectItemCheck(env, true)) {
 					player.getRecipeList().deleteRecipe(player, workOrdersData.getRecipeId());
 					return sendQuestEndDialog(env);

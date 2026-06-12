@@ -66,13 +66,15 @@ public abstract class AbstractCraftTask extends AbstractInteractionTask {
 		int multi = Math.max(0, 33 - skillLvlDiff * 5);
 		if (Rnd.get(100) > multi) {
 			currentSuccessValue += Rnd.get(completeValue / (multi + 1) / 2, completeValue);
-		} else {
+		}
+		else {
 			currentFailureValue += Rnd.get(completeValue / (multi + 1) / 2, completeValue);
 		}
 
 		if (currentSuccessValue >= completeValue) {
 			currentSuccessValue = completeValue;
-		} else if (currentFailureValue >= completeValue) {
+		}
+		else if (currentFailureValue >= completeValue) {
 			currentFailureValue = completeValue;
 		}
 	}

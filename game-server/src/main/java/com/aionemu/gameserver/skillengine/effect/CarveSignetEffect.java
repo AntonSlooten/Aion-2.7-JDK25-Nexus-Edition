@@ -51,42 +51,37 @@ public class CarveSignetEffect extends DamageEffect {
 	public void applyEffect(Effect effect) {
 		super.applyEffect(effect);
 
-		if (Rnd.get(0, 100) > prob) {
+		if (Rnd.get(0, 100) > prob)
 			return;
-		}
-
+		
 		Effect placedSignet = effect.getEffected().getEffectController().getAnormalEffect(signet);
 
-		if (placedSignet != null) {
+		if (placedSignet != null)
 			placedSignet.endEffect();
-		}
 
 		SkillTemplate template = DataManager.SKILL_DATA.getSkillTemplate(signetid + nextSignetLevel - 1);
 		int effectsDuration = template.getEffectsDuration();
 		Effect newEffect = new Effect(effect.getEffector(), effect.getEffected(), template, nextSignetLevel,
-				effectsDuration);
+			effectsDuration);
 		newEffect.initialize();
 		newEffect.applyEffect();
 	}
 
 	@Override
 	public void calculate(Effect effect) {
-		if (!super.calculate(effect, DamageType.PHYSICAL)) {
+		if (!super.calculate(effect, DamageType.PHYSICAL))
 			return;
-		}
 		Effect placedSignet = effect.getEffected().getEffectController().getAnormalEffect(signet);
 		nextSignetLevel = signetlvlstart > 0 ? signetlvlstart : 1;
 		effect.setCarvedSignet(nextSignetLevel);
 		if (placedSignet != null) {
 			nextSignetLevel = placedSignet.getSkillId() - this.signetid + 2;
-			if ((signetlvlstart > 0) && (nextSignetLevel < signetlvlstart)) {
+			if ((signetlvlstart > 0) && (nextSignetLevel < signetlvlstart))
 				nextSignetLevel = signetlvlstart;
-			}
 
 			effect.setCarvedSignet(nextSignetLevel);
-			if (nextSignetLevel > signetlvl || nextSignetLevel > 5) {
+			if (nextSignetLevel > signetlvl || nextSignetLevel > 5)
 				nextSignetLevel--;
-			}
 		}
 	}
 }

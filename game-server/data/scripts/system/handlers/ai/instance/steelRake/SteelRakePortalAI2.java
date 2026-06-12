@@ -46,12 +46,12 @@ public class SteelRakePortalAI2 extends NpcAI2 {
 		if (dialogId == 1012) {
 			int quest = 0;
 			switch (player.getRace()) {
-			case ASMODIANS:
-				quest = 4200;
-				break;
-			case ELYOS:
-				quest = 3200;
-				break;
+				case ASMODIANS:
+					quest = 4200;
+					break;
+				case ELYOS:
+					quest = 3200;
+					break;
 			}
 
 			boolean instanceQuestReq = false;

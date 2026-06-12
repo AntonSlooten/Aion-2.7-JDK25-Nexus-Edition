@@ -45,23 +45,23 @@ public class BindEffect extends EffectTemplate {
 
 	@Override
 	public void startEffect(Effect effect) {
-
-		// if player is in abyss transform cant be blinded
-		if (effect.getEffected() instanceof Player) {
-			for (Effect ef : effect.getEffected().getEffectController().getAbnormalEffects()) {
-				if (ef.isAvatar()) {
-					return;
-				}
-			}
-		}
-
+		
+		//if player is in abyss transform cant be blinded
+	    if (effect.getEffected() instanceof Player)
+	    {
+	        for (Effect ef : effect.getEffected().getEffectController().getAbnormalEffects())
+	        {
+	            if (ef.isAvatar())
+	                return;
+	        }
+	    }
+		
 		final Creature effected = effect.getEffected();
 		effect.setAbnormal(AbnormalState.BIND.getId());
 		effected.getEffectController().setAbnormal(AbnormalState.BIND.getId());
 		if (effected.getCastingSkill() != null
-				&& effected.getCastingSkill().getSkillTemplate().getType() == SkillType.PHYSICAL) {
+			&& effected.getCastingSkill().getSkillTemplate().getType() == SkillType.PHYSICAL)
 			effected.getController().cancelCurrentSkill();
-		}
 	}
 
 	@Override

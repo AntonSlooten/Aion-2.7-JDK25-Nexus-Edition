@@ -8,24 +8,22 @@ import com.aionemu.gameserver.services.teleport.TeleportService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public class CmdAppearance extends BaseCommand {
+	
 
-	// "Syntax: //appearance <size | voice | hair | face | deco | head_size | tattoo
-	// | reset (to reset the appearance)> <value>"
-	@Override
+	//"Syntax: //appearance <size | voice | hair | face | deco | head_size | tattoo | reset (to reset the appearance)> <value>"
 	public void execute(Player admin, String... params) {
 		if (params.length < 2 || params.length > 3) {
 			showHelp(admin);
 			return;
 		}
-
+		
 		VisibleObject target = admin.getTarget();
 		Player player;
 
-		if (target == null) {
+		if (target == null)
 			player = admin;
-		} else {
+		else
 			player = (Player) target;
-		}
 
 		if (params[0].equals("reset")) {
 			PlayerAppearance savedPlayerAppearance = player.getSavedPlayerAppearance();
@@ -45,8 +43,8 @@ public class CmdAppearance extends BaseCommand {
 			PacketSendUtility.sendMessage(player, "An admin has resetted your appearance.");
 
 			// Send update packets
-			TeleportService.teleportTo(player, player.getWorldId(), player.getInstanceId(), player.getX(),
-					player.getY(), player.getZ(), player.getHeading(), 0, true);
+			TeleportService.teleportTo(player, player.getWorldId(), player.getInstanceId(), player.getX(), player.getY(),
+				player.getZ(), player.getHeading(), 0, true);
 
 			return;
 		}
@@ -60,9 +58,8 @@ public class CmdAppearance extends BaseCommand {
 		PlayerAppearance playerAppearance = player.getPlayerAppearance();
 
 		// Save a clean player's appearance
-		if (player.getSavedPlayerAppearance() == null) {
+		if (player.getSavedPlayerAppearance() == null)
 			player.setSavedPlayerAppearance((PlayerAppearance) playerAppearance.clone());
-		}
 
 		if (params[0].equals("size")) // Edit player's size. Min: 0, Max: 50 (prevent bug)
 		{
@@ -70,7 +67,8 @@ public class CmdAppearance extends BaseCommand {
 
 			try {
 				height = Float.parseFloat(params[1]);
-			} catch (NumberFormatException e) {
+			}
+			catch (NumberFormatException e) {
 				PacketSendUtility.sendMessage(admin, "The value must be a number !");
 				showHelp(admin);
 				return;
@@ -83,13 +81,15 @@ public class CmdAppearance extends BaseCommand {
 
 			// Edit the height
 			playerAppearance.setHeight(height);
-		} else if (params[0].equals("voice")) // Min: 0, Max: 3
+		}
+		else if (params[0].equals("voice")) // Min: 0, Max: 3
 		{
 			int voice;
 
 			try {
 				voice = Integer.parseInt(params[1]);
-			} catch (NumberFormatException e) {
+			}
+			catch (NumberFormatException e) {
 				PacketSendUtility.sendMessage(admin, "The value must be a number !");
 				showHelp(admin);
 				return;
@@ -102,13 +102,15 @@ public class CmdAppearance extends BaseCommand {
 
 			// Edit the voice
 			playerAppearance.setVoice(voice);
-		} else if (params[0].equals("hair")) // Min: 1, Max: 43
+		}
+		else if (params[0].equals("hair")) // Min: 1, Max: 43
 		{
 			int hair;
 
 			try {
 				hair = Integer.parseInt(params[1]);
-			} catch (NumberFormatException e) {
+			}
+			catch (NumberFormatException e) {
 				PacketSendUtility.sendMessage(admin, "The value must be a number !");
 				showHelp(admin);
 				return;
@@ -121,13 +123,15 @@ public class CmdAppearance extends BaseCommand {
 
 			// Edit the hair
 			playerAppearance.setHair(hair);
-		} else if (params[0].equals("face")) // Min: 1, Max: 24
+		}
+		else if (params[0].equals("face")) // Min: 1, Max: 24
 		{
 			int face;
 
 			try {
 				face = Integer.parseInt(params[1]);
-			} catch (NumberFormatException e) {
+			}
+			catch (NumberFormatException e) {
 				PacketSendUtility.sendMessage(admin, "The value must be a number !");
 				showHelp(admin);
 				return;
@@ -140,13 +144,15 @@ public class CmdAppearance extends BaseCommand {
 
 			// Edit the face
 			playerAppearance.setFace(face);
-		} else if (params[0].equals("deco")) // Min: 1, Max: 18
+		}
+		else if (params[0].equals("deco")) // Min: 1, Max: 18
 		{
 			int deco;
 
 			try {
 				deco = Integer.parseInt(params[1]);
-			} catch (NumberFormatException e) {
+			}
+			catch (NumberFormatException e) {
 				PacketSendUtility.sendMessage(admin, "The value must be a number !");
 				showHelp(admin);
 				return;
@@ -159,13 +165,15 @@ public class CmdAppearance extends BaseCommand {
 
 			// Edit the deco
 			playerAppearance.setDeco(deco);
-		} else if (params[0].equals("head_size")) // Min: 0, Max: 100
+		}
+		else if (params[0].equals("head_size")) // Min: 0, Max: 100
 		{
 			int head;
 
 			try {
 				head = Integer.parseInt(params[1]);
-			} catch (NumberFormatException e) {
+			}
+			catch (NumberFormatException e) {
 				PacketSendUtility.sendMessage(admin, "The value must be a number !");
 				showHelp(admin);
 				return;
@@ -178,13 +186,15 @@ public class CmdAppearance extends BaseCommand {
 
 			// Edit the head
 			playerAppearance.setHeadSize(head + 200);
-		} else if (params[0].equals("tattoo")) // Min: 1, Max: 13
+		}
+		else if (params[0].equals("tattoo")) // Min: 1, Max: 13
 		{
 			int tattoo;
 
 			try {
 				tattoo = Integer.parseInt(params[1]);
-			} catch (NumberFormatException e) {
+			}
+			catch (NumberFormatException e) {
 				PacketSendUtility.sendMessage(admin, "The value must be a number !");
 				showHelp(admin);
 				return;
@@ -197,7 +207,8 @@ public class CmdAppearance extends BaseCommand {
 
 			// Edit the tattoo
 			playerAppearance.setTattoo(tattoo);
-		} else {
+		}
+		else {
 			showHelp(admin);
 			return;
 		}
@@ -210,6 +221,6 @@ public class CmdAppearance extends BaseCommand {
 
 		// Send update packets
 		TeleportService.teleportTo(player, player.getWorldId(), player.getInstanceId(), player.getX(), player.getY(),
-				player.getZ(), player.getHeading(), 3000, true);
+			player.getZ(), player.getHeading(), 3000, true);
 	}
-}
+}	

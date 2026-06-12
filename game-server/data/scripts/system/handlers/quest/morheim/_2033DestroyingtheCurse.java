@@ -33,8 +33,7 @@ import com.aionemu.gameserver.world.zone.ZoneName;
  * Listen to the story of Kellan.<br>
  * Meet Kimssi (204393).<br>
  * Choose a Skurv to guide you.<br>
- * Throw the Cursed Necklace (182204007) into the Boiling Lava
- * (TARANS_CAVERN_220020000).<br>
+ * Throw the Cursed Necklace (182204007) into the Boiling Lava (TARANS_CAVERN_220020000).<br>
  * Report back to Kellan.
  * 
  * @author Erin
@@ -71,90 +70,95 @@ public class _2033DestroyingtheCurse extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204391: { // Urakon
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 204391: { // Urakon
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+					}
+					break;
+				}
+				case 790020: { // Kellan
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+							else if (var == 2) {
+								return sendQuestDialog(env, 1693);
+							}
+							else if (var == 3) {
+								return sendQuestDialog(env, 10000);
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 2, 3, false, 10000, 10001); // 3
+						}
+						case STEP_TO_4: {
+							if (!player.getInventory().isFull()) {
+								return defaultCloseDialog(env, 3, 4, 182204007, 1, 0, 0); // 4
+							}
+							else {
+								return defaultCloseDialog(env, 3, 3);
+							}
+						}
+						case FINISH_DIALOG: {
+							return defaultCloseDialog(env, 2, 2);
+						}
+					}
+					break;
+				}
+				case 204393: { // Kimssi
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 4) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case SELECT_ACTION_2376: {
+							if (var == 4) {
+								playQuestMovie(env, 74);
+								return sendQuestDialog(env, 2376);
+							}
+						}
+						case STEP_TO_5: {
+							return defaultCloseDialog(env, 4, 5); // 5
+						}
+					}
+					break;
+				}
+				case 204394:
+				case 204395:
+				case 204396:
+				case 204397:
+				case 204398: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (var == 5) {
+								return sendQuestDialog(env, 2716);
+							}
+						}
+						case STEP_TO_6: {
+							return defaultCloseDialog(env, 5, 6); // 6
+						}
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-				break;
 			}
-			case 790020: { // Kellan
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					} else if (var == 2) {
-						return sendQuestDialog(env, 1693);
-					} else if (var == 3) {
-						return sendQuestDialog(env, 10000);
-					}
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 2, 3, false, 10000, 10001); // 3
-				}
-				case STEP_TO_4: {
-					if (!player.getInventory().isFull()) {
-						return defaultCloseDialog(env, 3, 4, 182204007, 1, 0, 0); // 4
-					} else {
-						return defaultCloseDialog(env, 3, 3);
-					}
-				}
-				case FINISH_DIALOG: {
-					return defaultCloseDialog(env, 2, 2);
-				}
-				}
-				break;
-			}
-			case 204393: { // Kimssi
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 4) {
-						return sendQuestDialog(env, 2375);
-					}
-				}
-				case SELECT_ACTION_2376: {
-					if (var == 4) {
-						playQuestMovie(env, 74);
-						return sendQuestDialog(env, 2376);
-					}
-				}
-				case STEP_TO_5: {
-					return defaultCloseDialog(env, 4, 5); // 5
-				}
-				}
-				break;
-			}
-			case 204394:
-			case 204395:
-			case 204396:
-			case 204397:
-			case 204398: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (var == 5) {
-						return sendQuestDialog(env, 2716);
-					}
-				}
-				case STEP_TO_6: {
-					return defaultCloseDialog(env, 5, 6); // 6
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 790020) { // Kellan
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

@@ -43,14 +43,13 @@ public class StaggerEffect extends EffectTemplate {
 	public void applyEffect(Effect effect) {
 		effect.addToEffectedController();
 		final Creature effected = effect.getEffected();
-		if (!effected.getEffectController().applyPhysicalAbnormalEffect()) {
+		if(!effected.getEffectController().applyPhysicalAbnormalEffect())
 			return;
-		}
 
-		PacketSendUtility.broadcastPacketAndReceive(effect.getEffected(), new SM_FORCED_MOVE(effect.getEffector(),
-				effect.getEffected().getObjectId(), effect.getTargetX(), effect.getTargetY(), effect.getTargetZ()));
+		PacketSendUtility.broadcastPacketAndReceive(effect.getEffected(), 
+			new SM_FORCED_MOVE(effect.getEffector(), effect.getEffected().getObjectId(), effect.getTargetX(), effect.getTargetY(), effect.getTargetZ()));
 		World.getInstance().updatePosition(effected, effect.getTargetX(), effect.getTargetY(), effect.getTargetZ(),
-				effected.getHeading());
+			effected.getHeading());
 	}
 
 	@Override
@@ -76,7 +75,7 @@ public class StaggerEffect extends EffectTemplate {
 
 		float z = effected.getZ();
 		Vector3f closestCollision = GeoService.getInstance().getClosestCollision(effected, effected.getX() + x1,
-				effected.getY() + y1, effected.getZ(), false);
+			effected.getY() + y1, effected.getZ(), false);
 		x1 = closestCollision.x;
 		y1 = closestCollision.y;
 		z = closestCollision.z;

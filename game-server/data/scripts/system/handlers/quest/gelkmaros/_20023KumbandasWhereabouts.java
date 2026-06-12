@@ -85,7 +85,7 @@ public class _20023KumbandasWhereabouts extends QuestHandler {
 			qs.setQuestVar(7);
 			updateQuestStatus(env);
 			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(SystemMessageId.QUEST_FAILED_$1,
-					DataManager.QUEST_DATA.getQuestById(questId).getName()));
+				DataManager.QUEST_DATA.getQuestById(questId).getName()));
 		}
 
 		return false;
@@ -135,7 +135,7 @@ public class _20023KumbandasWhereabouts extends QuestHandler {
 		if (qs == null || qs.getStatus() != QuestStatus.START || qs.getQuestVars().getQuestVars() != 8)
 			return false;
 		QuestService.addNewSpawn(300150000, player.getInstanceId(), 216592, (float) 561.8763, (float) 192.25128,
-				(float) 135.88919, (byte) 30);
+			(float) 135.88919, (byte) 30);
 		return true;
 	}
 
@@ -161,119 +161,126 @@ public class _20023KumbandasWhereabouts extends QuestHandler {
 					return sendQuestEndDialog(env);
 			}
 			return false;
-		} else if (qs.getStatus() != QuestStatus.START)
+		}
+		else if (qs.getStatus() != QuestStatus.START)
 			return false;
 		if (targetId == 799226) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-				else if (var == 3)
-					return sendQuestDialog(env, 2034);
-			case STEP_TO_1:
-				return defaultCloseDialog(env, 0, 1); // 1
-			case STEP_TO_4:
-				return defaultCloseDialog(env, 3, 4); // 4
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+					else if (var == 3)
+						return sendQuestDialog(env, 2034);
+				case STEP_TO_1:
+					return defaultCloseDialog(env, 0, 1); // 1
+				case STEP_TO_4:
+					return defaultCloseDialog(env, 3, 4); // 4
 			}
-		} else if (targetId == 700810) {
+		}
+		else if (targetId == 700810) {
 			if (env.getDialog() == QuestDialog.USE_OBJECT)
 				return true; // loot
-		} else if (targetId == 799292) {
+		}
+		else if (targetId == 799292) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-				else if (var == 2)
-					return sendQuestDialog(env, 1693);
-				else if (var == 5)
-					return sendQuestDialog(env, 2716);
-				else if (var == 11)
-					return sendQuestDialog(env, 1608);
-				break;
-			case CHECK_COLLECTED_ITEMS:
-				if (QuestService.collectItemCheck(env, true)) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				} else
-					return sendQuestDialog(env, 10001);
-			case STEP_TO_2:
-				return defaultCloseDialog(env, 1, 2); // 2
-			case STEP_TO_6:
-				return defaultCloseDialog(env, 5, 6, 0, 0, 182207611, 1); // 6
-			case SET_REWARD:
-				return defaultCloseDialog(env, 11, 11, true, false); // reward
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+					else if (var == 2)
+						return sendQuestDialog(env, 1693);
+					else if (var == 5)
+						return sendQuestDialog(env, 2716);
+					else if (var == 11)
+						return sendQuestDialog(env, 1608);
+					break;
+				case CHECK_COLLECTED_ITEMS:
+					if (QuestService.collectItemCheck(env, true)) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					else
+						return sendQuestDialog(env, 10001);
+				case STEP_TO_2:
+					return defaultCloseDialog(env, 1, 2); // 2
+				case STEP_TO_6:
+					return defaultCloseDialog(env, 5, 6, 0, 0, 182207611, 1); // 6
+				case SET_REWARD:
+					return defaultCloseDialog(env, 11, 11, true, false); // reward
 			}
-		} else if (targetId == 204057) {
+		}
+		else if (targetId == 204057) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 4)
-					return sendQuestDialog(env, 2375);
-				break;
-			case STEP_TO_5:
-				return defaultCloseDialog(env, 4, 5, 182207611, 1, 0, 0); // 5
+				case START_DIALOG:
+					if (var == 4)
+						return sendQuestDialog(env, 2375);
+					break;
+				case STEP_TO_5:
+					return defaultCloseDialog(env, 4, 5, 182207611, 1, 0, 0); // 5
 			}
-		} else if (targetId == 799341) {
+		}
+		else if (targetId == 799341) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 9)
-					return sendQuestDialog(env, 4080);
-			case STEP_TO_10:
-				return defaultCloseDialog(env, 9, 10, 182207613, 1, 0, 0); // 10
+				case START_DIALOG:
+					if (var == 9)
+						return sendQuestDialog(env, 4080);
+				case STEP_TO_10:
+					return defaultCloseDialog(env, 9, 10, 182207613, 1, 0, 0); // 10
 			}
-		} else if (targetId == 799513 || targetId == 799514 || targetId == 799515 || targetId == 799516) {
+		}
+		else if (targetId == 799513 || targetId == 799514 || targetId == 799515 || targetId == 799516) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 7)
-					return sendQuestDialog(env, 4080);
-			case STEP_TO_10:
-				if (var == 7 && var1 == 3) {
-					playQuestMovie(env, 442);
-					qs.setQuestVar(8);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					((Npc) env.getVisibleObject()).getController().onDelete();
-					return true;
-				} else if (var == 7 && var1 < 3) {
-					qs.setQuestVarById(1, var1 + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					((Npc) env.getVisibleObject()).getController().onDelete();
-					return true;
-				}
+				case START_DIALOG:
+					if (var == 7)
+						return sendQuestDialog(env, 4080);
+				case STEP_TO_10:
+					if (var == 7 && var1 == 3) {
+						playQuestMovie(env, 442);
+						qs.setQuestVar(8);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						((Npc) env.getVisibleObject()).getController().onDelete();
+						return true;
+					}
+					else if (var == 7 && var1 < 3) {
+						qs.setQuestVarById(1, var1 + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						((Npc) env.getVisibleObject()).getController().onDelete();
+						return true;
+					}
 			}
-		} else if (targetId == 730243) {
+		}
+		else if (targetId == 730243) {
 			switch (env.getDialog()) {
-			case USE_OBJECT:
-				if (var >= 6)
-					return sendQuestDialog(env, 3057);
-				break;
-			case START_DIALOG:
-				if (var == 6)
-					return sendQuestDialog(env, 3057);
-				break;
-			case STEP_TO_7:
-				if (var > 5) {
-					WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(300150000);
-					InstanceService.registerPlayerWithInstance(newInstance, player);
-					TeleportService.teleportTo(player, 300150000, newInstance.getInstanceId(), 561.8651f, 221.91483f,
+				case USE_OBJECT:
+					if (var >= 6)
+						return sendQuestDialog(env, 3057);
+					break;
+				case START_DIALOG:
+					if (var == 6)
+						return sendQuestDialog(env, 3057);
+					break;
+				case STEP_TO_7:
+					if (var > 5) {
+						WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(300150000);
+						InstanceService.registerPlayerWithInstance(newInstance, player);
+						TeleportService.teleportTo(player, 300150000, newInstance.getInstanceId(), 561.8651f, 221.91483f,
 							134.53333f, (byte) 90, 3000, true);
-					return true;
-				}
-				break;
+						return true;
+					}
+					break;
 			}
-		} else if (targetId == 700706) {
+		}
+		else if (targetId == 700706) {
 			switch (env.getDialog()) {
-			case USE_OBJECT:
-				if (var == 10) {
-					qs.setQuestVar(11);
-					updateQuestStatus(env);
-					TeleportService.teleportTo(player, 220070000, 2268.5942f, 1604.4104f, 310.72098f, (byte) 113);
-				}
+				case USE_OBJECT:
+					if (var == 10) {
+						qs.setQuestVar(11);
+						updateQuestStatus(env);
+						TeleportService.teleportTo(player, 220070000, 2268.5942f, 1604.4104f, 310.72098f, (byte) 113);
+					}
 			}
 		}
 		return false;

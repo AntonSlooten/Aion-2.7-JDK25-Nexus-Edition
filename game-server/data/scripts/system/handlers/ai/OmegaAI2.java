@@ -56,3 +56,4 @@ public class OmegaAI2 extends SummonerAI2 {
 		return hit;
 	}
 }
+

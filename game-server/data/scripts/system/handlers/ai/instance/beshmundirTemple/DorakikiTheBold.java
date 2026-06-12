@@ -18,19 +18,19 @@ public class DorakikiTheBold extends AggressiveNpcAI2 {
 	private Npc fixit = null;
 	private Npc chopper = null;
 	private Npc sorcererHakiki = null;
-
+	
 	private boolean figthStart = false;
 
 	@Override
 	protected void handleAttack(Creature creature) {
-		super.handleAttack(creature);
+		super.handleAttack(creature);      
 
-		if (figthStart) {
+		if(figthStart){
 			return;
 		}
 		figthStart = true;
-		PacketSendUtility.broadcastPacketAndReceive(getOwner(), new SM_MESSAGE(getOwner().getObjectId(),
-				getOwner().getName(), "Niark, I need help !!", ChatType.NORMAL));
+		PacketSendUtility.broadcastPacketAndReceive(getOwner(), new SM_MESSAGE(getOwner().getObjectId(), getOwner().getName(),
+			"Niark, I need help !!", ChatType.NORMAL));
 
 		fixit = (Npc) spawn(281647, 1178.0f, 1220.0f, 283.3f, (byte) 0);
 		chopper = (Npc) spawn(281649, 1180.0f, 1207.0f, 283.6f, (byte) 0);
@@ -51,8 +51,8 @@ public class DorakikiTheBold extends AggressiveNpcAI2 {
 		super.handleDied();
 		cancelTask();
 	}
-
-	private void cancelTask() {
+	
+	private void cancelTask(){
 		figthStart = false;
 		fixit.getController().onDelete();
 		chopper.getController().onDelete();

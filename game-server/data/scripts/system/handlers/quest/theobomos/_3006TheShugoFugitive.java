@@ -59,11 +59,11 @@ public class _3006TheShugoFugitive extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 798132) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				default:
-					return sendQuestStartDialog(env);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
@@ -73,39 +73,39 @@ public class _3006TheShugoFugitive extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798146: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 0) {
-						return sendQuestDialog(env, 1352);
+				case 798146: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 0) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_1: {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
 					}
 				}
-				case STEP_TO_1: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				}
-			}
-			case 700339: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					if (qs.getQuestVarById(0) == 1) {
-						return sendQuestDialog(env, 1693);
+				case 700339: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							if (qs.getQuestVarById(0) == 1) {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case SELECT_ACTION_1694: {
+							if (qs.getQuestVarById(0) == 1) {
+								playQuestMovie(env, 361);
+								return true;
+							}
+						}
 					}
 				}
-				case SELECT_ACTION_1694: {
-					if (qs.getQuestVarById(0) == 1) {
-						playQuestMovie(env, 361);
-						return true;
-					}
-				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798132) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

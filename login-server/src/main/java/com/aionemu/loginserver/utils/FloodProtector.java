@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -17,8 +17,8 @@
 package com.aionemu.loginserver.utils;
 
 import java.sql.Timestamp;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
+import javolution.util.FastMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,8 +38,8 @@ public class FloodProtector
 	 */
 	private static final Logger		log		= LoggerFactory.getLogger(CM_LOGIN.class);
 
-	private final Map<String, Long> flood = new ConcurrentHashMap<>();
-	private final Map<String, Long> ban = new ConcurrentHashMap<>();
+	private FastMap<String, Long>	flood	= new FastMap<String, Long>();
+	private FastMap<String, Long>	ban	= new FastMap<String, Long>();
 
 	public static final FloodProtector getInstance()
 	{
@@ -96,7 +96,6 @@ public class FloodProtector
 		}
 	}
 
-	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder
 	{
 		protected static final FloodProtector	instance	= new FloodProtector();

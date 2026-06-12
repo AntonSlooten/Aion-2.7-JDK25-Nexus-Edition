@@ -29,23 +29,22 @@ import com.aionemu.gameserver.questEngine.QuestEngine;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "QuestScriptData")
-@XmlSeeAlso({ ReportToData.class, RelicRewardsData.class, CraftingRewardsData.class, ReportToManyData.class,
-		MonsterHuntData.class, ItemCollectingData.class, WorkOrdersData.class, XmlQuestData.class,
-		MentorMonsterHuntData.class })
+@XmlSeeAlso({ ReportToData.class, RelicRewardsData.class, CraftingRewardsData.class, ReportToManyData.class, MonsterHuntData.class, ItemCollectingData.class,
+	WorkOrdersData.class, XmlQuestData.class,MentorMonsterHuntData.class })
 public abstract class XMLQuest {
 
 	@XmlAttribute(name = "id", required = true)
 	protected int id;
 	@XmlAttribute(name = "movie", required = false)
 	protected int questMovie;
-
+	
 	/**
 	 * Gets the value of the id property.
 	 */
 	public int getId() {
 		return id;
 	}
-
+	
 	public int getQuestMovie() {
 		return questMovie;
 	}

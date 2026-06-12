@@ -31,7 +31,7 @@ public class QuestTasks {
 
 	/**
 	 * Schedule new following checker task
-	 *
+	 * 
 	 * @param player
 	 * @param npc
 	 * @param target
@@ -40,12 +40,12 @@ public class QuestTasks {
 	public static final Future<?> newFollowingToTargetCheckTask(final QuestEnv env, Npc target) {
 		final Npc npc = (Npc) env.getVisibleObject();
 		return ThreadPoolManager.getInstance().scheduleAtFixedRate(
-				new FollowingNpcCheckTask(env, new TargetDestinationChecker(npc, target)), 1000, 1000);
+			new FollowingNpcCheckTask(env, new TargetDestinationChecker(npc, target)), 1000, 1000);
 	}
 
 	/**
 	 * Schedule new following checker task
-	 *
+	 * 
 	 * @param player
 	 * @param npc
 	 * @param npcTargetId
@@ -57,15 +57,14 @@ public class QuestTasks {
 		if (searchResult == null) {
 			throw new IllegalArgumentException("Supplied npc doesn't exist: " + npcTargetId);
 		}
-		return ThreadPoolManager.getInstance()
-				.scheduleAtFixedRate(new FollowingNpcCheckTask(env, new CoordinateDestinationChecker(npc,
-						searchResult.getSpot().getX(), searchResult.getSpot().getY(), searchResult.getSpot().getZ())),
-						1000, 1000);
+		return ThreadPoolManager.getInstance().scheduleAtFixedRate(
+			new FollowingNpcCheckTask(env, new CoordinateDestinationChecker(npc, searchResult.getSpot().getX(), searchResult
+				.getSpot().getY(), searchResult.getSpot().getZ())), 1000, 1000);
 	}
 
 	/**
 	 * Schedule new following checker task
-	 *
+	 * 
 	 * @param env
 	 * @param x
 	 * @param y
@@ -75,6 +74,6 @@ public class QuestTasks {
 	public static final Future<?> newFollowingToTargetCheckTask(final QuestEnv env, float x, float y, float z) {
 		final Npc npc = (Npc) env.getVisibleObject();
 		return ThreadPoolManager.getInstance().scheduleAtFixedRate(
-				new FollowingNpcCheckTask(env, new CoordinateDestinationChecker(npc, x, y, z)), 1000, 1000);
+			new FollowingNpcCheckTask(env, new CoordinateDestinationChecker(npc, x, y, z)), 1000, 1000);
 	}
 }

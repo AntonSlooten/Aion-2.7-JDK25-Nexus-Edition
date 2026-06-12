@@ -16,8 +16,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * A class that contains all the counters for the siege. One SiegeCounter per
- * race should be used.
+ * A class that contains all the counters for the siege. One SiegeCounter per race should be used.
  *
  * @author SoulKeeper
  */
@@ -31,9 +30,9 @@ public class SiegeRaceCounter implements Comparable<SiegeRaceCounter> {
 
 	private final Map<Integer, AtomicLong> playerAPCounter = new FastMap<Integer, AtomicLong>().shared();
 	private final Map<Integer, AtomicLong> playerKillCounter = new FastMap<Integer, AtomicLong>().shared();
-
+	
 	private final PlayerInfoContainer pIC = new PlayerInfoContainer();
-
+	
 	private final SiegeRace siegeRace;
 
 	public SiegeRaceCounter(SiegeRace siegeRace) {
@@ -67,19 +66,17 @@ public class SiegeRaceCounter implements Comparable<SiegeRaceCounter> {
 	}
 
 	public void addAbyssPoints(Player player, int abyssPoints) {
-		// custom reg
-		pIC.updatePlayerInfo(player.getClientConnection().getIP(), player.getName(), player.getAcountName(),
-				abyssPoints);
+		//custom reg
+		pIC.updatePlayerInfo(player.getClientConnection().getIP(), player.getName(), player.getAcountName(), abyssPoints);
 		addToCounter(player.getObjectId(), abyssPoints, playerAPCounter);
 	}
 
 	public void addKill(Player player) {
-		// custom reg
-		// pIC.updatePlayerInfo(player.getClientConnection().getIP(), player.getName(),
-		// player.getAcountName(), abyssPoints);
+		//custom reg
+		//pIC.updatePlayerInfo(player.getClientConnection().getIP(), player.getName(), player.getAcountName(), abyssPoints);
 		addToCounter(player.getObjectId(), 1, playerKillCounter);
 	}
-
+	
 	protected <K> void addToCounter(K key, int value, Map<K, AtomicLong> counterMap) {
 
 		// Get the counter for specific key
@@ -119,8 +116,8 @@ public class SiegeRaceCounter implements Comparable<SiegeRaceCounter> {
 	}
 
 	/**
-	 * Returns "legionId to damage" map. Map is ordered by damage in "descending"
-	 * order
+	 * Returns "legionId to damage" map.
+	 * Map is ordered by damage in "descending" order
 	 *
 	 * @return map with legion damages
 	 */
@@ -129,8 +126,8 @@ public class SiegeRaceCounter implements Comparable<SiegeRaceCounter> {
 	}
 
 	/**
-	 * Returns "legionId to damage" map. Map is ordered by damage in "descending"
-	 * order
+	 * Returns "legionId to damage" map.
+	 * Map is ordered by damage in "descending" order
 	 *
 	 * @return map with legion damages
 	 */
@@ -139,45 +136,46 @@ public class SiegeRaceCounter implements Comparable<SiegeRaceCounter> {
 	}
 
 	/**
-	 * Returns "player to abyss points" map. Map is ordered by abyssPoints in
-	 * descending order
+	 * Returns "player to abyss points" map.
+	 * Map is ordered by abyssPoints in descending order
 	 *
 	 * @return map with player abyss points
 	 */
 	public Map<Integer, Long> getPlayerAbyssPoints() {
 		return getOrderedCounterMap(playerAPCounter);
 	}
-
+	
+	
 	public Map<Integer, Long> getPlayerKills() {
 		return getOrderedCounterMap(playerKillCounter);
 	}
-
 	public PlayerInfoContainer getPIC() {
 		return pIC;
 	}
-
+	
 	protected <K> Map<K, Long> getOrderedCounterMap(Map<K, AtomicLong> unorderedMap) {
-
 		if (GenericValidator.isBlankOrNull(unorderedMap)) {
 			return Collections.emptyMap();
 		}
 
 		LinkedList<Map.Entry<K, AtomicLong>> tempList = Lists.newLinkedList(unorderedMap.entrySet());
-
-		tempList.sort(Comparator.comparingLong((Map.Entry<K, AtomicLong> e) -> e.getValue().get()).reversed());
+		Collections.sort(tempList, new Comparator<Map.Entry<K, AtomicLong>>() {
+			@Override
+			public int compare(Map.Entry<K, AtomicLong> o1, Map.Entry<K, AtomicLong> o2) {
+				return Long.valueOf(o2.getValue().get()).compareTo(o1.getValue().get()); // PERBAIKAN DI SINI
+			}
+		});
 
 		Map<K, Long> result = Maps.newLinkedHashMap();
-
 		for (Map.Entry<K, AtomicLong> entry : tempList) {
 			result.put(entry.getKey(), entry.getValue().get());
 		}
-
 		return result;
 	}
 
 	@Override
 	public int compareTo(SiegeRaceCounter o) {
-		return Long.compare(o.getTotalDamage(), getTotalDamage());
+		return Long.valueOf(o.getTotalDamage()).compareTo(getTotalDamage()); // PERBAIKAN DI SINI
 	}
 
 	public SiegeRace getSiegeRace() {

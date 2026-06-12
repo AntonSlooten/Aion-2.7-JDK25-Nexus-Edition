@@ -106,15 +106,15 @@ public abstract class EffectTemplate {
 	protected int critAddDmg1 = 0;
 	@XmlAttribute(name = "critadddmg2")
 	protected int critAddDmg2 = 0;
-
+	
 	@XmlAttribute
 	protected int value;
 	@XmlAttribute
 	protected int delta;
-
+	
 	@XmlTransient
 	protected EffectType effectType = null;
-
+	
 	@XmlTransient
 	protected Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -201,7 +201,7 @@ public abstract class EffectTemplate {
 	public int getPreEffectProb() {
 		return preEffectProb;
 	}
-
+	
 	/**
 	 * @return the critProbMod2
 	 */
@@ -209,6 +209,7 @@ public abstract class EffectTemplate {
 		return critProbMod2;
 	}
 
+	
 	/**
 	 * @return the critAddDmg1
 	 */
@@ -216,6 +217,7 @@ public abstract class EffectTemplate {
 		return critAddDmg1;
 	}
 
+	
 	/**
 	 * @return the critAddDmg2
 	 */
@@ -225,7 +227,7 @@ public abstract class EffectTemplate {
 
 	/**
 	 * Gets the effect conditions status
-	 *
+	 * 
 	 * @return list of Conditions for effect template
 	 */
 	public Conditions getEffectConditions() {
@@ -234,7 +236,7 @@ public abstract class EffectTemplate {
 
 	/**
 	 * Gets the sub effect conditions status
-	 *
+	 * 
 	 * @return list of Conditions for sub effects within effect template
 	 */
 	public Conditions getEffectSubConditions() {
@@ -246,22 +248,20 @@ public abstract class EffectTemplate {
 	 * @return
 	 */
 	protected int getActionModifiers(Effect effect) {
-		if (modifiers == null) {
+		if (modifiers == null)
 			return 0;
-		}
 
 		/**
 		 * Only one of modifiers will be applied now
 		 */
 		for (ActionModifier modifier : modifiers.getActionModifiers()) {
-			if (modifier.check(effect)) {
+			if (modifier.check(effect))
 				return modifier.analyze(effect);
-			}
 		}
 
 		return 0;
 	}
-
+	
 	/**
 	 * @return the effectType
 	 */
@@ -271,7 +271,7 @@ public abstract class EffectTemplate {
 
 	/**
 	 * Calculate effect result
-	 *
+	 * 
 	 * @param effect
 	 */
 	public void calculate(Effect effect) {
@@ -279,14 +279,29 @@ public abstract class EffectTemplate {
 	}
 
 	/**
-	 * 1) check conditions 2) check preeffect 3) check effectresistrate 4) check
-	 * noresist 5) decide if its magical or physical effect 6) physical - check
-	 * cannotmiss 7) check magic resist / dodge 8) addsuccess
-	 *
-	 * exceptions: buffbind buffsilence buffsleep buffstun randommoveloc
-	 * recallinstant returneffect returnpoint shieldeffect signeteffect summoneffect
+	 * 1) check conditions 
+	 * 2) check preeffect 
+	 * 3) check effectresistrate 
+	 * 4) check noresist 
+	 * 5) decide if its magical or physical effect 
+	 * 6) physical - check cannotmiss 
+	 * 7) check magic resist / dodge 
+	 * 8) addsuccess
+	 * 
+	 * exceptions:
+	 * buffbind
+	 * buffsilence
+	 * buffsleep
+	 * buffstun
+	 * randommoveloc
+	 * recallinstant
+	 * returneffect
+	 * returnpoint
+	 * shieldeffect
+	 * signeteffect
+	 * summoneffect
 	 * xpboosteffect
-	 *
+	 * 
 	 * @param effect
 	 * @param statEnum
 	 * @param spellStatus
@@ -296,84 +311,75 @@ public abstract class EffectTemplate {
 			this.addSuccessEffect(effect, spellStatus);
 			return true;
 		}
-
+		
 		// Multiple control check
 		EffectController effectController = effect.getEffected().getEffectController();
 		boolean removeMagicChocEffect = false;
-
-		if (effectController.isUnderSameChocEffect(this)) {
+		
+		if(effectController.isUnderSameChocEffect(this)){
 			return false;
 		}
-
-		if (isPhysicalChocEffect()) {
-			if (effectController.isUnderPhysicalChocEffect()) {
+		
+		if(isPhysicalChocEffect()){
+			if(effectController.isUnderPhysicalChocEffect()){
 				return false;
 			}
 			removeMagicChocEffect = true;
 		}
-
+		
+		
 		// check conditions
-		if (!effectConditionsCheck(effect)) {
+		if (!effectConditionsCheck(effect))
 			return false;
-		}
 
 		// preeffects
 		if (this.getPosition() > 1) {
 			FastList<Integer> positions = getPreEffects();
 			for (int pos : positions) {
-				if (!effect.isInSuccessEffects(pos)) {
+				if (!effect.isInSuccessEffects(pos))
 					return false;
-				}
 			}
 
 			// check preeffect probability
-			if (Rnd.get(0, 100) > this.getPreEffectProb()) {
+			if (Rnd.get(0, 100) > this.getPreEffectProb())
 				return false;
-			}
 		}
-
+		
 		// Stun transfo coup de bouclier IDskill 181
 		boolean stunTransfo = effect.getEffected() instanceof Player && effect.getSkillId() == 181;
-
+			
 		// check effectresistrate
-		if (!this.calculateEffectResistRate(effect, statEnum) && !stunTransfo) {
-			if (!effect.isDamageEffect()) {
+		if (!this.calculateEffectResistRate(effect, statEnum) && !stunTransfo) {			
+			if(!effect.isDamageEffect())
 				effect.clearSucessEffects();
-			}
-
+			
 			effect.setAttackStatus(AttackStatus.BUF);
 			return false;
 		}
-
+		
 		SkillType skillType = effect.getSkillType();
-		// certain effects are magical by default
-		if (isMagicalEffectTemp()) {
+		//certain effects are magical by default
+		if (isMagicalEffectTemp())
 			skillType = SkillType.MAGICAL;
-		}
-
+		
 		int accMod = accMod2 + accMod1 * effect.getSkillLevel() + effect.getAccModBoost();
-		if (!noResist && !stunTransfo) {
+		if(!noResist && !stunTransfo){
 			switch (skillType) {
-			case PHYSICAL:
-				boolean cannotMiss = false;
-				if (this instanceof SkillAttackInstantEffect) {
-					cannotMiss = ((SkillAttackInstantEffect) this).isCannotmiss();
-				}
-				if (!cannotMiss && StatFunctions.calculatePhysicalDodgeRate(effect.getEffector(), effect.getEffected(),
-						accMod)) {
-					return false;
-				}
-				break;
-			case MAGICAL:
-				if (Rnd.get(0, 1000) < StatFunctions.calculateMagicalResistRate(effect.getEffector(),
-						effect.getEffected(), accMod)) {
-					return false;
-				}
+				case PHYSICAL:
+					boolean cannotMiss = false;
+					if (this instanceof SkillAttackInstantEffect)
+						cannotMiss = ((SkillAttackInstantEffect)this).isCannotmiss();
+					if (!cannotMiss && StatFunctions.calculatePhysicalDodgeRate(effect.getEffector(), effect.getEffected(), accMod))
+						return false;
+					break;
+				case MAGICAL:
+					if (Rnd.get(0, 1000) < StatFunctions.calculateMagicalResistRate(effect.getEffector(), effect.getEffected(), accMod))
+						return false;
 			}
 		}
 
 		// if physical effect
-		if (removeMagicChocEffect) {
+		if(removeMagicChocEffect){
 			effectController.removeAllMagicalChocEffect();
 		}
 		this.addSuccessEffect(effect, spellStatus);
@@ -382,9 +388,8 @@ public abstract class EffectTemplate {
 
 	private void addSuccessEffect(Effect effect, SpellStatus spellStatus) {
 		effect.addSucessEffect(this);
-		if (spellStatus != null) {
+		if (spellStatus != null)
 			effect.setSpellStatus(spellStatus);
-		}
 	}
 
 	/**
@@ -396,12 +401,11 @@ public abstract class EffectTemplate {
 	}
 
 	private FastList<Integer> getPreEffects() {
-		FastList<Integer> preEffects = new FastList<>();
-
-		if (this.getPreEffect() == null) {
+		FastList<Integer> preEffects = new FastList<Integer>();
+		
+		if (this.getPreEffect() == null)
 			return preEffects;
-		}
-
+		
 		String[] parts = this.getPreEffect().split("_");
 		for (String part : parts) {
 			preEffects.add(Integer.parseInt(part));
@@ -412,28 +416,27 @@ public abstract class EffectTemplate {
 
 	/**
 	 * Apply effect to effected
-	 *
+	 * 
 	 * @param effect
 	 */
 	public abstract void applyEffect(Effect effect);
 
 	/**
 	 * Start effect on effected
-	 *
+	 * 
 	 * @param effect
 	 */
 	public void startEffect(Effect effect) {
-	}
+	};
 
 	/**
 	 * @param effect
 	 */
 	public void calculateSubEffect(Effect effect) {
-		// log.info("SUB EFFECT CALC");
-		if (subEffect == null) {
+		//log.info("SUB EFFECT CALC");
+		if (subEffect == null)
 			return;
-		}
-		// log.info("SUB EFFECT ID " + subEffect.getSkillId());
+		//log.info("SUB EFFECT ID " + subEffect.getSkillId());
 		// Pre-Check for sub effect conditions
 		if (!effectSubConditionsCheck(effect)) {
 			effect.setSubEffectAborted(true);
@@ -441,21 +444,18 @@ public abstract class EffectTemplate {
 		}
 
 		// chance to trigger subeffect
-		if (Rnd.get(100) > subEffect.getChance()) {
+		if (Rnd.get(100) > subEffect.getChance())
 			return;
-		}
 
 		SkillTemplate template = DataManager.SKILL_DATA.getSkillTemplate(subEffect.getSkillId());
 		int level = 1;
-		if (getEffectType() == EffectType.SIGNETBURST) {
+		if (getEffectType() == EffectType.SIGNETBURST)
 			level = effect.getSignetBurstedCount();
-		}
 		Effect newEffect = new Effect(effect.getEffector(), effect.getEffected(), template, level, 0);
 		newEffect.setAccModBoost(effect.getAccModBoost());
 		newEffect.initialize();
-		if (newEffect.getSpellStatus() != SpellStatus.DODGE && newEffect.getSpellStatus() != SpellStatus.RESIST) {
+		if (newEffect.getSpellStatus() != SpellStatus.DODGE && newEffect.getSpellStatus() != SpellStatus.RESIST)
 			effect.setSpellStatus(newEffect.getSpellStatus());
-		}
 		effect.setSubEffect(newEffect);
 		effect.setSkillMoveType(newEffect.getSkillMoveType());
 		effect.setTragetLoc(newEffect.getTargetX(), newEffect.getTargetY(), newEffect.getTargetZ());
@@ -469,33 +469,32 @@ public abstract class EffectTemplate {
 	}
 
 	/**
-	 * Hate will be added to result value only if particular effect template has
-	 * success result
-	 *
+	 * Hate will be added to result value only if particular effect template has success result
+	 * 
 	 * @param effect
 	 */
-	@SuppressWarnings("fallthrough")
 	public void calculateHate(Effect effect) {
-		if ((hopType == null) || effect.getSuccessEffect().isEmpty()) {
+		if (hopType == null)
 			return;
-		}
+
+		if (effect.getSuccessEffect().isEmpty())
+			return;
 
 		int currentHate = effect.getEffectHate();
 		if (hopType != null) {
 			switch (hopType) {
-			case DAMAGE:
-				currentHate += effect.getReserved1();
-				break;
-			case SKILLLV:
-				int skillLvl = effect.getSkillLevel();
-				currentHate += hopB + hopA * skillLvl; // Agro-value of the effect
-			default:
-				break;
+				case DAMAGE:
+					currentHate += effect.getReserved1();
+					break;
+				case SKILLLV:
+					int skillLvl = effect.getSkillLevel();
+					currentHate += hopB + hopA * skillLvl; // Agro-value of the effect
+				default:
+					break;
 			}
 		}
-		if (currentHate == 0) {
+		if (currentHate == 0)
 			currentHate = 1;
-		}
 		effect.setEffectHate(StatFunctions.calculateHate(effect.getEffector(), currentHate));
 	}
 
@@ -503,18 +502,19 @@ public abstract class EffectTemplate {
 	 * @param effect
 	 */
 	public void startSubEffect(Effect effect) {
-		// Apply-Check for sub effect conditions
-		if ((subEffect == null) || effect.isSubEffectAbortedBySubConditions()) {
+		if (subEffect == null)
 			return;
-		}
-		if (effect.getSubEffect() != null) {
+
+		// Apply-Check for sub effect conditions
+		if (effect.isSubEffectAbortedBySubConditions())
+			return;
+		if (effect.getSubEffect() != null)
 			effect.getSubEffect().applyEffect();
-		}
 	}
 
 	/**
 	 * Do periodic effect on effected
-	 *
+	 * 
 	 * @param effect
 	 */
 	public void onPeriodicAction(Effect effect) {
@@ -522,7 +522,7 @@ public abstract class EffectTemplate {
 
 	/**
 	 * End effect on effected
-	 *
+	 * 
 	 * @param effect
 	 */
 	public void endEffect(Effect effect) {
@@ -534,154 +534,150 @@ public abstract class EffectTemplate {
 	 * @return true = no resist, false = resisted
 	 */
 	public boolean calculateEffectResistRate(Effect effect, StatEnum statEnum) {
-		if (effect.getEffected() == null || effect.getEffected().getGameStats() == null || effect.getEffector() == null
-				|| effect.getEffector().getGameStats() == null) {
-			return false;
-		}
-
+		if (effect.getEffected() == null || effect.getEffected().getGameStats() == null
+				|| effect.getEffector() == null || effect.getEffector().getGameStats() == null)
+				return false;
+		
 		Creature effected = effect.getEffected();
 		Creature effector = effect.getEffector();
 
-		if (statEnum == null) {
+		if (statEnum == null)
 			return true;
-		}
-
+		
 		int effectPower = 1000;
-
+		
 		if (isAlteredState(statEnum)) {
 			if (effected instanceof Npc) {
 				Npc npc = (Npc) effected;
 				// npc which are resistant to everything except damage
-				// TODO expand this
-				if (npc.isBoss() || npc.hasStatic() || npc instanceof Kisk) {
-					return false;
-				}
+				//TODO expand this
+				if (npc.isBoss() || npc.hasStatic() ||
+					npc instanceof Kisk)
+						return false;
 				// effect, which must not move idle npcs, like dummies
 				if (npc.getObjectTemplate().getStatsTemplate().getRunSpeed() == 0) {
-					if (statEnum == StatEnum.PULLED_RESISTANCE || statEnum == StatEnum.STAGGER_RESISTANCE
-							|| statEnum == StatEnum.STUMBLE_RESISTANCE) {
+					if (statEnum == StatEnum.PULLED_RESISTANCE
+							|| statEnum == StatEnum.STAGGER_RESISTANCE
+							|| statEnum == StatEnum.STUMBLE_RESISTANCE)
 						return false;
-					}
 				}
 			}
-
-			effectPower -= effect.getEffected().getGameStats().getStat(StatEnum.ABNORMAL_RESISTANCE_ALL, 0)
-					.getCurrent();
+			
+			effectPower -= effect.getEffected().getGameStats().getStat(StatEnum.ABNORMAL_RESISTANCE_ALL, 0).getCurrent();
 		}
-
+		
 		// effect resistance
 		effectPower -= effect.getEffected().getGameStats().getStat(statEnum, 0).getCurrent();
-
+		
 		// penetration
 		StatEnum penetrationStat = this.getPenetrationStat(statEnum);
-		if (penetrationStat != null) {
+		if (penetrationStat != null)
 			effectPower += effector.getGameStats().getStat(penetrationStat, 0).getCurrent();
-		}
-
+		
 		// resist mod pvp
 		if (effector.isPvpTarget(effect.getEffected())) {
 			int differ = (effected.getLevel() - effector.getLevel());
-			if (differ > 2 && differ < 8) {
+			if (differ > 2 && differ < 8)
 				effectPower -= Math.round((effectPower * (differ - 2) / 15f));
-			} else if (differ >= 8) {
-				final float modifier = 0.1f;
-				effectPower = (int) (effectPower * modifier);
-			}
+			else if (differ >= 8)
+				effectPower *= 0.1f;
 		}
-
+		
 		// resist mod PvE
 		if (effect.getEffected() instanceof Npc) {
 			Npc effectrd = (Npc) effect.getEffected();
 			int hpGaugeMod = effectrd.getObjectTemplate().getRank().ordinal() - 1;
 			effectPower -= hpGaugeMod * 100;
 		}
-
+		
 		return Rnd.get(1000) <= effectPower;
 	}
 
 	/**
 	 * @param statEnum
-	 * @return true = it's an altered state effect, false = it is Poison/Bleed dot
-	 *         (normal Dots have statEnum null here)
+	 * @return true = it's an altered state effect, false = it is Poison/Bleed dot (normal Dots have statEnum null here)
 	 */
 	private boolean isAlteredState(StatEnum stat) {
 		switch (stat) {
-		case BIND_RESISTANCE:
-		case BLIND_RESISTANCE:
-		case CHARM_RESISTANCE:
-		case CONFUSE_RESISTANCE:
-		case CURSE_RESISTANCE:
-		case DEFORM_RESISTANCE:
-		case FEAR_RESISTANCE:
-		case OPENAREIAL_RESISTANCE:
-		case PARALYZE_RESISTANCE:
-		case PULLED_RESISTANCE:
-		case ROOT_RESISTANCE:
-		case SILENCE_RESISTANCE:
-		case SLEEP_RESISTANCE:
-		case SLOW_RESISTANCE:
-		case SNARE_RESISTANCE:
-		case SPIN_RESISTANCE:
-		case STAGGER_RESISTANCE:
-		case STUMBLE_RESISTANCE:
-		case STUN_RESISTANCE:
-			return true;
+			case BIND_RESISTANCE:
+			case BLIND_RESISTANCE:
+			case CHARM_RESISTANCE:
+			case CONFUSE_RESISTANCE:
+			case CURSE_RESISTANCE:
+			case DEFORM_RESISTANCE:
+			case FEAR_RESISTANCE:
+			case OPENAREIAL_RESISTANCE:
+			case PARALYZE_RESISTANCE:
+			case PULLED_RESISTANCE:
+			case ROOT_RESISTANCE:
+			case SILENCE_RESISTANCE:
+			case SLEEP_RESISTANCE:
+			case SLOW_RESISTANCE:
+			case SNARE_RESISTANCE:
+			case SPIN_RESISTANCE:
+			case STAGGER_RESISTANCE:
+			case STUMBLE_RESISTANCE:
+			case STUN_RESISTANCE:
+				return true;
+		default:
+			break;
 		}
 		return false;
 	}
 
 	private StatEnum getPenetrationStat(StatEnum statEnum) {
 		switch (statEnum) {
-		case SILENCE_RESISTANCE:
-			return StatEnum.SILENCE_RESISTANCE_PENETRATION;
-		case PARALYZE_RESISTANCE:
-			return StatEnum.PARALYZE_RESISTANCE_PENETRATION;
-		case STAGGER_RESISTANCE:
-			return StatEnum.STAGGER_RESISTANCE_PENETRATION;
-		case STUMBLE_RESISTANCE:
-			return StatEnum.STUMBLE_RESISTANCE_PENETRATION;
-		case STUN_RESISTANCE:
-			return StatEnum.STUN_RESISTANCE_PENETRATION;
-		default:
-			return null;
+			case SILENCE_RESISTANCE:
+				return StatEnum.SILENCE_RESISTANCE_PENETRATION;
+			case PARALYZE_RESISTANCE:
+				return StatEnum.PARALYZE_RESISTANCE_PENETRATION;
+			case STAGGER_RESISTANCE:
+				return StatEnum.STAGGER_RESISTANCE_PENETRATION;
+			case STUMBLE_RESISTANCE:
+				return StatEnum.STUMBLE_RESISTANCE_PENETRATION;
+			case STUN_RESISTANCE:
+				return StatEnum.STUN_RESISTANCE_PENETRATION;
+			default:
+				return null;
 		}
 	}
 
 	/**
-	 * certain effects are magical even when used in physical skills it includes
-	 * stuns from chanter/sin/ranger etc these effects(effecttemplates) are
-	 * dependent on magical accuracy and magical resist
-	 *
+	 * certain effects are magical even when used in physical skills
+	 * it includes stuns from chanter/sin/ranger etc
+	 * these effects(effecttemplates) are dependent on magical accuracy and magical resist
 	 * @return
 	 */
 	private boolean isMagicalEffectTemp() {
-		if (this instanceof SilenceEffect || this instanceof SleepEffect || this instanceof RootEffect
-				|| this instanceof SnareEffect || this instanceof StunEffect || this instanceof PoisonEffect
-				|| this instanceof BindEffect || this instanceof BleedEffect || this instanceof BlindEffect
-				|| this instanceof DeboostHealEffect || this instanceof ParalyzeEffect || this instanceof SlowEffect) {
+		if (this instanceof SilenceEffect
+			||this instanceof SleepEffect
+			|| this instanceof RootEffect			
+			|| this instanceof SnareEffect
+			|| this instanceof StunEffect
+			|| this instanceof PoisonEffect
+			|| this instanceof BindEffect
+			|| this instanceof BleedEffect
+			|| this instanceof BlindEffect
+			|| this instanceof DeboostHealEffect
+			|| this instanceof ParalyzeEffect
+			|| this instanceof SlowEffect)
 			return true;
-		}
 
 		return false;
 	}
-
+	
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		EffectType temp = null;
 		try {
-			temp = EffectType
-					.valueOf(this.getClass().getName().replaceAll("com.aionemu.gameserver.skillengine.effect.", "")
-							.replaceAll("Effect", "").toUpperCase());
+			temp = EffectType.valueOf(this.getClass().getName().replaceAll("com.aionemu.gameserver.skillengine.effect.", "").replaceAll("Effect", "").toUpperCase());
 		} catch (Exception e) {
-			log.info("missing effectype for "
-					+ this.getClass().getName().replaceAll("com.aionemu.gameserver.skillengine.effect.", "")
-							.replaceAll("Effect", "").toUpperCase());
+			log.info("missing effectype for "+this.getClass().getName().replaceAll("com.aionemu.gameserver.skillengine.effect.", "").replaceAll("Effect", "").toUpperCase());
 		}
-
+		
 		this.effectType = temp;
 	}
-
-	private boolean isPhysicalChocEffect() {
-		return (this instanceof StumbleEffect || this instanceof PulledEffect || this instanceof SpinEffect
-				|| this instanceof OpenAerialEffect || this instanceof StaggerEffect);
+	
+	private boolean isPhysicalChocEffect(){
+		return (this instanceof StumbleEffect || this instanceof PulledEffect || this instanceof SpinEffect || this instanceof OpenAerialEffect || this instanceof StaggerEffect);
 	}
 }

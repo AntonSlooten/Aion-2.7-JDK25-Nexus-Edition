@@ -16,36 +16,39 @@
  */
 package com.aionemu.gameserver.model.templates.zone;
 
+
 /**
  * @author MrPoke
  *
  */
 public enum ZoneType {
-
-	FLY(0), DAMAGE(1), WATER(2), SIEGE(3), PVP(4);
-
+	
+	FLY(0),
+	DAMAGE(1),
+	WATER(2),
+	SIEGE(3),
+	PVP(4);
+	
 	private byte value;
 
 	/**
 	 * @param value
 	 */
 	private ZoneType(int value) {
-		this.value = (byte) value;
+		this.value = (byte)value;
 	}
-
+	
 	/**
 	 * @return the value
 	 */
 	public byte getValue() {
 		return value;
 	}
-
+	
 	public static ZoneType fromValue(byte b) {
-		for (ZoneType op : values()) {
-			if (op.value == b) {
-				return op;
-			}
-		}
-		return null;
+	    for (ZoneType op : values()) {
+	        if (op.value == b) return op;
+	    }
+	    return null;
 	}
 }

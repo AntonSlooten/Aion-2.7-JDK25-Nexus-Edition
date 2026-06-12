@@ -68,12 +68,13 @@ public class _4033ABloominBrusthonin extends QuestHandler {
 					if (QuestService.collectItemCheck(env, true)) {
 						qs.setQuestVarById(0, qs.getQuestVarById(0) + 2);
 						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 						return true;
-					} else
+					}
+					else
 						return sendQuestDialog(env, 1438);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 
@@ -84,18 +85,19 @@ public class _4033ABloominBrusthonin extends QuestHandler {
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
 					return sendQuestEndDialog(env);
-				} else
+				}
+				else
 					return sendQuestEndDialog(env);
 			}
 		}
 
 		else if (qs != null && qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 700379: { // Portaro's Tomb
-				if (qs.getQuestVarById(0) == 2 && env.getDialog() == QuestDialog.USE_OBJECT) {
-					return useQuestObject(env, 2, 2, true, false); // reward
+				case 700379: { // Portaro's Tomb
+					if (qs.getQuestVarById(0) == 2 && env.getDialog() == QuestDialog.USE_OBJECT) {
+						return useQuestObject(env, 2, 2, true, false); // reward
+					}
 				}
-			}
 			}
 		}
 		return false;

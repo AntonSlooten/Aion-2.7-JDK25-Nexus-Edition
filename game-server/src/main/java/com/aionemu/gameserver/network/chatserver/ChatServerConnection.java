@@ -34,7 +34,7 @@ import com.aionemu.gameserver.utils.ThreadPoolManager;
  * @author ATracer
  */
 public class ChatServerConnection extends AConnection {
-
+ 
 	private static final Logger log = LoggerFactory.getLogger(ChatServerConnection.class);
 
 	/**
@@ -54,7 +54,7 @@ public class ChatServerConnection extends AConnection {
 	/**
 	 * Server Packet "to send" Queue
 	 */
-	private final Deque<CsServerPacket> sendMsgQueue = new ArrayDeque<>();
+	private final Deque<CsServerPacket> sendMsgQueue = new ArrayDeque<CsServerPacket>();
 
 	/**
 	 * Current state of this connection
@@ -70,7 +70,7 @@ public class ChatServerConnection extends AConnection {
 	 */
 
 	public ChatServerConnection(SocketChannel sc, Dispatcher d, CsPacketHandler csPacketHandler) throws IOException {
-		super(sc, d, 8192 * 2, 8192 * 2);
+		super(sc, d, 8192*2, 8192*2);
 		this.chatServer = ChatServer.getInstance();
 		this.csPacketHandler = csPacketHandler;
 
@@ -83,6 +83,7 @@ public class ChatServerConnection extends AConnection {
 		this.sendPacket(new SM_CS_AUTH());
 	}
 
+
 	@Override
 	public boolean processData(ByteBuffer data) {
 		CsClientPacket pck = csPacketHandler.handle(data, this);
@@ -90,9 +91,8 @@ public class ChatServerConnection extends AConnection {
 		/**
 		 * Execute packet only if packet exist (!= null) and read was ok.
 		 */
-		if (pck != null && pck.read()) {
+		if (pck != null && pck.read())
 			ThreadPoolManager.getInstance().executeLsPacket(pck);
-		}
 
 		return true;
 	}
@@ -101,9 +101,8 @@ public class ChatServerConnection extends AConnection {
 	protected final boolean writeData(ByteBuffer data) {
 		synchronized (guard) {
 			CsServerPacket packet = sendMsgQueue.pollFirst();
-			if (packet == null) {
+			if (packet == null)
 				return false;
-			}
 
 			packet.write(this, data);
 			return true;
@@ -134,9 +133,8 @@ public class ChatServerConnection extends AConnection {
 			/**
 			 * Connection is already closed or waiting for last (close packet) to be sent
 			 */
-			if (isWriteDisabled()) {
+			if (isWriteDisabled())
 				return;
-			}
 
 			sendMsgQueue.addLast(bp);
 			enableWriteInterest();
@@ -149,9 +147,8 @@ public class ChatServerConnection extends AConnection {
 	 */
 	public final void close(CsServerPacket closePacket, boolean forced) {
 		synchronized (guard) {
-			if (isWriteDisabled()) {
+			if (isWriteDisabled())
 				return;
-			}
 
 			log.info("sending packet: " + closePacket + " and closing connection after that.");
 

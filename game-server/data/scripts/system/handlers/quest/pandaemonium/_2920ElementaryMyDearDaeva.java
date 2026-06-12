@@ -52,35 +52,38 @@ public class _2920ElementaryMyDearDaeva extends QuestHandler {
 			if (targetId == 204141) { // Deyla
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 204141) { // Deyla
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				case STEP_TO_1: {
-					return sendQuestDialog(env, 1352);
-				}
-				case STEP_TO_2: {
-					return sendQuestDialog(env, 1693);
-				}
-				case STEP_TO_11: {
-					changeQuestStep(env, 0, 0, true); // reward
-					choice = 0;
-					return sendQuestDialog(env, 5);
-				}
-				case STEP_TO_12: {
-					changeQuestStep(env, 0, 0, true); // reward
-					choice = 1;
-					return sendQuestDialog(env, 6);
-				}
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					case STEP_TO_1: {
+						return sendQuestDialog(env, 1352);
+					}
+					case STEP_TO_2: {
+						return sendQuestDialog(env, 1693);
+					}
+					case STEP_TO_11: {
+						changeQuestStep(env, 0, 0, true); // reward
+						choice = 0;
+						return sendQuestDialog(env, 5);
+					}
+					case STEP_TO_12: {
+						changeQuestStep(env, 0, 0, true); // reward
+						choice = 1;
+						return sendQuestDialog(env, 6);
+					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204141) { // Deyla
 				return sendQuestEndDialog(env, choice);
 			}

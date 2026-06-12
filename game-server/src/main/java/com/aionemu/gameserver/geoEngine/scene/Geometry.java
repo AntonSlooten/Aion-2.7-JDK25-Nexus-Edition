@@ -40,27 +40,29 @@ import com.aionemu.gameserver.geoEngine.math.Matrix4f;
 import com.aionemu.gameserver.geoEngine.math.Ray;
 import com.aionemu.gameserver.geoEngine.math.Vector3f;
 
-public class Geometry extends Spatial {
+public class Geometry extends Spatial
+{
 
 	/**
 	 * The mesh contained herein
 	 */
-	protected Mesh mesh;
+	protected Mesh		mesh;
 
-	protected Matrix4f cachedWorldMat = new Matrix4f();
+	protected Matrix4f	cachedWorldMat	= new Matrix4f();
 
 	/**
 	 * Do not use this constructor. Serialization purposes only.
 	 */
-	public Geometry() {
+	public Geometry()
+	{
 	}
 
 	/**
 	 * Create a geometry node without any mesh data.
-	 *
 	 * @param name The name of this geometry
 	 */
-	public Geometry(String name) {
+	public Geometry(String name)
+	{
 		super(name);
 	}
 
@@ -70,66 +72,71 @@ public class Geometry extends Spatial {
 	 * @param name The name of this geometry
 	 * @param mesh The mesh data for this geometry
 	 */
-	public Geometry(String name, Mesh mesh) {
+	public Geometry(String name, Mesh mesh)
+	{
 		this(name);
-		if (mesh == null) {
+		if (mesh == null)
 			throw new NullPointerException();
-		}
 
 		this.mesh = mesh;
 	}
 
-	@Override
-	public int getVertexCount() {
+	public int getVertexCount()
+	{
 		return mesh.getVertexCount();
 	}
 
-	@Override
-	public int getTriangleCount() {
+	public int getTriangleCount()
+	{
 		return mesh.getTriangleCount();
 	}
 
-	public void setMesh(Mesh mesh) {
+	public void setMesh(Mesh mesh)
+	{
 
 		this.mesh = mesh;
 	}
 
-	public Mesh getMesh() {
+	public Mesh getMesh()
+	{
 		return mesh;
 	}
 
 	/**
 	 * @return The bounding volume of the mesh, in model space.
 	 */
-	public BoundingVolume getModelBound() {
+	public BoundingVolume getModelBound()
+	{
 		return mesh.getBound();
 	}
 
 	/**
-	 * Updates the bounding volume of the mesh. Should be called when the mesh has
-	 * been modified.
+	 * Updates the bounding volume of the mesh. Should be called when the
+	 * mesh has been modified.
 	 */
-	@Override
-	public void updateModelBound() {
+	public void updateModelBound()
+	{
 		mesh.updateBound();
 		worldBound = getModelBound().transform(cachedWorldMat, worldBound);
 	}
 
-	public Matrix4f getWorldMatrix() {
+	public Matrix4f getWorldMatrix()
+	{
 		return cachedWorldMat;
 	}
 
 	@Override
-	public void setModelBound(BoundingVolume modelBound) {
+	public void setModelBound(BoundingVolume modelBound)
+	{
 		mesh.setBound(modelBound);
 	}
 
-	@Override
-	public int collideWith(Collidable other, CollisionResults results, int instanceId) {
-		if (other instanceof Ray) {
-			if (!worldBound.intersects(((Ray) other))) {
+	public int collideWith(Collidable other, CollisionResults results, int instanceId)
+	{
+		if (other instanceof Ray)
+		{
+			if (!worldBound.intersects(((Ray) other)))
 				return 0;
-			}
 		}
 		// NOTE: BIHTree in mesh already checks collision with the
 		// mesh's bound
@@ -137,15 +144,12 @@ public class Geometry extends Spatial {
 		return added;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see
-	 * aionjHungary.geoEngine.scene.Spatial#setTransform(aionjHungary.geoEngine.math
-	 * .Matrix3f, aionjHungary.geoEngine.math.Vector3f)
+	/* (non-Javadoc)
+	 * @see aionjHungary.geoEngine.scene.Spatial#setTransform(aionjHungary.geoEngine.math.Matrix3f, aionjHungary.geoEngine.math.Vector3f)
 	 */
 	@Override
-	public void setTransform(Matrix3f rotation, Vector3f loc, float scale) {
+	public void setTransform(Matrix3f rotation, Vector3f loc, float scale)
+	{
 		cachedWorldMat.loadIdentity();
 		cachedWorldMat.setRotationMatrix(rotation);
 		cachedWorldMat.scale(scale);

@@ -52,23 +52,27 @@ public class _30003SecretOfTheUdasTemple extends QuestHandler {
 			if (targetId == 799029) { // Honeus
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			if (targetId == 799029) { // Honeus
 				if (dialog == QuestDialog.START_DIALOG) {
 					if (var == 1) {
 						return sendQuestDialog(env, 2375);
 					}
-				} else if (dialog == QuestDialog.SELECT_REWARD) {
+				}
+				else if (dialog == QuestDialog.SELECT_REWARD) {
 					changeQuestStep(env, 1, 1, true); // reward
 					return sendQuestDialog(env, 5);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799029) { // Honeus
 				removeQuestItem(env, 182209161, 1);
 				return sendQuestEndDialog(env);

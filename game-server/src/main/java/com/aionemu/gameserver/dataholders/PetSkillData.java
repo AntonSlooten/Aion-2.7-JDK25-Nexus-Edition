@@ -41,9 +41,9 @@ public class PetSkillData {
 	private List<PetSkillTemplate> petSkills;
 
 	/** A map containing all npc skill templates */
-	private TIntObjectHashMap<TIntIntHashMap> petSkillData = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<TIntIntHashMap> petSkillData = new TIntObjectHashMap<TIntIntHashMap>();
 
-	private TIntObjectHashMap<TIntArrayList> petSkillsMap = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<TIntArrayList> petSkillsMap = new TIntObjectHashMap<TIntArrayList>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (PetSkillTemplate petSkill : petSkills) {

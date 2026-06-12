@@ -26,7 +26,7 @@ import java.util.Locale;
 
 /**
  * This class is simple compiler error listener that forwards errors to log4j logger
- *
+ * 
  * @author SoulKeeper
  */
 public class ErrorListener implements DiagnosticListener<JavaFileObject> {
@@ -35,8 +35,9 @@ public class ErrorListener implements DiagnosticListener<JavaFileObject> {
 
 	/**
 	 * Reports compilation errors to log4j
-	 *
-	 * @param diagnostic compiler errors
+	 * 
+	 * @param diagnostic
+	 *          compiler errors
 	 */
 	@Override
 	public void report(Diagnostic<? extends JavaFileObject> diagnostic) {

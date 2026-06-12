@@ -24,7 +24,7 @@ import com.aionemu.commons.configuration.TransformationException;
 
 /**
  * Transforms string to file by creating new file instance. It's not checked if file exists.
- *
+ * 
  * @author SoulKeeper
  */
 public class FileTransformer implements PropertyTransformer<File> {
@@ -36,9 +36,11 @@ public class FileTransformer implements PropertyTransformer<File> {
 
 	/**
 	 * Transforms String to the file
-	 *
-	 * @param value value that will be transformed
-	 * @param field value will be assigned to this field
+	 * 
+	 * @param value
+	 *          value that will be transformed
+	 * @param field
+	 *          value will be assigned to this field
 	 * @return File object that represents string
 	 */
 	@Override

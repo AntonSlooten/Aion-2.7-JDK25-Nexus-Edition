@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@ public class CM_VERSION_CHECK extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_VERSION_CHECK </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_VERSION_CHECK(int opcode, State state, State... restStates) {

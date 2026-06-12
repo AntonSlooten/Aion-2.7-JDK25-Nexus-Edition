@@ -745,6 +745,7 @@
 		</spawn>
 		<!-- Herosir -->
 		<spawn npc_id="798368" respawn_time="295">
+			<temporary_spawn spawn_time="10.*.*" despawn_time="12.*.*"/>
 			<spot x="298.93" y="2773.01" z="312.649" h="95"/>
 		</spawn>
 		<!-- Blue-eyed Sylphen -->

@@ -72,21 +72,21 @@ public class _1022KrallDesecration extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 203178) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-				case STEP_TO_1:
-				case STEP_TO_2:
-					if (var == 0) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+					case STEP_TO_1:
+					case STEP_TO_2:
+						if (var == 0) {
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203178)
 				return sendQuestEndDialog(env);
 		}
@@ -105,16 +105,17 @@ public class _1022KrallDesecration extends QuestHandler {
 		if (env.getVisibleObject() instanceof Npc)
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		switch (targetId) {
-		case 210178:
-			if (var >= 1 && var <= 4) {
-				qs.setQuestVarById(0, var + 1);
-				updateQuestStatus(env);
-				return true;
-			} else if (var == 5) {
-				qs.setStatus(QuestStatus.REWARD);
-				updateQuestStatus(env);
-				return true;
-			}
+			case 210178:
+				if (var >= 1 && var <= 4) {
+					qs.setQuestVarById(0, var + 1);
+					updateQuestStatus(env);
+					return true;
+				}
+				else if (var == 5) {
+					qs.setStatus(QuestStatus.REWARD);
+					updateQuestStatus(env);
+					return true;
+				}
 		}
 		return false;
 	}

@@ -42,9 +42,9 @@ public class SetQuestVarOperation extends QuestOperation {
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see com.aionemu.gameserver.questEngine.handlers.models.xmlQuest.operations.
-	 * QuestOperation#doOperate(com.aionemu.gameserver .questEngine.model.QuestEnv)
+	 * @see
+	 * com.aionemu.gameserver.questEngine.handlers.models.xmlQuest.operations.QuestOperation#doOperate(com.aionemu.gameserver
+	 * .questEngine.model.QuestEnv)
 	 */
 	@Override
 	public void doOperate(QuestEnv env) {
@@ -53,8 +53,8 @@ public class SetQuestVarOperation extends QuestOperation {
 		QuestState qs = player.getQuestStateList().getQuestState(questId);
 		if (qs != null) {
 			qs.getQuestVars().setVarById(varId, value);
-			PacketSendUtility.sendPacket(player,
-					new SM_QUEST_ACTION(questId, qs.getStatus(), qs.getQuestVars().getQuestVars()));
+			PacketSendUtility.sendPacket(player, new SM_QUEST_ACTION(questId, qs.getStatus(), qs.getQuestVars()
+				.getQuestVars()));
 		}
 	}
 }

@@ -50,13 +50,12 @@ public class Rewards {
 	/**
 	 * Gets the value of the selectableRewardItem property.
 	 * <p>
-	 * This accessor method returns a reference to the live list, not a snapshot.
-	 * Therefore any modification you make to the returned list will be present
-	 * inside the JAXB object. This is why there is not a <CODE>set</CODE> method
-	 * for the selectableRewardItem property.
+	 * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+	 * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+	 * the selectableRewardItem property.
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 *
+	 * 
 	 * <pre>
 	 * getSelectableRewardItem().add(newItem);
 	 * </pre>
@@ -65,7 +64,7 @@ public class Rewards {
 	 */
 	public List<QuestItems> getSelectableRewardItem() {
 		if (selectableRewardItem == null) {
-			selectableRewardItem = new ArrayList<>();
+			selectableRewardItem = new ArrayList<QuestItems>();
 		}
 		return this.selectableRewardItem;
 	}
@@ -73,13 +72,12 @@ public class Rewards {
 	/**
 	 * Gets the value of the rewardItem property.
 	 * <p>
-	 * This accessor method returns a reference to the live list, not a snapshot.
-	 * Therefore any modification you make to the returned list will be present
-	 * inside the JAXB object. This is why there is not a <CODE>set</CODE> method
-	 * for the rewardItem property.
+	 * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+	 * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+	 * the rewardItem property.
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 *
+	 * 
 	 * <pre>
 	 * getRewardItem().add(newItem);
 	 * </pre>
@@ -88,14 +86,14 @@ public class Rewards {
 	 */
 	public List<QuestItems> getRewardItem() {
 		if (rewardItem == null) {
-			rewardItem = new ArrayList<>();
+			rewardItem = new ArrayList<QuestItems>();
 		}
 		return this.rewardItem;
 	}
 
 	/**
 	 * Gets the value of the gold property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getGold() {
@@ -104,7 +102,7 @@ public class Rewards {
 
 	/**
 	 * Gets the value of the exp property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getExp() {
@@ -113,7 +111,7 @@ public class Rewards {
 
 	/**
 	 * Gets the value of the rewardAbyssPoint property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getRewardAbyssPoint() {
@@ -122,7 +120,7 @@ public class Rewards {
 
 	/**
 	 * Gets the value of the title property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getTitle() {

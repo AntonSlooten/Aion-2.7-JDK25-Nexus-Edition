@@ -58,34 +58,36 @@ public class _4941GroupPandaemoniumHonors extends QuestHandler {
 
 		if (qs == null)
 			return false;
-
+			
 		int var = qs.getQuestVarById(0);
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204060:
-				switch (dialog) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1); // 1
-				case CHECK_COLLECTED_ITEMS:
-					long itemCount1 = player.getInventory().getItemCountByItemId(182207121);
-					if (itemCount1 >= 1) {
-						removeQuestItem(env, 182207121, 1);
-						changeQuestStep(env, 1, 1, true);
-						return sendQuestDialog(env, 5);
-					} else
-						return sendQuestDialog(env, 10001);
-				}
-				break;
-			default:
-				return sendQuestStartDialog(env);
+				case 204060:
+					switch (dialog) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+							else if (var == 1)
+								return sendQuestDialog(env, 1352);
+						case STEP_TO_1:
+							return defaultCloseDialog(env, 0, 1); // 1
+						case CHECK_COLLECTED_ITEMS:
+							long itemCount1 = player.getInventory().getItemCountByItemId(182207121);
+							if (itemCount1 >= 1) {
+								removeQuestItem(env, 182207121, 1);
+								changeQuestStep(env, 1, 1, true);
+								return sendQuestDialog(env, 5);
+							}
+							else
+								return sendQuestDialog(env, 10001);
+					}
+					break;
+				default:
+					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204060)
 				return sendQuestEndDialog(env);
 		}

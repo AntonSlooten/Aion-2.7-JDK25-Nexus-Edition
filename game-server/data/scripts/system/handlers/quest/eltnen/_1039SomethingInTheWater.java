@@ -64,46 +64,49 @@ public class _1039SomethingInTheWater extends QuestHandler {
 			int var1 = qs.getQuestVarById(1);
 			int var2 = qs.getQuestVarById(2);
 			switch (targetId) {
-			case 203946: { // Asclepius
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
-					} else if (var == 3) {
-						return sendQuestDialog(env, 1693);
-					} else if (var == 4 && var1 == 3 && var2 == 3) {
-						return sendQuestDialog(env, 2034);
+				case 203946: { // Asclepius
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+							else if (var == 3) {
+								return sendQuestDialog(env, 1693);
+							}
+							else if (var == 4 && var1 == 3 && var2 == 3) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1, 182201009, 1, 0, 0); // 1
+						}
+						case STEP_TO_3: {
+							return defaultCloseDialog(env, 3, 4); // 4
+						}
+						case SELECT_REWARD: {
+							qs.setStatus(QuestStatus.REWARD); // reward
+							updateQuestStatus(env);
+							return sendQuestDialog(env, 5);
+						}
 					}
+					break;
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1, 182201009, 1, 0, 0); // 1
-				}
-				case STEP_TO_3: {
-					return defaultCloseDialog(env, 3, 4); // 4
-				}
-				case SELECT_REWARD: {
-					qs.setStatus(QuestStatus.REWARD); // reward
-					updateQuestStatus(env);
-					return sendQuestDialog(env, 5);
-				}
-				}
-				break;
-			}
-			case 203705: { // Jumentis
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 2) {
-						return sendQuestDialog(env, 1352);
+				case 203705: { // Jumentis
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 2) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 2, 3, 0, 0, 182201010, 1); // 3
+						}
 					}
+					break;
 				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 2, 3, 0, 0, 182201010, 1); // 3
-				}
-				}
-				break;
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203946) { // Asclepius
 				return sendQuestEndDialog(env);
 			}
@@ -131,14 +134,14 @@ public class _1039SomethingInTheWater extends QuestHandler {
 				int[] vaegir = { 210946, 210968 };
 				int[] fighter = { 210969, 210947 };
 				switch (targetId) {
-				case 210946:
-				case 210968: {
-					return defaultOnKillEvent(env, vaegir, 0, 3, 1); // 1: 3
-				}
-				case 210969:
-				case 210947: {
-					return defaultOnKillEvent(env, fighter, 0, 3, 2); // 2: 3
-				}
+					case 210946:
+					case 210968: {
+						return defaultOnKillEvent(env, vaegir, 0, 3, 1); // 1: 3
+					}
+					case 210969:
+					case 210947: {
+						return defaultOnKillEvent(env, fighter, 0, 3, 2); // 2: 3
+					}
 				}
 			}
 		}

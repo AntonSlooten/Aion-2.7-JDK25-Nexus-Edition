@@ -44,7 +44,7 @@ public class QuestDrop {
 
 	/**
 	 * Gets the value of the npcId property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getNpcId() {
@@ -53,7 +53,7 @@ public class QuestDrop {
 
 	/**
 	 * Gets the value of the itemId property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getItemId() {
@@ -62,19 +62,18 @@ public class QuestDrop {
 
 	/**
 	 * Gets the value of the chance property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public int getChance() {
-		if (chance == null) {
+		if (chance == null)
 			return 100;
-		}
 		return chance;
 	}
 
 	/**
 	 * Gets the value of the dropEachMember property.
-	 *
+	 * 
 	 * @return possible object is {@link Boolean }
 	 */
 	public boolean isDropEachMember() {
@@ -89,7 +88,8 @@ public class QuestDrop {
 	}
 
 	/**
-	 * @param questId the questId to set
+	 * @param questId
+	 *          the questId to set
 	 */
 	public void setQuestId(Integer questId) {
 		this.questId = questId;

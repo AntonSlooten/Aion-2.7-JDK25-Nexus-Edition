@@ -31,17 +31,17 @@ public class PrivateStore {
 
 	/**
 	 * This method binds a player to the store and creates a list of items
-	 *
+	 * 
 	 * @param owner
 	 */
 	public PrivateStore(Player owner) {
 		this.owner = owner;
-		this.items = new LinkedHashMap<>();
+		this.items = new LinkedHashMap<Integer, TradePSItem>();
 	}
 
 	/**
 	 * This method will return the owner of the store
-	 *
+	 * 
 	 * @return Player
 	 */
 	public Player getOwner() {
@@ -50,7 +50,7 @@ public class PrivateStore {
 
 	/**
 	 * This method will return the items being sold
-	 *
+	 * 
 	 * @return LinkedHashMap<Integer, TradePSItem>
 	 */
 	public LinkedHashMap<Integer, TradePSItem> getSoldItems() {
@@ -59,7 +59,7 @@ public class PrivateStore {
 
 	/**
 	 * This method will add an item to the list and price
-	 *
+	 * 
 	 * @param tradeList
 	 * @param price
 	 */
@@ -69,30 +69,31 @@ public class PrivateStore {
 
 	/**
 	 * This method will remove an item from the list
-	 *
+	 * 
 	 * @param item
 	 */
 	public void removeItem(int itemObjId) {
 		if (items.containsKey(itemObjId)) {
-			LinkedHashMap<Integer, TradePSItem> newItems = new LinkedHashMap<>();
+			LinkedHashMap<Integer, TradePSItem> newItems = new LinkedHashMap<Integer, TradePSItem>();
 			for (int itemObjIds : items.keySet()) {
-				if (itemObjId != itemObjIds) {
+				if (itemObjId != itemObjIds)
 					newItems.put(itemObjIds, items.get(itemObjIds));
-				}
 			}
 			this.items = newItems;
 		}
 	}
 
 	/**
-	 * @param itemId return tradeItem
+	 * @param itemId
+	 *          return tradeItem
 	 */
 	public TradePSItem getTradeItemByObjId(int itemObjId) {
 		return items.get(itemObjId);
 	}
 
 	/**
-	 * @param storeMessage the storeMessage to set
+	 * @param storeMessage
+	 *          the storeMessage to set
 	 */
 	public void setStoreMessage(String storeMessage) {
 		this.storeMessage = storeMessage;

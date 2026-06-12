@@ -74,49 +74,51 @@ public class _1023ANestofLepharists extends QuestHandler {
 			if (targetId == 203098) // Spatalos
 			{
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-				case SELECT_ACTION_1012:
-					return sendQuestDialog(env, 1012);
-				case SELECT_ACTION_1013:
-					return sendQuestDialog(env, 1013);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-			} else if (targetId == 203183) // Khidia
-			{
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-					else if (var == 3)
-						return sendQuestDialog(env, 1693);
-					else if (var == 4)
-						return sendQuestDialog(env, 2034);
-				case SELECT_ACTION_1353:
-					return sendQuestDialog(env, 1353);
-				case STEP_TO_2:
-					if (var == 1) {
-						playQuestMovie(env, 30);
-						return defaultCloseDialog(env, 1, 2); // 2
-					}
-				case SELECT_ACTION_1694:
-					return sendQuestDialog(env, 1694);
-				case STEP_TO_3:
-					if (var == 3)
-						return defaultCloseDialog(env, 3, 4); // 4
-				case CHECK_COLLECTED_ITEMS:
-					if (var == 4)
-						return checkQuestItems(env, 4, 4, false, 2120, 2035);
-				case FINISH_DIALOG:
-					return sendQuestDialog(env, 10);
-				case STEP_TO_4:
-					qs.setQuestVarById(0, 5); // 5
-					return defaultCloseDialog(env, 5, 5, true, false); // reward
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+					case SELECT_ACTION_1012:
+						return sendQuestDialog(env, 1012);
+					case SELECT_ACTION_1013:
+						return sendQuestDialog(env, 1013);
+					case STEP_TO_1:
+						return defaultCloseDialog(env, 0, 1); // 1
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+			else if (targetId == 203183) // Khidia
+			{
+				switch (env.getDialog()) {
+					case START_DIALOG:
+						if (var == 1)
+							return sendQuestDialog(env, 1352);
+						else if (var == 3)
+							return sendQuestDialog(env, 1693);
+						else if (var == 4)
+							return sendQuestDialog(env, 2034);
+					case SELECT_ACTION_1353:
+						return sendQuestDialog(env, 1353);
+					case STEP_TO_2:
+						if (var == 1) {
+							playQuestMovie(env, 30);
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+					case SELECT_ACTION_1694:
+						return sendQuestDialog(env, 1694);
+					case STEP_TO_3:
+						if (var == 3)
+							return defaultCloseDialog(env, 3, 4); // 4
+					case CHECK_COLLECTED_ITEMS:
+						if (var == 4)
+							return checkQuestItems(env, 4, 4, false, 2120, 2035);
+					case FINISH_DIALOG:
+						return sendQuestDialog(env, 10);
+					case STEP_TO_4:
+						qs.setQuestVarById(0, 5); // 5
+						return defaultCloseDialog(env, 5, 5, true, false); // reward
+				}
+			}
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203098) // Spatalos
 			{
 				if (env.getDialog() == QuestDialog.USE_OBJECT)

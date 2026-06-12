@@ -120,99 +120,108 @@ public class _20025QuestForSielsRelics extends QuestHandler {
 					return sendQuestEndDialog(env);
 			}
 			return false;
-		} else if (qs.getStatus() != QuestStatus.START)
+		}
+		else if (qs.getStatus() != QuestStatus.START)
 			return false;
 		if (targetId == 799225) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-			case STEP_TO_1:
-				return defaultCloseDialog(env, 0, 1); // 1
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+				case STEP_TO_1:
+					return defaultCloseDialog(env, 0, 1); // 1
 			}
-		} else if (targetId == 799226) {
+		}
+		else if (targetId == 799226) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-				else if (var == 4)
-					return sendQuestDialog(env, 2375);
-				else if (var == 9)
-					return sendQuestDialog(env, 4080);
-			case STEP_TO_2:
-				return defaultCloseDialog(env, 1, 2); // 2
-			case STEP_TO_5:
-				return defaultCloseDialog(env, 4, 5); // 5
-			case STEP_TO_10:
-				return defaultCloseDialog(env, 9, 10); // 10
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+					else if (var == 4)
+						return sendQuestDialog(env, 2375);
+					else if (var == 9)
+						return sendQuestDialog(env, 4080);
+				case STEP_TO_2:
+					return defaultCloseDialog(env, 1, 2); // 2
+				case STEP_TO_5:
+					return defaultCloseDialog(env, 4, 5); // 5
+				case STEP_TO_10:
+					return defaultCloseDialog(env, 9, 10); // 10
 			}
-		} else if (targetId == 799341) {
+		}
+		else if (targetId == 799341) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 2)
-					return sendQuestDialog(env, 1693);
-				else if (var == 3)
-					return sendQuestDialog(env, 2034);
-			case STEP_TO_3:
-				return defaultCloseDialog(env, 2, 3); // 3
-			case STEP_TO_4:
-				return defaultCloseDialog(env, 3, 4); // 4
+				case START_DIALOG:
+					if (var == 2)
+						return sendQuestDialog(env, 1693);
+					else if (var == 3)
+						return sendQuestDialog(env, 2034);
+				case STEP_TO_3:
+					return defaultCloseDialog(env, 2, 3); // 3
+				case STEP_TO_4:
+					return defaultCloseDialog(env, 3, 4); // 4
 			}
-		} else if (targetId == 798800) {
+		}
+		else if (targetId == 798800) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 5)
-					return sendQuestDialog(env, 2716);
-			case STEP_TO_6:
-				return defaultCloseDialog(env, 5, 6); // 6
+				case START_DIALOG:
+					if (var == 5)
+						return sendQuestDialog(env, 2716);
+				case STEP_TO_6:
+					return defaultCloseDialog(env, 5, 6); // 6
 			}
-		} else if (targetId == 204182) {
+		}
+		else if (targetId == 204182) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 6)
-					return sendQuestDialog(env, 3057);
-			case STEP_TO_7:
-				return defaultCloseDialog(env, 6, 7); // 7
+				case START_DIALOG:
+					if (var == 6)
+						return sendQuestDialog(env, 3057);
+				case STEP_TO_7:
+					return defaultCloseDialog(env, 6, 7); // 7
 			}
-		} else if (targetId == 799239) {
+		}
+		else if (targetId == 799239) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 7)
-					return sendQuestDialog(env, 3398);
-			case STEP_TO_8:
-				return defaultCloseDialog(env, 7, 8); // 8
+				case START_DIALOG:
+					if (var == 7)
+						return sendQuestDialog(env, 3398);
+				case STEP_TO_8:
+					return defaultCloseDialog(env, 7, 8); // 8
 			}
-		} else if (targetId == 204837) {
+		}
+		else if (targetId == 204837) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 8)
-					return sendQuestDialog(env, 3739);
-			case CHECK_COLLECTED_ITEMS:
-				if (QuestService.collectItemCheck(env, true)) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				} else
-					return sendQuestDialog(env, 10001);
+				case START_DIALOG:
+					if (var == 8)
+						return sendQuestDialog(env, 3739);
+				case CHECK_COLLECTED_ITEMS:
+					if (QuestService.collectItemCheck(env, true)) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					else
+						return sendQuestDialog(env, 10001);
 
 			}
-		} else if (targetId == 799327) {
+		}
+		else if (targetId == 799327) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 10)
-					return sendQuestDialog(env, 1267);
-			case STEP_TO_11:
-				return defaultCloseDialog(env, 10, 11); // 11
+				case START_DIALOG:
+					if (var == 10)
+						return sendQuestDialog(env, 1267);
+				case STEP_TO_11:
+					return defaultCloseDialog(env, 10, 11); // 11
 			}
-		} else if (targetId == 799328) {
+		}
+		else if (targetId == 799328) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 11)
-					return sendQuestDialog(env, 1608);
-			case STEP_TO_12:
-				return defaultCloseDialog(env, 11, 12); // 12
+				case START_DIALOG:
+					if (var == 11)
+						return sendQuestDialog(env, 1608);
+				case STEP_TO_12:
+					return defaultCloseDialog(env, 11, 12); // 12
 			}
 		}
 		return false;

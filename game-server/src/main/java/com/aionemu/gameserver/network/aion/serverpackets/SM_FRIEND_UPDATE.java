@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +26,7 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * Sent to update a player's status in a friendlist
- *
+ * 
  * @author Ben
  */
 public class SM_FRIEND_UPDATE extends AionServerPacket {
@@ -44,10 +45,10 @@ public class SM_FRIEND_UPDATE extends AionServerPacket {
 	@Override
 	protected void writeImpl(AionConnection con) {
 		Friend f = con.getActivePlayer().getFriendList().getFriend(friendObjId);
-		if (f == null) {
-			log.debug("Attempted to update friend list status of " + friendObjId + " for "
-					+ con.getActivePlayer().getName() + " - object ID not found on friend list");
-		} else {
+		if (f == null)
+			log.debug("Attempted to update friend list status of " + friendObjId + " for " + con.getActivePlayer().getName()
+				+ " - object ID not found on friend list");
+		else {
 			writeS(f.getName());
 			writeD(f.getLevel());
 			writeD(f.getPlayerClass().getClassId());

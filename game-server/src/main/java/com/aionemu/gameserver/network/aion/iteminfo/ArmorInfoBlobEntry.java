@@ -23,24 +23,24 @@ import com.aionemu.gameserver.model.items.ItemSlot;
 import com.aionemu.gameserver.network.aion.iteminfo.ItemInfoBlob.ItemBlobType;
 
 /**
- * This blob is sent for armors. It keeps info about slots that armor can be
- * equipped to.
+ * This blob is sent for armors. It keeps info about slots that armor can be equipped to.
  *
  * @author -Nemesiss-
  *
  */
-public class ArmorInfoBlobEntry extends ItemBlobEntry {
+public class ArmorInfoBlobEntry extends ItemBlobEntry{
 
 	ArmorInfoBlobEntry() {
 		super(ItemBlobType.SLOTS_ARMOR);
 	}
 
 	@Override
-	public void writeThisBlob(ByteBuffer buf) {
+	public
+	void writeThisBlob(ByteBuffer buf) {
 		Item item = parent.item;
 
 		writeD(buf, ItemSlot.getSlotsFor(item.getItemTemplate().getItemSlot())[0].getSlotIdMask());
-		writeD(buf, 0);// TODO! secondary slot?
+		writeD(buf, 0);//TODO! secondary slot?
 		writeD(buf, 0);
 	}
 }

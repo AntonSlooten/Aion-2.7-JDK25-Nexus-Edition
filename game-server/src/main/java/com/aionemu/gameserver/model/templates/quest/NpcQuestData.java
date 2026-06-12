@@ -25,97 +25,97 @@ import java.util.List;
  */
 public class NpcQuestData {
 
-	private final List<Integer> onQuestStart;
-	private final List<Integer> onKillEvent;
-	private final List<Integer> onTalkEvent;
-	private final List<Integer> onAttackEvent;
-	private final List<Integer> onLostTargetEvent;
-	private final List<Integer> onReachTargetEvent;
-	private final List<Integer> onActionItemEvent;
-	private final List<Integer> onLostPlayerEvent;
+    private final List<Integer> onQuestStart;
+    private final List<Integer> onKillEvent;
+    private final List<Integer> onTalkEvent;
+    private final List<Integer> onAttackEvent;
+    private final List<Integer> onLostTargetEvent;
+    private final List<Integer> onReachTargetEvent;
+    private final List<Integer> onActionItemEvent;
+    private final List<Integer> onLostPlayerEvent;
 
-	public NpcQuestData() {
-		onQuestStart = new ArrayList<>();
-		onKillEvent = new ArrayList<>();
-		onTalkEvent = new ArrayList<>();
-		onAttackEvent = new ArrayList<>();
-		onLostTargetEvent = new ArrayList<>();
-		onReachTargetEvent = new ArrayList<>();
-		onActionItemEvent = new ArrayList<>();
-		onLostPlayerEvent = new ArrayList<>();
-	}
+    public NpcQuestData() {
+        onQuestStart = new ArrayList<Integer>();
+        onKillEvent = new ArrayList<Integer>();
+        onTalkEvent = new ArrayList<Integer>();
+        onAttackEvent = new ArrayList<Integer>();
+        onLostTargetEvent = new ArrayList<Integer>();
+        onReachTargetEvent = new ArrayList<Integer>();
+        onActionItemEvent = new ArrayList<Integer>();
+        onLostPlayerEvent = new ArrayList<Integer>();
+    }
 
-	public void addOnQuestStart(int questId) {
-		if (!onQuestStart.contains(questId)) {
-			onQuestStart.add(questId);
-		}
-	}
+    public void addOnQuestStart(int questId) {
+        if (!onQuestStart.contains(questId)) {
+            onQuestStart.add(questId);
+        }
+    }
 
-	public List<Integer> getOnQuestStart() {
-		return onQuestStart;
-	}
+    public List<Integer> getOnQuestStart() {
+        return onQuestStart;
+    }
 
-	public void addOnAttackEvent(int questId) {
-		if (!onAttackEvent.contains(questId)) {
-			onAttackEvent.add(questId);
-		}
-	}
+    public void addOnAttackEvent(int questId) {
+        if (!onAttackEvent.contains(questId)) {
+            onAttackEvent.add(questId);
+        }
+    }
 
-	public List<Integer> getOnAttackEvent() {
-		return onAttackEvent;
-	}
+    public List<Integer> getOnAttackEvent() {
+        return onAttackEvent;
+    }
 
-	public void addOnKillEvent(int questId) {
-		if (!onKillEvent.contains(questId)) {
-			onKillEvent.add(questId);
-		}
-	}
+    public void addOnKillEvent(int questId) {
+        if (!onKillEvent.contains(questId)) {
+            onKillEvent.add(questId);
+        }
+    }
 
-	public List<Integer> getOnKillEvent() {
-		return onKillEvent;
-	}
+    public List<Integer> getOnKillEvent() {
+        return onKillEvent;
+    }
 
-	public void addOnTalkEvent(int questId) {
-		if (!onTalkEvent.contains(questId)) {
-			onTalkEvent.add(questId);
-		}
-	}
+    public void addOnTalkEvent(int questId) {
+        if (!onTalkEvent.contains(questId)) {
+            onTalkEvent.add(questId);
+        }
+    }
 
-	public List<Integer> getOnTalkEvent() {
-		return onTalkEvent;
-	}
+    public List<Integer> getOnTalkEvent() {
+        return onTalkEvent;
+    }
 
-	public void addOnActionItemEvent(int questId) {
-		if (!onActionItemEvent.contains(questId)) {
-			onActionItemEvent.add(questId);
-		}
-	}
+    public void addOnActionItemEvent(int questId) {
+        if (!onActionItemEvent.contains(questId)) {
+            onActionItemEvent.add(questId);
+        }
+    }
 
-	public List<Integer> getOnActionItemEvent() {
-		return onActionItemEvent;
-	}
+    public List<Integer> getOnActionItemEvent() {
+        return onActionItemEvent;
+    }
 
-	public List<Integer> getOnLostPlayerEvent() {
-		return onLostPlayerEvent;
-	}
+    public List<Integer> getOnLostPlayerEvent() {
+        return onLostPlayerEvent;
+    }
 
-	public void addOnLostTargetEvent(int questId) {
-		if (!onLostTargetEvent.contains(questId)) {
-			onLostTargetEvent.add(questId);
-		}
-	}
+    public void addOnLostTargetEvent(int questId) {
+        if (!onLostTargetEvent.contains(questId)) {
+            onLostTargetEvent.add(questId);
+        }
+    }
 
-	public List<Integer> getOnLostTargetEvent() {
-		return onLostTargetEvent;
-	}
+    public List<Integer> getOnLostTargetEvent() {
+        return onLostTargetEvent;
+    }
 
-	public void addOnReachTargetEvent(int questId) {
-		if (!onReachTargetEvent.contains(questId)) {
-			onReachTargetEvent.add(questId);
-		}
-	}
+    public void addOnReachTargetEvent(int questId) {
+        if (!onReachTargetEvent.contains(questId)) {
+            onReachTargetEvent.add(questId);
+        }
+    }
 
-	public List<Integer> getOnReachTargetEvent() {
-		return onReachTargetEvent;
-	}
+    public List<Integer> getOnReachTargetEvent() {
+        return onReachTargetEvent;
+    }
 }

@@ -9,9 +9,10 @@ import com.aionemu.gameserver.world.World;
 
 /*syntax //moveplayertoplayer <characterNameToMove> <characterNameDestination>") */
 
-public class CmdMovePlayerToPlayer extends BaseCommand {
 
-	@Override
+public class CmdMovePlayerToPlayer extends BaseCommand {
+	
+	
 	public void execute(Player admin, String... params) {
 		if (params == null || params.length < 3) {
 			showHelp(admin);
@@ -35,11 +36,10 @@ public class CmdMovePlayerToPlayer extends BaseCommand {
 		}
 
 		TeleportService.teleportTo(playerToMove, playerDestination.getWorldId(), playerDestination.getInstanceId(),
-				playerDestination.getX(), playerDestination.getY(), playerDestination.getZ(),
-				playerDestination.getHeading(), 3000, true);
+			playerDestination.getX(), playerDestination.getY(), playerDestination.getZ(), playerDestination.getHeading(), 3000, true);
 
-		PacketSendUtility.sendMessage(admin, "Teleported player " + playerToMove.getName()
-				+ " to the location of player " + playerDestination.getName() + ".");
+		PacketSendUtility.sendMessage(admin, "Teleported player " + playerToMove.getName() + " to the location of player "
+			+ playerDestination.getName() + ".");
 		PacketSendUtility.sendMessage(playerToMove, "You have been teleported by an administrator.");
 	}
 }

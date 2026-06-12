@@ -1,6 +1,6 @@
 package com.aionemu.gameserver.command.admin;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.aionemu.gameserver.command.BaseCommand;
 import com.aionemu.gameserver.model.ChatType;
@@ -11,8 +11,8 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_MESSAGE;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public class CmdSay extends BaseCommand {
-
-	@Override
+	
+	
 	public void execute(Player admin, String... params) {
 		if (params.length < 1) {
 			showHelp(admin);
@@ -24,16 +24,17 @@ public class CmdSay extends BaseCommand {
 			PacketSendUtility.sendMessage(admin, "You must select a target !");
 			return;
 		}
-
+		
 		String sMessage = StringUtils.join(params, " ", 0, params.length);
 
 		if (target instanceof Player) {
 			PacketSendUtility.broadcastPacket(((Player) target),
-					new SM_MESSAGE(((Player) target), sMessage, ChatType.NORMAL), true);
-		} else if (target instanceof Npc) {
+				new SM_MESSAGE(((Player) target), sMessage, ChatType.NORMAL), true);
+		}
+		else if (target instanceof Npc) {
 			// admin is not right, but works
-			PacketSendUtility.broadcastPacket(admin,
-					new SM_MESSAGE(target.getObjectId(), ((Npc) target).getName(), sMessage, ChatType.NORMAL), true);
+			PacketSendUtility.broadcastPacket(admin, new SM_MESSAGE(((Npc) target).getObjectId(), ((Npc) target).getName(),
+				sMessage, ChatType.NORMAL), true);
 		}
 	}
 }

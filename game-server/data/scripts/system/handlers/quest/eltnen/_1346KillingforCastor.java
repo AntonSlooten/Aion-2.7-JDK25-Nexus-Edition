@@ -57,21 +57,21 @@ public class _1346KillingforCastor extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 
 		switch (targetId) {
-		case 210872:
-		case 210844:
-			if (qs.getQuestVarById(0) < 15) {
-				qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-				updateQuestStatus(env);
-				return true;
-			}
-			break;
-		case 210898:
-		case 210878:
-			if (qs.getQuestVarById(1) < 20) {
-				qs.setQuestVarById(1, qs.getQuestVarById(1) + 1);
-				updateQuestStatus(env);
-				return true;
-			}
+			case 210872:
+			case 210844:
+				if (qs.getQuestVarById(0) < 15) {
+					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+					updateQuestStatus(env);
+					return true;
+				}
+				break;
+			case 210898:
+			case 210878:
+				if (qs.getQuestVarById(1) < 20) {
+					qs.setQuestVarById(1, qs.getQuestVarById(1) + 1);
+					updateQuestStatus(env);
+					return true;
+				}
 		}
 		return false;
 	}
@@ -93,18 +93,20 @@ public class _1346KillingforCastor extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 203965) {
-				if (env.getDialog() == QuestDialog.START_DIALOG && qs.getQuestVarById(1) == 20
-						&& qs.getQuestVarById(0) == 15) {
+				if (env.getDialog() == QuestDialog.START_DIALOG && qs.getQuestVarById(1) == 20 && qs.getQuestVarById(0) == 15) {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
 					return sendQuestDialog(env, 1352);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203965) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 5);

@@ -40,10 +40,10 @@ public class CM_STOP_TRAINING extends AionClientPacket {
 		Player player = getConnection().getActivePlayer();
 
 		switch (player.getWorldId()) {
-		case 300320000:
-		case 300300000:
-			player.getPosition().getWorldMapInstance().getInstanceHandler().onStopTraining(player);
-			break;
+			case 300320000:
+			case 300300000:
+				player.getPosition().getWorldMapInstance().getInstanceHandler().onStopTraining(player);	
+				break;
 		}
 	}
 }

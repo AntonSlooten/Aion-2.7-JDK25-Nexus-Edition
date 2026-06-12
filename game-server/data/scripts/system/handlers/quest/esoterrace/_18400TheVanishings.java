@@ -11,15 +11,18 @@ import com.aionemu.gameserver.questEngine.model.QuestStatus;
  * @author Ritsu
  * 
  */
-public class _18400TheVanishings extends QuestHandler {
-	private final static int questId = 18400;
+public class _18400TheVanishings extends QuestHandler
+{
+	private final static int	questId	= 18400;
 
-	public _18400TheVanishings() {
+	public _18400TheVanishings()
+	{
 		super(questId);
 	}
 
 	@Override
-	public void register() {
+	public void register()
+	{
 		qe.registerQuestNpc(799552).addOnQuestStart(questId);
 		qe.registerQuestNpc(799552).addOnTalkEvent(questId);
 		qe.registerQuestNpc(799584).addOnTalkEvent(questId);
@@ -27,28 +30,36 @@ public class _18400TheVanishings extends QuestHandler {
 	}
 
 	@Override
-	public boolean onDialogEvent(QuestEnv env) {
+	public boolean onDialogEvent(QuestEnv env)
+	{
 		Player player = env.getPlayer();
 		int targetId = env.getTargetId();
 		QuestState qs = player.getQuestStateList().getQuestState(questId);
-
-		if (targetId == 799552) {
-			if (qs == null || qs.getStatus() == QuestStatus.NONE) {
-				if (env.getDialog() == QuestDialog.START_DIALOG)
+		
+		if(targetId == 799552)
+		{
+			if(qs == null || qs.getStatus() == QuestStatus.NONE)
+			{
+				if(env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 1011);
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (targetId == 799584 || targetId == 799585) {
-			if (qs != null) {
-				if (env.getDialog() == QuestDialog.START_DIALOG && qs.getStatus() == QuestStatus.START)
+		}
+		else if(targetId == 799584 || targetId == 799585)
+		{
+			if(qs != null)
+			{
+				if(env.getDialog() == QuestDialog.START_DIALOG && qs.getStatus() == QuestStatus.START)
 					return sendQuestDialog(env, 2375);
-				else if (env.getDialog() == QuestDialog.SELECT_REWARD) {
+				else if (env.getDialog() == QuestDialog.SELECT_REWARD)
+				{
 					qs.setQuestVar(1);
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
 					return sendQuestEndDialog(env);
-				} else
+				}
+				else
 					return sendQuestEndDialog(env);
 			}
 		}

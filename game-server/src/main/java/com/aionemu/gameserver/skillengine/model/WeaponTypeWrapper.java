@@ -19,6 +19,7 @@ package com.aionemu.gameserver.skillengine.model;
 import com.aionemu.gameserver.model.templates.item.WeaponType;
 import com.aionemu.gameserver.services.MotionLoggingService;
 
+
 /**
  * @author kecimis
  *
@@ -32,7 +33,8 @@ public class WeaponTypeWrapper implements Comparable<WeaponTypeWrapper> {
 		if (mainHand != null && offHand != null) {
 			this.mainHand = WeaponType.SWORD_1H;
 			this.offHand = WeaponType.SWORD_1H;
-		} else {
+		}	
+		else {
 			this.mainHand = mainHand;
 			this.offHand = offHand;
 		}
@@ -40,39 +42,34 @@ public class WeaponTypeWrapper implements Comparable<WeaponTypeWrapper> {
 
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
+		if (this == obj)
 			return true;
-		}
-		if ((obj == null) || (getClass() != obj.getClass())) {
+		if (obj == null)
 			return false;
-		}
+		if (getClass() != obj.getClass())
+			return false;
 		WeaponTypeWrapper other = (WeaponTypeWrapper) obj;
-		if (!getOuterType().equals(other.getOuterType())) {
+		if (!getOuterType().equals(other.getOuterType()))
 			return false;
-		}
-		if (mainHand != other.mainHand) {
+		if (mainHand != other.mainHand)
 			return false;
-		}
-		if (offHand != other.offHand) {
+		if (offHand != other.offHand)
 			return false;
-		}
 		return true;
 	}
 
 	@Override
 	public String toString() {
 		return "mainHandType=\"" + (mainHand != null ? mainHand.toString() : "null") + "\"" + " offHandType=\""
-				+ (offHand != null ? offHand.toString() : "null");
+			+ (offHand != null ? offHand.toString() : "null");
 	}
 
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -87,17 +84,16 @@ public class WeaponTypeWrapper implements Comparable<WeaponTypeWrapper> {
 
 	@Override
 	public int compareTo(WeaponTypeWrapper o) {
-		if (mainHand == null || o.getMainHand() == null) {
+		if (mainHand == null || o.getMainHand() == null)
 			return 0;
-		} else if (offHand != null && o.getOffHand() != null) {
+		else if (offHand != null && o.getOffHand() != null)
 			return 0;
-		} else if (offHand != null && o.getOffHand() == null) {
+		else if (offHand != null && o.getOffHand() == null)
 			return 1;
-		} else if (offHand == null && o.getOffHand() != null) {
+		else if (offHand == null && o.getOffHand() != null)
 			return -1;
-		} else {
+		else
 			return mainHand.toString().compareTo(o.getMainHand().toString());
-		}
 	}
 
 	public WeaponType getMainHand() {

@@ -43,7 +43,8 @@ public class SkillAttackManager {
 		if (npcAI.setSubStateIfNot(AISubState.CAST)) {
 			if (delay > 0) {
 				ThreadPoolManager.getInstance().schedule(new SkillAction(npcAI), delay);
-			} else {
+			}
+			else {
 				skillAction(npcAI);
 			}
 		}
@@ -64,29 +65,31 @@ public class SkillAttackManager {
 				AI2Logger.info(npcAI, "Using skill " + skillId + " level: " + skillLevel + " duration: " + duration);
 			}
 			switch (template.getSubType()) {
-			case BUFF:
-				switch (template.getProperties().getFirstTarget()) {
-				case ME:
-					if (npcAI.getOwner().getEffectController().isAbnormalPresentBySkillId(skillId)) {
-						afterUseSkill(npcAI);
-						return;
+				case BUFF:
+					switch (template.getProperties().getFirstTarget()) {
+						case ME:
+							if (npcAI.getOwner().getEffectController().isAbnormalPresentBySkillId(skillId)) {
+								afterUseSkill(npcAI);
+								return;
+							}
+							break;
+						default:
+							if (target.getEffectController().isAbnormalPresentBySkillId(skillId)) {
+								afterUseSkill(npcAI);
+								return;
+							}
 					}
 					break;
-				default:
-					if (target.getEffectController().isAbnormalPresentBySkillId(skillId)) {
-						afterUseSkill(npcAI);
-						return;
-					}
-				}
-				break;
 			}
 			boolean success = npcAI.getOwner().getController().useSkill(skillId, skillLevel);
 			if (!success || duration == 0) {
 				afterUseSkill(npcAI);
-			} else {
+			}
+			else {
 				ThreadPoolManager.getInstance().schedule(new AfterSkillAction(npcAI), duration);
 			}
-		} else {
+		}
+		else {
 			npcAI.setSubStateIfNot(AISubState.NONE);
 			npcAI.onGeneralEvent(AIEventType.TARGET_GIVEUP);
 		}
@@ -124,14 +127,11 @@ public class SkillAttackManager {
 			if (npcSkill.hpReady(currentHpPercent) && npcSkill.chanceReady()) {
 				// Check for Bind/Silence/Fear debuffs on npc
 				SkillTemplate template = npcSkill.getSkillTemplate();
-				if ((template.getType() == SkillType.MAGICAL
-						&& owner.getEffectController().isAbnormalSet(AbnormalState.SILENCE))
-						|| (template.getType() == SkillType.PHYSICAL
-								&& owner.getEffectController().isAbnormalSet(AbnormalState.BIND))
-						|| (owner.getEffectController().isUnderFear())) {
+				if ((template.getType() == SkillType.MAGICAL && owner.getEffectController().isAbnormalSet(AbnormalState.SILENCE))
+						|| (template.getType() == SkillType.PHYSICAL && owner.getEffectController().isAbnormalSet(AbnormalState.BIND))
+						|| (owner.getEffectController().isUnderFear()))
 					return null;
-				}
-
+				
 				return npcSkill;
 			}
 		}

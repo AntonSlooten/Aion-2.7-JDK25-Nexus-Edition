@@ -58,28 +58,31 @@ public class _1725CenturionsForgetfulness extends QuestHandler {
 			if (targetId == 278520) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else if (env.getDialogId() == 1002) {
+				}
+				else if (env.getDialogId() == 1002) {
 					if (QuestService.startQuest(env)) {
 						if (giveQuestItem(env, 182202153, 1))
 							return sendQuestDialog(env, 1003);
 						else
 							return true;
 					}
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 278514) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 1352);
 				else if (env.getDialog() == QuestDialog.STEP_TO_1) {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
 				}
-			} else if (targetId == 278590) {
+			}
+			else if (targetId == 278590) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 2375);
 				else if (env.getDialogId() == 1009) {
@@ -87,12 +90,12 @@ public class _1725CenturionsForgetfulness extends QuestHandler {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return sendQuestEndDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD && targetId == 278590) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD && targetId == 278590) {
 			return sendQuestEndDialog(env);
 		}
 		return false;

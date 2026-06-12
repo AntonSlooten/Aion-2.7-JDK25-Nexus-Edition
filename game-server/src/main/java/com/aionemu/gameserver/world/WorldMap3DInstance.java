@@ -38,18 +38,16 @@ public class WorldMap3DInstance extends WorldMapInstance {
 		return regions.get(regionId);
 	}
 
-	@Override
 	protected void initMapRegions() {
 		int size = this.getParent().getWorldSize();
 		// Create all mapRegion
 		for (int x = 0; x <= size; x = x + regionSize) {
 			for (int y = 0; y <= size; y = y + regionSize) {
 				for (int z = 0; z <= size; z = z + regionSize) {
-					int regionId = RegionUtil.get3dRegionId(x, y, z);
-					regions.put(regionId, createMapRegion(regionId));
-				}
+				int regionId = RegionUtil.get3dRegionId(x, y, z);
+				regions.put(regionId, createMapRegion(regionId));
 			}
-		}
+		}}
 
 		// Add Neighbour
 		for (int x = 0; x <= size; x = x + regionSize) {
@@ -57,17 +55,15 @@ public class WorldMap3DInstance extends WorldMapInstance {
 				for (int z = 0; z <= size; z = z + regionSize) {
 					int regionId = RegionUtil.get3dRegionId(x, y, z);
 					MapRegion mapRegion = regions.get(regionId);
-					for (int x2 = x - regionSize; x2 <= x + regionSize; x2 += regionSize) {
-						for (int y2 = y - regionSize; y2 <= y + regionSize; y2 += regionSize) {
-							for (int z2 = z - regionSize; z2 <= z + regionSize; z2 += regionSize) {
-								if (x2 == x && y2 == y && z2 == z) {
+					for (int x2 = x - regionSize; x2 <= x + regionSize; x2+=regionSize) {
+						for (int y2 = y - regionSize; y2 <= y + regionSize; y2+=regionSize) {
+							for (int z2 = z - regionSize; z2 <= z + regionSize; z2+=regionSize) {
+								if (x2 == x && y2 == y && z2 == z)
 									continue;
-								}
 								int neighbourId = RegionUtil.get3dRegionId(x2, y2, z2);
 								MapRegion neighbour = regions.get(neighbourId);
-								if (neighbour != null) {
+								if (neighbour != null)
 									mapRegion.addNeighbourRegion(neighbour);
-								}
 							}
 						}
 					}
@@ -81,8 +77,8 @@ public class WorldMap3DInstance extends WorldMapInstance {
 		float startX = RegionUtil.getXFrom3dRegionId(regionId);
 		float startY = RegionUtil.getYFrom3dRegionId(regionId);
 		float startZ = RegionUtil.getZFrom3dRegionId(regionId);
-		ZoneInstance[] zones = filterZones(this.getMapId(), regionId, startX, startY, startZ,
-				startZ + WorldConfig.WORLD_REGION_SIZE);
+		ZoneInstance[] zones = filterZones(this.getMapId(), regionId, startX, startY, startZ, startZ
+			+ WorldConfig.WORLD_REGION_SIZE);
 		return new MapRegion(regionId, this, zones);
 	}
 }

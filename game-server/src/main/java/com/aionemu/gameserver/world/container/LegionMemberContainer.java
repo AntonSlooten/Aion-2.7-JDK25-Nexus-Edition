@@ -40,9 +40,8 @@ public class LegionMemberContainer {
 	 * @param legionMember
 	 */
 	public void addMember(LegionMember legionMember) {
-		if (legionMemberById.containsKey(legionMember.getObjectId())) {
+		if (legionMemberById.containsKey(legionMember.getObjectId()))
 			throw new DuplicateAionObjectException();
-		}
 		legionMemberById.put(legionMember.getObjectId(), legionMember);
 	}
 
@@ -62,9 +61,8 @@ public class LegionMemberContainer {
 	 */
 	public void addMemberEx(LegionMemberEx legionMember) {
 		if (legionMemberExById.containsKey(legionMember.getObjectId())
-				|| legionMemberExByName.containsKey(legionMember.getName())) {
+			|| legionMemberExByName.containsKey(legionMember.getName()))
 			throw new DuplicateAionObjectException();
-		}
 		legionMemberExById.put(legionMember.getObjectId(), legionMember);
 		legionMemberExByName.put(legionMember.getName(), legionMember);
 	}

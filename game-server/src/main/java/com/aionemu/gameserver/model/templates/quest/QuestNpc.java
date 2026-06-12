@@ -33,13 +33,13 @@ public class QuestNpc {
 	private final List<Integer> onActionItemEvent;
 
 	public QuestNpc() {
-		onQuestStart = new ArrayList<>();
-		onKillEvent = new ArrayList<>();
-		onTalkEvent = new ArrayList<>();
-		onAttackEvent = new ArrayList<>();
-		onLostTargetEvent = new ArrayList<>();
-		onReachTargetEvent = new ArrayList<>();
-		onActionItemEvent = new ArrayList<>();
+		onQuestStart = new ArrayList<Integer>();
+		onKillEvent = new ArrayList<Integer>();
+		onTalkEvent = new ArrayList<Integer>();
+		onAttackEvent = new ArrayList<Integer>();
+		onLostTargetEvent = new ArrayList<Integer>();
+		onReachTargetEvent = new ArrayList<Integer>();
+		onActionItemEvent = new ArrayList<Integer>();
 	}
 
 	public void addOnQuestStart(int questId) {

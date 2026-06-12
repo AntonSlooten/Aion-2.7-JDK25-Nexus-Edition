@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.aionemu.gameserver.model.Race;
 
+
 /**
  * @author vlog
  */
@@ -50,35 +51,36 @@ public class NpcFactionTemplate {
 	public int getId() {
 		return id;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public int getNameId() {
 		return nameId;
 	}
-
+	
 	public FactionCategory getCategory() {
 		return category;
 	}
-
+	
 	public int getMinLevel() {
 		return minlevel;
 	}
-
+	
 	public int getMaxLevel() {
 		return maxlevel;
 	}
-
+	
 	public Race getRace() {
 		return race;
 	}
-
-	public boolean isMentor() {
+	
+	public boolean isMentor(){
 		return category == FactionCategory.MENTOR;
 	}
 
+	
 	/**
 	 * @return the npcId
 	 */

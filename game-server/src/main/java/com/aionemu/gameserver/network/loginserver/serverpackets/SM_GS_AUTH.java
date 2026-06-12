@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -25,16 +25,15 @@ import com.aionemu.gameserver.network.loginserver.LoginServerConnection;
 import com.aionemu.gameserver.network.loginserver.LsServerPacket;
 
 /**
- * This is authentication packet that gs will send to login server for
- * registration.
- *
+ * This is authentication packet that gs will send to login server for registration.
+ * 
  * @author -Nemesiss-
  */
 public class SM_GS_AUTH extends LsServerPacket {
 	public SM_GS_AUTH() {
 		super(0x00);
 	}
-
+	
 	@Override
 	protected void writeImpl(LoginServerConnection con) {
 		writeC(NetworkConfig.GAMESERVER_ID);

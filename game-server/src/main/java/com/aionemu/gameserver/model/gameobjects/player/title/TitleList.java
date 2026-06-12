@@ -41,7 +41,7 @@ public class TitleList {
 	private Player owner;
 
 	public TitleList() {
-		this.titles = new FastMap<>();
+		this.titles = new FastMap<Integer, Title>();
 		this.owner = null;
 	}
 
@@ -78,19 +78,18 @@ public class TitleList {
 			Title entry = new Title(tt, titleId, time);
 			if (!titles.containsKey(titleId)) {
 				titles.put(titleId, entry);
-				if (time != 0) {
+				if (time != 0)
 					ExpireTimerTask.getInstance().addTask(entry, owner);
-				}
 				DAOManager.getDAO(PlayerTitleListDAO.class).storeTitles(owner, entry);
-			} else {
+			}
+			else {
 				PacketSendUtility.sendPacket(owner, SM_SYSTEM_MESSAGE.STR_TOOLTIP_LEARNED_TITLE);
 				return false;
 			}
-			if (questReward) {
+			if (questReward)
 				PacketSendUtility.sendPacket(owner, SM_SYSTEM_MESSAGE.STR_QUEST_GET_REWARD_TITLE(tt.getNameId()));
-			} else {
+			else
 				PacketSendUtility.sendPacket(owner, SM_SYSTEM_MESSAGE.STR_MSG_GET_CASH_TITLE(tt.getNameId()));
-			}
 
 			PacketSendUtility.sendPacket(owner, new SM_TITLE_INFO(owner));
 			return true;
@@ -113,12 +112,10 @@ public class TitleList {
 	}
 
 	public void removeTitle(int titleId) {
-		if (!titles.containsKey(titleId)) {
+		if (!titles.containsKey(titleId))
 			return;
-		}
-		if (owner.getCommonData().getTitleId() == titleId) {
+		if (owner.getCommonData().getTitleId() == titleId)
 			setTitle(-1);
-		}
 		titles.remove(titleId);
 		PacketSendUtility.sendPacket(owner, new SM_TITLE_INFO(owner));
 		DAOManager.getDAO(PlayerTitleListDAO.class).removeTitle(owner.getObjectId(), titleId);

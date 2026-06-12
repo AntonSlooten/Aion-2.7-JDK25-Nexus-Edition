@@ -51,7 +51,7 @@ public class SkillLearnService {
 
 	/**
 	 * Recursively check missing skills and add them to player
-	 *
+	 * 
 	 * @param player
 	 */
 	public static void addMissingSkills(Player player) {
@@ -59,16 +59,16 @@ public class SkillLearnService {
 		PlayerClass playerClass = player.getCommonData().getPlayerClass();
 		Race playerRace = player.getRace();
 
-		for (int i = 0; i <= level; i++) {
+		for (int i = 0; i <= level; i++) 
 			addSkills(player, i, playerClass, playerRace);
-		}
+	
 
 		if (!playerClass.isStartingClass()) {
 			PlayerClass startinClass = PlayerClass.getStartingClassFor(playerClass);
 
-			for (int i = 1; i < 10; i++) {
+			for (int i = 1; i < 10; i++) 
 				addSkills(player, i, startinClass, playerRace);
-			}
+			
 
 			if (player.getSkillList().getSkillEntry(30001) != null) {
 				int skillLevel = player.getSkillList().getSkillLevel(30001);
@@ -81,48 +81,42 @@ public class SkillLearnService {
 
 	/**
 	 * Adds skill to player according to the specified level, class and race
-	 *
+	 * 
 	 * @param player
 	 * @param level
 	 * @param playerClass
 	 * @param playerRace
 	 */
 	private static void addSkills(Player player, int level, PlayerClass playerClass, Race playerRace) {
-		SkillLearnTemplate[] skillTemplates = DataManager.SKILL_TREE_DATA.getTemplatesFor(playerClass, level,
-				playerRace);
+		SkillLearnTemplate[] skillTemplates = DataManager.SKILL_TREE_DATA.getTemplatesFor(playerClass, level, playerRace);
 		PlayerSkillList playerSkillList = player.getSkillList();
 
 		for (SkillLearnTemplate template : skillTemplates) {
-			if (!checkLearnIsPossible(player, playerSkillList, template)) {
+			if (!checkLearnIsPossible(player, playerSkillList, template))
 				continue;
-			}
 
 			playerSkillList.addSkill(player, template.getSkillId(), template.getSkillLevel());
 		}
 	}
 
 	/**
-	 * Check SKILL_AUTOLEARN property Check skill already learned Check skill
-	 * template auto-learn attribute
-	 *
+	 * Check SKILL_AUTOLEARN property Check skill already learned Check skill template auto-learn attribute
+	 * 
 	 * @param playerSkillList
 	 * @param template
 	 * @return
 	 */
 	private static boolean checkLearnIsPossible(Player player, PlayerSkillList playerSkillList,
-			SkillLearnTemplate template) {
-		if (playerSkillList.isSkillPresent(template.getSkillId())) {
+		SkillLearnTemplate template) {
+		if (playerSkillList.isSkillPresent(template.getSkillId()))
 			return true;
-		}
 
 		if ((player.havePermission(MembershipConfig.SKILL_AUTOLEARN) && !template.isStigma())
-				|| (player.havePermission(MembershipConfig.STIGMA_AUTOLEARN) && template.isStigma())) {
+			|| (player.havePermission(MembershipConfig.STIGMA_AUTOLEARN) && template.isStigma()))
 			return true;
-		}
 
-		if (template.isAutolearn()) {
+		if (template.isAutolearn())
 			return true;
-		}
 
 		return false;
 	}
@@ -136,9 +130,8 @@ public class SkillLearnService {
 
 			for (SkillLearnTemplate skill : skillTemplates) {
 				if (skillId == skill.getSkillId()) {
-					if (skill.getSkillLevel() > maxLevel) {
+					if (skill.getSkillLevel() > maxLevel)
 						maxLevel = skill.getSkillLevel();
-					}
 				}
 			}
 		}
@@ -149,10 +142,11 @@ public class SkillLearnService {
 		if (player.getSkillList().isSkillPresent(skillId)) {
 			Integer skillLevel = player.getSkillList().getSkillLevel(skillId);
 			/*
-			 * if(skillLevel == null) skillLevel = 1;
-			 */
-			PacketSendUtility.sendPacket(player,
-					new SM_SKILL_REMOVE(skillId, skillLevel, player.getSkillList().getSkillEntry(skillId).isStigma()));
+			if(skillLevel == null)
+				skillLevel = 1;
+			*/
+			PacketSendUtility.sendPacket(player, new SM_SKILL_REMOVE(skillId, skillLevel,
+				player.getSkillList().getSkillEntry(skillId).isStigma()));
 			player.getSkillList().removeSkill(skillId);
 		}
 	}
@@ -163,21 +157,18 @@ public class SkillLearnService {
 		int maxLevel = 0;
 
 		for (SkillLearnTemplate template : skillTemplates) {
-			if (maxLevel < template.getSkillLevel()) {
+			if (maxLevel < template.getSkillLevel())
 				maxLevel = template.getSkillLevel();
-			}
 		}
 
 		// no data in skill tree, use as wanted
-		if (maxLevel == 0) {
+		if (maxLevel == 0)
 			return wantedSkillLevel;
-		}
 
 		learnFinishes = playerLevel + maxLevel;
 
-		if (learnFinishes > DataManager.PLAYER_EXPERIENCE_TABLE.getMaxLevel()) {
+		if (learnFinishes > DataManager.PLAYER_EXPERIENCE_TABLE.getMaxLevel())
 			learnFinishes = DataManager.PLAYER_EXPERIENCE_TABLE.getMaxLevel();
-		}
 
 		return Math.max(wantedSkillLevel, Math.min(playerLevel - (learnFinishes - maxLevel) + 1, maxLevel));
 	}
@@ -187,14 +178,12 @@ public class SkillLearnService {
 		SkillLearnTemplate foundTemplate = null;
 
 		for (SkillLearnTemplate template : skillTemplates) {
-			if (template.getSkillLevel() <= wantedSkillLevel && template.getMinLevel() <= playerLevel) {
+			if (template.getSkillLevel() <= wantedSkillLevel && template.getMinLevel() <= playerLevel)
 				foundTemplate = template;
-			}
 		}
 
-		if (foundTemplate == null) {
+		if (foundTemplate == null)
 			return playerLevel;
-		}
 
 		return foundTemplate.getMinLevel();
 	}

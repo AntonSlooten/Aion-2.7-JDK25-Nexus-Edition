@@ -29,6 +29,7 @@ import com.aionemu.gameserver.questEngine.model.QuestState;
 import com.aionemu.gameserver.questEngine.model.QuestStatus;
 import com.aionemu.gameserver.utils.MathUtil;
 
+
 /**
  * @author MrPoke
  *
@@ -38,15 +39,13 @@ public class MentorMonsterHunt extends MonsterHunt {
 	private int menteMinLevel;
 	private int menteMaxLevel;
 	private QuestTemplate qt;
-
 	/**
 	 * @param questId
 	 * @param startNpc
 	 * @param endNpc
 	 * @param monsters
 	 */
-	public MentorMonsterHunt(int questId, int startNpc, int endNpc, FastMap<Integer, Monster> monsters,
-			int menteMinLevel, int menteMaxLevel) {
+	public MentorMonsterHunt(int questId, int startNpc, int endNpc, FastMap<Integer, Monster> monsters, int menteMinLevel, int menteMaxLevel) {
 		super(questId, startNpc, 0, endNpc, 0, monsters);
 		this.menteMinLevel = menteMinLevel;
 		this.menteMaxLevel = menteMaxLevel;
@@ -57,29 +56,27 @@ public class MentorMonsterHunt extends MonsterHunt {
 	public boolean onKillEvent(QuestEnv env) {
 		Player player = env.getPlayer();
 		QuestState qs = player.getQuestStateList().getQuestState(getQuestId());
-		if (qs != null && qs.getStatus() == QuestStatus.START) {
-			switch (qt.getMentorType()) {
-			case MENTOR:
-				if (player.isMentor()) {
-					PlayerGroup group = player.getPlayerGroup2();
-					for (Player member : group.getMembers()) {
-						if (member.getLevel() >= menteMinLevel && member.getLevel() <= menteMaxLevel
+		if (qs != null && qs.getStatus() == QuestStatus.START){
+			switch(qt.getMentorType()){
+				case MENTOR:
+					if (player.isMentor()) {
+						PlayerGroup group = player.getPlayerGroup2();
+						for (Player member : group.getMembers()) {
+							if (member.getLevel() >= menteMinLevel && member.getLevel() <= menteMaxLevel
 								&& MathUtil.getDistance(player, member) < GroupConfig.GROUP_MAX_DISTANCE) {
-							return super.onKillEvent(env);
+								return super.onKillEvent(env);
+							}
 						}
 					}
-				}
-				break;
-			case MENTE:
-				if (player.isInGroup2()) {
-					PlayerGroup group = player.getPlayerGroup2();
-					for (Player member : group.getMembers()) {
-						if (member.isMentor()
-								&& MathUtil.getDistance(player, member) < GroupConfig.GROUP_MAX_DISTANCE) {
-							return super.onKillEvent(env);
+					break;
+				case MENTE:
+					if (player.isInGroup2()){
+						PlayerGroup group = player.getPlayerGroup2();
+						for (Player member : group.getMembers()){
+							if (member.isMentor() && MathUtil.getDistance(player, member) < GroupConfig.GROUP_MAX_DISTANCE)
+								return super.onKillEvent(env);
 						}
 					}
-				}
 			}
 		}
 		return false;

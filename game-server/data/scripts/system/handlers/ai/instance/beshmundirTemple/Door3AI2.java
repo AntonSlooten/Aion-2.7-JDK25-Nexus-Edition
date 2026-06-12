@@ -32,17 +32,18 @@ import ai.ActionItemNpcAI2;
  */
 @AIName("door3")
 public class Door3AI2 extends ActionItemNpcAI2 {
-
+	
 	private VisibleObject spawned = null;
 
 	@Override
 	protected void handleDialogStart(Player player) {
 		player.getActionItemNpc().setCondition(1, 0, getTalkDelay());
 		if (player.getInventory().getItemCountByItemId(185000091) > 0) {
-			if (spawned == null || !spawned.isSpawned())
+			if  (spawned == null || !spawned.isSpawned())
 				spawned = spawn(216168, 1511.69f, 1048.16f, 273.441f, (byte) 40); // Spawn Flarestorm
 			super.handleUseItemStart(player);
-		} else {
+		}
+		else {
 			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 27));
 		}
 	}

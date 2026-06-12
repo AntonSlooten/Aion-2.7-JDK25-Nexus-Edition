@@ -61,73 +61,73 @@ public class CM_CHAT_MESSAGE_PUBLIC extends AionClientPacket {
 	protected void runImpl() {
 
 		final Player player = getConnection().getActivePlayer();
-
+		
+		
 		if (message.startsWith(".")) {
-			CommandService.getInstance().process(player, message.substring(1), false);
-			return;
-		} else if (message.startsWith("//")) {
-			CommandService.getInstance().process(player, message.substring(2), true);
-			return;
-		}
+        	CommandService.getInstance().process(player, message.substring(1), false);
+        	return;
+        }
+		else if (message.startsWith("//")) {
+        	CommandService.getInstance().process(player, message.substring(2), true);
+        	return;
+        }
 
-		if (LoggingConfig.LOG_CHAT) {
+		if (LoggingConfig.LOG_CHAT)
 			PlayerChatService.chatLogging(player, type, message);
-		}
 
 		if (RestrictionsManager.canChat(player) && !PlayerChatService.isFlooding(player)) {
 			switch (this.type) {
-			case GROUP:
-				if (!player.isInTeam()) {
-					return;
-				}
-				broadcastToGroupMembers(player);
-				break;
-			case ALLIANCE:
-				if (!player.isInAlliance2()) {
-					return;
-				}
-				broadcastToAllianceMembers(player);
-				break;
-			case GROUP_LEADER:
-				if (!player.isInTeam()) {
-					return;
-				}
-				// Alert must go to entire group or alliance.
-				if (player.isInGroup2()) {
+				case GROUP:
+					if (!player.isInTeam())
+						return;
 					broadcastToGroupMembers(player);
-				} else {
+					break;
+				case ALLIANCE:
+					if (!player.isInAlliance2())
+						return;
 					broadcastToAllianceMembers(player);
-				}
-				break;
-			case LEGION:
-				broadcastToLegionMembers(player);
-				break;
-			case LEAGUE:
-			case LEAGUE_ALERT:
-				if (!player.isInLeague()) {
-					return;
-				}
-				broadcastToLeagueMembers(player);
-				break;
-			case NORMAL:
-			case SHOUT:
-				if (player.isGM()) {
-					broadcastFromGm(player);
-				} else {
-					if (CustomConfig.SPEAKING_BETWEEN_FACTIONS) {
-						broadcastToNonBlockedPlayers(player);
-					} else {
-						broadcastToNonBlockedRacePlayers(player);
+					break;
+				case GROUP_LEADER:
+					if (!player.isInTeam())
+						return;
+					// Alert must go to entire group or alliance.
+					if (player.isInGroup2())
+						broadcastToGroupMembers(player);
+					else
+						broadcastToAllianceMembers(player);
+					break;
+				case LEGION:
+					broadcastToLegionMembers(player);
+					break;
+				case LEAGUE:
+				case LEAGUE_ALERT:
+					if (!player.isInLeague()) {
+						return;
 					}
-				}
-				break;
-			default:
-				if (player.isGM()) {
-					broadcastFromGm(player);
-				} else {
-					AuditLogger.info(player, String.format("Send message type %s. Message: %s", type, message));
-				}
-				break;
+					broadcastToLeagueMembers(player);
+					break;
+				case NORMAL:
+				case SHOUT:
+					if (player.isGM()) {
+						broadcastFromGm(player);
+					}
+					else {
+						if (CustomConfig.SPEAKING_BETWEEN_FACTIONS) {
+							broadcastToNonBlockedPlayers(player);
+						}
+						else {
+							broadcastToNonBlockedRacePlayers(player);
+						}
+					}
+					break;
+				default:
+					if (player.isGM()) {
+						broadcastFromGm(player);
+					}
+					else {
+						AuditLogger.info(player, String.format("Send message type %s. Message: %s", type, message));
+					}
+					break;
 			}
 		}
 	}
@@ -147,15 +147,14 @@ public class CM_CHAT_MESSAGE_PUBLIC extends AionClientPacket {
 	 * @param player
 	 */
 	private void broadcastToNonBlockedPlayers(final Player player) {
-		PacketSendUtility.broadcastPacket(player, new SM_MESSAGE(player, message, type), true,
-				new ObjectFilter<Player>() {
+		PacketSendUtility.broadcastPacket(player, new SM_MESSAGE(player, message, type), true, new ObjectFilter<Player>() {
 
-					@Override
-					public boolean acceptObject(Player object) {
-						return !object.getBlockList().contains(player.getObjectId());
-					}
+			@Override
+			public boolean acceptObject(Player object) {
+				return !object.getBlockList().contains(player.getObjectId());
+			}
 
-				});
+		});
 	}
 
 	/**
@@ -165,38 +164,36 @@ public class CM_CHAT_MESSAGE_PUBLIC extends AionClientPacket {
 	 */
 	private void broadcastToNonBlockedRacePlayers(final Player player) {
 		final int senderRace = player.getRace().getRaceId();
-		PacketSendUtility.broadcastPacket(player, new SM_MESSAGE(player, message, type), true,
-				new ObjectFilter<Player>() {
+		PacketSendUtility.broadcastPacket(player, new SM_MESSAGE(player, message, type), true, new ObjectFilter<Player>() {
 
-					@Override
-					public boolean acceptObject(Player object) {
-						return ((senderRace == object.getRace().getRaceId()
-								&& !object.getBlockList().contains(player.getObjectId())) || object.isGM());
-					}
+			@Override
+			public boolean acceptObject(Player object) {
+				return ((senderRace == object.getRace().getRaceId() && !object.getBlockList().contains(player.getObjectId())) || object.isGM());
+			}
 
-				});
-		PacketSendUtility.broadcastPacket(player, new SM_MESSAGE(player, "Unknow Message", type), false,
-				new ObjectFilter<Player>() {
+		});
+		PacketSendUtility.broadcastPacket(player, new SM_MESSAGE(player, "Unknow Message", type), false, new ObjectFilter<Player>() {
 
-					@Override
-					public boolean acceptObject(Player object) {
-						return senderRace != object.getRace().getRaceId()
-								&& !object.getBlockList().contains(player.getObjectId()) && !object.isGM();
-					}
+			@Override
+			public boolean acceptObject(Player object) {
+				return senderRace != object.getRace().getRaceId() && !object.getBlockList().contains(player.getObjectId()) && !object.isGM();
+			}
 
-				});
+		});
 	}
 
 	/**
 	 * Sends message to all group members (regular player group, or alliance
-	 * sub-group Error 105, random value for players to report. Should never happen.
+	 * sub-group Error 105, random value for players to report. Should never
+	 * happen.
 	 *
 	 * @param player
 	 */
 	private void broadcastToGroupMembers(final Player player) {
 		if (player.isInTeam()) {
 			player.getCurrentGroup().sendPacket(new SM_MESSAGE(player, message, type));
-		} else {
+		}
+		else {
 			PacketSendUtility.sendMessage(player, "You are not in an alliance or group. (Error 105)");
 		}
 	}

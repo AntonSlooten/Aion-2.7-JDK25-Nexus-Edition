@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.model.gameobjects.player.BlockList;
 import com.aionemu.gameserver.model.gameobjects.player.BlockedPlayer;
 import com.aionemu.gameserver.network.aion.AionConnection;
@@ -23,7 +24,7 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * Packet responsible for telling a player his block list
- *
+ * 
  * @author Ben
  */
 public class SM_BLOCK_LIST extends AionServerPacket {

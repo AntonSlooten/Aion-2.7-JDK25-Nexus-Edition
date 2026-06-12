@@ -43,14 +43,13 @@ public class CM_QUESTIONNAIRE extends AionClientPacket {
 
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see com.aionemu.commons.network.packet.BaseClientPacket#readImpl()
 	 */
 	@Override
 	protected void readImpl() {
 		objectId = readD();
 		itemSize = readH();
-		items = new ArrayList<>();
+		items = new ArrayList<Integer>();
 		for (int i = 0; i < itemSize; i++) {
 			itemId = readD();
 			items.add(itemId);
@@ -60,7 +59,6 @@ public class CM_QUESTIONNAIRE extends AionClientPacket {
 
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see com.aionemu.commons.network.packet.BaseClientPacket#runImpl()
 	 */
 	@Override

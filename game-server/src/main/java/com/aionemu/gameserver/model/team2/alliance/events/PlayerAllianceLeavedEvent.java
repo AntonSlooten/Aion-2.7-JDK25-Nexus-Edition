@@ -42,7 +42,7 @@ public class PlayerAllianceLeavedEvent extends PlayerLeavedEvent<PlayerAllianceM
 	}
 
 	public PlayerAllianceLeavedEvent(PlayerAlliance team, Player player, PlayerLeavedEvent.LeaveReson reason,
-			String banPersonName) {
+		String banPersonName) {
 		super(team, player, reason, banPersonName);
 	}
 
@@ -62,24 +62,25 @@ public class PlayerAllianceLeavedEvent extends PlayerLeavedEvent<PlayerAllianceM
 		team.apply(this);
 
 		switch (reason) {
-		case BAN:
-		case LEAVE:
-		case LEAVE_TIMEOUT:
-			if (team.onlineMembers() <= 1) {
-				PlayerAllianceService.disband(team);
-			} else {
-				if (leavedPlayer.equals(team.getLeader().getObject())) {
-					team.onEvent(new ChangeAllianceLeaderEvent(team));
+			case BAN:
+			case LEAVE:
+			case LEAVE_TIMEOUT:
+				if (team.onlineMembers() <= 1) {
+					PlayerAllianceService.disband(team);
 				}
-			}
-			if (reason == LeaveReson.BAN) {
-				PacketSendUtility.sendPacket(leavedPlayer, SM_SYSTEM_MESSAGE.STR_FORCE_BAN_ME(banPersonName));
-			}
+				else {
+					if (leavedPlayer.equals(team.getLeader().getObject())) {
+						team.onEvent(new ChangeAllianceLeaderEvent(team));
+					}
+				}
+				if (reason == LeaveReson.BAN) {
+					PacketSendUtility.sendPacket(leavedPlayer, SM_SYSTEM_MESSAGE.STR_FORCE_BAN_ME(banPersonName));
+				}
 
-			break;
-		case DISBAND:
-			PacketSendUtility.sendPacket(leavedPlayer, SM_SYSTEM_MESSAGE.STR_PARTY_ALLIANCE_DISPERSED);
-			break;
+				break;
+			case DISBAND:
+				PacketSendUtility.sendPacket(leavedPlayer, SM_SYSTEM_MESSAGE.STR_PARTY_ALLIANCE_DISPERSED);
+				break;
 		}
 
 		if (leavedPlayer.isInInstance()) {
@@ -88,8 +89,8 @@ public class PlayerAllianceLeavedEvent extends PlayerLeavedEvent<PlayerAllianceM
 				@Override
 				public void run() {
 					if (!leavedPlayer.isInAlliance2()) {
-						PortalTemplate portalTemplate = DataManager.PORTAL_DATA
-								.getInstancePortalTemplate(leavedPlayer.getWorldId(), leavedPlayer.getRace());
+						PortalTemplate portalTemplate = DataManager.PORTAL_DATA.getInstancePortalTemplate(
+							leavedPlayer.getWorldId(), leavedPlayer.getRace());
 						if (portalTemplate != null && portalTemplate.getPlayerSize() > 6) {
 							InstanceService.moveToEntryPoint(leavedPlayer, portalTemplate, true);
 						}
@@ -108,21 +109,21 @@ public class PlayerAllianceLeavedEvent extends PlayerLeavedEvent<PlayerAllianceM
 		PacketSendUtility.sendPacket(player, new SM_ALLIANCE_INFO(team));
 
 		switch (reason) {
-		case LEAVE_TIMEOUT:
-			PacketSendUtility.sendPacket(player,
+			case LEAVE_TIMEOUT:
+				PacketSendUtility.sendPacket(player,
 					SM_SYSTEM_MESSAGE.STR_PARTY_ALLIANCE_HE_LEAVED_PARTY(leavedPlayer.getName()));
-			break;
-		case LEAVE:
-			PacketSendUtility.sendPacket(player,
+				break;
+			case LEAVE:
+				PacketSendUtility.sendPacket(player,
 					SM_SYSTEM_MESSAGE.STR_PARTY_ALLIANCE_HE_LEAVED_PARTY(leavedPlayer.getName()));
-			break;
-		case DISBAND:
-			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_PARTY_ALLIANCE_DISPERSED);
-			break;
-		case BAN:
-			PacketSendUtility.sendPacket(player,
-					SM_SYSTEM_MESSAGE.STR_FORCE_BAN_HIM(banPersonName, leavedPlayer.getName()));
-			break;
+				break;
+			case DISBAND:
+				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_PARTY_ALLIANCE_DISPERSED);
+				break;
+			case BAN:
+				PacketSendUtility
+					.sendPacket(player, SM_SYSTEM_MESSAGE.STR_FORCE_BAN_HIM(banPersonName, leavedPlayer.getName()));
+				break;
 		}
 
 		return true;

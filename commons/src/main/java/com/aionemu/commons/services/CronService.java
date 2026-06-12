@@ -5,10 +5,8 @@ import com.aionemu.commons.services.cron.RunnableRunner;
 import com.aionemu.commons.utils.GenericValidator;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
-
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -149,7 +147,7 @@ public final class CronService {
 		}
 
 		try {
-			Set<JobKey> keys = scheduler.getJobKeys(GroupMatcher.anyJobGroup());
+			Set<JobKey> keys = scheduler.getJobKeys(null);
 
 			if (GenericValidator.isBlankOrNull(keys)) {
 				return Collections.emptySet();

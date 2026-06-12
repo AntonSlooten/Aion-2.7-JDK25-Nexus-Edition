@@ -40,83 +40,71 @@ public abstract class AbstractHealEffect extends EffectTemplate {
 	protected boolean percent;
 
 	public void calculate(Effect effect, HealType healType) {
-		if (!super.calculate(effect, null, null)) {
+		if (!super.calculate(effect, null, null))
 			return;
-		}
 		Creature effector = effect.getEffector();
 
 		int valueWithDelta = value + delta * effect.getSkillLevel();
 		int currentValue = getCurrentStatValue(effect);
 		int maxCurValue = getMaxStatValue(effect);
 		int possibleHealValue = 0;
-		if (percent) {
+		if (percent)
 			possibleHealValue = maxCurValue * valueWithDelta / 100;
-		} else {
+		else
 			possibleHealValue = valueWithDelta;
-		}
-
+		
 		int finalHeal = possibleHealValue;
-
+		
 		if (!percent && healType == HealType.HP && effect.getItemTemplate() == null) {
 			int baseHeal = possibleHealValue;
 			int boostHealAdd = effector.getGameStats().getStat(StatEnum.HEAL_BOOST, 0).getCurrent();
 			// Apply percent Heal Boost bonus (ex. Passive skills)
-			int boostHeal = (effector.getGameStats().getStat(StatEnum.HEAL_BOOST, baseHeal).getCurrent()
-					- boostHealAdd);
+			int boostHeal = (effector.getGameStats().getStat(StatEnum.HEAL_BOOST, baseHeal).getCurrent() - boostHealAdd);
 			// Apply Add Heal Boost bonus (ex. Skills like Benevolence)
-			if (boostHealAdd > 0) {
+			if (boostHealAdd > 0)
 				boostHeal += Math.round(boostHeal * boostHealAdd / 1000);
-			}
 			finalHeal = effect.getEffected().getGameStats().getStat(StatEnum.HEAL_SKILL_BOOST, boostHeal).getCurrent();
 		}
-
+		
 		finalHeal = maxCurValue - currentValue < finalHeal ? (maxCurValue - currentValue) : finalHeal;
-
-		if (healType == HealType.HP
-				&& effect.getEffected().getEffectController().isAbnormalSet(AbnormalState.DISEASE)) {
+		
+		if (healType == HealType.HP && effect.getEffected().getEffectController().isAbnormalSet(AbnormalState.DISEASE))
 			finalHeal = 0;
-		}
-
+		
 		effect.setReservedInt(position, finalHeal);
 		effect.setReserved1(-finalHeal);
 	}
-
+	
 	public void applyEffect(Effect effect, HealType healType) {
 		Creature effected = effect.getEffected();
 		int healValue = effect.getReservedInt(position);
-
-		if (healValue <= 0) {
+		
+		if (healValue <= 0)
 			return;
-		}
-
+		
 		switch (healType) {
-		case HP:
-			if (this instanceof ProcHealInstantEffect) { // item heal, eg potions
-				effected.getLifeStats().increaseHp(TYPE.HP, healValue, 0, LOG.REGULAR);
-			} else { // TODO shouldnt send value, on retail sm_attack_status is send only to update
-						// hp bar
-				// TODO shouldnt send value, on retail sm_attack_status is send only to update
-				// hp bar
-				effected.getLifeStats().increaseHp(TYPE.REGULAR, healValue, 0, LOG.REGULAR);
-			}
-			break;
-		case MP:
-			if (this instanceof ProcMPHealInstantEffect) { // item heal, eg potions
-				effected.getLifeStats().increaseMp(TYPE.MP, healValue, 0, LOG.REGULAR);
-			} else {
-				effected.getLifeStats().increaseMp(TYPE.HEAL_MP, healValue, 0, LOG.REGULAR);
-			}
-			break;
-		case FP:
-			effected.getLifeStats().increaseFp(TYPE.FP, healValue);
-			break;
-		case DP:
-			((Player) effected).getCommonData().addDp(healValue);
-			break;
+			case HP:
+				if (this instanceof ProcHealInstantEffect)//item heal, eg potions
+					effected.getLifeStats().increaseHp(TYPE.HP, healValue, 0, LOG.REGULAR);
+				else
+					//TODO shouldnt send value, on retail sm_attack_status is send only to update hp bar
+					effected.getLifeStats().increaseHp(TYPE.REGULAR, healValue, 0, LOG.REGULAR);
+				break;
+			case MP:
+				if (this instanceof ProcMPHealInstantEffect)//item heal, eg potions
+					effected.getLifeStats().increaseMp(TYPE.MP, healValue, 0, LOG.REGULAR);
+				else
+					effected.getLifeStats().increaseMp(TYPE.HEAL_MP, healValue, 0, LOG.REGULAR);
+				break;
+			case FP:
+				effected.getLifeStats().increaseFp(TYPE.FP, healValue);
+				break;
+			case DP:
+				((Player)effected).getCommonData().addDp(healValue);
+				break;
 		}
 	}
 
 	protected abstract int getCurrentStatValue(Effect effect);
-
 	protected abstract int getMaxStatValue(Effect effect);
 }

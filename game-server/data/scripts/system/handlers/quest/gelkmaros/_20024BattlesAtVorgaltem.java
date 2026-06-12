@@ -34,7 +34,7 @@ public class _20024BattlesAtVorgaltem extends QuestHandler {
 
 	private final static int questId = 20024;
 	private final static int[] mobs = { 216104, 216101, 216109, 216112, 216107, 216033, 216034, 216448, 216450, 216451,
-			216108, 216449, 700811 };
+		216108, 216449, 700811 };
 
 	public _20024BattlesAtVorgaltem() {
 		super(questId);
@@ -67,105 +67,112 @@ public class _20024BattlesAtVorgaltem extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 799226: { // Valetta
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 799226: { // Valetta
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+					}
+					break;
+				}
+				case 799308: { // Ankea
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+							else if (var == 3) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+						case STEP_TO_4: {
+							return defaultCloseDialog(env, 3, 4); // 4
+						}
+					}
+					break;
+				}
+				case 799298: { // Vegrim
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 4) {
+								return sendQuestDialog(env, 2375);
+							}
+							else if (var == 5) {
+								return sendQuestDialog(env, 2716);
+							}
+							else if (var == 7) {
+								return sendQuestDialog(env, 3398);
+							}
+							else if (var == 9) {
+								return sendQuestDialog(env, 4080);
+							}
+							else if (var == 11) {
+								return sendQuestDialog(env, 1608);
+							}
+						}
+						case SELECT_ACTION_1609: {
+							if (var == 11) {
+								playQuestMovie(env, 554);
+								return sendQuestDialog(env, 1609);
+							}
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 5, 6, false, 10000, 10001); // 6
+						}
+						case STEP_TO_5: {
+							return defaultCloseDialog(env, 4, 5); // 5
+						}
+						case STEP_TO_8: {
+							return defaultCloseDialog(env, 7, 8, 182207615, 1, 0, 0); // 8
+						}
+						case STEP_TO_10: {
+							return defaultCloseDialog(env, 9, 10, 182207616, 1, 0, 0); // 10
+						}
+						case SET_REWARD: {
+							return defaultCloseDialog(env, 11, 11, true, false); // reward
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
+					}
+					break;
+				}
+				case 798713: { // Fjoersvith
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 6) {
+								return sendQuestDialog(env, 3057);
+							}
+						}
+						case STEP_TO_7: {
+							return defaultCloseDialog(env, 6, 7); // 7
+						}
+					}
+					break;
+				}
+				case 700707: { // Drana Control Tower
+					switch (dialog) {
+						case USE_OBJECT: {
+							return useQuestObject(env, 10, 11, false, 0, 0, 0, 182207616, 1); // 11
+						}
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-				break;
 			}
-			case 799308: { // Ankea
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					} else if (var == 3) {
-						return sendQuestDialog(env, 2034);
-					}
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				case STEP_TO_4: {
-					return defaultCloseDialog(env, 3, 4); // 4
-				}
-				}
-				break;
-			}
-			case 799298: { // Vegrim
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 4) {
-						return sendQuestDialog(env, 2375);
-					} else if (var == 5) {
-						return sendQuestDialog(env, 2716);
-					} else if (var == 7) {
-						return sendQuestDialog(env, 3398);
-					} else if (var == 9) {
-						return sendQuestDialog(env, 4080);
-					} else if (var == 11) {
-						return sendQuestDialog(env, 1608);
-					}
-				}
-				case SELECT_ACTION_1609: {
-					if (var == 11) {
-						playQuestMovie(env, 554);
-						return sendQuestDialog(env, 1609);
-					}
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 5, 6, false, 10000, 10001); // 6
-				}
-				case STEP_TO_5: {
-					return defaultCloseDialog(env, 4, 5); // 5
-				}
-				case STEP_TO_8: {
-					return defaultCloseDialog(env, 7, 8, 182207615, 1, 0, 0); // 8
-				}
-				case STEP_TO_10: {
-					return defaultCloseDialog(env, 9, 10, 182207616, 1, 0, 0); // 10
-				}
-				case SET_REWARD: {
-					return defaultCloseDialog(env, 11, 11, true, false); // reward
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-				break;
-			}
-			case 798713: { // Fjoersvith
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 6) {
-						return sendQuestDialog(env, 3057);
-					}
-				}
-				case STEP_TO_7: {
-					return defaultCloseDialog(env, 6, 7); // 7
-				}
-				}
-				break;
-			}
-			case 700707: { // Drana Control Tower
-				switch (dialog) {
-				case USE_OBJECT: {
-					return useQuestObject(env, 10, 11, false, 0, 0, 0, 182207616, 1); // 11
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799226) { // Valetta
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
@@ -187,44 +194,48 @@ public class _20024BattlesAtVorgaltem extends QuestHandler {
 				int var2 = qs.getQuestVarById(2);
 
 				switch (targetId) {
-				case 216034:
-				case 216033: { // Naduka Wardrake
-					if (var1 < 9) {
-						return defaultOnKillEvent(env, nadukas, 0, 9, 1); // 1: 0 - 9
-					} else if (var1 == 9) {
-						if (var2 == 30) {
-							qs.setQuestVar(3);
-							updateQuestStatus(env);
-							return true;
-						} else {
-							return defaultOnKillEvent(env, nadukas, 9, 10, 1); // 1: 10
+					case 216034:
+					case 216033: { // Naduka Wardrake
+						if (var1 < 9) {
+							return defaultOnKillEvent(env, nadukas, 0, 9, 1); // 1: 0 - 9
 						}
-					}
-					break;
-				}
-				case 216448:
-				case 216450:
-				case 216451:
-				case 216108:
-				case 216449:
-				case 216107:
-				case 216112:
-				case 216109:
-				case 216104:
-				case 216101: { // Balaur of Vorgaltem Battlefield
-					if (var2 < 29) {
-						return defaultOnKillEvent(env, balaurs, 0, 29, 2); // 2: 0 - 29
-					} else if (var2 == 29) {
-						if (var1 == 10) {
-							qs.setQuestVar(3);
-							updateQuestStatus(env);
-							return true;
-						} else {
-							return defaultOnKillEvent(env, balaurs, 29, 30, 2); // 2: 30
+						else if (var1 == 9) {
+							if (var2 == 30) {
+								qs.setQuestVar(3);
+								updateQuestStatus(env);
+								return true;
+							}
+							else {
+								return defaultOnKillEvent(env, nadukas, 9, 10, 1); // 1: 10
+							}
 						}
+						break;
 					}
-					break;
-				}
+					case 216448:
+					case 216450:
+					case 216451:
+					case 216108:
+					case 216449:
+					case 216107:
+					case 216112:
+					case 216109:
+					case 216104:
+					case 216101: { // Balaur of Vorgaltem Battlefield
+						if (var2 < 29) {
+							return defaultOnKillEvent(env, balaurs, 0, 29, 2); // 2: 0 - 29
+						}
+						else if (var2 == 29) {
+							if (var1 == 10) {
+								qs.setQuestVar(3);
+								updateQuestStatus(env);
+								return true;
+							}
+							else {
+								return defaultOnKillEvent(env, balaurs, 29, 30, 2); // 2: 30
+							}
+						}
+						break;
+					}
 				}
 			}
 		}

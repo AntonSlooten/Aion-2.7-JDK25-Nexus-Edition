@@ -32,7 +32,7 @@ public abstract class ItemStoneListDAO implements DAO {
 
 	/**
 	 * Loads stones of item
-	 *
+	 * 
 	 * @param items list of items to load stones
 	 */
 	public abstract void load(Collection<Item> items);
@@ -43,10 +43,10 @@ public abstract class ItemStoneListDAO implements DAO {
 
 	/**
 	 * Saves stones of player
-	 *
+	 * 
 	 * @param player whos stones we need to save
 	 */
-	public void save(Player player) {
+	public void save(Player player){
 		save(player.getAllItems());
 	}
 

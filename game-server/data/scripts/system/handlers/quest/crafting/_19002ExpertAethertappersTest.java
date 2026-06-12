@@ -67,38 +67,39 @@ public class _19002ExpertAethertappersTest extends QuestHandler {
 
 		if (qs != null && qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203783: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 1011);
-				case STEP_TO_1:
-					if (!giveQuestItem(env, 122001251, 1))
-						return true;
-					qs.setQuestVarById(0, 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
+				case 203783: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							return sendQuestDialog(env, 1011);
+						case STEP_TO_1:
+							if (!giveQuestItem(env, 122001251, 1))
+								return true;
+							qs.setQuestVarById(0, 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+					}
+				}
+				case 203782: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(152003007);
+							long itemCount2 = player.getInventory().getItemCountByItemId(152003008);
+							if (itemCount1 > 0 && itemCount2 > 0) {
+								removeQuestItem(env, 152003007, 1);
+								removeQuestItem(env, 152003008, 1);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 1352);
+							}
+							else
+								return sendQuestDialog(env, 10001);
+						}
+					}
 				}
 			}
-			case 203782: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(152003007);
-					long itemCount2 = player.getInventory().getItemCountByItemId(152003008);
-					if (itemCount1 > 0 && itemCount2 > 0) {
-						removeQuestItem(env, 152003007, 1);
-						removeQuestItem(env, 152003008, 1);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 1352);
-					} else
-						return sendQuestDialog(env, 10001);
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203782) {
 				if (env.getDialogId() == 34)
 					return sendQuestDialog(env, 5);

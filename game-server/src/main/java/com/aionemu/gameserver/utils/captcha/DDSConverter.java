@@ -50,19 +50,20 @@ public class DDSConverter {
 
 		@Override
 		public boolean equals(Object o) {
-			if (this == o) {
+			if (this == o)
 				return true;
-			}
-			if (o == null || getClass() != o.getClass()) {
+			if (o == null || getClass() != o.getClass())
 				return false;
-			}
 
 			final Color color = (Color) o;
 
-			// noinspection RedundantIfStatement
-			if ((b != color.b) || (g != color.g) || (r != color.r)) {
+			if (b != color.b)
 				return false;
-			}
+			if (g != color.g)
+				return false;
+			// noinspection RedundantIfStatement
+			if (r != color.r)
+				return false;
 
 			return true;
 		}
@@ -172,9 +173,8 @@ public class DDSConverter {
 		Color[] colorPoints = new Color[] { null, null, new Color(), new Color() };
 		colorPoints[0] = colors[extremaIndices[0]];
 		colorPoints[1] = colors[extremaIndices[1]];
-		if (colorPoints[0].equals(colorPoints[1])) {
+		if (colorPoints[0].equals(colorPoints[1]))
 			return 0;
-		}
 
 		colorPoints[2].r = (2 * colorPoints[0].r + colorPoints[1].r + 1) / 3;
 		colorPoints[2].g = (2 * colorPoints[0].g + colorPoints[1].g + 1) / 3;

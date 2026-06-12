@@ -12,31 +12,27 @@ import com.aionemu.gameserver.model.templates.spawns.siegespawns.SiegeSpawnTempl
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public class CmdDelete extends BaseCommand {
-
-	@Override
+	
 	public void execute(Player admin, String... params) {
 		Npc npc = null;
 		Gatherable gather = null;
 		SpawnTemplate spawn = null;
 
-		if (admin.getTarget() != null && admin.getTarget() instanceof Npc) {
+		if (admin.getTarget() != null && admin.getTarget() instanceof Npc)
 			npc = (Npc) admin.getTarget();
-		}
 
-		if (admin.getTarget() != null && admin.getTarget() instanceof Gatherable) {
+		if (admin.getTarget() != null && admin.getTarget() instanceof Gatherable)
 			gather = (Gatherable) admin.getTarget();
-		}
 
 		if (npc == null && gather == null) {
 			PacketSendUtility.sendMessage(admin, "you need to target an Npc or Gatherable type.");
 			return;
 		}
 
-		if (npc != null) {
+		if (npc != null)
 			spawn = npc.getSpawn();
-		} else {
+		else
 			spawn = gather.getSpawn();
-		}
 
 		if (spawn.hasPool()) {
 			PacketSendUtility.sendMessage(admin, "Can't delete pooled spawn template");
@@ -47,15 +43,15 @@ public class CmdDelete extends BaseCommand {
 			return;
 		}
 
-		if (npc != null) {
+		if (npc != null)
 			npc.getController().onDelete();
-		} else {
+		else
 			gather.getController().onDelete();
-		}
-
+		
 		try {
 			DataManager.SPAWNS_DATA2.saveSpawn(admin, (npc != null ? npc : gather), true);
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			e.printStackTrace();
 			PacketSendUtility.sendMessage(admin, "Could not remove spawn");
 			return;

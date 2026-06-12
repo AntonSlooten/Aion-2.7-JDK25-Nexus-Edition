@@ -34,8 +34,8 @@ import com.google.common.base.Preconditions;
 public class PlayerAlliance extends TemporaryPlayerTeam<PlayerAllianceMember> {
 
 	private LootGroupRules lootGroupRules = new LootGroupRules();
-	private final Map<Integer, PlayerAllianceGroup> groups = new HashMap<>();
-	private final Collection<Integer> viceCaptainIds = new CopyOnWriteArrayList<>();
+	private final Map<Integer, PlayerAllianceGroup> groups = new HashMap<Integer, PlayerAllianceGroup>();
+	private final Collection<Integer> viceCaptainIds = new CopyOnWriteArrayList<Integer>();
 	private int allianceReadyStatus;
 
 	private League league;
@@ -95,7 +95,8 @@ public class PlayerAlliance extends TemporaryPlayerTeam<PlayerAllianceMember> {
 					return playerAllianceGroup;
 				}
 			}
-		} finally {
+		}
+		finally {
 			unlock();
 		}
 		throw new IllegalStateException("All alliance groups are full.");
@@ -142,8 +143,8 @@ public class PlayerAlliance extends TemporaryPlayerTeam<PlayerAllianceMember> {
 	public final int groupSize() {
 		return groups.size();
 	}
-
-	public final Collection<PlayerAllianceGroup> getGroups() {
+	
+	public final Collection<PlayerAllianceGroup> getGroups(){
 		return groups.values();
 	}
 

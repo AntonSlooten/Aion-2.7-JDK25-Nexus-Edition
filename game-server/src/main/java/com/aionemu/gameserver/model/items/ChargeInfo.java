@@ -27,8 +27,8 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_INVENTORY_UPDATE_ITE
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /**
- * @author ATracer modified by Ferosia TODO On attack event, apply attackBurn to
- *         fusionned item charge if item does not have charge level
+ * @author ATracer modified by Ferosia
+ * TODO On attack event, apply attackBurn to fusionned item charge if item does not have charge level
  */
 public class ChargeInfo extends ActionObserver {
 
@@ -64,12 +64,12 @@ public class ChargeInfo extends ActionObserver {
 		int newChargePoints = chargePoints + addPoints;
 		if (newChargePoints > LEVEL2) {
 			newChargePoints = LEVEL2;
-		} else if (newChargePoints < 0) {
+		}
+		else if (newChargePoints < 0) {
 			newChargePoints = 0;
 		}
-		if (item.isEquipped() && player != null) {
+		if (item.isEquipped() && player != null)
 			player.getEquipment().setPersistentState(PersistentState.UPDATE_REQUIRED);
-		}
 		item.setPersistentState(PersistentState.UPDATE_REQUIRED);
 		this.chargePoints = newChargePoints;
 		return newChargePoints;
@@ -87,9 +87,8 @@ public class ChargeInfo extends ActionObserver {
 	@Override
 	public void attack(Creature creature) {
 		// No attack burn of item charge if target is a Dummy
-		if (creature.getTribe() == TribeClass.DUMMY || creature.getTribe() == TribeClass.DUMMY2) {
+		if (creature.getTribe() == TribeClass.DUMMY || creature.getTribe() == TribeClass.DUMMY2)
 			return;
-		}
 		updateChargePoints(-attackBurn);
 		Player player = this.player;
 		if (player != null) {

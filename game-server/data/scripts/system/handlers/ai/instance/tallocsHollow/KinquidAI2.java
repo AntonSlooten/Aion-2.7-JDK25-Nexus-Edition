@@ -79,24 +79,24 @@ public class KinquidAI2 extends AggressiveNpcAI2 {
 			int spawnLocNr = Rnd.get(1, 3);
 			int spawnNr = Rnd.get(1, 2);
 			switch (spawnNr) {
-			case 1:
-				spawnNr = 282008;
-				break;
-			case 2:
-				spawnNr = 282009;
-				break;
+				case 1:
+					spawnNr = 282008;
+					break;
+				case 2:
+					spawnNr = 282009;
+					break;
 			}
 
 			switch (spawnLocNr) {
-			case 1:
-				spawn(spawnNr, 266.70685f, 680.6733f, 1167.2369f, (byte) 0);
-				break;
-			case 2:
-				spawn(spawnNr, 292.02466f, 719.7132f, 1169.3982f, (byte) 0);
-				break;
-			case 3:
-				spawn(spawnNr, 263.4334f, 716.73004f, 1170.3693f, (byte) 0);
-				break;
+				case 1:
+					spawn(spawnNr, 266.70685f, 680.6733f, 1167.2369f, (byte) 0);
+					break;
+				case 2:
+					spawn(spawnNr, 292.02466f, 719.7132f, 1169.3982f, (byte) 0);
+					break;
+				case 3:
+					spawn(spawnNr, 263.4334f, 716.73004f, 1170.3693f, (byte) 0);
+					break;
 			}
 		}
 		doSchedule();

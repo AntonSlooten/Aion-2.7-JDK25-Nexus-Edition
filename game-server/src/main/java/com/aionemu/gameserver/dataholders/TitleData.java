@@ -41,7 +41,7 @@ public class TitleData {
 	private TIntObjectHashMap<TitleTemplate> titles;
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
-		titles = new TIntObjectHashMap<>();
+		titles = new TIntObjectHashMap<TitleTemplate>();
 		for (TitleTemplate tt : tts) {
 			titles.put(tt.getTitleId(), tt);
 		}

@@ -34,7 +34,7 @@ import com.aionemu.gameserver.skillengine.model.Effect;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "BleedEffect")
 public class BleedEffect extends AbstractOverTimeEffect {
-
+	
 	@Override
 	public void calculate(Effect effect) {
 		super.calculate(effect, StatEnum.BLEED_RESISTANCE, null);
@@ -44,7 +44,7 @@ public class BleedEffect extends AbstractOverTimeEffect {
 	public void startEffect(final Effect effect) {
 		super.startEffect(effect, AbnormalState.BLEED);
 	}
-
+	
 	@Override
 	public void endEffect(Effect effect) {
 		super.endEffect(effect, AbnormalState.BLEED);

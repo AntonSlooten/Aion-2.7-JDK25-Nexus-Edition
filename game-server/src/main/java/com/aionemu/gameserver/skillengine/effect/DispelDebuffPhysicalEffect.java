@@ -41,11 +41,11 @@ public class DispelDebuffPhysicalEffect extends EffectTemplate {
 
 	@Override
 	public void applyEffect(Effect effect) {
-		boolean isItemTriggered = (effect.getItemTemplate() != null);
+		boolean isItemTriggered = (effect.getItemTemplate() != null); 
 		int count = value + delta * effect.getSkillLevel();
 		int finalPower = power + dpower * effect.getSkillLevel();
-
-		effect.getEffected().getEffectController().removeEffectByDispelCat(DispelCategoryType.DEBUFF_PHYSICAL,
-				SkillTargetSlot.DEBUFF, count, dispelLevel, finalPower, isItemTriggered);
+		
+		effect.getEffected().getEffectController()
+		.removeEffectByDispelCat(DispelCategoryType.DEBUFF_PHYSICAL, SkillTargetSlot.DEBUFF, count, dispelLevel, finalPower, isItemTriggered);
 	}
 }

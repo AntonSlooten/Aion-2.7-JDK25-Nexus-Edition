@@ -14,7 +14,7 @@ import com.aionemu.gameserver.utils.Util;
  * //Syntax : //unban <char|account|ip|mac|full> <player>
  */
 public class CmdUnBan extends BaseCommand {
-
+	
 	public CmdUnBan() {
 		subCmds.put("char", new SubCmdUnBanChar());
 		subCmds.put("account", new SubCmdUnBanAccount());
@@ -23,14 +23,12 @@ public class CmdUnBan extends BaseCommand {
 		subCmds.put("mac", new SubCmdUnBanMac());
 	}
 
-	@Override
 	public void execute(Player admin, String... params) {
 		showHelp(admin);
 	}
-
+	
 	public class SubCmdUnBanChar extends BaseCommand {
-
-		@Override
+		
 		public void execute(Player admin, String... params) {
 			if (params.length != 1) {
 				showHelp(admin);
@@ -47,14 +45,13 @@ public class CmdUnBan extends BaseCommand {
 			}
 
 			PacketSendUtility.sendMessage(admin, "Character " + name + " is not longer banned!");
-
+			
 			PunishmentService.unbanChar(playerId);
 		}
 	}
-
+	
 	public class SubCmdUnBanAccount extends BaseCommand {
-		// TODO pouvoir deban par le nom de perso
-		@Override
+		//TODO pouvoir deban par le nom de perso
 		public void execute(Player admin, String... params) {
 			if (params.length != 1) {
 				showHelp(admin);
@@ -69,14 +66,13 @@ public class CmdUnBan extends BaseCommand {
 				showHelp(admin);
 				return;
 			}
-
-			LoginServer.getInstance().sendBanPacket((byte) 1, accountId, "", -1, admin.getObjectId());
+			
+			LoginServer.getInstance().sendBanPacket((byte)1, accountId, "", -1, admin.getObjectId());
 		}
 	}
-
+	
 	public class SubCmdUnBanIP extends BaseCommand {
-		// TODO pouvoir deban par l'ip
-		@Override
+		//TODO pouvoir deban par l'ip
 		public void execute(Player admin, String... params) {
 			if (params.length != 1) {
 				showHelp(admin);
@@ -91,14 +87,13 @@ public class CmdUnBan extends BaseCommand {
 				showHelp(admin);
 				return;
 			}
-
-			LoginServer.getInstance().sendBanPacket((byte) 2, accountId, "", -1, admin.getObjectId());
+			
+			LoginServer.getInstance().sendBanPacket((byte)2, accountId, "", -1, admin.getObjectId());
 		}
 	}
-
+	
 	public class SubCmdUnBanFull extends BaseCommand {
-
-		@Override
+		
 		public void execute(Player admin, String... params) {
 			if (params.length != 1) {
 				showHelp(admin);
@@ -113,14 +108,13 @@ public class CmdUnBan extends BaseCommand {
 				showHelp(admin);
 				return;
 			}
-
-			LoginServer.getInstance().sendBanPacket((byte) 3, accountId, "", -1, admin.getObjectId());
+			
+			LoginServer.getInstance().sendBanPacket((byte)3, accountId, "", -1, admin.getObjectId());
 		}
 	}
-
+	
 	public class SubCmdUnBanMac extends BaseCommand {
-
-		@Override
+		
 		public void execute(Player admin, String... params) {
 			if (params.length != 1) {
 				showHelp(admin);
@@ -128,12 +122,11 @@ public class CmdUnBan extends BaseCommand {
 			}
 
 			String address = params[0];
-			if (BannedMacManager.getInstance().unbanAddress(address,
-					"uban;mac=" + address + ", " + admin.getObjectId() + "; admin=" + admin.getName())) {
+			if (BannedMacManager.getInstance().unbanAddress(address, "uban;mac="+address+", "+admin.getObjectId()+"; admin="+admin.getName()))
 				PacketSendUtility.sendMessage(admin, "mac " + address + " has unbanned");
-			} else {
+			else
 				PacketSendUtility.sendMessage(admin, "mac " + address + " is not banned");
-			}
 		}
 	}
 }
+

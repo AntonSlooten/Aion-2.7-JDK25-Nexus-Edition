@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * This class is only a container for Stats. Created on: 04.08.2009 14:59:10
- *
+ * 
  * @author Aquanox
  */
 @XmlAccessorType(XmlAccessType.FIELD)

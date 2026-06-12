@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package com.aionemu.gameserver.model.gameobjects.siege;
 
 import com.aionemu.gameserver.controllers.NpcController;
@@ -18,7 +21,8 @@ public class SiegeNpc extends Npc {
 	 * @param objId
 	 * @param controller
 	 * @param spawnTemplate
-	 * @param objectTemplate SiegeNpc constructor
+	 * @param objectTemplate
+	 *          SiegeNpc constructor
 	 */
 	public SiegeNpc(int objId, NpcController controller, SiegeSpawnTemplate spawnTemplate, NpcTemplate objectTemplate) {
 		super(objId, controller, spawnTemplate, objectTemplate);
@@ -38,5 +42,7 @@ public class SiegeNpc extends Npc {
 	public SiegeSpawnTemplate getSpawn() {
 		return (SiegeSpawnTemplate) super.getSpawn();
 	}
+	
+	
 
 }

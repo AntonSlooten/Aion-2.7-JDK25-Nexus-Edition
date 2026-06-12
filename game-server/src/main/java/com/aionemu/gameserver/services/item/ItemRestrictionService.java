@@ -16,6 +16,9 @@
  */
 package com.aionemu.gameserver.services.item;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.aionemu.gameserver.configs.main.LegionConfig;
 import com.aionemu.gameserver.model.gameobjects.Item;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -32,21 +35,21 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
  */
 public class ItemRestrictionService {
 
+	private static Logger log = LoggerFactory.getLogger(ItemRestrictionService.class);
 	/**
 	 * Check if item can be moved from storage by player
 	 */
 	public static boolean isItemRestrictedFrom(Player player, Item item, byte storage) {
 		StorageType type = StorageType.getStorageTypeById(storage);
 		switch (type) {
-		case LEGION_WAREHOUSE:
-			if (!LegionService.getInstance().getLegionMember(player.getObjectId())
-					.hasRights(LegionPermissionsMask.WH_WITHDRAWAL) || !LegionConfig.LEGION_WAREHOUSE
-					|| !player.isLegionMember()) {
-				// You do not have the authority to use the Legion warehouse.
-				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300322));
-				return true;
-			}
-			break;
+			case LEGION_WAREHOUSE:
+				if (!LegionService.getInstance().getLegionMember(player.getObjectId()).hasRights(LegionPermissionsMask.WH_WITHDRAWAL) 
+					|| !LegionConfig.LEGION_WAREHOUSE || !player.isLegionMember()) {
+					// You do not have the authority to use the Legion warehouse.
+					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300322));
+					return true;
+				}
+				break;
 		}
 		return false;
 	}
@@ -56,38 +59,42 @@ public class ItemRestrictionService {
 	 */
 	public static boolean isItemRestrictedTo(Player player, Item item, byte storage) {
 		StorageType type = StorageType.getStorageTypeById(storage);
+		if(type == null) {
+			log.warn("Unknown storage type: " + storage);
+			return true;
+		}
 		switch (type) {
-		case REGULAR_WAREHOUSE:
-			if (!item.isStorableinWarehouse(player)) {
-				// You cannot store this in the warehouse.
-				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300418));
-				return true;
-			}
-			break;
-		case ACCOUNT_WAREHOUSE:
-			if (!item.isStorableinAccWarehouse(player)) {
-				// You cannot store this item in the account warehouse.
-				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400356));
-				return true;
-			}
-			break;
-		case LEGION_WAREHOUSE:
-			if (!item.isStorableinLegWarehouse(player) || !LegionConfig.LEGION_WAREHOUSE) {
-				// You cannot store this item in the Legion warehouse.
-				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400355));
-				return true;
-			} else if (!player.isLegionMember() || !LegionService.getInstance().getLegionMember(player.getObjectId())
-					.hasRights(LegionPermissionsMask.WH_DEPOSIT)) {
-				// You do not have the authority to use the Legion warehouse.
-				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300322));
-				return true;
-			}
-			break;
+			case REGULAR_WAREHOUSE:
+				if (!item.isStorableinWarehouse(player)) {
+					// You cannot store this in the warehouse.
+					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300418));
+					return true;
+				}
+				break;
+			case ACCOUNT_WAREHOUSE:
+				if (!item.isStorableinAccWarehouse(player)) {
+					// You cannot store this item in the account warehouse.
+					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400356));
+					return true;
+				}
+				break;
+			case LEGION_WAREHOUSE:
+				if (!item.isStorableinLegWarehouse(player) || !LegionConfig.LEGION_WAREHOUSE) {
+					// You cannot store this item in the Legion warehouse.
+					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400355));
+					return true;
+				}
+				else if (!player.isLegionMember() || !LegionService.getInstance().getLegionMember(player.getObjectId()).hasRights(LegionPermissionsMask.WH_DEPOSIT)) {
+					// You do not have the authority to use the Legion warehouse.
+					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300322));
+					return true;
+				}
+				break;
 		}
 
 		return false;
 	}
-
+	
 	/** Check, whether the item can be removed */
 	public static boolean canRemoveItem(Player player, Item item) {
 		ItemTemplate it = item.getItemTemplate();

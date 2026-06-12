@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,7 +48,7 @@ public class BonusService {
 
 	private BonusService() {
 	}
-
+	
 	public static BonusService getInstance() {
 		return instance;
 	}
@@ -60,36 +60,34 @@ public class BonusService {
 
 	public ItemGroup[] getGroupsByType(BonusType type) {
 		switch (type) {
-		case BOSS:
-			return itemGroups.getBossGroups();
-		case ENCHANT:
-			return itemGroups.getEnchantGroups();
-		case FOOD:
-			return itemGroups.getFoodGroups();
-		case GATHER:
-			return ArrayUtils.addAll(itemGroups.getOreGroups(), itemGroups.getGatherGroups());
-		case MANASTONE:
-			return itemGroups.getManastoneGroups();
-		case MEDICINE:
-			return itemGroups.getMedicineGroups();
-		case TASK:
-			return itemGroups.getCraftGroups();
-		case MOVIE:
-			return null;
-		default:
-			log.warn("Bonus of type " + type + " is not implemented");
-			return null;
+			case BOSS:
+				return itemGroups.getBossGroups();
+			case ENCHANT:
+				return itemGroups.getEnchantGroups();
+			case FOOD:
+				return itemGroups.getFoodGroups();
+			case GATHER:
+				return (ItemGroup[]) ArrayUtils.addAll(itemGroups.getOreGroups(), itemGroups.getGatherGroups());
+			case MANASTONE:
+				return itemGroups.getManastoneGroups();
+			case MEDICINE:
+				return itemGroups.getMedicineGroups();
+			case TASK:
+				return itemGroups.getCraftGroups();
+			case MOVIE:
+				return null;
+			default:
+				log.warn("Bonus of type " + type + " is not implemented");
+				return null;
 		}
 	}
 
 	public ItemGroup getRandomGroup(ItemGroup[] groups) {
 		float total = 0;
-		for (ItemGroup gr : groups) {
+		for (ItemGroup gr : groups)
 			total += gr.getChance();
-		}
-		if (total == 0) {
+		if (total == 0)
 			return null;
-		}
 
 		ItemGroup chosenGroup = null;
 		if (groups != null) {
@@ -99,9 +97,9 @@ public class BonusService {
 				if (Rnd.get(0, percent) <= chance) {
 					chosenGroup = gr;
 					break;
-				} else {
-					percent -= (int) chance;
 				}
+				else
+					percent -= chance;
 			}
 		}
 		return chosenGroup;
@@ -117,25 +115,23 @@ public class BonusService {
 
 	public QuestItems getQuestBonus(Player player, QuestTemplate questTemplate) {
 		List<QuestBonuses> bonuses = questTemplate.getBonus();
-		if (bonuses.isEmpty()) {
+		if (bonuses.isEmpty())
 			return null;
-		}
 		// Only one
 		QuestBonuses bonus = bonuses.get(0);
-		if (bonus.getType() == BonusType.NONE) {
+		if (bonus.getType() == BonusType.NONE)
 			return null;
-		}
 
 		switch (bonus.getType()) {
-		case TASK:
-			return getCraftBonus(player, questTemplate);
-		case MANASTONE:
-			return getManastoneBonus(player, bonus);
-		case MOVIE:
-			return null;
-		default:
-			log.warn("Bonus of type " + bonus.getType() + " is not implemented");
-			return null;
+			case TASK:
+				return getCraftBonus(player, questTemplate);
+			case MANASTONE:
+				return getManastoneBonus(player, bonus);
+			case MOVIE:
+				return null;
+			default:
+				log.warn("Bonus of type " + bonus.getType() + " is not implemented");
+				return null;
 		}
 	}
 
@@ -146,12 +142,11 @@ public class BonusService {
 
 		while (groups != null && groups.length > 0 && group == null) {
 			group = (CraftGroup) getRandomGroup(groups);
-			if (group == null) {
+			if (group == null)
 				break;
-			}
 			allRewards = group.getRewards(questTemplate.getCombineSkill(), questTemplate.getCombineSkillPoint());
 			if (allRewards.length == 0) {
-				List<ItemGroup> temp = new ArrayList<>();
+				List<ItemGroup> temp = new ArrayList<ItemGroup>();
 				Collections.addAll(temp, groups);
 				temp.remove(group);
 				group = null;
@@ -159,29 +154,26 @@ public class BonusService {
 			}
 		}
 
-		if (group == null) { // probably all chances set to 0
+		if (group == null) // probably all chances set to 0
 			return null;
-		}
-		List<IdReward> finalList = new ArrayList<>();
+		List<IdReward> finalList = new ArrayList<IdReward>();
 
-		for (IdReward r : allRewards) {
-			if (!r.checkRace(player.getCommonData().getRace())) {
+		for (int i = 0; i < allRewards.length; i++) {
+			IdReward r = allRewards[i];
+			if (!r.checkRace(player.getCommonData().getRace()))
 				continue;
-			}
 			finalList.add(r);
 		}
 
-		if (finalList.isEmpty()) {
+		if (finalList.isEmpty())
 			return null;
-		}
 
 		int itemIndex = Rnd.get(finalList.size());
 		int itemCount = 1;
 
 		IdReward reward = finalList.get(itemIndex);
-		if (reward instanceof CraftItem) {
+		if (reward instanceof CraftItem)
 			itemCount = Rnd.get(3, 5);
-		}
 
 		return new QuestItems(reward.getId(), itemCount);
 	}
@@ -189,17 +181,16 @@ public class BonusService {
 	QuestItems getManastoneBonus(Player player, QuestBonuses bonus) {
 		ManastoneGroup group = (ManastoneGroup) getRandomGroup(BonusType.MANASTONE);
 		IdReward[] allRewards = group.getRewards();
-		List<IdReward> finalList = new ArrayList<>();
-		for (IdReward r : allRewards) {
+		List<IdReward> finalList = new ArrayList<IdReward>();
+		for (int i = 0; i < allRewards.length; i++) {
+			IdReward r = allRewards[i];
 			ItemTemplate template = DataManager.ITEM_DATA.getItemTemplate(r.getId());
-			if (bonus.getLevel() != template.getLevel()) {
+			if (bonus.getLevel() != template.getLevel())
 				continue;
-			}
 			finalList.add(r);
 		}
-		if (finalList.isEmpty()) {
+		if (finalList.isEmpty())
 			return null;
-		}
 
 		int itemIndex = Rnd.get(finalList.size());
 		IdReward reward = finalList.get(itemIndex);

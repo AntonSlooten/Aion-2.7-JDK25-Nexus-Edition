@@ -49,18 +49,18 @@ public class GreenfingersAI2 extends AggressiveNpcAI2 {
 	protected void handleSpawned() {
 		super.handleSpawned();
 		switch (getNpcId()) {
-		case 282176:
-			walkPosition = 24;
-			helperSkill = 19271;
-			break;
-		case 282177:
-			walkPosition = 26;
-			helperSkill = 18751;
-			break;
-		case 282178:
-			walkPosition = 40;
-			helperSkill = 16634;
-			break;
+			case 282176:
+				walkPosition = 24;
+				helperSkill = 19271;
+				break;
+			case 282177:
+				walkPosition = 26;
+				helperSkill = 18751;
+				break;
+			case 282178:
+				walkPosition = 40;
+				helperSkill = 16634;
+				break;
 		}
 	}
 
@@ -97,24 +97,24 @@ public class GreenfingersAI2 extends AggressiveNpcAI2 {
 	@Override
 	public AIAnswer ask(AIQuestion question) {
 		switch (question) {
-		case CAN_RESIST_ABNORMAL:
-			return AIAnswers.POSITIVE;
-		default:
-			return AIAnswers.NEGATIVE;
+			case CAN_RESIST_ABNORMAL:
+				return AIAnswers.POSITIVE;
+			default:
+				return AIAnswers.NEGATIVE;
 		}
 	}
 
 	@Override
 	protected AIAnswer pollInstance(AIQuestion question) {
 		switch (question) {
-		case SHOULD_DECAY:
-			return AIAnswers.NEGATIVE;
-		case SHOULD_RESPAWN:
-			return AIAnswers.NEGATIVE;
-		case SHOULD_REWARD:
-			return AIAnswers.NEGATIVE;
-		default:
-			return null;
+			case SHOULD_DECAY:
+				return AIAnswers.NEGATIVE;
+			case SHOULD_RESPAWN:
+				return AIAnswers.NEGATIVE;
+			case SHOULD_REWARD:
+				return AIAnswers.NEGATIVE;
+			default:
+				return null;
 		}
 	}
 }

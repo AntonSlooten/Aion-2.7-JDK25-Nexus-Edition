@@ -26,9 +26,9 @@ import com.aionemu.gameserver.world.World;
 import java.util.Iterator;
 
 /**
- * Calculates fortresses as 10 points and artifacts as 1 point each. Need to
- * find retail calculation. (Upper forts worth more...)
- *
+ * Calculates fortresses as 10 points and artifacts as 1 point each. Need to find retail calculation. (Upper forts worth
+ * more...)
+ * 
  * @author Sarynth
  */
 public class Influence {
@@ -69,15 +69,15 @@ public class Influence {
 			// TODO: Better formula...
 			total += sLoc.getInfluenceValue();
 			switch (sLoc.getRace()) {
-			case BALAUR:
-				balaur += sLoc.getInfluenceValue();
-				break;
-			case ASMODIANS:
-				asmos += sLoc.getInfluenceValue();
-				break;
-			case ELYOS:
-				elyos += sLoc.getInfluenceValue();
-				break;
+				case BALAUR:
+					balaur += sLoc.getInfluenceValue();
+					break;
+				case ASMODIANS:
+					asmos += sLoc.getInfluenceValue();
+					break;
+				case ELYOS:
+					elyos += sLoc.getInfluenceValue();
+					break;
 			}
 		}
 
@@ -87,8 +87,8 @@ public class Influence {
 	}
 
 	/**
-	 * Broadcast packet with influence update to all players. - Responsible for the
-	 * message "The Divine Fortress is now vulnerable."
+	 * Broadcast packet with influence update to all players. - Responsible for the message
+	 * "The Divine Fortress is now vulnerable."
 	 */
 	private void broadcastInfluencePacket() {
 		SM_INFLUENCE_RATIO pkt = new SM_INFLUENCE_RATIO();
@@ -121,7 +121,7 @@ public class Influence {
 	public float getBalaur() {
 		return this.balaur;
 	}
-
+	
 	/**
 	 * @return float containing dmg modifier for disadvantaged race
 	 */
@@ -130,24 +130,22 @@ public class Influence {
 		float elyos = getElyos();
 		float asmo = getAsmos();
 		switch (attRace) {
-		case ASMODIANS:
-			if (elyos >= 0.81f && asmo <= 0.10f) {
-				bonus = 1.2f;
-			} else if (elyos >= 0.81f || (elyos >= 0.71f && asmo <= 0.10f)) {
-				bonus = 1.15f;
-			} else if (elyos >= 0.71f) {
-				bonus = 1.1f;
-			}
-			break;
-		case ELYOS:
-			if (asmo >= 0.81f && elyos <= 0.10f) {
-				bonus = 1.2f;
-			} else if (asmo >= 0.81f || (asmo >= 0.71f && elyos <= 0.10f)) {
-				bonus = 1.15f;
-			} else if (asmo >= 0.71f) {
-				bonus = 1.1f;
-			}
-			break;
+			case ASMODIANS:
+					if (elyos >= 0.81f && asmo <= 0.10f)
+						bonus = 1.2f;
+					else if (elyos >= 0.81f || (elyos >= 0.71f && asmo <= 0.10f))
+						bonus = 1.15f;
+					else if(elyos >= 0.71f)
+						bonus = 1.1f;
+					break;
+			case ELYOS:
+					if (asmo >= 0.81f && elyos <= 0.10f)
+						bonus = 1.2f;
+					else if (asmo >= 0.81f || (asmo >= 0.71f && elyos <= 0.10f))
+						bonus = 1.15f;
+					else if(asmo >= 0.71f)
+						bonus = 1.1f;
+					break;
 		}
 		return bonus;
 	}

@@ -33,21 +33,20 @@ public class InstanceTimeClear extends AbstractItemAction {
 
 	@XmlAttribute
 	protected int mapid;
-
+	
 	@Override
 	public boolean canAct(Player player, Item parentItem, Item targetItem) {
 		return true;
 	}
 
 	@Override
-	public void act(Player player, Item parentItem, Item targetItem) {
-		if (parentItem.getActivationCount() > 1) {
+	public void act(Player player, Item parentItem, Item targetItem) {	
+		if (parentItem.getActivationCount() > 1)
 			parentItem.setActivationCount(parentItem.getActivationCount() - 1);
-		} else {
+		else
 			player.getInventory().decreaseByObjectId(parentItem.getObjectId(), 1);
-		}
-
+		
 		player.getPortalCooldownList().removePortalCoolDown(mapid);
-
+		   
 	}
 }

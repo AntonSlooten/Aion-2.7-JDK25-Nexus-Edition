@@ -24,7 +24,7 @@ import java.lang.reflect.Modifier;
 /**
  * Utility class that loads all DAO's after script context initialization.<br>
  * DAO should be public, not abstract, not interface, must have default no-arg public constructor.
- *
+ * 
  * @author SoulKeeper, Aquanox
  */
 public class DAOLoader implements ClassListener {
@@ -39,7 +39,8 @@ public class DAOLoader implements ClassListener {
 
 			try {
 				DAOManager.registerDAO((Class<? extends DAO>) clazz);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				throw new Error("Can't register DAO class", e);
 			}
 		}
@@ -55,7 +56,8 @@ public class DAOLoader implements ClassListener {
 
 			try {
 				DAOManager.unregisterDAO((Class<? extends DAO>) clazz);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				throw new Error("Can't unregister DAO class", e);
 			}
 		}

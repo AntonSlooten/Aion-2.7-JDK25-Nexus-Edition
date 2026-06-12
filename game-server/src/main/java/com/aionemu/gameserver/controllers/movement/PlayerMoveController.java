@@ -27,7 +27,7 @@ public class PlayerMoveController extends PlayableMoveController<Player> {
 
 	private float fallDistance;
 	private float lastFallZ;
-
+	
 	public PlayerMoveController(Player owner) {
 		super(owner);
 	}

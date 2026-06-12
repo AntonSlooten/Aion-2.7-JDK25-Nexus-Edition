@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -20,9 +20,8 @@ import com.aionemu.gameserver.network.loginserver.LoginServer;
 import com.aionemu.gameserver.network.loginserver.LsClientPacket;
 
 /**
- * In this packet LoginServer is sending response for SM_ACCOUNT_RECONNECT_KEY
- * with account name and reconnectionKey.
- *
+ * In this packet LoginServer is sending response for SM_ACCOUNT_RECONNECT_KEY with account name and reconnectionKey.
+ * 
  * @author -Nemesiss-
  */
 public class CM_ACCOUNT_RECONNECT_KEY extends LsClientPacket {
@@ -39,6 +38,7 @@ public class CM_ACCOUNT_RECONNECT_KEY extends LsClientPacket {
 	 * ReconnectKey that will be used for authentication.
 	 */
 	private int reconnectKey;
+
 
 	/**
 	 * {@inheritDoc}

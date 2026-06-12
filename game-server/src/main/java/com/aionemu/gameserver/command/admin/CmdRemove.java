@@ -8,9 +8,10 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.Util;
 import com.aionemu.gameserver.world.World;
 
-public class CmdRemove extends BaseCommand {
 
-	@Override
+public class CmdRemove extends BaseCommand {
+	
+	
 	public void execute(Player admin, String... params) {
 		if (params.length < 1 || params.length > 3) {
 			showHelp(admin);
@@ -30,12 +31,12 @@ public class CmdRemove extends BaseCommand {
 			if (params.length == 3) {
 				itemCount = ParseLong(params[2]);
 			}
-		} catch (NumberFormatException e) {
-			if (params[1].contains("all")) {
+		}
+		catch (NumberFormatException e) {
+			if(params[1].contains("all"))
 				clearInventory(target);
-			} else {
+			else
 				PacketSendUtility.sendMessage(admin, "Parameters need to be an integer.");
-			}
 			return;
 		}
 
@@ -53,10 +54,11 @@ public class CmdRemove extends BaseCommand {
 		PacketSendUtility.sendMessage(admin, "Item(s) removed succesfully");
 		PacketSendUtility.sendMessage(target, "Admin removed an item from your bag");
 	}
-
-	private final static void clearInventory(Player target) {
-		for (Item item : target.getInventory().getItems()) {
+	
+	
+	
+	private final static void clearInventory(Player target){
+		for(Item item : target.getInventory().getItems())
 			target.getInventory().delete(item);
-		}
 	}
 }

@@ -58,36 +58,40 @@ public class _1371FlowersForIsson extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			if (targetId == 203949) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0) {
-						return sendQuestDialog(env, 1352);
+					case START_DIALOG:
+						if (var == 0) {
+							return sendQuestDialog(env, 1352);
+						}
+						break;
+					case CHECK_COLLECTED_ITEMS:
+						if (var == 0)
+							itemCount = player.getInventory().getItemCountByItemId(152000601);
+						if (itemCount > 4) {
+							return sendQuestDialog(env, 1353);
+						}
+						else {
+							return sendQuestDialog(env, 1438);
+						}
+					case STEP_TO_1: {
+						removeQuestItem(env, 152000601, 5);
+						qs.setQuestVar(2);
+						updateQuestStatus(env);
+						return sendQuestSelectionDialog(env);
 					}
-					break;
-				case CHECK_COLLECTED_ITEMS:
-					if (var == 0)
-						itemCount = player.getInventory().getItemCountByItemId(152000601);
-					if (itemCount > 4) {
-						return sendQuestDialog(env, 1353);
-					} else {
-						return sendQuestDialog(env, 1438);
-					}
-				case STEP_TO_1: {
-					removeQuestItem(env, 152000601, 5);
-					qs.setQuestVar(2);
-					updateQuestStatus(env);
-					return sendQuestSelectionDialog(env);
 				}
-				}
-			} else if (targetId == 730039) {
+			}
+			else if (targetId == 730039) {
 				if (qs != null && qs.getStatus() == QuestStatus.START) {
 					return useQuestObject(env, 2, 2, true, false); // reward
 				}
 			}
-		} else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203949) {
 				return sendQuestEndDialog(env);
 			}

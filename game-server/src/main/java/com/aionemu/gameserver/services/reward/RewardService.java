@@ -15,9 +15,9 @@ import com.aionemu.gameserver.services.item.ItemService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /**
- *
+ * 
  * @author KID
- *
+ * 
  */
 public class RewardService {
 
@@ -41,31 +41,26 @@ public class RewardService {
 		}
 
 		FastList<RewardEntryItem> list = dao.getAvailable(player.getObjectId());
-		if (list.size() == 0) {
+		if (list.size() == 0)
 			return;
-		}
 
 		FastList<Integer> rewarded = FastList.newInstance();
 		for (RewardEntryItem item : list) {
 			if (DataManager.ITEM_DATA.getItemTemplate(item.id) == null) {
-				log.warn("[RewardController][" + item.unique + "] null template for item " + item.id + " on player "
-						+ player.getObjectId() + ".");
+				log.warn("[RewardController]["+item.unique+"] null template for item " + item.id + " on player " + player.getObjectId() + ".");
 				continue;
 			}
 
 			try {
 				long count = ItemService.addItem(player, item.id, item.count);
 				if (count == 0) {
-					log.info("[RewardController][" + item.unique + "] player " + player.getName() + " has received ("
-							+ item.count + ")" + item.id + ".");
+					log.info("[RewardController]["+item.unique+"] player " + player.getName() + " has received (" + item.count + ")" + item.id + ".");
 					rewarded.add(item.unique);
 				} else {
-					log.warn("[RewardController][" + item.unique + "] player " + player.getName()
-							+ " was NOT received (" + item.count + ")" + item.id + " on " + player.getObjectId() + ".");
+					log.warn("[RewardController]["+item.unique+"] player " + player.getName() + " was NOT received (" + item.count + ")" + item.id + " on " + player.getObjectId() + ".");
 				}
 			} catch (Exception e) {
-				log.error("[RewardController][" + item.unique + "] failed to add item (" + item.count + ")" + item.id
-						+ " to " + player.getObjectId(), e);
+				log.error("[RewardController]["+item.unique+"] failed to add item (" + item.count + ")" + item.id + " to " + player.getObjectId(), e);
 				continue;
 			}
 		}

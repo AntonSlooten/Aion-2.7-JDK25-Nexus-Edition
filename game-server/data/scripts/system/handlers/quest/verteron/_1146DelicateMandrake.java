@@ -55,45 +55,47 @@ public class _1146DelicateMandrake extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 203123) { // Gano
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				case ASK_ACCEPTION: {
-					return sendQuestDialog(env, 4);
-				}
-				case ACCEPT_QUEST: {
-					if (giveQuestItem(env, 182200519, 1)) {
-						if (QuestService.startQuest(env)) {
-							QuestService.questTimerStart(env, 120);
-							return sendQuestDialog(env, 1003);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					case ASK_ACCEPTION: {
+						return sendQuestDialog(env, 4);
+					}
+					case ACCEPT_QUEST: {
+						if (giveQuestItem(env, 182200519, 1)) {
+							if (QuestService.startQuest(env)) {
+								QuestService.questTimerStart(env, 120);
+								return sendQuestDialog(env, 1003);
+							}
 						}
 					}
-				}
-				case REFUSE_QUEST: {
-					return sendQuestDialog(env, 1004);
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-			}
-		} else if (qs.getStatus() == QuestStatus.START) {
-			if (targetId == 203139) { // Krodis
-				switch (dialog) {
-				case USE_OBJECT: {
-					if (player.getInventory().getItemCountByItemId(182200519) > 0) {
-						return sendQuestDialog(env, 2375);
+					case REFUSE_QUEST: {
+						return sendQuestDialog(env, 1004);
+					}
+					case FINISH_DIALOG: {
+						return sendQuestSelectionDialog(env);
 					}
 				}
-				case SELECT_REWARD: {
-					removeQuestItem(env, 182200519, 1);
-					changeQuestStep(env, 0, 0, true);
-					QuestService.questTimerEnd(env);
-					return sendQuestDialog(env, 5);
-				}
+			}
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
+			if (targetId == 203139) { // Krodis
+				switch (dialog) {
+					case USE_OBJECT: {
+						if (player.getInventory().getItemCountByItemId(182200519) > 0) {
+							return sendQuestDialog(env, 2375);
+						}
+					}
+					case SELECT_REWARD: {
+						removeQuestItem(env, 182200519, 1);
+						changeQuestStep(env, 0, 0, true);
+						QuestService.questTimerEnd(env);
+						return sendQuestDialog(env, 5);
+					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203139) { // Krodis
 				return sendQuestEndDialog(env);
 			}

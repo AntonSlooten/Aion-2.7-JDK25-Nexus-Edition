@@ -13,32 +13,34 @@ import com.aionemu.gameserver.world.zone.ZoneName;
  * @author ATracer
  */
 public class CmdZone extends BaseCommand {
-
-	@Override
+	
 	public void execute(Player admin, String... params) {
 		Creature target;
-		if (admin.getTarget() == null || !(admin.getTarget() instanceof Creature)) {
+		if (admin.getTarget() == null || !(admin.getTarget() instanceof Creature))
 			target = admin;
-		} else {
+		else
 			target = (Creature) admin.getTarget();
-		}
 		if (params.length == 0) {
 			List<ZoneInstance> zones = target.getPosition().getMapRegion().getZones(target);
 			if (zones.isEmpty()) {
-				PacketSendUtility.sendMessage(admin, target.getName() + " are out of any zone");
-			} else {
-				PacketSendUtility.sendMessage(admin, target.getName() + " are in zone: ");
-				for (ZoneInstance zone : zones) {
+				PacketSendUtility.sendMessage(admin, target.getName()+" are out of any zone");
+			}
+			else {
+				PacketSendUtility.sendMessage(admin, target.getName()+" are in zone: ");
+				for (ZoneInstance zone : zones){
 					PacketSendUtility.sendMessage(admin, zone.getAreaTemplate().getZoneName().name());
 				}
 			}
-		} else if ("refresh".equalsIgnoreCase(params[0])) {
+		}
+		else if ("refresh".equalsIgnoreCase(params[0])) {
 			admin.revalidateZones();
-		} else if ("inside".equalsIgnoreCase(params[0]) && params.length == 2) {
+		}
+		else if ("inside".equalsIgnoreCase(params[0]) && params.length == 2){
 			try {
 				ZoneName name = ZoneName.valueOf(params[1]);
-				PacketSendUtility.sendMessage(admin, "isInsideZone: " + admin.isInsideZone(name));
-			} catch (Exception e) {
+				PacketSendUtility.sendMessage(admin, "isInsideZone: "+ admin.isInsideZone(name));
+			}
+			catch (Exception e) {
 				PacketSendUtility.sendMessage(admin, "Zone name missing!");
 			}
 		}

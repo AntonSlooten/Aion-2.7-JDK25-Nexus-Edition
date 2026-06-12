@@ -48,19 +48,19 @@ public class StormwingAI extends AggressiveNpcAI2 {
 		cancelTask();
 	}
 
-	private void spawnTwister() {
-		if (nbTwister1 < 3) {
+	private void spawnTwister(){
+		if(nbTwister1 < 3){
 			rndSpawnInRange(281795);
 			nbTwister1 += 1;
 		}
-		if (nbTwister2 < 2 && getLifeStats().getHpPercentage() <= 50) {
+		if(nbTwister2 < 2 && getLifeStats().getHpPercentage() <= 50){
 			rndSpawnInRange(281797);
 			nbTwister2 += 1;
 		}
 		scheduleSpawnTwister();
 	}
 
-	private void scheduleSpawnTwister() {
+	private void scheduleSpawnTwister(){
 		skillTaskSpawn = ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
 			public void run() {
@@ -78,9 +78,9 @@ public class StormwingAI extends AggressiveNpcAI2 {
 		}, 2000);
 	}
 
-	private void doSkillTooth() {
-		if (!MathUtil.isIn3dRange(getOwner(), getTarget(), 8) && MathUtil.isIn3dRange(getOwner(), getTarget(), 10)) {
-			if (Rnd.get(4) == 0) {
+	private void doSkillTooth(){
+		if(!MathUtil.isIn3dRange(getOwner(), getTarget(), 8) && MathUtil.isIn3dRange(getOwner(), getTarget(), 10)){
+			if(Rnd.get(4) == 0){
 				SkillEngine.getInstance().getSkill(getOwner(), 18615, 45, getTarget()).useSkill();
 			}
 		}
@@ -98,7 +98,7 @@ public class StormwingAI extends AggressiveNpcAI2 {
 		return (Npc) spawn(npcId, 548 + x1, 1360 + y1, 225, (byte) 0);
 	}
 
-	private void cancelTask() {
+	private void cancelTask(){
 		if (skillTaskTooth != null && !skillTaskTooth.isCancelled()) {
 			skillTaskTooth.cancel(true);
 		}

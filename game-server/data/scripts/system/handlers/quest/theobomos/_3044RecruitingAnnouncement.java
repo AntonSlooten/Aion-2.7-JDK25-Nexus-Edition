@@ -59,26 +59,28 @@ public class _3044RecruitingAnnouncement extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 730145) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 4762);
-				}
-				case STEP_TO_1: {
-					QuestService.startQuest(env);
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
-					return true;
-				}
-				default:
-					return sendQuestStartDialog(env);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 4762);
+					}
+					case STEP_TO_1: {
+						QuestService.startQuest(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
+						return true;
+					}
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs != null && qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.START) {
 			if (targetId == 798206) {
 				if (env.getDialogId() == 26)
 					return sendQuestDialog(env, 1011);
 				else if (env.getDialogId() == 1009)
 					return defaultCloseDialog(env, 0, 1, true, true);
 			}
-		} else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798206) {
 				return sendQuestEndDialog(env);
 			}

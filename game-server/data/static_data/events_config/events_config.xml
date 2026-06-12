@@ -2,7 +2,7 @@
 <events_config>
 	<active>The Fortune Fayre;Doppelgangers;Ascension Energy;Festival Winter;Harvest Revel;Daru Days;Ardent heat;Ascension Energy Inventory;Ardent heat Inventory</active>
   	<events>
-		<event name="The Fortune Fayre" start="2012-03-09T00:00:00+00:00" end="2012-03-23T00:00:00+00:00">
+		<event name="The Fortune Fayre" start="2021-03-09T00:00:00+00:00" end="2021-03-23T00:00:00+00:00">
 			<quests>
 				<startable>80028;80029;80031;80032</startable>
 				<maintainable>80030;80033;80034;80035;80036;80037;80038;80039</maintainable>
@@ -32,7 +32,7 @@
 		        </spawn_map>
 			</spawns>
 		</event>
-		<event name="Doppelgangers" start="2012-01-01T00:00:00+02:00" end="2012-01-30T00:00:00+02:00">
+		<event name="Doppelgangers" start="2021-01-01T00:00:00+02:00" end="2021-01-30T00:00:00+02:00">
 			<spawns>
 				<!-- Verteron -->
 				<spawn_map map_id="210030000">
@@ -50,10 +50,10 @@
                 </spawn_map>
 			</spawns>
 		</event>
-		<event name="Ascension Energy Inventory" start="2012-09-21T00:00:00+00:00" end="2012-10-26T00:00:00+00:00">
+		<event name="Ascension Energy Inventory" start="2021-09-21T00:00:00+00:00" end="2021-10-26T00:00:00+00:00">
 			<inventory_drop startlevel="8" interval="15">186000127</inventory_drop>
 		</event>
-		<event name="Ascension Energy" start="2012-09-21T00:00:00+00:00" end="2012-10-26T00:00:00+00:00">
+		<event name="Ascension Energy" start="2021-09-21T00:00:00+00:00" end="2021-10-26T00:00:00+00:00">
 			<spawns>
 				<!-- Sanctum -->
 				<spawn_map map_id="110010000">
@@ -137,7 +137,7 @@
                 </spawn_map>
 			</spawns>
 		</event>
-		<event name="Festival Winter" start="2012-12-14T00:00:00+00:00" end="2013-01-04T00:00:00+00:00" theme="christmas">
+		<event name="Festival Winter" start="2021-12-14T00:00:00+00:00" end="2021-01-04T00:00:00+00:00" theme="christmas">
 			<quests>
 				<startable>80128;80112;80116;80113;80117;80114;80118;80115;80119;80129;80120;80124;80121;80122;80126;80123;80127</startable>
 			</quests>
@@ -188,7 +188,7 @@
                 </spawn_map>
 			</spawns>
 		</event>
-		<event name="Harvest Revel" start="2012-10-26T00:00:00+00:00" end="2012-11-09T00:00:00+00:00">
+		<event name="Harvest Revel" start="2021-10-26T00:00:00+00:00" end="2021-11-09T00:00:00+00:00">
 			<quests>
 				<startable>80110;80086;80090;80095;80088;80092;80096;80089;80093;80097;80111;80098;80102;80106;80099;80103;80107;80100;80104;80108;80101;80105;80109</startable>
 			</quests>
@@ -209,7 +209,7 @@
                 </spawn_map>
 			</spawns>
 		</event>
-		<event name="Daru Days" start="2012-11-23T00:00:00+00:00" end="2012-11-30T00:00:00+00:00">
+		<event name="Daru Days" start="2021-11-23T00:00:00+00:00" end="2021-11-30T00:00:00+00:00">
 			<quests>
 				<startable>80076;80078;80079;80080;80081;80077;80082;80083;80084;80085</startable>
 			</quests>
@@ -260,10 +260,10 @@
                 </spawn_map>
 			</spawns>
 		</event>
-		<event name="Ardent heat Inventory" start="2012-07-20T00:00:00+00:00" end="2012-08-03T00:00:00+00:00">
+		<event name="Ardent heat Inventory" start="2021-07-20T00:00:00+00:00" end="2021-08-03T00:00:00+00:00">
 			<inventory_drop startlevel="1" interval="20">186000111</inventory_drop>
 		</event>
-		<event name="Ardent heat" start="2012-07-20T00:00:00+00:00" end="2012-08-03T00:00:00+00:00">
+		<event name="Ardent heat" start="2021-07-20T00:00:00+00:00" end="2021-08-03T00:00:00+00:00">
 			<spawns>
 				<!-- Pandaemonium -->
 				<spawn_map map_id="120010000">

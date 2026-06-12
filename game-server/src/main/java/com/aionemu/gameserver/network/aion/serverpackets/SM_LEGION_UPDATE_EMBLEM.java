@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.model.team.legion.LegionEmblemType;
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
@@ -35,7 +36,7 @@ public class SM_LEGION_UPDATE_EMBLEM extends AionServerPacket {
 
 	/**
 	 * This constructor will handle legion emblem info
-	 *
+	 * 
 	 * @param legionId
 	 * @param emblemId
 	 * @param color_r
@@ -44,7 +45,7 @@ public class SM_LEGION_UPDATE_EMBLEM extends AionServerPacket {
 	 * @param emblemType
 	 */
 	public SM_LEGION_UPDATE_EMBLEM(int legionId, int emblemId, int color_r, int color_g, int color_b,
-			LegionEmblemType emblemType) {
+		LegionEmblemType emblemType) {
 		this.legionId = legionId;
 		this.emblemId = emblemId;
 		this.color_r = color_r;

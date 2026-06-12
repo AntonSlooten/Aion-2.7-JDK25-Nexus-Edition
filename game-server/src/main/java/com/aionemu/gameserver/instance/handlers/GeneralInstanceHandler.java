@@ -119,7 +119,7 @@ public class GeneralInstanceHandler implements InstanceHandler {
 	protected void sendMsg(int msg) {
 		sendMsg(msg, 0, false, 25);
 	}
-
+	
 	protected void sendMsg(final String str) { // to do system message
 		instance.doOnAllPlayers(new Visitor<Player>() {
 
@@ -198,7 +198,7 @@ public class GeneralInstanceHandler implements InstanceHandler {
 	}
 
 	@Override
-	public void handleUseItemFinish(Player player, Npc npc) {
+	public void handleUseItemFinish(Player player, Npc npc) {		
 	}
 
 	@Override
@@ -213,7 +213,6 @@ public class GeneralInstanceHandler implements InstanceHandler {
 	public void sendSystemMsg(Player player, Creature creature, int rewardPoints) {
 	}
 
-	@Override
 	public int getDif(int npcId) {
 		return 0;
 	}

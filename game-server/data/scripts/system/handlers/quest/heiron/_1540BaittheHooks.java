@@ -56,18 +56,18 @@ public class _1540BaittheHooks extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 204588) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				case ACCEPT_QUEST: {
-					if (player.getInventory().getItemCountByItemId(182201822) == 0) {
-						if (!giveQuestItem(env, 182201822, 1)) {
-							return true;
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					case ACCEPT_QUEST: {
+						if (player.getInventory().getItemCountByItemId(182201822) == 0) {
+							if (!giveQuestItem(env, 182201822, 1)) {
+								return true;
+							}
 						}
 					}
-				}
-				default:
-					return sendQuestStartDialog(env);
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
@@ -77,39 +77,40 @@ public class _1540BaittheHooks extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 730189: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					if (player.getInventory().getItemCountByItemId(182201822) == 1) {
-						return useQuestObject(env, 0, 1, false, 0); // 1
+				case 730189: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							if (player.getInventory().getItemCountByItemId(182201822) == 1) {
+								return useQuestObject(env, 0, 1, false, 0); // 1
+							}
+						}
 					}
 				}
-				}
-			}
-			case 730190: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					if (player.getInventory().getItemCountByItemId(182201822) == 1) {
-						return useQuestObject(env, 1, 2, false, 0); // 2
+				case 730190: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							if (player.getInventory().getItemCountByItemId(182201822) == 1) {
+								return useQuestObject(env, 1, 2, false, 0); // 2
+							}
+						}
 					}
 				}
-				}
-			}
-			case 730191: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					if (qs.getQuestVarById(0) == 2 && player.getInventory().getItemCountByItemId(182201822) == 1) {
-						qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						removeQuestItem(env, 182201822, 1);
-						return true;
+				case 730191: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							if (qs.getQuestVarById(0) == 2 && player.getInventory().getItemCountByItemId(182201822) == 1) {
+								qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								removeQuestItem(env, 182201822, 1);
+								return true;
+							}
+						}
 					}
 				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204588) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

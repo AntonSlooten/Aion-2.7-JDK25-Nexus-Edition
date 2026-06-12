@@ -24,6 +24,7 @@ import com.aionemu.gameserver.questEngine.model.QuestState;
 import com.aionemu.gameserver.questEngine.model.QuestStatus;
 import com.aionemu.gameserver.services.QuestService;
 
+
 /**
  * @author Cheatkiller
  *
@@ -31,7 +32,7 @@ import com.aionemu.gameserver.services.QuestService;
 public class _2477ADishForDukar extends QuestHandler {
 
 	private final static int questId = 2477;
-
+	
 	public _2477ADishForDukar() {
 		super(questId);
 	}
@@ -50,39 +51,48 @@ public class _2477ADishForDukar extends QuestHandler {
 		int targetId = env.getTargetId();
 
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
-			if (targetId == 204355) {
+			if (targetId == 204355) { 
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else if (dialog == QuestDialog.ACCEPT_QUEST) {
+				}
+				else if(dialog == QuestDialog.ACCEPT_QUEST) {
 					QuestService.startQuest(env);
 					changeQuestStep(env, 0, 1, false);
 					return sendQuestDialog(env, 1003);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
-			if (targetId == 204355) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
+			if (targetId == 204355) { 
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1352);
-				} else if (dialog == QuestDialog.CHECK_COLLECTED_ITEMS) {
-					return checkItemExistence(env, 1, 2, false, 182204196, 5, true, 10000, 10001, 182204234, 1);
-				} else if (dialog == QuestDialog.STEP_TO_2)
-					return defaultCloseDialog(env, 1, 2);
-			} else if (targetId == 204100) {
+				}
+				else if(dialog == QuestDialog.CHECK_COLLECTED_ITEMS) {
+				  return checkItemExistence(env, 1, 2, false, 182204196, 5, true, 10000, 10001, 182204234, 1);
+				}
+				else if(dialog == QuestDialog.STEP_TO_2) 
+				  return defaultCloseDialog(env, 1, 2);
+				}
+			else if (targetId == 204100) { 
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1693);
-				} else if (dialog == QuestDialog.SET_REWARD) {
-					removeQuestItem(env, 182204234, 1);
-					giveQuestItem(env, 182204197, 1);
+				}
+			  else if (dialog == QuestDialog.SET_REWARD) {
+			  	removeQuestItem(env, 182204234, 1);
+			  	giveQuestItem(env, 182204197, 1);
 					return defaultCloseDialog(env, 2, 3, true, false);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204355) {
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					removeQuestItem(env, 182204197, 1);
 					return sendQuestEndDialog(env);
 				}

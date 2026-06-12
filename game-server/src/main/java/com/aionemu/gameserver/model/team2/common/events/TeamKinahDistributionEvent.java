@@ -25,8 +25,8 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 /**
  * @author ATracer
  */
-public class TeamKinahDistributionEvent<T extends TemporaryPlayerTeam<? extends TeamMember<Player>>>
-		extends AbstractTeamPlayerEvent<T> {
+public class TeamKinahDistributionEvent<T extends TemporaryPlayerTeam<? extends TeamMember<Player>>> extends
+	AbstractTeamPlayerEvent<T> {
 
 	private final long amount;
 	private long rewardPerPlayer;
@@ -62,12 +62,12 @@ public class TeamKinahDistributionEvent<T extends TemporaryPlayerTeam<? extends 
 			if (member.equals(eventPlayer)) {
 				member.getInventory().decreaseKinah(amount);
 				member.getInventory().increaseKinah(rewardPerPlayer);
-				PacketSendUtility.sendPacket(eventPlayer,
-						new SM_SYSTEM_MESSAGE(1390247, amount, teamSize, rewardPerPlayer));
-			} else {
+				PacketSendUtility.sendPacket(eventPlayer, new SM_SYSTEM_MESSAGE(1390247, amount, teamSize, rewardPerPlayer));
+			}
+			else {
 				member.getInventory().increaseKinah(rewardPerPlayer);
-				PacketSendUtility.sendPacket(member,
-						new SM_SYSTEM_MESSAGE(1390248, eventPlayer.getName(), amount, teamSize, rewardPerPlayer));
+				PacketSendUtility.sendPacket(member, new SM_SYSTEM_MESSAGE(1390248, eventPlayer.getName(), amount, teamSize,
+					rewardPerPlayer));
 			}
 		}
 		return true;

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  *
  *  aion-lightning is free software: you can redistribute it and/or modify
@@ -28,7 +28,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.aionemu.commons.utils.Rnd;
 import com.aionemu.gameserver.model.Race;
-
 /**
  * @author MrPoke
  *
@@ -66,9 +65,8 @@ public class DropGroup implements DropCalculator {
 	 * @return the name
 	 */
 	public String getGroupName() {
-		if (group_name == null) {
+		if (group_name == null)
 			return "";
-		}
 		return group_name;
 	}
 
@@ -76,18 +74,17 @@ public class DropGroup implements DropCalculator {
 	public int dropCalculator(Set<DropItem> result, int index, float dropModifier, Race race, int npcId) {
 		// Change rate in fonction of the drop groupe
 		dropModifier *= getDropModifier();
-
+		
 		if (useCategory) {
 			// log oldIndex
 			int oldIndex = index;
 
-			if (drop.size() == 0) {
+			if (drop.size() == 0)
 				return index;
-			}
 
 			// clone dropList
 			do {
-				ArrayList<Drop> newArrayList = new ArrayList<>(drop);
+				ArrayList<Drop> newArrayList = new ArrayList<Drop>(drop);
 				do {
 					int rnd = Rnd.get(0, newArrayList.size() - 1);
 					Drop d = newArrayList.get(rnd);
@@ -95,10 +92,11 @@ public class DropGroup implements DropCalculator {
 					index = d.dropCalculator(result, index, dropModifier, race, npcId);
 				} while (index < oldIndex + maxDrop && !newArrayList.isEmpty());
 			} while (mustDrop && index == oldIndex);
-
+			
 			return index;
 		} else {
-			for (Drop d : drop) {
+			for (int i = 0; i < drop.size(); i++) {
+				Drop d = drop.get(i);
 				index = d.dropCalculator(result, index, dropModifier, race, npcId);
 			}
 		}

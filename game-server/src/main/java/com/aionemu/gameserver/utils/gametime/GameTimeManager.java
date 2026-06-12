@@ -16,8 +16,7 @@
  */
 package com.aionemu.gameserver.utils.gametime;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Logger; import org.slf4j.LoggerFactory;
 
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.gameserver.dao.ServerVariablesDAO;
@@ -25,7 +24,7 @@ import com.aionemu.gameserver.utils.ThreadPoolManager;
 
 /**
  * Manages ingame time
- *
+ * 
  * @author Ben
  */
 public class GameTimeManager {
@@ -42,7 +41,7 @@ public class GameTimeManager {
 
 	/**
 	 * Gets the current GameTime
-	 *
+	 * 
 	 * @return GameTime
 	 */
 	public static GameTime getGameTime() {
@@ -51,8 +50,9 @@ public class GameTimeManager {
 
 	/**
 	 * Starts the counter that increases the clock every tick
-	 *
-	 * @throws IllegalStateException If called twice
+	 * 
+	 * @throws IllegalStateException
+	 *           If called twice
 	 */
 	public static void startClock() {
 		if (clockStarted) {
@@ -67,12 +67,12 @@ public class GameTimeManager {
 
 	/**
 	 * Saves the current time to the database
-	 *
+	 * 
 	 * @return Success
 	 */
 	public static boolean saveTime() {
 		log.info("Game time saved...");
-		return DAOManager.getDAO(ServerVariablesDAO.class).store("time", getGameTime().getTime());
+		return DAOManager.getDAO(ServerVariablesDAO.class).store("time",getGameTime().getTime());
 	}
 
 	/**

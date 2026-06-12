@@ -25,9 +25,8 @@ import com.aionemu.gameserver.questEngine.model.QuestState;
 import com.aionemu.gameserver.questEngine.model.QuestStatus;
 
 /**
- * Talk with Aurelius (203902). Hunt Manduri (6): 210771, 210758, 210763,
- * 210764, 210759, 210770 Report to Aurelius. Talk with Archelaos (203936). Find
- * Paper Glider (700179). Find Melginie (204043). Escort Melginie to Celestine
+ * Talk with Aurelius (203902). Hunt Manduri (6): 210771, 210758, 210763, 210764, 210759, 210770 Report to Aurelius.
+ * Talk with Archelaos (203936). Find Paper Glider (700179). Find Melginie (204043). Escort Melginie to Celestine
  * (204030). Talk with Celestine. Report to Aurelius.
  * 
  * @author Xitanium
@@ -78,57 +77,57 @@ public class _1031TheMandurisSecret extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203902: // Aurelius
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					if (var == 7)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1); // 1
-				case STEP_TO_2:
-					return defaultCloseDialog(env, 7, 8); // 8
-				}
-				break;
-			case 203936: // Archelaos
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 8)
-						return sendQuestDialog(env, 1693);
-				case STEP_TO_3:
-					return defaultCloseDialog(env, 8, 9); // 9
-				}
-				break;
-			case 700179: // Paper Glider
-				if (var == 9) {
+				case 203902: // Aurelius
 					switch (env.getDialog()) {
-					case USE_OBJECT:
-						return sendQuestDialog(env, 2034);
-					case STEP_TO_4: {
-						changeQuestStep(env, 9, 10, false); // 10
-						return sendQuestDialog(env, 0);
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+							if (var == 7)
+								return sendQuestDialog(env, 1352);
+						case STEP_TO_1:
+							return defaultCloseDialog(env, 0, 1); // 1
+						case STEP_TO_2:
+							return defaultCloseDialog(env, 7, 8); // 8
 					}
+					break;
+				case 203936: // Archelaos
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 8)
+								return sendQuestDialog(env, 1693);
+						case STEP_TO_3:
+							return defaultCloseDialog(env, 8, 9); // 9
 					}
-				}
-				break;
-			case 204043: // Melginie
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 10)
-						return sendQuestDialog(env, 2375);
-				case STEP_TO_5:
-					return defaultStartFollowEvent(env, 204030, 10, 11); // 11
-				}
-				break;
-			case 204030: // Celestine
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 12)
-						return sendQuestDialog(env, 3057);
-				case STEP_TO_7:
-					return defaultCloseDialog(env, 12, 12, true, false); // reward
-				}
+					break;
+				case 700179: // Paper Glider
+					if (var == 9) {
+						switch (env.getDialog()) {
+							case USE_OBJECT:
+								return sendQuestDialog(env, 2034);
+							case STEP_TO_4: {
+								changeQuestStep(env, 9, 10, false); // 10
+								return sendQuestDialog(env, 0);
+							}
+						}
+					}
+					break;
+				case 204043: // Melginie
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 10)
+								return sendQuestDialog(env, 2375);
+						case STEP_TO_5:
+							return defaultStartFollowEvent(env, 204030, 10, 11); // 11
+					}
+					break;
+				case 204030: // Celestine
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 12)
+								return sendQuestDialog(env, 3057);
+						case STEP_TO_7:
+							return defaultCloseDialog(env, 12, 12, true, false); // reward
+					}
 
 			}
 		}
@@ -157,17 +156,17 @@ public class _1031TheMandurisSecret extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 
 		switch (targetId) {
-		case 210771:
-		case 210758:
-		case 210763:
-		case 210764:
-		case 210759:
-		case 210770:
-			if (var >= 1 && var <= 6) {
-				qs.setQuestVarById(0, var + 1);
-				updateQuestStatus(env);
-				return true;
-			}
+			case 210771:
+			case 210758:
+			case 210763:
+			case 210764:
+			case 210759:
+			case 210770:
+				if (var >= 1 && var <= 6) {
+					qs.setQuestVarById(0, var + 1);
+					updateQuestStatus(env);
+					return true;
+				}
 		}
 		return false;
 	}

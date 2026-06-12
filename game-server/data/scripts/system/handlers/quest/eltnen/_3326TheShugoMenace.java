@@ -60,7 +60,8 @@ public class _3326TheShugoMenace extends QuestHandler {
 			if (targetId == 798053) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -71,18 +72,19 @@ public class _3326TheShugoMenace extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 798053) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 10002);
-				}
-				case SELECT_REWARD: {
-					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return sendQuestEndDialog(env);
-				}
+					case START_DIALOG: {
+						return sendQuestDialog(env, 10002);
+					}
+					case SELECT_REWARD: {
+						qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						return sendQuestEndDialog(env);
+					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798053) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);
@@ -105,8 +107,7 @@ public class _3326TheShugoMenace extends QuestHandler {
 		if (env.getVisibleObject() instanceof Npc)
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 
-		if (targetId == 210897 || targetId == 210939 || targetId == 210873 || targetId == 210919
-				|| targetId == 211754) {
+		if (targetId == 210897 || targetId == 210939 || targetId == 210873 || targetId == 210919 || targetId == 211754) {
 			if (var >= 0 && var < 20) {
 				qs.setQuestVarById(0, var + 1);
 				updateQuestStatus(env);

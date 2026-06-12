@@ -36,12 +36,12 @@ public interface AI2 {
 	void onGeneralEvent(AIEventType event);
 
 	/**
-	 * If already handled dialog return true.
+	 *  If already handled dialog return true.
 	 */
 	boolean onDialogSelect(Player player, int dialogId, int questId);
 
 	void think();
-
+	
 	boolean canThink();
 
 	AIState getState();
@@ -61,6 +61,6 @@ public interface AI2 {
 	int modifyDamage(int damage);
 
 	List<Player> getClosePlayer(int range);
-
+	
 	AI2 getIa();
 }

@@ -54,18 +54,17 @@ public class SM_INVENTORY_UPDATE_ITEM extends AionServerPacket {
 
 		ItemInfoBlob itemInfoBlob;
 		switch (updateType) {
-		case EQUIP_UNEQUIP:
-			itemInfoBlob = new ItemInfoBlob(player, item);
-			itemInfoBlob.addBlobEntry(ItemBlobType.EQUIPPED_SLOT);
-			break;
-		default:
-			itemInfoBlob = ItemInfoBlob.getFullBlob(player, item);
-			break;
+			case EQUIP_UNEQUIP:
+				itemInfoBlob = new ItemInfoBlob(player, item);
+				itemInfoBlob.addBlobEntry(ItemBlobType.EQUIPPED_SLOT);
+				break;
+			default:
+				itemInfoBlob = ItemInfoBlob.getFullBlob(player, item);
+				break;
 		}
 		itemInfoBlob.writeMe(getBuf());
 
-		if (updateType.isSendable()) {
+		if (updateType.isSendable())
 			writeH(updateType.getMask());
-		}
 	}
 }

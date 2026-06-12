@@ -26,9 +26,8 @@ import com.aionemu.gameserver.questEngine.model.QuestState;
 import com.aionemu.gameserver.questEngine.model.QuestStatus;
 
 /**
- * Get the antidote (182208035) from Calydon Sorcerer (214304) and bring it to
- * Ruria (798211). Talk with Ruria. Escort Ruria to the place where Melleas
- * (798208) is. Talk with Melleas. Tell Rosina (798190) about Ruria.
+ * Get the antidote (182208035) from Calydon Sorcerer (214304) and bring it to Ruria (798211). Talk with Ruria. Escort
+ * Ruria to the place where Melleas (798208) is. Talk with Melleas. Tell Rosina (798190) about Ruria.
  * 
  * @author Balthazar
  * @reworked vlog
@@ -64,54 +63,56 @@ public class _3050RescuingRuria extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 798211) { // Ruria
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 4762);
-				}
-				default:
-					return sendQuestStartDialog(env);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 4762);
+					}
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798211: { // Ruria
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 0) {
-						long itemCount = player.getInventory().getItemCountByItemId(182208035);
-						if (itemCount >= 1) {
-							return sendQuestDialog(env, 1011);
+				case 798211: { // Ruria
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 0) {
+								long itemCount = player.getInventory().getItemCountByItemId(182208035);
+								if (itemCount >= 1) {
+									return sendQuestDialog(env, 1011);
+								}
+								return sendQuestDialog(env, 1097);
+							}
 						}
-						return sendQuestDialog(env, 1097);
+						case USE_OBJECT:
+							if (qs.getQuestVarById(0) == 0) {
+								return defaultStartFollowEvent(env, 798208, 0, 1); // 1
+							}
+						case SELECT_ACTION_1012: {
+							removeQuestItem(env, 182208035, 1);
+						}
+						case STEP_TO_1: {
+							playQuestMovie(env, 370);
+							return defaultStartFollowEvent(env, 798208, 0, 1); // 1
+						}
 					}
 				}
-				case USE_OBJECT:
-					if (qs.getQuestVarById(0) == 0) {
-						return defaultStartFollowEvent(env, 798208, 0, 1); // 1
-					}
-				case SELECT_ACTION_1012: {
-					removeQuestItem(env, 182208035, 1);
-				}
-				case STEP_TO_1: {
-					playQuestMovie(env, 370);
-					return defaultStartFollowEvent(env, 798208, 0, 1); // 1
-				}
-				}
-			}
-				break;
-			case 798208: { // Melleas
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (qs.getQuestVarById(0) == 2) {
-						return sendQuestDialog(env, 2034);
+					break;
+				case 798208: { // Melleas
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (qs.getQuestVarById(0) == 2) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case SET_REWARD: {
+							return defaultCloseDialog(env, 2, 2, true, false);
+						}
 					}
 				}
-				case SET_REWARD: {
-					return defaultCloseDialog(env, 2, 2, true, false);
-				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798190) { // Rosina
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 10002);

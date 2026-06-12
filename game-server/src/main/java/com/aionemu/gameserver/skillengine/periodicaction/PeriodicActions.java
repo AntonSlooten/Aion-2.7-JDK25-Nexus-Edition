@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlType;
 public class PeriodicActions {
 
 	@XmlElements({ @XmlElement(name = "hpuse", type = HpUsePeriodicAction.class),
-			@XmlElement(name = "mpuse", type = MpUsePeriodicAction.class) })
+		@XmlElement(name = "mpuse", type = MpUsePeriodicAction.class) })
 	protected List<PeriodicAction> periodicActions;
 	@XmlAttribute(name = "checktime")
 	protected int checktime;

@@ -24,6 +24,22 @@
         <xs:element minOccurs="0" name="enchants" type="EnchantGroup" />
         <xs:element minOccurs="0" name="boss_rare" type="BossGroup" />
         <xs:element minOccurs="0" name="boss_legendary" type="BossGroup" />
+        <xs:element minOccurs="0" name="feed_fluid" type="FeedFluidGroup"/>
+        <xs:element minOccurs="0" name="feed_armor" type="FeedArmorGroup"/>
+        <xs:element minOccurs="0" name="feed_thorn" type="FeedThornGroup"/>
+        <xs:element minOccurs="0" name="feed_bone" type="FeedBoneGroup"/>
+        <xs:element minOccurs="0" name="feed_balaur_material" type="FeedBalaurGroup"/>
+        <xs:element minOccurs="0" name="feed_soul" type="FeedSoulGroup"/>
+        <xs:element minOccurs="0" name="feed_exclude" type="FeedExcludeGroup"/>
+        <xs:element minOccurs="0" name="stinking_junk" type="StinkingJunkGroup"/>
+        <xs:element minOccurs="0" name="feed_healthy_all" type="HealthyFoodAllGroup"/>
+        <xs:element minOccurs="0" name="feed_healthy_spicy" type="HealthyFoodSpicyGroup"/>
+        <xs:element minOccurs="0" name="feed_powder_biscuit" type="AetherPowderBiscuitGroup"/>
+        <xs:element minOccurs="0" name="feed_crystal_biscuit" type="AetherCrystalBiscuitGroup"/>
+        <xs:element minOccurs="0" name="feed_gem_biscuit" type="AetherGemBiscuitGroup"/>
+        <xs:element minOccurs="0" name="poppy_snack" type="PoppySnackGroup"/>
+        <xs:element minOccurs="0" name="tasty_poppy_snack" type="PoppySnackTastyGroup"/>
+        <xs:element minOccurs="0" name="nutritious_poppy_snack" type="PoppySnackNutritiousGroup"/>
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -31,6 +47,13 @@
   <xs:complexType name="ItemGroup" abstract="true">
     <xs:attribute name="bonusType" type="BonusType" use="required" />
     <xs:attribute default="0" name="chance" type="xs:float" use="optional" />
+  </xs:complexType>
+  
+  <xs:complexType name="FeedItemGroup" abstract="true">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="item" type="ItemRaceEntry"/>
+    </xs:sequence>
+    <xs:attribute name="group" type="ItemGroupIndex"/>
   </xs:complexType>
 
   <xs:complexType name="CraftItemGroup">
@@ -145,6 +168,107 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  
+  <xs:complexType name="FeedFluidGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="FeedArmorGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="FeedThornGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="FeedBalaurGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="FeedBoneGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="FeedSoulGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="FeedExcludeGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="StinkingJunkGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="HealthyFoodAllGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="HealthyFoodSpicyGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="AetherPowderBiscuitGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="AetherCrystalBiscuitGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="AetherGemBiscuitGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="PoppySnackGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="PoppySnackTastyGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="PoppySnackNutritiousGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FeedItemGroup"/>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="ItemRaceEntry">
+    <xs:attribute name="id" type="xs:int" use="required"/>
+    <xs:attribute name="race" type="ItemRace" use="optional"/>
+  </xs:complexType>
 
   <xs:complexType name="IdReward">
     <xs:attribute name="id" type="xs:int" use="required" />
@@ -191,6 +315,13 @@
       <xs:enumeration value="PC_ALL" />
       <xs:enumeration value="ELYOS" />
       <xs:enumeration value="ASMODIANS" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:simpleType name="ItemGroupIndex">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NONE"/>
+      <xs:enumeration value="JUNK"/>
     </xs:restriction>
   </xs:simpleType>
 

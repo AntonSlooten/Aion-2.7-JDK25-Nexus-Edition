@@ -46,26 +46,26 @@ public class SummonTrapEffect extends SummonEffect {
 	@Override
 	public void applyEffect(Effect effect) {
 		/*
-		 * Creature effector = effect.getEffector(); float x = effector.getX(); float y
-		 * = effector.getY(); float z = effector.getZ(); byte heading =
-		 * effector.getHeading(); int worldId = effector.getWorldId(); int instanceId =
-		 * effector.getInstanceId();
-		 *
-		 * SpawnTemplate spawn = SpawnEngine.addNewSingleTimeSpawn(worldId, npcId, x, y,
-		 * z, heading); final Trap trap = VisibleObjectSpawner.spawnTrap(spawn,
-		 * instanceId, effector, skillId);
-		 *
-		 * Future<?> task = ThreadPoolManager.getInstance().schedule(new Runnable() {
-		 *
-		 * @Override public void run() { trap.getController().onDelete(); } }, time *
-		 * 1000); trap.getController().addTask(TaskId.DESPAWN, task);
+		 * Creature effector = effect.getEffector(); float x = effector.getX();
+		 * float y = effector.getY(); float z = effector.getZ(); byte heading =
+		 * effector.getHeading(); int worldId = effector.getWorldId(); int
+		 * instanceId = effector.getInstanceId();
+		 * 
+		 * SpawnTemplate spawn = SpawnEngine.addNewSingleTimeSpawn(worldId,
+		 * npcId, x, y, z, heading); final Trap trap =
+		 * VisibleObjectSpawner.spawnTrap(spawn, instanceId, effector, skillId);
+		 * 
+		 * Future<?> task = ThreadPoolManager.getInstance().schedule(new
+		 * Runnable() {
+		 * 
+		 * @Override public void run() { trap.getController().onDelete(); } },
+		 * time * 1000); trap.getController().addTask(TaskId.DESPAWN, task);
 		 */
 
 		final Creature effector = effect.getEffector();
 		// should only be set if player has no target to avoid errors
-		if (effect.getEffector().getTarget() == null) {
+		if (effect.getEffector().getTarget() == null)
 			effect.getEffector().setTarget(effect.getEffector());
-		}
 		float x = effect.getX();
 		float y = effect.getY();
 		float z = effect.getZ();

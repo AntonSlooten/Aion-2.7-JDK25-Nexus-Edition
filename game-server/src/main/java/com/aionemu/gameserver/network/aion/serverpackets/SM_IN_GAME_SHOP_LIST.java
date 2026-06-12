@@ -37,7 +37,7 @@ public class SM_IN_GAME_SHOP_LIST extends AionServerPacket {
 	private Player player;
 	private int nrList;
 	private int salesRanking;
-	private TIntObjectHashMap<FastList<IGItem>> allItems = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<FastList<IGItem>> allItems = new TIntObjectHashMap<FastList<IGItem>>();
 
 	public SM_IN_GAME_SHOP_LIST(Player player, int nrList, int salesRanking) {
 		this.player = player;
@@ -56,12 +56,10 @@ public class SM_IN_GAME_SHOP_LIST extends AionServerPacket {
 			int r = 9;
 			int f = 0;
 			for (IGItem a : items) {
-				if (category != 2) {
-					if (a.getCategory() != category) {
+				if(category != 2)
+					if(a.getCategory() != category)
 						continue;
-					}
-				}
-
+				
 				if (i == r) {
 					r += 9;
 					f++;
@@ -81,21 +79,19 @@ public class SM_IN_GAME_SHOP_LIST extends AionServerPacket {
 			writeD(nrList);
 			writeD(items.size());
 			writeH(inAllItems == null ? 0 : inAllItems.size());
-			if (inAllItems != null) {
-				for (IGItem item : inAllItems) {
+			if (inAllItems != null)
+				for (IGItem item : inAllItems)
 					writeD(item.getObjectId());
-				}
-			}
-		} else {
+		}
+		else {
 			FastList<Integer> salesRankingItems = InGameShopEn.getInstance().getTopSales(category);
 			writeD(salesRanking);
 			writeD(nrList);
 			writeD((InGameShopEn.getInstance().getMaxList(category) + 1) * 9);
 			writeH(salesRankingItems.size());
-			for (int id : salesRankingItems) {
+			for (int id : salesRankingItems)
 				writeD(id);
-			}
-
+					
 			FastList.recycle(salesRankingItems);
 		}
 	}

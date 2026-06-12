@@ -62,28 +62,28 @@ public class CM_CS_AUTH_RESPONSE extends CsClientPacket {
 	@Override
 	protected void runImpl() {
 		switch (response) {
-		case 0: // Authed
-			log.info("GameServer authed successfully IP : " + (ip[0] & 0xFF) + "." + (ip[1] & 0xFF) + "."
-					+ (ip[2] & 0xFF) + "." + (ip[3] & 0xFF) + " Port: " + port);
-			getConnection().setState(State.AUTHED);
-			ChatService.setIp(ip);
-			ChatService.setPort(port);
-			break;
-		case 1: // NotAuthed
-			log.error("GameServer is not authenticated at ChatServer side");
-			System.exit(ExitCode.CODE_ERROR);
-			break;
-		case 2: // AlreadyRegistered
-			log.info("GameServer is already registered at ChatServer side! trying again...");
-			ThreadPoolManager.getInstance().schedule(new Runnable() {
+			case 0: // Authed
+				log.info("GameServer authed successfully IP : " + (ip[0] & 0xFF) + "." + (ip[1] & 0xFF) + "." + (ip[2] & 0xFF)
+					+ "." + (ip[3] & 0xFF) + " Port: " + port);
+				getConnection().setState(State.AUTHED);
+				ChatService.setIp(ip);
+				ChatService.setPort(port);
+				break;
+			case 1: // NotAuthed
+				log.error("GameServer is not authenticated at ChatServer side");
+				System.exit(ExitCode.CODE_ERROR);
+				break;
+			case 2: // AlreadyRegistered
+				log.info("GameServer is already registered at ChatServer side! trying again...");
+				ThreadPoolManager.getInstance().schedule(new Runnable() {
 
-				@Override
-				public void run() {
-					CM_CS_AUTH_RESPONSE.this.getConnection().sendPacket(new SM_CS_AUTH());
-				}
+					@Override
+					public void run() {
+						CM_CS_AUTH_RESPONSE.this.getConnection().sendPacket(new SM_CS_AUTH());
+					}
 
-			}, 10000);
-			break;
+				}, 10000);
+				break;
 		}
 	}
 }

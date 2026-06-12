@@ -16,10 +16,14 @@
  */
 package com.aionemu.commons.database;
 
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.sql.*;
 
 /**
  * <b>DB Documentation</b>
@@ -49,23 +53,23 @@ import java.sql.*;
  * After the function is called, it automatically closes and recycles the SQL Connection.<br>
  * <br>
  * Example:
- * <p/>
+ * 
  * <pre>
  * DB.select(&quot;SELECT name FROM test_table WHERE id=?&quot;, new ParamReadStH() {
- *
+ * 
  * 	public void setParams(PreparedStatement stmt) throws SQLException {
  * 		stmt.setInt(1, 50);
- *    }
- *
+ * 	}
+ * 
  * 	public void handleRead(ResultSet rset) throws SQLException {
  * 		while (rset.next()) {
  * 			// Usually here in the custom class you would set it to your needed var.
  * 			var = rset.getString(&quot;name&quot;);
- *        }
- *    }
+ * 		}
+ * 	}
  * });
  * </pre>
- * <p/>
+ * 
  * </p>
  * <hr>
  * <b>INSERT / UPDATE (insertUpdate method)</b>
@@ -92,55 +96,53 @@ import java.sql.*;
  * After the function is called, it automatically closes and recycles the SQL Connection.<br>
  * <br>
  * Example:<br>
- * <p/>
+ * 
  * <pre>
  * DB.insertUpdate(&quot;UPDATE test_table SET some_column=1&quot;);
  * </pre>
- * <p/>
+ * 
  * <br>
- * <p/>
+ * 
  * <pre>
  * DB.insertUpdate(&quot;INSERT INTO test_table VALUES (?)&quot;, new IUStH() {
- *
+ * 
  * 	public void handleInsertUpdate(PreparedStatement stmt) {
  * 		// Usually this would be data from the custom class that implements IUSth
  * 		String[] batchTestVars = { &quot;bob&quot;, &quot;mike&quot;, &quot;joe&quot; };
- *
+ * 
  * 		for (String n : batchTestVars) {
  * 			stmt.setString(1, n);
  * 			stmt.addBatch();
- *        }
- *
+ * 		}
+ * 
  * 		// REQUIRED
  * 		stmt.executeBatch();
- *    }
+ * 	}
  * });
- *
+ * 
  * </pre>
- * <p/>
+ * 
  * <br>
- * <p/>
+ * 
  * <pre>
  * DB.insertUpdate(&quot;UPDATE test_table SET some_column=? WHERE other_column=?&quot;, new IUStH() {
- *
+ * 
  * 	public void handleInsertUpdate(PreparedStatement stmt) {
  * 		stmt.setString(1, &quot;xxx&quot;);
  * 		stmt.setInt(2, 10);
  * 		stmt.executeUpdate();
- *    }
+ * 	}
  * });
- *
+ * 
  * </pre>
- * <p/>
+ * 
  * </p>
- *
+ * 
  * @author Disturbing
  */
 public final class DB {
 
-	/**
-	 * Logger
-	 */
+	/** Logger */
 	protected static final Logger log = LoggerFactory.getLogger(DB.class);
 
 	/**
@@ -152,7 +154,7 @@ public final class DB {
 
 	/**
 	 * Executes Select Query. Uses ReadSth to utilize params and return data. Recycles connection after competion.
-	 *
+	 * 
 	 * @param query
 	 * @param reader
 	 * @return boolean Success
@@ -163,7 +165,7 @@ public final class DB {
 
 	/**
 	 * Executes Select Query. Uses ReadSth to utilize params and return data. Recycles connection after completion.
-	 *
+	 * 
 	 * @param query
 	 * @param reader
 	 * @param errMsg
@@ -181,19 +183,22 @@ public final class DB {
 				((ParamReadStH) reader).setParams(stmt);
 			rset = stmt.executeQuery();
 			reader.handleRead(rset);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			if (errMsg == null)
 				log.warn("Error executing select query " + e, e);
 			else
 				log.warn(errMsg + " " + e, e);
 			return false;
-		} finally {
+		}
+		finally {
 			try {
 				if (con != null)
 					con.close();
 				if (stmt != null)
 					stmt.close();
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				log.warn("Failed to close DB connection " + e, e);
 			}
 		}
@@ -202,7 +207,7 @@ public final class DB {
 
 	/**
 	 * Call stored procedure
-	 *
+	 * 
 	 * @param query
 	 * @param reader
 	 * @return
@@ -213,7 +218,7 @@ public final class DB {
 
 	/**
 	 * Call stored procedure
-	 *
+	 * 
 	 * @param query
 	 * @param reader
 	 * @param errMsg
@@ -231,19 +236,22 @@ public final class DB {
 				((CallReadStH) reader).setParams(stmt);
 			rset = stmt.executeQuery();
 			reader.handleRead(rset);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			if (errMsg == null)
 				log.warn("Error calling stored procedure " + e, e);
 			else
 				log.warn(errMsg + " " + e, e);
 			return false;
-		} finally {
+		}
+		finally {
 			try {
 				if (con != null)
 					con.close();
 				if (stmt != null)
 					stmt.close();
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				log.warn("Failed to close DB connection " + e, e);
 			}
 		}
@@ -253,7 +261,7 @@ public final class DB {
 	/**
 	 * Executes Insert or Update Query not needing any further modification or batching. Recycles connection after
 	 * completion.
-	 *
+	 * 
 	 * @param query
 	 * @return boolean Success
 	 */
@@ -264,7 +272,7 @@ public final class DB {
 	/**
 	 * Executes Insert or Update Query not needing any further modification or batching. Recycles connection after
 	 * completion.
-	 *
+	 * 
 	 * @param query
 	 * @param errMsg
 	 * @return success
@@ -276,7 +284,7 @@ public final class DB {
 	/**
 	 * Executes Insert / Update Query. Utilizes IUSth for Batching and Query Editing. MUST MANUALLY EXECUTE QUERY / BATACH
 	 * IN IUSth (No need to close Statement after execution)
-	 *
+	 * 
 	 * @param query
 	 * @param batch
 	 * @return boolean Success
@@ -289,7 +297,7 @@ public final class DB {
 	 * Executes Insert or Update Query. Utilizes IUSth for Batching and Query Editing. Defines custom error message if
 	 * error occurs. MUST MANUALLY EXECUTE QUERY / BATACH IN IUSth (No need to Statement after execution) Recycles
 	 * connection after completion
-	 *
+	 * 
 	 * @param query
 	 * @param batch
 	 * @param errMsg
@@ -307,20 +315,23 @@ public final class DB {
 			else
 				stmt.executeUpdate();
 
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			if (errMsg == null)
 				log.warn("Failed to execute IU query " + e, e);
 			else
 				log.warn(errMsg + " " + e, e);
 
 			return false;
-		} finally {
+		}
+		finally {
 			try {
 				if (con != null)
 					con.close();
 				if (stmt != null)
 					stmt.close();
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				log.warn("Failed to close DB connection " + e, e);
 			}
 		}
@@ -329,9 +340,10 @@ public final class DB {
 
 	/**
 	 * Begins new transaction
-	 *
+	 * 
 	 * @return new Transaction object
-	 * @throws java.sql.SQLException if was unable to create transaction
+	 * @throws java.sql.SQLException
+	 *           if was unable to create transaction
 	 */
 	public static Transaction beginTransaction() throws SQLException {
 		Connection con = DatabaseFactory.getConnection();
@@ -342,8 +354,9 @@ public final class DB {
 	 * Creates PreparedStatement with given sql string.<br>
 	 * Statemens are created with {@link java.sql.ResultSet#TYPE_FORWARD_ONLY} and
 	 * {@link java.sql.ResultSet#CONCUR_READ_ONLY}
-	 *
-	 * @param sql SQL querry
+	 * 
+	 * @param sql
+	 *          SQL querry
 	 * @return Prepared statement if ok or null if error happend while creating
 	 */
 	public static PreparedStatement prepareStatement(String sql) {
@@ -352,15 +365,18 @@ public final class DB {
 
 	/**
 	 * Creates {@link java.sql.PreparedStatement} with given sql<br>
-	 *
-	 * @param sql                  SQL querry
-	 * @param resultSetType        a result set type; one of <br>
-	 *                             <code>ResultSet.TYPE_FORWARD_ONLY</code>,<br>
-	 *                             <code>ResultSet.TYPE_SCROLL_INSENSITIVE</code>, or <br>
-	 *                             <code>ResultSet.TYPE_SCROLL_SENSITIVE</code>
-	 * @param resultSetConcurrency a concurrency type; one of <br>
-	 *                             <code>ResultSet.CONCUR_READ_ONLY</code> or <br>
-	 *                             <code>ResultSet.CONCUR_UPDATABLE</code>
+	 * 
+	 * @param sql
+	 *          SQL querry
+	 * @param resultSetType
+	 *          a result set type; one of <br>
+	 *          <code>ResultSet.TYPE_FORWARD_ONLY</code>,<br>
+	 *          <code>ResultSet.TYPE_SCROLL_INSENSITIVE</code>, or <br>
+	 *          <code>ResultSet.TYPE_SCROLL_SENSITIVE</code>
+	 * @param resultSetConcurrency
+	 *          a concurrency type; one of <br>
+	 *          <code>ResultSet.CONCUR_READ_ONLY</code> or <br>
+	 *          <code>ResultSet.CONCUR_UPDATABLE</code>
 	 * @return Prepared Statement if ok or null if error happened while creating
 	 */
 	public static PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) {
@@ -369,12 +385,14 @@ public final class DB {
 		try {
 			c = DatabaseFactory.getConnection();
 			ps = c.prepareStatement(sql, resultSetType, resultSetConcurrency);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Can't create PreparedStatement for querry: " + sql, e);
 			if (c != null) {
 				try {
 					c.close();
-				} catch (SQLException e1) {
+				}
+				catch (SQLException e1) {
 					log.error("Can't close connection after exception", e1);
 				}
 			}
@@ -385,14 +403,16 @@ public final class DB {
 
 	/**
 	 * Executes PreparedStatement
-	 *
-	 * @param statement PreparedStatement to execute
+	 * 
+	 * @param statement
+	 *          PreparedStatement to execute
 	 * @return returns result of {@link java.sql.PreparedStatement#executeQuery()} or -1 in case of error
 	 */
 	public static int executeUpdate(PreparedStatement statement) {
 		try {
 			return statement.executeUpdate();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Can't execute update for PreparedStatement", e);
 		}
 
@@ -401,8 +421,9 @@ public final class DB {
 
 	/**
 	 * Executes PreparedStatement and closes it and it's connection
-	 *
-	 * @param statement PreparedStatement to close
+	 * 
+	 * @param statement
+	 *          PreparedStatement to close
 	 */
 	public static void executeUpdateAndClose(PreparedStatement statement) {
 		executeUpdate(statement);
@@ -411,15 +432,17 @@ public final class DB {
 
 	/**
 	 * Executes Querry and returns ResultSet
-	 *
-	 * @param statement preparedStement to execute
+	 * 
+	 * @param statement
+	 *          preparedStement to execute
 	 * @return ResultSet or null if error
 	 */
 	public static ResultSet executeQuerry(PreparedStatement statement) {
 		ResultSet rs = null;
 		try {
 			rs = statement.executeQuery();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Error while executing querry", e);
 		}
 		return rs;
@@ -427,8 +450,9 @@ public final class DB {
 
 	/**
 	 * Closes PreparedStatemet, it's connection and last ResultSet
-	 *
-	 * @param statement statement to close
+	 * 
+	 * @param statement
+	 *          statement to close
 	 */
 	public static void close(PreparedStatement statement) {
 
@@ -442,7 +466,8 @@ public final class DB {
 			Connection c = statement.getConnection();
 			statement.close();
 			c.close();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Error while closing PreparedStatement", e);
 		}
 	}

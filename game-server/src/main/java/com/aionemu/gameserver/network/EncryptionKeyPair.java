@@ -25,14 +25,14 @@ public class EncryptionKeyPair {
 
 	/**
 	 * keys index to access SERVER encryption key
-	 *
+	 * 
 	 * @see EncryptionKeyPair.keys
 	 */
 	private static final int SERVER = 0;
 
 	/**
 	 * keys index to access CLIENT encryption key
-	 *
+	 * 
 	 * @see EncryptionKeyPair.keys
 	 */
 	private static final int CLIENT = 1;
@@ -40,8 +40,7 @@ public class EncryptionKeyPair {
 	/**
 	 * Static xor key
 	 */
-	private final static byte[] staticKey = "nKO/WctQ0AVLbpzfBkS6NevDYT8ourG5CRlmdjyJ72aswx4EPq1UgZhFMXH?3iI9"
-			.getBytes();
+	private final static byte[] staticKey = "nKO/WctQ0AVLbpzfBkS6NevDYT8ourG5CRlmdjyJ72aswx4EPq1UgZhFMXH?3iI9".getBytes();
 
 	/**
 	 * Second byte of client packet must be equal to this
@@ -65,15 +64,16 @@ public class EncryptionKeyPair {
 
 	/**
 	 * Initializes client/server encryption keys based on baseKey
-	 *
-	 * @param baseKey random integer
+	 * 
+	 * @param baseKey
+	 *          random integer
 	 */
 	public EncryptionKeyPair(int baseKey) {
 		this.baseKey = baseKey;
 		this.keys = new byte[2][];
 		this.keys[SERVER] = new byte[] { (byte) (baseKey & 0xff), (byte) ((baseKey >> 8) & 0xff),
-				(byte) ((baseKey >> 16) & 0xff), (byte) ((baseKey >> 24) & 0xff), (byte) 0xa1, (byte) 0x6c, (byte) 0x54,
-				(byte) 0x87 };
+			(byte) ((baseKey >> 16) & 0xff), (byte) ((baseKey >> 24) & 0xff), (byte) 0xa1, (byte) 0x6c, (byte) 0x54,
+			(byte) 0x87 };
 		this.keys[CLIENT] = new byte[this.keys[SERVER].length];
 		System.arraycopy(this.keys[SERVER], 0, this.keys[CLIENT], 0, this.keys[SERVER].length);
 		this.lastUpdate = System.currentTimeMillis();
@@ -107,17 +107,15 @@ public class EncryptionKeyPair {
 	}
 
 	/**
-	 * Check if packet was correctly decoded, also check if packet was correctly
-	 * coded by aion client
+	 * Check if packet was correctly decoded, also check if packet was correctly coded by aion client
 	 */
 	private final boolean validateClientPacket(ByteBuffer buf) {
 		return buf.getShort(0) == ~buf.getShort(3) && buf.get(2) == staticClientPacketCode;
 	}
 
 	/**
-	 * Decrypt client packet from this ByteBuffer If decryption is successful,
-	 * update client key
-	 *
+	 * Decrypt client packet from this ByteBuffer If decryption is successful, update client key
+	 * 
 	 * @return true if decryption was successful
 	 */
 	public boolean decrypt(ByteBuffer buf) {
@@ -125,48 +123,43 @@ public class EncryptionKeyPair {
 		final int size = buf.remaining();
 		byte[] clientPacketKey = keys[CLIENT];
 
+		/** index to byte that should be decrypted now */
 		int arrayIndex = buf.arrayOffset() + buf.position();
 
-		int prev = data[arrayIndex] & 0xff;
+		/** prev encrypted byte */
+		int prev = data[arrayIndex];
 
-		data[arrayIndex] = (byte) ((data[arrayIndex] & 0xff) ^ (clientPacketKey[0] & 0xff));
-		arrayIndex++;
+		/** decrypt first byte */
+		data[arrayIndex++] ^= (clientPacketKey[0] & 0xff);
 
+		/** decrypt loop */
 		for (int i = 1; i < size; i++, arrayIndex++) {
 			int curr = data[arrayIndex] & 0xff;
-
-			int decrypted = (data[arrayIndex] & 0xff)
-					^ (staticKey[i & 63] & 0xff)
-					^ (clientPacketKey[i & 7] & 0xff)
-					^ prev;
-
-			data[arrayIndex] = (byte) decrypted;
+			data[arrayIndex] ^= (staticKey[i & 63] & 0xff) ^ (clientPacketKey[i & 7] & 0xff) ^ prev;
 			prev = curr;
 		}
 
-		long oldKey = (((long) clientPacketKey[0] & 0xff) << 0)
-				| (((long) clientPacketKey[1] & 0xff) << 8)
-				| (((long) clientPacketKey[2] & 0xff) << 16)
-				| (((long) clientPacketKey[3] & 0xff) << 24)
-				| (((long) clientPacketKey[4] & 0xff) << 32)
-				| (((long) clientPacketKey[5] & 0xff) << 40)
-				| (((long) clientPacketKey[6] & 0xff) << 48)
-				| (((long) clientPacketKey[7] & 0xff) << 56);
+		/** oldKey value as long */
+		long oldKey = (((long) clientPacketKey[0] & 0xff) << 0) | (((long) clientPacketKey[1] & 0xff) << 8)
+			| (((long) clientPacketKey[2] & 0xff) << 16) | (((long) clientPacketKey[3] & 0xff) << 24)
+			| (((long) clientPacketKey[4] & 0xff) << 32) | (((long) clientPacketKey[5] & 0xff) << 40)
+			| (((long) clientPacketKey[6] & 0xff) << 48) | (((long) clientPacketKey[7] & 0xff) << 56);
 
+		/** change key */
 		oldKey += size;
 
 		if (validateClientPacket(buf)) {
-			clientPacketKey[0] = (byte) ((oldKey >> 0) & 0xff);
-			clientPacketKey[1] = (byte) ((oldKey >> 8) & 0xff);
-			clientPacketKey[2] = (byte) ((oldKey >> 16) & 0xff);
-			clientPacketKey[3] = (byte) ((oldKey >> 24) & 0xff);
-			clientPacketKey[4] = (byte) ((oldKey >> 32) & 0xff);
-			clientPacketKey[5] = (byte) ((oldKey >> 40) & 0xff);
-			clientPacketKey[6] = (byte) ((oldKey >> 48) & 0xff);
-			clientPacketKey[7] = (byte) ((oldKey >> 56) & 0xff);
+			/** set key new value */
+			clientPacketKey[0] = (byte) (oldKey >> 0 & 0xff);
+			clientPacketKey[1] = (byte) (oldKey >> 8 & 0xff);
+			clientPacketKey[2] = (byte) (oldKey >> 16 & 0xff);
+			clientPacketKey[3] = (byte) (oldKey >> 24 & 0xff);
+			clientPacketKey[4] = (byte) (oldKey >> 32 & 0xff);
+			clientPacketKey[5] = (byte) (oldKey >> 40 & 0xff);
+			clientPacketKey[6] = (byte) (oldKey >> 48 & 0xff);
+			clientPacketKey[7] = (byte) (oldKey >> 56 & 0xff);
 			return true;
 		}
-
 		return false;
 	}
 
@@ -178,42 +171,38 @@ public class EncryptionKeyPair {
 		final int size = buf.remaining();
 		byte[] serverPacketKey = keys[SERVER];
 
+		/** index to byte that should be encrypted now */
 		int arrayIndex = buf.arrayOffset() + buf.position();
 
-		data[arrayIndex] = (byte) ((data[arrayIndex] & 0xFF)
-				^ (serverPacketKey[0] & 0xFF));
+		/** encrypt first byte */
+		data[arrayIndex] ^= (serverPacketKey[0] & 0xff);
 
-		int prev = data[arrayIndex] & 0xFF;
-		arrayIndex++;
+		/** prev encrypted byte */
+		int prev = data[arrayIndex++];
 
+		/** encrypt loop */
 		for (int i = 1; i < size; i++, arrayIndex++) {
-			int encrypted = (data[arrayIndex] & 0xFF)
-					^ (staticKey[i & 63] & 0xFF)
-					^ (serverPacketKey[i & 7] & 0xFF)
-					^ prev;
-
-			data[arrayIndex] = (byte) encrypted;
-			prev = data[arrayIndex] & 0xFF;
+			data[arrayIndex] ^= (staticKey[i & 63] & 0xff) ^ (serverPacketKey[i & 7] & 0xff) ^ prev;
+			prev = data[arrayIndex];
 		}
 
-		long oldKey = (((long) serverPacketKey[0] & 0xFF) << 0)
-				| (((long) serverPacketKey[1] & 0xFF) << 8)
-				| (((long) serverPacketKey[2] & 0xFF) << 16)
-				| (((long) serverPacketKey[3] & 0xFF) << 24)
-				| (((long) serverPacketKey[4] & 0xFF) << 32)
-				| (((long) serverPacketKey[5] & 0xFF) << 40)
-				| (((long) serverPacketKey[6] & 0xFF) << 48)
-				| (((long) serverPacketKey[7] & 0xFF) << 56);
+		/** oldKey value as long */
+		long oldKey = (((long) serverPacketKey[0] & 0xff) << 0) | (((long) serverPacketKey[1] & 0xff) << 8)
+			| (((long) serverPacketKey[2] & 0xff) << 16) | (((long) serverPacketKey[3] & 0xff) << 24)
+			| (((long) serverPacketKey[4] & 0xff) << 32) | (((long) serverPacketKey[5] & 0xff) << 40)
+			| (((long) serverPacketKey[6] & 0xff) << 48) | (((long) serverPacketKey[7] & 0xff) << 56);
 
+		/** change key */
 		oldKey += size;
 
-		serverPacketKey[0] = (byte) ((oldKey >> 0) & 0xFF);
-		serverPacketKey[1] = (byte) ((oldKey >> 8) & 0xFF);
-		serverPacketKey[2] = (byte) ((oldKey >> 16) & 0xFF);
-		serverPacketKey[3] = (byte) ((oldKey >> 24) & 0xFF);
-		serverPacketKey[4] = (byte) ((oldKey >> 32) & 0xFF);
-		serverPacketKey[5] = (byte) ((oldKey >> 40) & 0xFF);
-		serverPacketKey[6] = (byte) ((oldKey >> 48) & 0xFF);
-		serverPacketKey[7] = (byte) ((oldKey >> 56) & 0xFF);
+		/** set key new value */
+		serverPacketKey[0] = (byte) (oldKey >> 0 & 0xff);
+		serverPacketKey[1] = (byte) (oldKey >> 8 & 0xff);
+		serverPacketKey[2] = (byte) (oldKey >> 16 & 0xff);
+		serverPacketKey[3] = (byte) (oldKey >> 24 & 0xff);
+		serverPacketKey[4] = (byte) (oldKey >> 32 & 0xff);
+		serverPacketKey[5] = (byte) (oldKey >> 40 & 0xff);
+		serverPacketKey[6] = (byte) (oldKey >> 48 & 0xff);
+		serverPacketKey[7] = (byte) (oldKey >> 56 & 0xff);
 	}
 }

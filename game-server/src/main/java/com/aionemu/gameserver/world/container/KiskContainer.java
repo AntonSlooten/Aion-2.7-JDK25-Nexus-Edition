@@ -32,9 +32,8 @@ public class KiskContainer {
 	private final Map<Integer, Kisk> kiskByPlayerObjectId = new FastMap<Integer, Kisk>().shared();
 
 	public void add(Kisk kisk, Player player) {
-		if (this.kiskByPlayerObjectId.put(player.getObjectId(), kisk) != null) {
+		if (this.kiskByPlayerObjectId.put(player.getObjectId(), kisk) != null)
 			throw new DuplicateAionObjectException();
-		}
 	}
 
 	public Kisk get(Player player) {

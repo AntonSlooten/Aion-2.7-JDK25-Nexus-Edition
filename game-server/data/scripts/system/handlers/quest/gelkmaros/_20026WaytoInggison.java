@@ -69,24 +69,26 @@ public class _20026WaytoInggison extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 799364) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-			} else if (targetId == 799365) {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case SET_REWARD:
-					// return defaultCloseDialog(env, 1, 1, true, true); // reward
-					if (defaultCloseDialog(env, 1, 0, true, false))
-						return sendQuestDialog(env, 10002);
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+					case STEP_TO_1:
+						return defaultCloseDialog(env, 0, 1); // 1
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+			else if (targetId == 799365) {
+				switch (env.getDialog()) {
+					case START_DIALOG:
+						if (var == 1)
+							return sendQuestDialog(env, 1352);
+					case SET_REWARD:
+						// return defaultCloseDialog(env, 1, 1, true, true); // reward
+						if (defaultCloseDialog(env, 1, 0, true, false))
+							return sendQuestDialog(env, 10002);
+				}
+			}
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799365) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 10002);

@@ -37,16 +37,15 @@ public class SM_LOOT_ITEMLIST extends AionServerPacket {
 
 	public SM_LOOT_ITEMLIST(int targetObjectId, Set<DropItem> setItems, Player player) {
 		this.targetObjectId = targetObjectId;
-		this.dropItems = new FastList<>();
+		this.dropItems = new FastList<DropItem>();
 		if (setItems == null) {
 			LoggerFactory.getLogger(SM_LOOT_ITEMLIST.class).warn("null Set<DropItem>, skip");
 			return;
 		}
 
 		for (DropItem item : setItems) {
-			if (item.getPlayerObjId() == 0 || player.getObjectId() == item.getPlayerObjId()) {
+			if (item.getPlayerObjId() == 0 || player.getObjectId() == item.getPlayerObjId())
 				dropItems.add(item);
-			}
 		}
 	}
 
@@ -64,7 +63,7 @@ public class SM_LOOT_ITEMLIST extends AionServerPacket {
 			writeD((int) dropItem.getCount());
 			writeH(0);
 		}
-
+		
 		FastList.recycle(dropItems);
 	}
 }

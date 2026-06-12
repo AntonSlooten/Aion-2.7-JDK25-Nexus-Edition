@@ -6,22 +6,23 @@ public class CQFDListenerEntry {
 	private Creature _killer;
 	private Creature _killed;
 	private Object[] _agrs;
-
-	public CQFDListenerEntry(Creature killer, Creature killed, Object[] agrs) {
+	
+	public CQFDListenerEntry(Creature killer, Creature killed, Object[] agrs){
 		_killer = killer;
 		_killed = killed;
 		_agrs = agrs;
 	}
-
-	public Creature getKiller() {
+	
+	
+	public Creature getKiller(){
 		return _killer;
 	}
-
-	public Creature getKilled() {
+	
+	public Creature getKilled(){
 		return _killed;
 	}
-
-	public Object[] getAgrs() {
+	
+	public Object[] getAgrs(){
 		return _agrs;
 	}
 }

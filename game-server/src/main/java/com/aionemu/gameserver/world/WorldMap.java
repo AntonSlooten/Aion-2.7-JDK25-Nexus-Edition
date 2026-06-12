@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -27,7 +27,7 @@ import com.aionemu.gameserver.model.templates.world.WorldMapTemplate;
 
 /**
  * This object is representing one in-game map and can have instances.
- *
+ * 
  * @author -Nemesiss-
  */
 public class WorldMap {
@@ -52,7 +52,8 @@ public class WorldMap {
 				int nextId = getNextInstanceId();
 				addInstance(nextId, WorldMapInstanceFactory.createWorldMapInstance(this, nextId));
 			}
-		} else {
+		}
+		else {
 			int nextId = getNextInstanceId();
 			addInstance(nextId, WorldMapInstanceFactory.createWorldMapInstance(this, nextId));
 		}
@@ -82,11 +83,11 @@ public class WorldMap {
 		return worldMapTemplate.getMapId();
 	}
 
-	public boolean isPossibleFly() {
+	public boolean isPossibleFly(){
 		return worldMapTemplate.isFly();
 	}
 
-	public boolean isExceptBuff() {
+	public boolean isExceptBuff(){
 		return worldMapTemplate.isExceptBuff();
 	}
 
@@ -96,10 +97,9 @@ public class WorldMap {
 	}
 
 	/**
-	 * Return a WorldMapInstance - depends on map configuration one map may have
-	 * twins instances to balance player. This method will return WorldMapInstance
-	 * by server chose.
-	 *
+	 * Return a WorldMapInstance - depends on map configuration one map may have twins instances to balance player. This
+	 * method will return WorldMapInstance by server chose.
+	 * 
 	 * @return WorldMapInstance.
 	 */
 	public WorldMapInstance getWorldMapInstance() {
@@ -109,15 +109,15 @@ public class WorldMap {
 
 	/**
 	 * This method return WorldMapInstance by specified instanceId
-	 *
+	 * 
 	 * @param instanceId
 	 * @return WorldMapInstance
 	 */
 	public WorldMapInstance getWorldMapInstanceById(int instanceId) {
 		if (worldMapTemplate.getTwinCount() != 0) {
 			if (instanceId > worldMapTemplate.getTwinCount()) {
-				throw new IllegalArgumentException(
-						"WorldMapInstance " + getMapId() + " has lower instances count than " + instanceId);
+				throw new IllegalArgumentException("WorldMapInstance " + getMapId()
+					+ " has lower instances count than " + instanceId);
 			}
 		}
 		return getWorldMapInstance(instanceId);
@@ -125,24 +125,24 @@ public class WorldMap {
 
 	/**
 	 * Returns WorldMapInstance by instanceId.
-	 *
+	 * 
 	 * @param instanceId
 	 * @return WorldMapInstance/
 	 */
 	private WorldMapInstance getWorldMapInstance(int instanceId) {
 		WorldMapInstance instance = instances.get(instanceId);
-		if (instance == null) {
+		if(instance == null)
+		{
 			instance = WorldMapInstanceFactory.createWorldMapInstance(this, instanceId);
 			addInstance(instanceId, instance);
-			// throw new InstanceNotExistException("Instance: " + instanceId + " not exist
-			// for map: "+getMapId());
+			//throw new InstanceNotExistException("Instance: " + instanceId + " not exist for map: "+getMapId());
 		}
 		return instance;
 	}
 
 	/**
 	 * Remove WorldMapInstance by instanceId.
-	 *
+	 * 
 	 * @param instanceId
 	 */
 	public void removeWorldMapInstance(int instanceId) {
@@ -151,7 +151,7 @@ public class WorldMap {
 
 	/**
 	 * Add instance to map
-	 *
+	 * 
 	 * @param instanceId
 	 * @param instance
 	 */
@@ -165,7 +165,7 @@ public class WorldMap {
 	public World getWorld() {
 		return world;
 	}
-
+	
 	public final WorldMapTemplate getTemplate() {
 		return worldMapTemplate;
 	}
@@ -179,7 +179,7 @@ public class WorldMap {
 
 	/**
 	 * Whether this world map is instance type
-	 *
+	 * 
 	 * @return
 	 */
 	public boolean isInstanceType() {

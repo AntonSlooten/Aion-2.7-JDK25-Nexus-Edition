@@ -35,7 +35,7 @@ public class CM_START_LOOT extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_CM_REQUEST_DIALOG </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_START_LOOT(int opcode, State state, State... restStates) {
@@ -58,10 +58,9 @@ public class CM_START_LOOT extends AionClientPacket {
 	protected void runImpl() {
 		Player player = getConnection().getActivePlayer();
 
-		if (action == 0) { // open
+		if (action == 0) // open
 			DropService.getInstance().requestDropList(player, targetObjectId);
-		} else if (action == 1) { // close
+		else if (action == 1) // close
 			DropService.getInstance().closeDropList(player, targetObjectId);
-		}
 	}
 }

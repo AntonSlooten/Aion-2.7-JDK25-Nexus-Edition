@@ -63,25 +63,25 @@ public class SM_PET_EMOTE extends AionServerPacket {
 		writeD(pet.getObjectId());
 		writeC(emote.getEmoteId());
 		switch (emote) {
-		case MOVE_STOP:
-			writeF(x);
-			writeF(y);
-			writeF(z);
-			writeC(heading);
-			break;
-		case MOVETO:
-			writeF(x);
-			writeF(y);
-			writeF(z);
-			writeC(heading);
-			writeF(x2);
-			writeF(y2);
-			writeF(z2);
-			break;
-		default:
-			writeC(emotionId);
-			writeC(param1); // happinessAdded?
-			break;
+			case MOVE_STOP:
+				writeF(x);
+				writeF(y);
+				writeF(z);
+				writeC(heading);
+				break;
+			case MOVETO:
+				writeF(x);
+				writeF(y);
+				writeF(z);
+				writeC(heading);
+				writeF(x2);
+				writeF(y2);
+				writeF(z2);
+				break;
+			default:
+				writeC(emotionId);
+				writeC(param1); // happinessAdded?
+				break;
 		}
 	}
 }

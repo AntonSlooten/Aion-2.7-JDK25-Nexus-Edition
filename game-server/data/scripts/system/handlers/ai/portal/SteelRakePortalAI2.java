@@ -40,17 +40,18 @@ public class SteelRakePortalAI2 extends NpcAI2 {
 		PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 1011));
 	}
 
+
 	public boolean onDialogSelect(Player player, int dialogId, int questId) {
 		int objectId = getObjectId();
 		if (dialogId == 1012) {
 			int quest = 0;
 			switch (player.getCommonData().getRace()) {
-			case ASMODIANS:
-				quest = 4200;
-				break;
-			case ELYOS:
-				quest = 3200;
-				break;
+				case ASMODIANS:
+					quest = 4200;
+					break;
+				case ELYOS:
+					quest = 3200;
+					break;
 			}
 
 			boolean instanceQuestReq = false;
@@ -79,7 +80,6 @@ public class SteelRakePortalAI2 extends NpcAI2 {
 				PortalService.port(portalTemplate, player, getObjectId(), getObjectTemplate().getTalkDelay());
 			}
 		}
-		return true;
-	}
+	return true;}
 
 }

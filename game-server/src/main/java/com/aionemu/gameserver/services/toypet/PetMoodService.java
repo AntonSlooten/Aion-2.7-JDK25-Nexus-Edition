@@ -16,14 +16,15 @@
  */
 package com.aionemu.gameserver.services.toypet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.aionemu.gameserver.model.gameobjects.Pet;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_PET;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.services.item.ItemService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.audit.AuditLogger;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * @author ATracer
@@ -34,15 +35,15 @@ public class PetMoodService {
 
 	public static void checkMood(Pet pet, int type, int shuggleEmotion) {
 		switch (type) {
-		case 0:
-			startCheckingMood(pet);
-			break;
-		case 1:
-			interactWithPet(pet, shuggleEmotion);
-			break;
-		case 3:
-			requestPresent(pet);
-			break;
+			case 0:
+				startCheckingMood(pet);
+				break;
+			case 1:
+				interactWithPet(pet, shuggleEmotion);
+				break;
+			case 3:
+				requestPresent(pet);
+				break;
 		}
 	}
 
@@ -66,8 +67,8 @@ public class PetMoodService {
 		}
 
 		pet.getCommonData().clearMoodStatistics();
-		PacketSendUtility.sendPacket(pet.getMaster(), new SM_PET(pet, 4, 0, 0));
-		PacketSendUtility.sendPacket(pet.getMaster(), new SM_PET(pet, 3, 0, 0));
+		PacketSendUtility.sendPacket(pet.getMaster(), new SM_PET(pet, 4, 0));
+		PacketSendUtility.sendPacket(pet.getMaster(), new SM_PET(pet, 3, 0));
 		int itemId = pet.getPetTemplate().getConditionReward();
 		if (itemId != 0) {
 			ItemService.addItem(pet.getMaster(), pet.getPetTemplate().getConditionReward(), 1);
@@ -81,8 +82,8 @@ public class PetMoodService {
 	private static void interactWithPet(Pet pet, int shuggleEmotion) {
 		if (pet.getCommonData() != null) {
 			if (pet.getCommonData().increaseShuggleCounter()) {
-				int delta = (pet.getCommonData().getMoodPoints(true) - pet.getCommonData().getLastSentPoints()) / 100;
-				PacketSendUtility.sendPacket(pet.getMaster(), new SM_PET(pet, 2, shuggleEmotion, delta));
+				PacketSendUtility.sendPacket(pet.getMaster(), new SM_PET(pet, 2, shuggleEmotion));
+				PacketSendUtility.sendPacket(pet.getMaster(), new SM_PET(pet, 4, 0)); // Update progress immediately
 			}
 		}
 	}
@@ -91,8 +92,7 @@ public class PetMoodService {
 	 * @param pet
 	 */
 	private static void startCheckingMood(Pet pet) {
-		int delta = (pet.getCommonData().getMoodPoints(true) - pet.getCommonData().getLastSentPoints()) / 100;
-		PacketSendUtility.sendPacket(pet.getMaster(), new SM_PET(pet, 0, 0, delta));
+		PacketSendUtility.sendPacket(pet.getMaster(), new SM_PET(pet, 0, 0));
 	}
 
 }

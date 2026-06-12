@@ -60,36 +60,38 @@ public class _2017TrespassersattheObservatory extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203654:
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 6)
-						return sendQuestDialog(env, 1352);
-					else if (var == 7)
-						return sendQuestDialog(env, 1693);
-					break;
-				case STEP_TO_1:
-				case STEP_TO_2:
-					if (var == 0 || var == 6) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						return sendQuestSelectionDialog(env);
+				case 203654:
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+							else if (var == 6)
+								return sendQuestDialog(env, 1352);
+							else if (var == 7)
+								return sendQuestDialog(env, 1693);
+							break;
+						case STEP_TO_1:
+						case STEP_TO_2:
+							if (var == 0 || var == 6) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								return sendQuestSelectionDialog(env);
+							}
+							break;
+						case CHECK_COLLECTED_ITEMS:
+							if (var == 7) {
+								if (QuestService.collectItemCheck(env, true)) {
+									qs.setStatus(QuestStatus.REWARD);
+									updateQuestStatus(env);
+									return sendQuestDialog(env, 1694);
+								}
+								else
+									return sendQuestDialog(env, 1779);
+							}
 					}
-					break;
-				case CHECK_COLLECTED_ITEMS:
-					if (var == 7) {
-						if (QuestService.collectItemCheck(env, true)) {
-							qs.setStatus(QuestStatus.REWARD);
-							updateQuestStatus(env);
-							return sendQuestDialog(env, 1694);
-						} else
-							return sendQuestDialog(env, 1779);
-					}
-				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203558) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT)
 					return sendQuestDialog(env, 2034);
@@ -112,14 +114,14 @@ public class _2017TrespassersattheObservatory extends QuestHandler {
 		if (env.getVisibleObject() instanceof Npc)
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		switch (targetId) {
-		case 210528:
-		case 210721:
-			var = qs.getQuestVarById(0);
-			if (var < 6) {
-				qs.setQuestVarById(0, var + 1);
-				updateQuestStatus(env);
-			}
-			break;
+			case 210528:
+			case 210721:
+				var = qs.getQuestVarById(0);
+				if (var < 6) {
+					qs.setQuestVarById(0, var + 1);
+					updateQuestStatus(env);
+				}
+				break;
 		}
 		return false;
 	}

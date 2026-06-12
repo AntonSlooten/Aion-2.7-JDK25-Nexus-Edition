@@ -16,18 +16,18 @@
  */
 package com.aionemu.gameserver.questEngine.model;
 
-import java.util.concurrent.ScheduledFuture;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.utils.PacketSendUtility;
-import com.aionemu.gameserver.utils.ThreadPoolManager;
 
 /**
  * @author Hilgert
  */
 public class QuestTimer {
 
-	private ScheduledFuture<?> timerTask;
+	private Timer timer;
 
 	private int Time = 0;
 
@@ -54,18 +54,22 @@ public class QuestTimer {
 	 */
 	public void Start() {
 		PacketSendUtility.sendMessage(player, "Timer started");
+		timer = new Timer();
 		isTicking = true;
 		// TODO Send Packet that timer start
-		timerTask = ThreadPoolManager.getInstance().schedule(() -> {
-			PacketSendUtility.sendMessage(player, "Timer is over");
-			onEnd();
-		}, Time);
+		TimerTask task = new TimerTask() {
+
+			public void run() {
+				PacketSendUtility.sendMessage(player, "Timer is over");
+				onEnd();
+			}
+		};
+
+		timer.schedule(task, Time);
 	}
 
 	public void Stop() {
-		if (timerTask != null) {
-			timerTask.cancel(false);
-		}
+		timer.cancel();
 		onEnd();
 	}
 
@@ -86,6 +90,6 @@ public class QuestTimer {
 	 * @return
 	 */
 	public int getTimeSeconds() {
-		return this.Time / 1000;
+		return (int) this.Time / 1000;
 	}
 }

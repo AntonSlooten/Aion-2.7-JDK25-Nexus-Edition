@@ -31,7 +31,7 @@ public class CM_PING extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_PING </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_PING(int opcode, State state, State... restStates) {
@@ -58,11 +58,9 @@ public class CM_PING extends AionClientPacket {
 			long pingInterval = System.currentTimeMillis() - lastMS;
 			// PingInterval should be 3min (180000ms)
 			if (pingInterval < GSConfig.PING_INTERVAL * 1000) {// client timer cheat
-				AuditLogger.info(player, "Possible client timer cheat kicking player: " + pingInterval + ", ip="
-						+ getConnection().getIP());
+				AuditLogger.info(player, "Possible client timer cheat kicking player: " + pingInterval + ", ip=" + getConnection().getIP());
 				if (GSConfig.SECURITY_ENABLE) {
-					PacketSendUtility.sendMessage(player,
-							"You have been triggered Speed Hack detection so you're disconnected.");
+					PacketSendUtility.sendMessage(player, "You have been triggered Speed Hack detection so you're disconnected.");
 					getConnection().closeNow();
 				}
 			}

@@ -6,8 +6,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_RESURRECT;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public class CmdRes extends BaseCommand {
-
-	@Override
+	
 	public void execute(Player admin, String... params) {
 		Player player = AutoTarget(admin);
 
@@ -15,8 +14,8 @@ public class CmdRes extends BaseCommand {
 			PacketSendUtility.sendMessage(admin, "Ce joueur et deja en vie.");
 			return;
 		}
-
-		// PlayerReviveService.skillRevive(player);
+		
+		//PlayerReviveService.skillRevive(player);
 		PacketSendUtility.sendMessage(admin, "Le joueur peut se rez.");
 		player.setPlayerResActivate(true);
 		PacketSendUtility.sendPacket(player, new SM_RESURRECT(admin, 9912));

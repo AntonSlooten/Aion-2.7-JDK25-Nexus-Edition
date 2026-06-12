@@ -38,13 +38,14 @@ public class DispelDebuffEffect extends EffectTemplate {
 	protected int power;
 	@XmlAttribute(name = "dispel_level")
 	protected int dispelLevel;
+	
 
 	@Override
 	public void applyEffect(Effect effect) {
 		int count = value + delta * effect.getSkillLevel();
 		int finalPower = power + dpower * effect.getSkillLevel();
 
-		effect.getEffected().getEffectController().removeEffectByDispelCat(DispelCategoryType.ALL,
-				SkillTargetSlot.DEBUFF, count, dispelLevel, finalPower, false);
+		effect.getEffected().getEffectController()
+		.removeEffectByDispelCat(DispelCategoryType.ALL, SkillTargetSlot.DEBUFF, count, dispelLevel, finalPower, false);
 	}
 }

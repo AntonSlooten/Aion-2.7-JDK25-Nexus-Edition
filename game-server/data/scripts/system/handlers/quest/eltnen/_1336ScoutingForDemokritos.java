@@ -31,7 +31,7 @@ import com.aionemu.gameserver.world.zone.ZoneName;
  */
 public class _1336ScoutingForDemokritos extends QuestHandler {
 
-	private final static int questId = 1336;
+	private final static int	questId	= 1336;
 
 	public _1336ScoutingForDemokritos() {
 		super(questId);
@@ -39,20 +39,20 @@ public class _1336ScoutingForDemokritos extends QuestHandler {
 
 	@Override
 	public void register() {
-		qe.registerQuestNpc(204006).addOnQuestStart(questId); // Demokritos
+		qe.registerQuestNpc(204006).addOnQuestStart(questId); //Demokritos
 		qe.registerQuestNpc(204006).addOnTalkEvent(questId);
 		qe.registerOnEnterZone(ZoneName.EASTERN_ERACUS_DESERT_210020000, questId);
 	}
-
+	
 	@Override
 	public boolean onEnterZoneEvent(QuestEnv env, ZoneName zoneName) {
-		if (zoneName != ZoneName.EASTERN_ERACUS_DESERT_210020000)
+		if(zoneName != ZoneName.EASTERN_ERACUS_DESERT_210020000)
 			return false;
 		Player player = env.getPlayer();
 		if (player == null)
 			return false;
 		QuestState qs = player.getQuestStateList().getQuestState(questId);
-		if (qs == null || qs.getQuestVars().getQuestVars() != 0)
+		if(qs == null || qs.getQuestVars().getQuestVars() != 0)
 			return false;
 		if (qs.getStatus() != QuestStatus.START)
 			return false;
@@ -66,19 +66,21 @@ public class _1336ScoutingForDemokritos extends QuestHandler {
 	public boolean onDialogEvent(QuestEnv env) {
 		Player player = env.getPlayer();
 		int targetId = 0;
-		if (env.getVisibleObject() instanceof Npc)
+		if(env.getVisibleObject() instanceof Npc)
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		QuestState qs = player.getQuestStateList().getQuestState(questId);
 		QuestDialog dialog = env.getDialog();
-
-		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
-			if (targetId == 204006) {// Demokritos
+		
+		if(qs == null || qs.getStatus() == QuestStatus.NONE) {
+			if (targetId == 204006){//Demokritos
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204006) {
 				return sendQuestEndDialog(env);
 			}

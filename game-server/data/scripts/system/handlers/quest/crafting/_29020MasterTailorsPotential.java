@@ -67,41 +67,41 @@ public class _29020MasterTailorsPotential extends QuestHandler {
 
 		if (qs != null && qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204111:
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 1011);
-				case STEP_TO_10:
-					if (!giveQuestItem(env, 152206964, 1))
-						return true;
-					qs.setQuestVarById(0, 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				case STEP_TO_20:
-					if (!giveQuestItem(env, 152206965, 1))
-						return true;
-					qs.setQuestVarById(0, 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			case 204110:
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					long itemCount1 = player.getInventory().getItemCountByItemId(182207900);
-					if (itemCount1 > 0) {
-						removeQuestItem(env, 182207900, 1);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 1352);
-					} else
-						return sendQuestDialog(env, 10001);
-				}
+				case 204111:
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							return sendQuestDialog(env, 1011);
+						case STEP_TO_10:
+							if (!giveQuestItem(env, 152206964, 1))
+								return true;
+							qs.setQuestVarById(0, 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						case STEP_TO_20:
+							if (!giveQuestItem(env, 152206965, 1))
+								return true;
+							qs.setQuestVarById(0, 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+					}
+				case 204110:
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							long itemCount1 = player.getInventory().getItemCountByItemId(182207900);
+							if (itemCount1 > 0) {
+								removeQuestItem(env, 182207900, 1);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 1352);
+							}
+							else
+								return sendQuestDialog(env, 10001);
+					}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204110) {
 				if (env.getDialogId() == 34)
 					return sendQuestDialog(env, 5);

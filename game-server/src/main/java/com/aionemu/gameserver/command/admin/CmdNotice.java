@@ -9,18 +9,22 @@ import com.aionemu.gameserver.world.World;
 
 /*Syntax: //notice <message> */
 
+
 public class CmdNotice extends BaseCommand {
 
-	@Override
+
+
+
 	public void execute(Player player, String... params) {
 
 		String message = "";
 
 		try {
-			for (String param : params) {
-				message += " " + param;
+			for (int i = 0; i < params.length; i++) {
+				message += " " + params[i];
 			}
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			PacketSendUtility.sendMessage(player, "Parameters should be text or number !");
 			return;
 		}
@@ -30,6 +34,7 @@ public class CmdNotice extends BaseCommand {
 			PacketSendUtility.sendBrightYellowMessageOnCenter(iter.next(), "Information: " + message);
 		}
 	}
+
 
 	public void onFail(Player admin, String message) {
 		showHelp(admin);

@@ -63,9 +63,8 @@ public class BlindEffect extends EffectTemplate {
 	@Override
 	public void endEffect(Effect effect) {
 		AttackCalcObserver acObserver = effect.getAttackStatusObserver(position);
-		if (acObserver != null) {
+		if (acObserver != null)
 			effect.getEffected().getObserveController().removeAttackCalcObserver(acObserver);
-		}
 		effect.getEffected().getEffectController().unsetAbnormal(AbnormalState.BLIND.getId());
 	}
 

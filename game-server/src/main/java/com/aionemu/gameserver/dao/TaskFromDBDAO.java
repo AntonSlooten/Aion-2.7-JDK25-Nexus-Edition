@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.org>.
  *
  * aion-unique is free software: you can redistribute it and/or modify
@@ -28,7 +28,7 @@ public abstract class TaskFromDBDAO implements DAO {
 
 	/**
 	 * Return all tasks from DB
-	 *
+	 * 
 	 * @return all tasks
 	 */
 	public abstract ArrayList<TaskFromDB> getAllTasks();
@@ -40,7 +40,7 @@ public abstract class TaskFromDBDAO implements DAO {
 
 	/**
 	 * Returns class name that will be uses as unique identifier for all DAO classes
-	 *
+	 * 
 	 * @return class name
 	 */
 	@Override

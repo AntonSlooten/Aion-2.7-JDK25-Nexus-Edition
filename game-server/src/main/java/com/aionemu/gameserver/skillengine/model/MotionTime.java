@@ -17,7 +17,7 @@ public class MotionTime {
 	protected String name;// TODO enum
 
 	@XmlTransient
-	private HashMap<WeaponTypeWrapper, Integer> timeForWeaponType = new HashMap<>();
+	private HashMap<WeaponTypeWrapper, Integer> timeForWeaponType = new HashMap<WeaponTypeWrapper, Integer>();
 
 	public String getName() {
 		return name;
@@ -34,6 +34,7 @@ public class MotionTime {
 		this.name = name;
 	}
 
+	
 	/**
 	 * @param times the times to set
 	 */
@@ -42,7 +43,7 @@ public class MotionTime {
 	}
 
 	public int getTimeForWeapon(WeaponTypeWrapper weapon) {
-		return timeForWeaponType.get(weapon);
+			return timeForWeaponType.get(weapon);
 	}
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
@@ -56,11 +57,9 @@ public class MotionTime {
 		timeForWeaponType.put(new WeaponTypeWrapper(WeaponType.STAFF_2H, null), Integer.parseInt(tokens[6]));
 		timeForWeaponType.put(new WeaponTypeWrapper(WeaponType.SWORD_1H, null), Integer.parseInt(tokens[7]));
 		timeForWeaponType.put(new WeaponTypeWrapper(WeaponType.SWORD_2H, null), Integer.parseInt(tokens[8]));
-		timeForWeaponType.put(new WeaponTypeWrapper(WeaponType.SWORD_1H, WeaponType.SWORD_1H),
-				Integer.parseInt(tokens[9]));
+		timeForWeaponType.put(new WeaponTypeWrapper(WeaponType.SWORD_1H, WeaponType.SWORD_1H), Integer.parseInt(tokens[9]));
 	}
 	/**
-	 * ordering BOOK_2H BOW DAGGER_1H MACE_1H ORB_2H POLEARM_2H STAFF_2H SWORD_1H
-	 * SWORD_2H dualwield
+	 * ordering BOOK_2H BOW DAGGER_1H MACE_1H ORB_2H POLEARM_2H STAFF_2H SWORD_1H SWORD_2H dualwield
 	 */
 }

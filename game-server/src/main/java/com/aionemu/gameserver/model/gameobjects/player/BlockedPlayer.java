@@ -18,7 +18,7 @@ package com.aionemu.gameserver.model.gameobjects.player;
 
 /**
  * Represents a player who has been blocked
- *
+ * 
  * @author Ben
  */
 public class BlockedPlayer {

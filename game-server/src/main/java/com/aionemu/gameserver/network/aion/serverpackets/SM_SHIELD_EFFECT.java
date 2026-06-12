@@ -35,7 +35,7 @@ public class SM_SHIELD_EFFECT extends AionServerPacket {
 	}
 
 	public SM_SHIELD_EFFECT(int fortress) {
-		locations = new FastMap<>();
+		locations = new FastMap<Integer, SiegeLocation>();
 		locations.put(fortress, SiegeService.getInstance().getFortress(fortress));
 	}
 

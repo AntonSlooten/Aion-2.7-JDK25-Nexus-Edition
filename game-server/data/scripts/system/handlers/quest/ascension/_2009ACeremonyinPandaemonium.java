@@ -70,143 +70,146 @@ public class _2009ACeremonyinPandaemonium extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 203550) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-				case STEP_TO_1:
-					if (var == 0) {
-						qs.setQuestVar(1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+					case STEP_TO_1:
+						if (var == 0) {
+							qs.setQuestVar(1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
 
-						PacketSendUtility.sendPacket(player,
-								new SM_TELEPORT_LOC(120010000, 1685, 1400, 195, player.getHeading(), 1));
-						TeleportService.scheduleTeleportTask(player, 120010000, 1685, 1400, 195);
-						return true;
-					}
-				}
-			} else if (targetId == 204182) {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case SELECT_ACTION_1353:
-					if (var == 1) {
-						playQuestMovie(env, 121);
-						return false;
-					}
-				case STEP_TO_2:
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-			} else if (targetId == 204075) {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 2)
-						return sendQuestDialog(env, 1693);
-				case SELECT_ACTION_1694:
-					if (var == 2) {
-						playQuestMovie(env, 122);
-						return false;
-					}
-				case STEP_TO_3:
-					if (var == 2) {
-						PlayerClass playerClass = PlayerClass
-								.getStartingClassFor(player.getCommonData().getPlayerClass());
-						if (playerClass == PlayerClass.WARRIOR)
-							qs.setQuestVar(10);
-						else if (playerClass == PlayerClass.SCOUT)
-							qs.setQuestVar(20);
-						else if (playerClass == PlayerClass.MAGE)
-							qs.setQuestVar(30);
-						else if (playerClass == PlayerClass.PRIEST)
-							qs.setQuestVar(40);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestSelectionDialog(env);
-					}
+							PacketSendUtility.sendPacket(player, new SM_TELEPORT_LOC(120010000, 1685, 1400, 195, player.getHeading(),1));
+							TeleportService.scheduleTeleportTask(player, 120010000, 1685, 1400, 195);
+							return true;
+						}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+			else if (targetId == 204182) {
+				switch (env.getDialog()) {
+					case START_DIALOG:
+						if (var == 1)
+							return sendQuestDialog(env, 1352);
+					case SELECT_ACTION_1353:
+						if (var == 1) {
+							playQuestMovie(env, 121);
+							return false;
+						}
+					case STEP_TO_2:
+						return defaultCloseDialog(env, 1, 2); // 2
+				}
+			}
+			else if (targetId == 204075) {
+				switch (env.getDialog()) {
+					case START_DIALOG:
+						if (var == 2)
+							return sendQuestDialog(env, 1693);
+					case SELECT_ACTION_1694:
+						if (var == 2) {
+							playQuestMovie(env, 122);
+							return false;
+						}
+					case STEP_TO_3:
+						if (var == 2) {
+							PlayerClass playerClass = PlayerClass.getStartingClassFor(player.getCommonData().getPlayerClass());
+							if (playerClass == PlayerClass.WARRIOR)
+								qs.setQuestVar(10);
+							else if (playerClass == PlayerClass.SCOUT)
+								qs.setQuestVar(20);
+							else if (playerClass == PlayerClass.MAGE)
+								qs.setQuestVar(30);
+							else if (playerClass == PlayerClass.PRIEST)
+								qs.setQuestVar(40);
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return sendQuestSelectionDialog(env);
+						}
+				}
+			}
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204080 && var == 10) {
 				switch (env.getDialogId()) {
-				case -1:
-					return sendQuestDialog(env, 2034);
-				case 1009:
-					return sendQuestDialog(env, 5);
-				case 8:
-				case 9:
-				case 10:
-				case 11:
-				case 12:
-				case 13:
-				case 14:
-				case 15:
-				case 16:
-				case 18:
-					if (QuestService.finishQuest(env, 0)) {
-						return sendQuestSelectionDialog(env);
-					}
+					case -1:
+						return sendQuestDialog(env, 2034);
+					case 1009:
+						return sendQuestDialog(env, 5);
+					case 8:
+					case 9:
+					case 10:
+					case 11:
+					case 12:
+					case 13:
+					case 14:
+					case 15:
+					case 16:
+					case 18:
+						if (QuestService.finishQuest(env, 0)) {
+							return sendQuestSelectionDialog(env);
+						}
 				}
-			} else if (targetId == 204081 && var == 20) {
+			}
+			else if (targetId == 204081 && var == 20) {
 				switch (env.getDialogId()) {
-				case -1:
-					return sendQuestDialog(env, 2375);
-				case 1009:
-					return sendQuestDialog(env, 6);
-				case 8:
-				case 9:
-				case 10:
-				case 11:
-				case 12:
-				case 13:
-				case 14:
-				case 15:
-				case 16:
-				case 18:
-					if (QuestService.finishQuest(env, 1)) {
-						return sendQuestSelectionDialog(env);
-					}
+					case -1:
+						return sendQuestDialog(env, 2375);
+					case 1009:
+						return sendQuestDialog(env, 6);
+					case 8:
+					case 9:
+					case 10:
+					case 11:
+					case 12:
+					case 13:
+					case 14:
+					case 15:
+					case 16:
+					case 18:
+						if (QuestService.finishQuest(env, 1)) {
+							return sendQuestSelectionDialog(env);
+						}
 				}
-			} else if (targetId == 204082 && var == 30) {
+			}
+			else if (targetId == 204082 && var == 30) {
 				switch (env.getDialogId()) {
-				case -1:
-					return sendQuestDialog(env, 2716);
-				case 1009:
-					return sendQuestDialog(env, 7);
-				case 8:
-				case 9:
-				case 10:
-				case 11:
-				case 12:
-				case 13:
-				case 14:
-				case 15:
-				case 16:
-				case 18:
-					if (QuestService.finishQuest(env, 2)) {
-						return sendQuestSelectionDialog(env);
-					}
+					case -1:
+						return sendQuestDialog(env, 2716);
+					case 1009:
+						return sendQuestDialog(env, 7);
+					case 8:
+					case 9:
+					case 10:
+					case 11:
+					case 12:
+					case 13:
+					case 14:
+					case 15:
+					case 16:
+					case 18:
+						if (QuestService.finishQuest(env, 2)) {
+							return sendQuestSelectionDialog(env);
+						}
 				}
-			} else if (targetId == 204083 && var == 40) {
+			}
+			else if (targetId == 204083 && var == 40) {
 				switch (env.getDialogId()) {
-				case -1:
-					return sendQuestDialog(env, 3057);
-				case 1009:
-					return sendQuestDialog(env, 8);
-				case 8:
-				case 9:
-				case 10:
-				case 11:
-				case 12:
-				case 13:
-				case 14:
-				case 15:
-				case 16:
-				case 18:
-					if (QuestService.finishQuest(env, 3)) {
-						return sendQuestSelectionDialog(env);
-					}
+					case -1:
+						return sendQuestDialog(env, 3057);
+					case 1009:
+						return sendQuestDialog(env, 8);
+					case 8:
+					case 9:
+					case 10:
+					case 11:
+					case 12:
+					case 13:
+					case 14:
+					case 15:
+					case 16:
+					case 18:
+						if (QuestService.finishQuest(env, 3)) {
+							return sendQuestSelectionDialog(env);
+						}
 				}
 			}
 		}

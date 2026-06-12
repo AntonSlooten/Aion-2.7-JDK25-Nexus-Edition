@@ -18,6 +18,7 @@ package com.aionemu.gameserver.questEngine.handlers.models;
 
 import gnu.trove.list.array.TIntArrayList;
 
+import java.util.Iterator;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -31,13 +32,14 @@ import com.aionemu.gameserver.model.templates.world.WorldMapTemplate;
 import com.aionemu.gameserver.questEngine.QuestEngine;
 import com.aionemu.gameserver.questEngine.handlers.template.KillInWorld;
 
+
 /**
  * @author vlog
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "KillInWorldData")
 public class KillInWorldData extends XMLQuest {
-
+	
 	@XmlAttribute(name = "end_npc_id")
 	protected int endNpc;
 	@XmlAttribute(name = "end_npc_id2")
@@ -58,8 +60,10 @@ public class KillInWorldData extends XMLQuest {
 			worldIds.add(world.getWorldId());
 		}
 		if (worldIds.size() == 1 && worldIds.get(0) == 0) {
+			Iterator<WorldMapTemplate> itr = DataManager.WORLD_MAPS_DATA.iterator();
 			worldIds.clear();
-			for (WorldMapTemplate template : DataManager.WORLD_MAPS_DATA) {
+			while (itr.hasNext()) {
+				WorldMapTemplate template = itr.next();
 				worldIds.add(template.getMapId());
 			}
 		}

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -16,18 +16,16 @@
  */
 package com.aionemu.loginserver.utils;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import javolution.util.FastMap;
 
 import com.aionemu.loginserver.configs.Config;
-
 
 /**
  * @author Mr. Poke
  * 
  */
 public class BruteForceProtector {
-	private final Map<String, FailedLoginInfo> failedConnections = new ConcurrentHashMap<>();
+	private FastMap<String, FailedLoginInfo> failedConnections = new FastMap<String, FailedLoginInfo>();
 
 	class FailedLoginInfo {
 		private int count;
@@ -81,7 +79,6 @@ public class BruteForceProtector {
 		return false;
 	}
 
-	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder {
 		protected static final BruteForceProtector instance = new BruteForceProtector();
 	}

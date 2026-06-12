@@ -24,12 +24,16 @@ import javax.xml.bind.annotation.*;
 import com.aionemu.gameserver.model.templates.rewards.IdReward;
 
 /**
+ * @author Rolandas
+ *
+ */
+
+/**
  * <p>
  * Java class for OreGroup complex type.
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
- *
+ * The following schema fragment specifies the expected content contained within this class.
+ * 
  * <pre>
  * &lt;complexType name="OreGroup">
  *   &lt;complexContent>
@@ -52,13 +56,12 @@ public class OreGroup extends ItemGroup {
 	/**
 	 * Gets the value of the item property.
 	 * <p>
-	 * This accessor method returns a reference to the live list, not a snapshot.
-	 * Therefore any modification you make to the returned list will be present
-	 * inside the JAXB object. This is why there is not a <CODE>set</CODE> method
-	 * for the item property.
+	 * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+	 * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+	 * the item property.
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 *
+	 * 
 	 * <pre>
 	 * getItems().add(newItem);
 	 * </pre>
@@ -67,14 +70,12 @@ public class OreGroup extends ItemGroup {
 	 */
 	public List<IdReward> getItems() {
 		if (items == null) {
-			items = new ArrayList<>();
+			items = new ArrayList<IdReward>();
 		}
 		return this.items;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
+	/* (non-Javadoc)
 	 * @see com.aionemu.gameserver.model.templates.itemgroups.ItemGroup#getRewards()
 	 */
 	@Override

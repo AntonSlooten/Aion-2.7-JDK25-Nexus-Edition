@@ -55,9 +55,8 @@ public class StatFunction implements IStatFunction {
 	@Override
 	public int compareTo(IStatFunction o) {
 		int result = getPriority() - o.getPriority();
-		if (result == 0) {
+		if (result == 0)
 			return this.hashCode() - o.hashCode();
-		}
 		return result;
 	}
 
@@ -98,7 +97,7 @@ public class StatFunction implements IStatFunction {
 	@Override
 	public String toString() {
 		return this.getClass().getName() + " [stat=" + stat + ", bonus=" + bonus + ", value=" + value + ", priority="
-				+ getPriority() + "]";
+			+ getPriority() + "]";
 	}
 
 	public StatFunction withConditions(Conditions conditions) {

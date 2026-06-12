@@ -38,7 +38,7 @@ public class InstanceCooltimeData {
 	@XmlElement(name = "instance_cooltime", required = true)
 	protected List<InstanceCooltime> instanceCooltime;
 
-	private FastMap<Integer, InstanceCooltime> instanceCooltimes = new FastMap<>();
+	private FastMap<Integer, InstanceCooltime> instanceCooltimes = new FastMap<Integer, InstanceCooltime>();
 
 	/**
 	 * @param u

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<npc_drops>
+    <!-- Padmarashka -->
+    <npc_drop npc_id="218756">
+        <drop_group name="WEAPON_EPIC_LVL50" use_category="true">
+            <drop item_id="100001281" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="100001317" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="100001318" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="100100976" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="100201134" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="100201160" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="100500992" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="100601046" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="100900979" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="101300937" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="101501004" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="101701018" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="101800860" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="101800861" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="101900790" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="102000824" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="102100751" chance="10" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="ARMOR_EPIC_LVL50" use_category="true">
+            <drop item_id="110101374" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="110301301" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="110301586" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="110501279" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="110551007" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="110601252" chance="10" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="ARMOR_UNIQUE_LVL50" use_category="true">
+            <drop item_id="110101090" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="110301039" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="110501007" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="110600987" chance="10" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="ARMOR_EPIC_LVL50" use_category="true">
+            <drop item_id="111101249" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="111301244" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="111301524" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="111501238" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="111501565" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="111601217" chance="10" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="ARMOR_UNIQUE_LVL50" use_category="true">
+            <drop item_id="111100985" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="111300990" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="111500977" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="111600968" chance="10" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="ARMOR_EPIC_LVL50" use_category="true">
+            <drop item_id="112101207" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="112301190" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="112301465" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="112501183" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="112501507" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="112601195" chance="10" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="ARMOR_UNIQUE_LVL50" use_category="true">
+            <drop item_id="112100941" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="112300939" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="112500926" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="112600941" chance="10" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="ARMOR_EPIC_LVL50" use_category="true">
+            <drop item_id="113101268" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="113301270" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="113301552" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="113501255" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="113501583" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="113601208" chance="10" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="ARMOR_UNIQUE_LVL50" use_category="true">
+            <drop item_id="113100997" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="113301010" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="113500980" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="113600951" chance="10" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="ARMOR_EPIC_LVL50" use_category="true">
+            <drop item_id="114101295" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="114301301" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="114301590" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="114501259" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="114501592" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="114601201" chance="10" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="ARMOR_UNIQUE_LVL50" use_category="true">
+            <drop item_id="114101026" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="114301046" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="114500989" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="114600948" chance="10" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="WEAPON_EPIC_LVL50" use_category="true">
+            <drop item_id="115001325" chance="10" min_amount="1" max_amount="1"/>
+            <drop item_id="115001332" chance="10" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="BALIC_MATERIAL_RARE_LVL50" use_category="true">
+            <drop item_id="152013019" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="152013022" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="152013025" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="152014011" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="152014012" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="152014013" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="152014014" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="152014015" chance="4" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="BALIC_MATERIAL_RARE_LVL60" use_category="true">
+            <drop item_id="152014016" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="152014017" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="152014018" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="152014019" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="152014020" chance="4" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="FLUX_COMMON_LVL50" use_category="true">
+            <drop item_id="152011065" chance="4" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="OTHER_COMMON_LVL50" use_category="true">
+            <drop item_id="152011070" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="152011075" chance="4" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="STONE_LEGEND_LVL40" use_category="true">
+            <drop item_id="168000212" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000213" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000214" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000215" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000216" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000217" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000218" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000219" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000220" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000221" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000222" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000223" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000224" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000225" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000226" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000227" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000228" chance="4" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="STONE_UNIQUE_LVL50" use_category="true">
+            <drop item_id="168000229" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000230" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000231" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000232" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000233" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000234" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000235" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000236" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000237" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000238" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000239" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000240" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000241" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000242" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000243" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000244" chance="4" min_amount="1" max_amount="1"/>
+            <drop item_id="168000245" chance="4" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="FOOD_JUNK_LVL50" use_category="true">
+            <drop item_id="182005877" chance="4" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="QUEST_RARE_LVL60" use_category="true">
+            <drop item_id="186000097" chance="4" min_amount="1" max_amount="1"/>
+        </drop_group>
+        <drop_group name="MANASTONE_COMMON_LVL60" use_category="true">
+            <drop item_id="188054204" chance="4" min_amount="1" max_amount="1"/>
+        </drop_group>
+    </npc_drop>
+</npc_drops>

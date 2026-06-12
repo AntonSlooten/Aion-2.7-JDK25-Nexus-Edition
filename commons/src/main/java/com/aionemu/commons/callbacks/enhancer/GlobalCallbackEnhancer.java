@@ -17,15 +17,13 @@
 
 package com.aionemu.commons.callbacks.enhancer;
 
-import javassist.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.aionemu.commons.callbacks.CallbackResult;
 import com.aionemu.commons.callbacks.metadata.GlobalCallback;
 import com.aionemu.commons.callbacks.util.CallbacksUtil;
 import com.aionemu.commons.callbacks.util.GlobalCallbackHelper;
+import javassist.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayInputStream;
 import java.util.HashSet;
@@ -38,7 +36,6 @@ public class GlobalCallbackEnhancer extends CallbackClassFileTransformer {
 
 	private static final Logger log = LoggerFactory.getLogger(GlobalCallbackEnhancer.class);
 
-	@Override
 	protected byte[] transformClass(ClassLoader loader, byte[] clazzBytes) throws Exception {
 		ClassPool cp = new ClassPool();
 		cp.appendClassPath(new LoaderClassPath(loader));
@@ -62,7 +59,8 @@ public class GlobalCallbackEnhancer extends CallbackClassFileTransformer {
 			}
 
 			return clazz.toBytecode();
-		} else {
+		}
+		else {
 			log.trace("Class " + clazz.getName() + " was not enhanced");
 			return null;
 		}
@@ -70,12 +68,14 @@ public class GlobalCallbackEnhancer extends CallbackClassFileTransformer {
 
 	/**
 	 * Responsible for method enhancing, writing service calls to method.
-	 *
-	 * @param method Method that has to be edited
+	 * 
+	 * @param method
+	 *          Method that has to be edited
 	 * @throws javassist.CannotCompileException
-	 *                                     if something went wrong
-	 * @throws javassist.NotFoundException if something went wrong
-	 * @throws ClassNotFoundException
+	 *           if something went wrong
+	 * @throws javassist.NotFoundException
+	 *           if something went wrong
+	 * @throws ClassNotFoundException 
 	 */
 	protected void enhanceMethod(CtMethod method) throws CannotCompileException, NotFoundException, ClassNotFoundException {
 		ClassPool cp = method.getDeclaringClass().getClassPool();
@@ -85,13 +85,13 @@ public class GlobalCallbackEnhancer extends CallbackClassFileTransformer {
 		CtClass listenerClazz = cp.get(((GlobalCallback) method.getAnnotation(GlobalCallback.class)).value().getName());
 
 		boolean isStatic = Modifier.isStatic(method.getModifiers());
-		String listenerFieldName = "$$$" + (isStatic ? "Static" : "") + listenerClazz.getSimpleName();
+		String listenerFieldName = "$$$"+(isStatic? "Static" : "")+listenerClazz.getSimpleName();
 
 		CtClass clazz = method.getDeclaringClass();
-		try {
+		try	{
 			clazz.getField(listenerFieldName);
-		} catch (NotFoundException e) {
-			clazz.addField(CtField.make((isStatic ? "static " : "") + "Class " + listenerFieldName + " = Class.forName(\"" + listenerClazz.getName() + "\");", clazz));
+		}	catch(NotFoundException e) {
+			clazz.addField(CtField.make((isStatic? "static " : "")+"Class "+listenerFieldName+" = Class.forName(\""+listenerClazz.getName()+"\");", clazz));
 		}
 
 		int paramLength = method.getParameterTypes().length;
@@ -102,15 +102,19 @@ public class GlobalCallbackEnhancer extends CallbackClassFileTransformer {
 
 	/**
 	 * Code that is added in the begining of the method
-	 *
-	 * @param method            method that should be edited
-	 * @param paramLength       Lenght of methods parameters
-	 * @param listenerFieldName Listener class that is used for method
+	 * 
+	 * @param method
+	 *          method that should be edited
+	 * @param paramLength
+	 *          Lenght of methods parameters
+	 * @param listenerFieldName
+	 *          Listener class that is used for method
 	 * @return code that will be inserted before method
-	 * @throws javassist.NotFoundException if something went wrong
+	 * @throws javassist.NotFoundException
+	 *           if something went wrong
 	 */
 	protected String writeBeforeMethod(CtMethod method, int paramLength, String listenerFieldName)
-			throws NotFoundException {
+		throws NotFoundException {
 		StringBuilder sb = new StringBuilder();
 		sb.append('{');
 
@@ -119,10 +123,11 @@ public class GlobalCallbackEnhancer extends CallbackClassFileTransformer {
 
 		// check if method is static or not
 		if (Modifier.isStatic(method.getModifiers())) {
-			sb.append(method.getDeclaringClass().getName()).append(".class, ").append(listenerFieldName);
+			sb.append(method.getDeclaringClass().getName()).append(".class, " + listenerFieldName);
 			sb.append(", ");
-		} else {
-			sb.append("this, ").append(listenerFieldName);
+		}
+		else {
+			sb.append("this, " + listenerFieldName);
 			sb.append(", ");
 		}
 
@@ -136,7 +141,8 @@ public class GlobalCallbackEnhancer extends CallbackClassFileTransformer {
 				}
 			}
 			sb.append("}");
-		} else {
+		}
+		else {
 			sb.append("null");
 		}
 		sb.append(");");
@@ -148,13 +154,16 @@ public class GlobalCallbackEnhancer extends CallbackClassFileTransformer {
 		CtClass returnType = method.getReturnType();
 		if (returnType.equals(CtClass.voidType)) {
 			sb.append("return");
-		} else if (returnType.equals(CtClass.booleanType)) {
+		}
+		else if (returnType.equals(CtClass.booleanType)) {
 			sb.append("return false");
-		} else if (returnType.equals(CtClass.charType)) {
+		}
+		else if (returnType.equals(CtClass.charType)) {
 			sb.append("return 'a'");
-		} else if (returnType.equals(CtClass.byteType) || returnType.equals(CtClass.shortType)
-				|| returnType.equals(CtClass.intType) || returnType.equals(CtClass.floatType)
-				|| returnType.equals(CtClass.longType) || returnType.equals(CtClass.longType)) {
+		}
+		else if (returnType.equals(CtClass.byteType) || returnType.equals(CtClass.shortType)
+			|| returnType.equals(CtClass.intType) || returnType.equals(CtClass.floatType)
+			|| returnType.equals(CtClass.longType) || returnType.equals(CtClass.longType)) {
 			sb.append("return 0");
 		}
 		sb.append(";}}");
@@ -163,15 +172,19 @@ public class GlobalCallbackEnhancer extends CallbackClassFileTransformer {
 
 	/**
 	 * Writes code that will be inserted after method
-	 *
-	 * @param method            method to edit
-	 * @param paramLength       lenght of method paramenters
-	 * @param listenerFieldName method listener
+	 * 
+	 * @param method
+	 *          method to edit
+	 * @param paramLength
+	 *          lenght of method paramenters
+	 * @param listenerFieldName
+	 *          method listener
 	 * @return actual code that should be inserted
-	 * @throws NotFoundException if something went wrong
+	 * @throws NotFoundException
+	 *           if something went wrong
 	 */
 	protected String writeAfterMethod(CtMethod method, int paramLength, String listenerFieldName)
-			throws NotFoundException {
+		throws NotFoundException {
 		StringBuilder sb = new StringBuilder();
 		sb.append('{');
 
@@ -186,11 +199,12 @@ public class GlobalCallbackEnhancer extends CallbackClassFileTransformer {
 
 		// check if method is static or not
 		if (Modifier.isStatic(method.getModifiers())) {
-			sb.append(method.getDeclaringClass().getName()).append(".class, ").append(listenerFieldName);
+			sb.append(method.getDeclaringClass().getName()).append(".class, " +listenerFieldName);
 			sb.append(", ");
-		} else {
+		}
+		else {
 			sb.append("this, ");
-			sb.append(listenerFieldName).append(", ");
+			sb.append(listenerFieldName + ", ");
 		}
 
 		if (paramLength > 0) {
@@ -203,14 +217,16 @@ public class GlobalCallbackEnhancer extends CallbackClassFileTransformer {
 				}
 			}
 			sb.append("}");
-		} else {
+		}
+		else {
 			sb.append("null");
 		}
 		sb.append(", ($w)$_);");
 		sb.append("if(___globalCallbackResult.isBlockingCaller()){");
 		if (method.getReturnType().equals(CtClass.voidType)) {
 			sb.append("return;");
-		} else {
+		}
+		else {
 			sb.append("return ($r)($w)___globalCallbackResult.getResult();");
 		}
 		sb.append("}");
@@ -223,13 +239,14 @@ public class GlobalCallbackEnhancer extends CallbackClassFileTransformer {
 	/**
 	 * Checks if method is enhanceable. It should be marked with
 	 * {@link com.aionemu.commons.callbacks.metadata.GlobalCallback} annotation, be not native and not abstract
-	 *
-	 * @param method method to check
+	 * 
+	 * @param method
+	 *          method to check
 	 * @return check result
 	 */
 	protected boolean isEnhanceable(CtMethod method) {
 		int modifiers = method.getModifiers();
 		return !(Modifier.isAbstract(modifiers) || Modifier.isNative(modifiers))
-				&& CallbacksUtil.isAnnotationPresent(method, GlobalCallback.class);
+			&& CallbacksUtil.isAnnotationPresent(method, GlobalCallback.class);
 	}
 }

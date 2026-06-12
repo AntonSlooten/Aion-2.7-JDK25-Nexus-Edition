@@ -16,8 +16,8 @@ import com.aionemu.gameserver.world.World;
  * @author Watson
  */
 public class CmdGag extends BaseCommand {
-
-	@Override
+	
+	
 	public void execute(Player admin, String... params) {
 		if (params.length < 2) {
 			showHelp(admin);
@@ -32,16 +32,14 @@ public class CmdGag extends BaseCommand {
 		}
 
 		int time = 0;
-		if (params.length > 2) {
+		if (params.length > 2)
 			time = ParseInteger(params[2]);
-		}
 
 		player.setGagged(true);
 		if (time != 0) {
 			Future<?> task = player.getController().getTask(TaskId.GAG);
-			if (task != null) {
+			if (task != null)
 				player.getController().cancelTask(TaskId.GAG);
-			}
 			player.getController().addTask(TaskId.GAG, ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 				@Override
@@ -51,7 +49,7 @@ public class CmdGag extends BaseCommand {
 				}
 			}, time * 60000L));
 		}
-
+		
 		if (GSConfig.ENABLE_CHAT_SERVER) {
 			long chatserverGagTime = System.currentTimeMillis() + time * 60 * 1000;
 			ChatServer.getInstance().sendPlayerGagPacket(player.getObjectId(), chatserverGagTime);
@@ -59,7 +57,6 @@ public class CmdGag extends BaseCommand {
 
 		PacketSendUtility.sendMessage(player, "You have been gagged" + (time != 0 ? " for " + time + " minutes" : ""));
 
-		PacketSendUtility.sendMessage(admin,
-				"Player " + name + " gagged" + (time != 0 ? " for " + time + " minutes" : ""));
+		PacketSendUtility.sendMessage(admin, "Player " + name + " gagged" + (time != 0 ? " for " + time + " minutes" : ""));
 	}
 }

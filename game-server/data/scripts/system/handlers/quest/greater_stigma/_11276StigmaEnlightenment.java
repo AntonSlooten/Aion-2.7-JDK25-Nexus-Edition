@@ -50,37 +50,39 @@ public class _11276StigmaEnlightenment extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 798909) { // Reemul
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				default: {
-					return sendQuestStartDialog(env);
-				}
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					default: {
+						return sendQuestStartDialog(env);
+					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			if (targetId == 798909) { // Reemul
 				switch (dialog) {
-				case START_DIALOG:
-				case SELECT_REWARD: {
-					if (var == 0) {
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 2375);
+					case START_DIALOG:
+					case SELECT_REWARD: {
+						if (var == 0) {
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return sendQuestDialog(env, 2375);
+						}
 					}
 				}
-				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798909) { // Reemul
 				switch (dialog) {
-				case SELECT_REWARD: {
-					return sendQuestDialog(env, 5);
-				}
-				default: {
-					return sendQuestEndDialog(env);
-				}
+					case SELECT_REWARD: {
+						return sendQuestDialog(env, 5);
+					}
+					default: {
+						return sendQuestEndDialog(env);
+					}
 				}
 			}
 		}

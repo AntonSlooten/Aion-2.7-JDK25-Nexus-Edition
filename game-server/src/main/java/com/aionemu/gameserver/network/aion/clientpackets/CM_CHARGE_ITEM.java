@@ -43,7 +43,7 @@ public class CM_CHARGE_ITEM extends AionClientPacket {
 		targetNpcObjectId = readD();
 		chargeLevel = readC();
 		int itemsSize = readH();
-		itemIds = new ArrayList<>();
+		itemIds = new ArrayList<Integer>();
 		for (int i = 0; i < itemsSize; i++) {
 			itemIds.add(readD());
 		}
@@ -63,9 +63,8 @@ public class CM_CHARGE_ITEM extends AionClientPacket {
 				int itemChargeLevel = item.getChargeLevel();
 				int possibleChargeLevel = Math.min(itemChargeLevel, chargeLevel);
 				if (possibleChargeLevel > 0) {
-					if (ItemChargeService.processPayment(player, item, possibleChargeLevel)) {
+					if (ItemChargeService.processPayment(player, item, possibleChargeLevel))
 						ItemChargeService.chargeItem(player, item, possibleChargeLevel);
-					}
 				}
 			}
 		}

@@ -43,30 +43,28 @@ public class PulledEffect extends EffectTemplate {
 		effect.addToEffectedController();
 		final Creature effected = effect.getEffected();
 		effected.getController().cancelCurrentSkill();
-
+		
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
-			@Override
-			public void run() {
-				// effected.getMoveController().abortMove();
-				World.getInstance().updatePosition(effected, effect.getTargetX(), effect.getTargetY(),
-						effect.getTargetZ(), effected.getHeading());
-				PacketSendUtility.broadcastPacketAndReceive(effected,
-						new SM_FORCED_MOVE(effect.getEffector(), effected));
-			}
-		}, 400);
+	      @Override
+	      public void run() {
+	    		//effected.getMoveController().abortMove();
+	      	World.getInstance().updatePosition(effected, effect.getTargetX(), effect.getTargetY(), effect.getTargetZ(), effected.getHeading());
+	    		PacketSendUtility.broadcastPacketAndReceive(effected, new SM_FORCED_MOVE(effect.getEffector(), effected));
+	      }
+	    }, 400);
 	}
 
 	@Override
 	public void calculate(Effect effect) {
-		if ((effect.getEffected() == null) || !super.calculate(effect, StatEnum.PULLED_RESISTANCE, null)) {
+		if (effect.getEffected() == null)
 			return;
-		}
+		if (!super.calculate(effect, StatEnum.PULLED_RESISTANCE, null))
+			return;
 
 		effect.setSkillMoveType(SkillMoveType.PULL);
 		final Creature effector = effect.getEffector();
 
-		// Target must be pulled just one meter away from effector, not IN place of
-		// effector
+		// Target must be pulled just one meter away from effector, not IN place of effector
 		double radian = Math.toRadians(MathUtil.convertHeadingToDegree(effector.getHeading()));
 		final float x1 = (float) Math.cos(radian);
 		final float y1 = (float) Math.sin(radian);
@@ -78,8 +76,7 @@ public class PulledEffect extends EffectTemplate {
 		final Creature effected = effect.getEffected();
 		effected.getEffectController().setAbnormal(AbnormalState.CANNOT_MOVE.getId());
 		effect.setAbnormal(AbnormalState.CANNOT_MOVE.getId());
-		PacketSendUtility.broadcastPacketAndReceive(effect.getEffected(),
-				new SM_TARGET_IMMOBILIZE(effect.getEffected()));
+		PacketSendUtility.broadcastPacketAndReceive(effect.getEffected(), new SM_TARGET_IMMOBILIZE(effect.getEffected()));
 	}
 
 	@Override

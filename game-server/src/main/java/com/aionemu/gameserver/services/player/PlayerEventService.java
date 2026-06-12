@@ -50,22 +50,21 @@ public class PlayerEventService {
 		@Override
 		public void visit(Player player) {
 			int membership = player.getClientConnection().getAccount().getMembership();
-			int rate = EventsConfig.EVENT_REWARD_MEMBERSHIP_RATE ? membership + 1 : 1;
+			int rate = EventsConfig.EVENT_REWARD_MEMBERSHIP_RATE ? membership + 1 : 1; 
 			if (membership >= EventsConfig.EVENT_REWARD_MEMBERSHIP) {
 				try {
-					if (player.getInventory().isFull()) {
-						log.warn("[EventReward] player " + player.getName()
-								+ " tried to receive item with full inventory.");
-					} else {
+					if (player.getInventory().isFull())
+						log.warn("[EventReward] player " + player.getName() + " tried to receive item with full inventory.");
+					else
 						ItemService.addItem(player, EventsConfig.EVENT_ITEM, EventsConfig.EVENT_ITEM_COUNT * rate);
-					}
-				} catch (Exception ex) {
+				}
+				catch (Exception ex) {
 					log.error("Exception during event rewarding of player " + player.getName(), ex);
 				}
 			}
 		}
 
-	}
+	};
 
 	public static PlayerEventService getInstance() {
 		return SingletonHolder.instance;

@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.model.gameobjects.StaticDoor;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 import com.aionemu.gameserver.network.aion.AionConnection;
@@ -41,13 +42,15 @@ public class SM_GATHERABLE_INFO extends AionServerPacket {
 		writeD(visibleObject.getObjectId());
 		writeD(visibleObject.getSpawn().getStaticId());
 		writeD(visibleObject.getObjectTemplate().getTemplateId());
-		if (visibleObject instanceof StaticDoor) {
-			if (((StaticDoor) visibleObject).isOpen()) {
+		if (visibleObject instanceof StaticDoor){
+			if (((StaticDoor)visibleObject).isOpen()){
 				writeH(0x09);
-			} else {
+			}
+			else {
 				writeH(0xA0);
 			}
-		} else {
+		}
+		else {
 			writeH(1);
 		}
 		writeC(visibleObject.getSpawn().getHeading());

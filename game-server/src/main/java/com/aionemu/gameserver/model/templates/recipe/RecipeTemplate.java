@@ -65,13 +65,12 @@ public class RecipeTemplate {
 	/**
 	 * Gets the value of the component property.
 	 * <p>
-	 * This accessor method returns a reference to the live list, not a snapshot.
-	 * Therefore any modification you make to the returned list will be present
-	 * inside the JAXB object. This is why there is not a <CODE>set</CODE> method
-	 * for the component property.
+	 * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+	 * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+	 * the component property.
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 *
+	 * 
 	 * <pre>
 	 * getComponent().add(newItem);
 	 * </pre>
@@ -80,7 +79,7 @@ public class RecipeTemplate {
 	 */
 	public List<Component> getComponent() {
 		if (component == null) {
-			component = new ArrayList<>();
+			component = new ArrayList<Component>();
 		}
 		return this.component;
 	}
@@ -101,7 +100,7 @@ public class RecipeTemplate {
 
 	/**
 	 * Gets the value of the quantity property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getQuantity() {
@@ -110,7 +109,7 @@ public class RecipeTemplate {
 
 	/**
 	 * Gets the value of the productid property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getProductid() {
@@ -119,7 +118,7 @@ public class RecipeTemplate {
 
 	/**
 	 * Gets the value of the autolearn property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public int getAutoLearn() {
@@ -128,7 +127,7 @@ public class RecipeTemplate {
 
 	/**
 	 * Gets the value of the dp property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getDp() {
@@ -137,7 +136,7 @@ public class RecipeTemplate {
 
 	/**
 	 * Gets the value of the skillpoint property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getSkillpoint() {
@@ -146,7 +145,7 @@ public class RecipeTemplate {
 
 	/**
 	 * Gets the value of the race property.
-	 *
+	 * 
 	 * @return possible object is {@link String }
 	 */
 	public Race getRace() {
@@ -155,7 +154,7 @@ public class RecipeTemplate {
 
 	/**
 	 * Gets the value of the skillid property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getSkillid() {
@@ -164,7 +163,7 @@ public class RecipeTemplate {
 
 	/**
 	 * Gets the value of the itemid property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getItemid() {
@@ -180,7 +179,7 @@ public class RecipeTemplate {
 
 	/**
 	 * Gets the value of the id property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public Integer getId() {

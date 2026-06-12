@@ -37,17 +37,16 @@ public class StunEffect extends EffectTemplate {
 
 	@Override
 	public void applyEffect(Effect effect) {
-
+		
 		final Creature effected = effect.getEffected();
-
-		// if player is in gliding close wings
-		if (effected instanceof Player) {
+		
+		//if player is in gliding close wings
+		if(effected instanceof Player){
 			Player activeChar = (Player) effected;
-			if (activeChar.isInState(CreatureState.GLIDING)) {
+			if(activeChar.isInState(CreatureState.GLIDING))
 				activeChar.getFlyController().onStopGliding(true);
-			}
 		}
-
+		
 		effect.addToEffectedController();
 	}
 
@@ -62,8 +61,7 @@ public class StunEffect extends EffectTemplate {
 		effected.getController().cancelCurrentSkill();
 		effect.getEffected().getEffectController().setAbnormal(AbnormalState.STUN.getId());
 		effect.setAbnormal(AbnormalState.STUN.getId());
-		PacketSendUtility.broadcastPacketAndReceive(effect.getEffected(),
-				new SM_TARGET_IMMOBILIZE(effect.getEffected()));
+		PacketSendUtility.broadcastPacketAndReceive(effect.getEffected(), new SM_TARGET_IMMOBILIZE(effect.getEffected()));
 	}
 
 	@Override

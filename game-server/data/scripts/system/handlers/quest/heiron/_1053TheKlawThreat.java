@@ -74,43 +74,42 @@ public class _1053TheKlawThreat extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204502)
 				return sendQuestEndDialog(env);
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 204583) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-				else if (var == 1)
-					return sendQuestDialog(env, 1352);
-				else if (var == 2)
-					return sendQuestDialog(env, 1693);
-			case CHECK_COLLECTED_ITEMS:
-				if (var == 1 && QuestService.collectItemCheck(env, true))
-					return sendQuestDialog(env, 10000);
-				else
-					return sendQuestDialog(env, 10001);
-			case SELECT_ACTION_1693:
-				playQuestMovie(env, 186);
-				return false;
-			case STEP_TO_1:
-				if (var == 0) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			case STEP_TO_3:
-				if (var == 1) {
-					qs.setQuestVarById(0, var + 2);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+					else if (var == 1)
+						return sendQuestDialog(env, 1352);
+					else if (var == 2)
+						return sendQuestDialog(env, 1693);
+				case CHECK_COLLECTED_ITEMS:
+					if (var == 1 && QuestService.collectItemCheck(env, true))
+						return sendQuestDialog(env, 10000);
+					else
+						return sendQuestDialog(env, 10001);
+				case SELECT_ACTION_1693:
+					playQuestMovie(env, 186);
+					return false;
+				case STEP_TO_1:
+					if (var == 0) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+				case STEP_TO_3:
+					if (var == 1) {
+						qs.setQuestVarById(0, var + 2);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
 			}
 		}
 		return false;
@@ -132,7 +131,8 @@ public class _1053TheKlawThreat extends QuestHandler {
 				QuestService.addNewSpawn(210040000, 1, 212120, npc.getX(), npc.getY(), npc.getZ(), (byte) 0);
 				return true;
 			}
-		} else if (targetId == 212120 && qs.getQuestVarById(0) == 3) {
+		}
+		else if (targetId == 212120 && qs.getQuestVarById(0) == 3) {
 			qs.setStatus(QuestStatus.REWARD);
 			updateQuestStatus(env);
 		}

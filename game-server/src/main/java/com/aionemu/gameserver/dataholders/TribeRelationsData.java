@@ -39,7 +39,7 @@ public class TribeRelationsData {
 	@XmlElement(name = "tribe", required = true)
 	protected List<Tribe> tribeList;
 
-	protected THashMap<TribeClass, Tribe> tribeNameMap = new THashMap<>();
+	protected THashMap<TribeClass, Tribe> tribeNameMap = new THashMap<TribeClass, Tribe>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (Tribe tribe : tribeList) {
@@ -61,9 +61,8 @@ public class TribeRelationsData {
 	 */
 	public boolean hasAggressiveRelations(TribeClass tribeName) {
 		Tribe tribe = tribeNameMap.get(tribeName);
-		if (tribe == null) {
+		if (tribe == null)
 			return false;
-		}
 		return !tribe.getAggro().isEmpty();
 	}
 
@@ -73,9 +72,8 @@ public class TribeRelationsData {
 	 */
 	public boolean hasHostileRelations(TribeClass tribeName) {
 		Tribe tribe = tribeNameMap.get(tribeName);
-		if (tribe == null) {
+		if (tribe == null)
 			return false;
-		}
 		return !tribe.getHostile().isEmpty();
 	}
 
@@ -87,11 +85,11 @@ public class TribeRelationsData {
 	public boolean isAggressiveRelation(TribeClass tribeName1, TribeClass tribeName2) {
 		Tribe tribe1 = tribeNameMap.get(tribeName1);
 		Tribe tribe2 = tribeNameMap.get(tribeName2);
-		if (tribe1 == null || tribe2 == null || isFriendlyRelation(tribeName1, tribeName2)) {
+		if (tribe1 == null || tribe2 == null)
 			return false;
-		}
-		return tribe1.getAggro().contains(tribeName2)
-				|| tribe2.isBasic() && tribe1.getAggro().contains(tribe2.getBase());
+		if (isFriendlyRelation(tribeName1, tribeName2))
+			return false;
+		return tribe1.getAggro().contains(tribeName2) || tribe2.isBasic() && tribe1.getAggro().contains(tribe2.getBase());
 	}
 
 	/**
@@ -102,11 +100,9 @@ public class TribeRelationsData {
 	public boolean isSupportRelation(TribeClass tribeName1, TribeClass tribeName2) {
 		Tribe tribe1 = tribeNameMap.get(tribeName1);
 		Tribe tribe2 = tribeNameMap.get(tribeName2);
-		if (tribe1 == null || tribe2 == null) {
+		if (tribe1 == null || tribe2 == null)
 			return false;
-		}
-		return tribe1.getSupport().contains(tribeName2)
-				|| tribe2.isBasic() && tribe1.getAggro().contains(tribe2.getBase());
+		return tribe1.getSupport().contains(tribeName2) || tribe2.isBasic() && tribe1.getAggro().contains(tribe2.getBase());
 	}
 
 	/**
@@ -117,11 +113,9 @@ public class TribeRelationsData {
 	public boolean isFriendlyRelation(TribeClass tribeName1, TribeClass tribeName2) {
 		Tribe tribe1 = tribeNameMap.get(tribeName1);
 		Tribe tribe2 = tribeNameMap.get(tribeName2);
-		if (tribe1 == null || tribe2 == null) {
+		if (tribe1 == null || tribe2 == null)
 			return false;
-		}
-		return tribe1.getFriend().contains(tribeName2)
-				|| tribe2.isBasic() && tribe1.getFriend().contains(tribe2.getBase());
+		return tribe1.getFriend().contains(tribeName2) || tribe2.isBasic() && tribe1.getFriend().contains(tribe2.getBase());
 	}
 
 	/**
@@ -132,13 +126,11 @@ public class TribeRelationsData {
 	public boolean isNeutralRelation(TribeClass tribeName1, TribeClass tribeName2) {
 		Tribe tribe1 = tribeNameMap.get(tribeName1);
 		Tribe tribe2 = tribeNameMap.get(tribeName2);
-		if (tribe1 == null || tribe2 == null) {
+		if (tribe1 == null || tribe2 == null)
 			return false;
-		}
-		return tribe1.getNeutral().contains(tribeName2)
-				|| tribe2.isBasic() && tribe1.getNeutral().contains(tribe2.getBase());
+		return tribe1.getNeutral().contains(tribeName2) || tribe2.isBasic() && tribe1.getNeutral().contains(tribe2.getBase());
 	}
-
+	
 	/**
 	 * @param tribeName1
 	 * @param tribeName2
@@ -147,9 +139,8 @@ public class TribeRelationsData {
 	public boolean isNoneRelation(TribeClass tribeName1, TribeClass tribeName2) {
 		Tribe tribe1 = tribeNameMap.get(tribeName1);
 		Tribe tribe2 = tribeNameMap.get(tribeName2);
-		if (tribe1 == null || tribe2 == null) {
+		if (tribe1 == null || tribe2 == null)
 			return false;
-		}
 		return tribe1.getNone().contains(tribeName2) || tribe2.isBasic() && tribe1.getNone().contains(tribe2.getBase());
 	}
 
@@ -161,10 +152,8 @@ public class TribeRelationsData {
 	public boolean isHostileRelation(TribeClass tribeName1, TribeClass tribeName2) {
 		Tribe tribe1 = tribeNameMap.get(tribeName1);
 		Tribe tribe2 = tribeNameMap.get(tribeName2);
-		if (tribe1 == null || tribe2 == null) {
+		if (tribe1 == null || tribe2 == null)
 			return false;
-		}
-		return tribe1.getHostile().contains(tribeName2)
-				|| tribe2.isBasic() && tribe1.getHostile().contains(tribe2.getBase());
+		return tribe1.getHostile().contains(tribeName2) || tribe2.isBasic() && tribe1.getHostile().contains(tribe2.getBase());
 	}
 }

@@ -23,6 +23,7 @@ import com.aionemu.gameserver.world.zone.ZoneInstance;
 import com.aionemu.gameserver.world.zone.handler.ZoneHandler;
 import com.aionemu.gameserver.world.zone.handler.ZoneNameAnnotation;
 
+
 /**
  * @author MrPoke
  *
@@ -33,16 +34,16 @@ public class AbyssBaseShield implements ZoneHandler {
 	@Override
 	public void onEnterZone(Creature creature, ZoneInstance zone) {
 		Creature actingCreature = creature.getActingCreature();
-		if (actingCreature instanceof Player && !((Player) actingCreature).isGM()) {
-			switch (zone.getZoneTemplate().getName()) {
-			case ASMODIANS_BASE_400010000:
-				if (((Player) actingCreature).getRace() == Race.ELYOS)
-					creature.getController().die();
-				break;
-			case ELYOS_BASE_400010000:
-				if (((Player) actingCreature).getRace() == Race.ASMODIANS)
-					creature.getController().die();
-				break;
+		if (actingCreature instanceof Player && !((Player)actingCreature).isGM()){
+			switch(zone.getZoneTemplate().getName()){
+				case ASMODIANS_BASE_400010000:
+					if (((Player)actingCreature).getRace() == Race.ELYOS)
+						creature.getController().die();
+					break;
+				case ELYOS_BASE_400010000:
+					if (((Player)actingCreature).getRace() == Race.ASMODIANS)
+						creature.getController().die();
+					break;
 			}
 		}
 	}

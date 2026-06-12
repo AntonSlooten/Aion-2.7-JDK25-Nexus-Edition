@@ -64,7 +64,8 @@ public class _30208GroupTheTruthHurts extends QuestHandler {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					if (giveQuestItem(env, 182209610, 1))
 						return sendQuestDialog(env, 4762);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 
 			}
@@ -75,18 +76,19 @@ public class _30208GroupTheTruthHurts extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 799506:
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 1011);
-				case SET_REWARD:
-					env.getVisibleObject().getController().delete();
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return true;
-				}
+				case 799506:
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							return sendQuestDialog(env, 1011);
+						case SET_REWARD:
+							env.getVisibleObject().getController().delete();
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return true;
+					}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798941)
 				return sendQuestEndDialog(env);
 		}
@@ -101,25 +103,25 @@ public class _30208GroupTheTruthHurts extends QuestHandler {
 
 		if (id != 182209610)
 			return HandlerResult.UNKNOWN;
-
+		
 		if (player.getWorldId() != 300170000) // TODO: Use zone instead of map
 			return HandlerResult.UNKNOWN;
-
+		
 		final QuestState qs = player.getQuestStateList().getQuestState(questId);
 		if (qs == null)
 			return HandlerResult.UNKNOWN;
 
-		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0, 0), true);
+		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 3000, 0,
+			0), true);
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
-				PacketSendUtility.broadcastPacket(player,
-						new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0, 1, 0), true);
+				PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 0,
+					1, 0), true);
 				player.getInventory().decreaseByObjectId(itemObjId, 1);
-				QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 799506, player.getX(),
-						player.getY(), player.getZ(), player.getHeading());
+				QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 799506, player.getX(), player.getY(),
+					player.getZ(), player.getHeading());
 			}
 		}, 3000);
 		return HandlerResult.SUCCESS;

@@ -35,16 +35,14 @@ public class AbyssPointsService {
 
 	@GlobalCallback(AddAPGlobalCallback.class)
 	public static void addAp(Player player, int value) {
-		if (player == null) {
+		if (player == null)
 			return;
-		}
-
+		
 		// Notify player of AP gained (This should happen before setAp happens.)
-		if (value > 0) {
+		if(value > 0)
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_COMBAT_MY_ABYSS_POINT_GAIN(value));
-		} else { // You used %num0 Abyss Points.
-			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300965, value * -1));
-		}
+		else //You used %num0 Abyss Points.
+			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1300965, value *-1));
 
 		// Set the new AP value
 		setAp(player, value);
@@ -61,9 +59,8 @@ public class AbyssPointsService {
 	 * @param value
 	 */
 	public static void setAp(Player player, int value) {
-		if (player == null) {
+		if (player == null)
 			return;
-		}
 
 		AbyssRank rank = player.getAbyssRank();
 
@@ -87,15 +84,14 @@ public class AbyssPointsService {
 		}
 
 		PacketSendUtility.broadcastPacket(player, new SM_ABYSS_RANK_UPDATE(0, player));
-		// Apparently we are not in our own known list... so we must tell ourselves as
-		// well
+		// Apparently we are not in our own known list... so we must tell ourselves as well
 		PacketSendUtility.sendPacket(player, new SM_ABYSS_RANK_UPDATE(0, player));
 
 		AbyssSkillService.updateSkills(player);
 	}
 
 	@SuppressWarnings("rawtypes")
-	public abstract static class AddAPGlobalCallback implements Callback {
+	public abstract static class AddAPGlobalCallback implements Callback{
 
 		@Override
 		public CallbackResult beforeCall(Object obj, Object[] args) {
@@ -105,7 +101,7 @@ public class AbyssPointsService {
 		@Override
 		public CallbackResult afterCall(Object obj, Object[] args, Object methodResult) {
 			Player player = (Player) args[0];
-			int abyssPoints = (Integer) args[1];
+			int abyssPoints = (Integer)args[1];
 			onAbyssPointsAdded(player, abyssPoints);
 			return CallbackResult.newContinue();
 		}

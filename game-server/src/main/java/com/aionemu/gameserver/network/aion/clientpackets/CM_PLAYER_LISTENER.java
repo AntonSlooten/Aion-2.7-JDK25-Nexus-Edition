@@ -10,8 +10,9 @@ import com.aionemu.gameserver.network.aion.AionConnection.State;
  */
 public class CM_PLAYER_LISTENER extends AionClientPacket {
 	/*
-	 * This CM is send every five minutes by client. Permettrait de vérifier toutes
-	 * les 5 minutes les titres et emmotes temporaires des joueurs et les désactiver
+	 * This CM is send every five minutes by client.
+	 * Permettrait de vérifier toutes les 5 minutes les
+	 * titres et emmotes temporaires des joueurs et les désactiver
 	 * si nécessaire.
 	 */
 	public CM_PLAYER_LISTENER(int opcode, State state, State... restStates) {
@@ -29,7 +30,8 @@ public class CM_PLAYER_LISTENER extends AionClientPacket {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected void runImpl() {
-		// Player player = getConnection().getActivePlayer();
+	protected void runImpl()
+	{
+		//Player player = getConnection().getActivePlayer();
 	}
 }

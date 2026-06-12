@@ -68,7 +68,7 @@ public class ExitPoint {
 	public float getZ() {
 		return z;
 	}
-
+	
 	public Race getRace() {
 		if (race == null) {
 			return Race.PC_ALL;

@@ -31,7 +31,6 @@ public class _3217ImprisonedGuardian extends QuestHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see com.aionemu.gameserver.questEngine.handlers.QuestHandler#register()
 	 */
 	@Override

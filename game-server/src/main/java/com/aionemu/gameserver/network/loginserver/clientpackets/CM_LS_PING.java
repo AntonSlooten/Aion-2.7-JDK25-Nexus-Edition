@@ -16,17 +16,16 @@ public class CM_LS_PING extends LsClientPacket {
 
 	@Override
 	protected void readImpl() {
-		// trigger
+		//trigger
 	}
 
 	@Override
 	protected void runImpl() {
 		int pid = -1;
-		try {
-			pid = Integer.parseInt(ManagementFactory.getRuntimeMXBean().getName().split("@")[0]);
-		} catch (Exception ex) {
-		}
-
+		try{
+			 pid = Integer.parseInt(ManagementFactory.getRuntimeMXBean().getName().split("@")[0]);
+		} catch(Exception ex) {  }
+		
 		LoginServer.getInstance().sendPacket(new SM_LS_PONG(pid));
 	}
 }

@@ -37,11 +37,10 @@ public class StumbleEffect extends EffectTemplate {
 	@Override
 	public void applyEffect(Effect effect) {
 		final Creature effected = effect.getEffected();
-
-		if (!effected.getEffectController().applyPhysicalAbnormalEffect()) {
+		
+		if(!effected.getEffectController().applyPhysicalAbnormalEffect())
 			return;
-		}
-
+		
 		effect.addToEffectedController();
 	}
 
@@ -56,8 +55,7 @@ public class StumbleEffect extends EffectTemplate {
 		effected.getController().cancelCurrentSkill();
 		effected.getEffectController().setAbnormal(AbnormalState.STUMBLE.getId());
 		effect.setAbnormal(AbnormalState.STUMBLE.getId());
-		PacketSendUtility.broadcastPacketAndReceive(effect.getEffected(),
-				new SM_FORCED_MOVE(effect.getEffector(), effect.getEffected()));
+		PacketSendUtility.broadcastPacketAndReceive(effect.getEffected(), new SM_FORCED_MOVE(effect.getEffector(), effect.getEffected()));
 	}
 
 	@Override

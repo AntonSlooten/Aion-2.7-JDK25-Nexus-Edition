@@ -7,9 +7,10 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.Util;
 import com.aionemu.gameserver.world.World;
 
-public class CmdRevoke extends BaseCommand {
 
-	@Override
+public class CmdRevoke extends BaseCommand {
+	
+	
 	public void execute(Player admin, String... params) {
 		if (params.length != 3) {
 			showHelp(admin);
@@ -17,11 +18,11 @@ public class CmdRevoke extends BaseCommand {
 		}
 
 		int type = 0;
-		if (params[2].equalsIgnoreCase("acceslevel")) {
+		if (params[2].equalsIgnoreCase("acceslevel"))
 			type = 1;
-		} else if (params[2].equalsIgnoreCase("membership")) {
+		else if (params[2].equalsIgnoreCase("membership"))
 			type = 2;
-		} else {
+		else {
 			showHelp(admin);
 			return;
 		}
@@ -31,7 +32,6 @@ public class CmdRevoke extends BaseCommand {
 			PacketSendUtility.sendMessage(admin, "The specified player is not online.");
 			return;
 		}
-		LoginServer.getInstance().sendLsControlPacket(player.getAcountName(), player.getName(), admin.getName(), 0,
-				type);
+        LoginServer.getInstance().sendLsControlPacket(player.getAcountName(), player.getName(), admin.getName(), 0, type);
 	}
 }

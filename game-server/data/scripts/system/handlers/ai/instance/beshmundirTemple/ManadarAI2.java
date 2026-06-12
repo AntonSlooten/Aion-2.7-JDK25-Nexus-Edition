@@ -24,7 +24,7 @@ import com.aionemu.gameserver.model.gameobjects.Creature;
 import ai.AggressiveNpcAI2;
 
 /**
- * @author xTz
+ * @author  xTz
  */
 @AIName("manadar")
 public class ManadarAI2 extends AggressiveNpcAI2 {
@@ -49,18 +49,18 @@ public class ManadarAI2 extends AggressiveNpcAI2 {
 		super.handleBackHome();
 	}
 
-	private void check() {
+	private void check () {
 		if (getPosition().isSpawned() && !isAlreadyDead() && isStart) {
 			for (int i = 0; i < 5; i++) {
 				int distance = Rnd.get(4, 11);
 				int nrNpc = Rnd.get(1, 2);
 				switch (nrNpc) {
-				case 1:
-					nrNpc = 281545;
-					break;
-				case 2:
-					nrNpc = 281756;
-					break;
+					case 1:
+						nrNpc = 281545;
+						break;
+					case 2:
+						nrNpc = 281756;
+						break;
 				}
 				rndSpawnInRange(nrNpc, distance);
 			}

@@ -42,13 +42,12 @@ public class PlayerTeamDistributionService {
 
 	/**
 	 * This method will send a reward if a player is in a group
-	 *
+	 * 
 	 * @param player
 	 */
 	public static final void doReward(PlayerGroup group, final Npc owner) {
-		if (group == null || owner == null) {
+		if (group == null || owner == null)
 			return;
-		}
 
 		// Find Group Members and Determine Highest Level
 
@@ -56,44 +55,39 @@ public class PlayerTeamDistributionService {
 		group.applyOnMembers(filteredStats);
 
 		// All are dead or not nearby.
-		if (filteredStats.players.size() == 0 || !hasOneLivingPlayer(group)) {
+		if (filteredStats.players.size() == 0 || !hasOneLivingPlayer(group))
 			return;
-		}
 
 		// Rewarding...
 		long expReward = 0;
 		boolean apReward = owner.isRewardAP();
-		if (filteredStats.players.size() + filteredStats.mentorCount == 1) {
-			expReward = (StatFunctions.calculateSoloExperienceReward(filteredStats.players.get(0), owner));
-		} else {
-			expReward = (StatFunctions.calculateGroupExperienceReward(filteredStats.highestLevel, owner));
-		}
+		if (filteredStats.players.size() + filteredStats.mentorCount == 1)
+			expReward = (long) (StatFunctions.calculateSoloExperienceReward(filteredStats.players.get(0), owner));
+		else
+			expReward = (long) (StatFunctions.calculateGroupExperienceReward(filteredStats.highestLevel, owner));
 
 		// Party Bonus 2 members 10%, 3 members 20% ... 6 members 50%
 		int size = filteredStats.players.size();
 		double bonus = 100;
-		if (size > 1) {
+		if (size > 1)
 			bonus = 150 + ((size - 2) * 10);
-		}
 
 		bonus *= 1f * filteredStats.players.size() / size;
 
 		for (Player member : filteredStats.players) {
-			if (member.isMentor()) {
+			if (member.isMentor())
 				continue;
-			}
 
 			// Exp reward
 			long reward = (long) (expReward * bonus * member.getLevel()) / (filteredStats.partyLvlSum * 100);
 
 			// Players 10 levels below highest member get 0 exp.
-			if (filteredStats.highestLevel - member.getLevel() >= 10) {
+			if (filteredStats.highestLevel - member.getLevel() >= 10)
 				reward = 0;
-			} else if (filteredStats.mentorCount > 0) {
-				int cape = XPCape.values()[member.getLevel()].value();
-				if (cape < reward) {
+			else if (filteredStats.mentorCount > 0) {
+				int cape = XPCape.values()[(int) member.getLevel()].value();
+				if (cape < reward)
 					reward = cape;
-				}
 			}
 
 			member.getCommonData().addExp(reward, RewardType.GROUP_HUNTING, owner.getObjectTemplate().getNameId());
@@ -112,42 +106,35 @@ public class PlayerTeamDistributionService {
 
 		// Give Drop
 		Player leader = owner.getAggroList().getMostPlayerDamageOfMembers(filteredStats.players);
-		if (leader == null) {
+		if (leader == null)
 			return;
-		}
 
-		if (!owner.getAi2().getName().equals("chest") || filteredStats.mentorCount == 0) {
-			DropRegistrationService.getInstance().registerDrop(owner, leader, filteredStats.highestLevel,
-					filteredStats.players);
-		}
+		if (!owner.getAi2().getName().equals("chest") || filteredStats.mentorCount == 0)
+			DropRegistrationService.getInstance().registerDrop(owner, leader, filteredStats.highestLevel, filteredStats.players);
 	}
 
 	public static void doReward(PlayerAlliance alliance, Npc owner) {
-		// TODO: Merge with group type do-reward. (Near identical to GroupService
-		// doReward code.)
+		// TODO: Merge with group type do-reward. (Near identical to GroupService doReward code.)
 		// Plus complete rewrite of drop system and exp system.
 		// http://www.aionsource.com/topic/40542-character-stats-xp-dp-origin-gerbatorteam-july-2009/
 		// Find Group Members and Determine Highest Level
-		List<Player> players = new ArrayList<>();
+		List<Player> players = new ArrayList<Player>();
 		int partyLvlSum = 0;
 		int highestLevel = 0;
 		for (Player player : alliance.getMembers()) {
-			if (!player.isOnline()) {
+			if (!player.isOnline())
 				continue;
-			}
 			if (MathUtil.isIn3dRange(player, owner, GroupConfig.GROUP_MAX_DISTANCE)) {
 				players.add(player);
 				partyLvlSum += player.getLevel();
-				if (player.getLevel() > highestLevel) {
+				if (player.getLevel() > highestLevel)
 					highestLevel = player.getLevel();
-				}
 			}
 		}
 
 		// All are dead or not nearby.
-		if (players.isEmpty()) {
+		if (players.isEmpty())
 			return;
-		}
 
 		boolean oneLivingPlayer = false;
 		for (Player player : players) {
@@ -157,37 +144,32 @@ public class PlayerTeamDistributionService {
 			}
 		}
 
-		if (!oneLivingPlayer) {
+		if (oneLivingPlayer == false)
 			return;
-		}
 
 		// Rewarding...
 		long expReward = 0;
 		boolean apReward = owner.isRewardAP();
-		if (players.size() == 1) {
-			expReward = (StatFunctions.calculateSoloExperienceReward(players.get(0), owner));
-		} else {
-			expReward = (StatFunctions.calculateGroupExperienceReward(highestLevel, owner));
-		}
+		if (players.size() == 1)
+			expReward = (long) (StatFunctions.calculateSoloExperienceReward(players.get(0), owner));
+		else
+			expReward = (long) (StatFunctions.calculateGroupExperienceReward(highestLevel, owner));
 
 		// Exp Mod
-		// TODO: Add logic to prevent power leveling. Players 10 levels below highest
-		// member should get 0 exp.
+		// TODO: Add logic to prevent power leveling. Players 10 levels below highest member should get 0 exp.
 		double mod = 1f;
-		if (players.size() > 1) {
+		if (players.size() > 1)
 			mod = 1.5f + (((players.size() - 2) * 10) / 100);
-		}
 
-		expReward *= (long) mod;
+		expReward *= mod;
 
 		for (Player member : players) {
 			// Exp reward
 			long reward = (expReward * member.getLevel()) / partyLvlSum;
 
 			// Players 10 levels below highest member get 0 exp.
-			if (highestLevel - member.getLevel() >= 10) {
+			if (highestLevel - member.getLevel() >= 10)
 				reward = 0;
-			}
 			member.getCommonData().addExp(reward, RewardType.GROUP_HUNTING, owner.getObjectTemplate().getNameId());
 
 			// DP reward
@@ -206,24 +188,22 @@ public class PlayerTeamDistributionService {
 
 		// Give Drop
 		Player leader = owner.getAggroList().getMostPlayerDamageOfMembers(players);
-		if (leader == null) {
+		if (leader == null)
 			return;
-		}
 		DropRegistrationService.getInstance().registerDrop(owner, leader, highestLevel, players);
 	}
-
+	
 	public static boolean hasOneLivingPlayer(PlayerGroup group) {
-		for (Player member : group.getMembers()) {
-			if (!member.getLifeStats().isAlreadyDead()) {
+		for(Player member : group.getMembers()) {
+			if(!member.getLifeStats().isAlreadyDead())
 				return true;
-			}
 		}
 		return false;
 	}
 
 	public static class PlayerGroupRewardStats implements Predicate<Player> {
 
-		public final List<Player> players = new ArrayList<>();
+		public final List<Player> players = new ArrayList<Player>();
 		int partyLvlSum = 0;
 		public int highestLevel = 0;
 		int mentorCount = 0;
@@ -244,9 +224,8 @@ public class PlayerTeamDistributionService {
 					}
 					players.add(member);
 					partyLvlSum += member.getLevel();
-					if (member.getLevel() > highestLevel) {
+					if (member.getLevel() > highestLevel)
 						highestLevel = member.getLevel();
-					}
 				}
 			}
 			return true;

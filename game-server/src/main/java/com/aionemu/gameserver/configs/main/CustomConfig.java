@@ -132,8 +132,8 @@ public class CustomConfig {
 	 */
 	@Property(key = "gameserver.basic.cubesize.limit", defaultValue = "9")
 	public static int BASIC_CUBE_SIZE_LIMIT;
-
-	/**
+	
+	 /**
 	 * Npc Cube Expands limit size
 	 */
 	@Property(key = "gameserver.npcexpands.limit", defaultValue = "5")
@@ -201,7 +201,7 @@ public class CustomConfig {
 
 	@Property(key = "gameserver.faction.prices", defaultValue = "10000")
 	public static int FACTION_USE_PRICE;
-
+	
 	@Property(key = "gameserver.faction.cmdchannel", defaultValue = "true")
 	public static boolean FACTION_CMD_CHANNEL;
 
@@ -210,10 +210,9 @@ public class CustomConfig {
 	 */
 	@Property(key = "gameserver.pvp.dayduration", defaultValue = "86400000")
 	public static long PVP_DAY_DURATION;
-
+	
 	/**
-	 * Allowed Kills in configuered time for full AP. Move to separate config when
-	 * more pvp options.
+	 * Allowed Kills in configuered time for full AP. Move to separate config when more pvp options.
 	 */
 	@Property(key = "gameserver.pvp.maxkills", defaultValue = "5")
 	public static int MAX_DAILY_PVP_KILLS;
@@ -267,7 +266,7 @@ public class CustomConfig {
 
 	@Property(key = "gameserver.reward.service.enable", defaultValue = "false")
 	public static boolean ENABLE_REWARD_SERVICE;
-
+	
 	/**
 	 * Flood Protection
 	 */
@@ -294,91 +293,91 @@ public class CustomConfig {
 
 	@Property(key = "gameserver.chat.text.length", defaultValue = "150")
 	public static int MAX_CHAT_TEXT_LENGHT;
-
+	
 	@Property(key = "gameserver.instance.keycheck", defaultValue = "false")
 	public static boolean INSTANCE_KEYCHECK;
-
+	
 	@Property(key = "gameserver.pff.enable", defaultValue = "false")
 	public static boolean PFF_ENABLE;
-
+	
 	@Property(key = "gameserver.pff.level", defaultValue = "1")
 	public static int PFF_LEVEL;
 
 	@Property(key = "gameserver.autoassault.enable", defaultValue = "false")
 	public static boolean AUTO_ASSAULT;
-
+	
 	@Property(key = "gameserver.abyssxform.afterlogout", defaultValue = "false")
 	public static boolean ABYSSXFORM_LOGOUT;
-
+	
 	@Property(key = "gameserver.boost.ap.newplayer", defaultValue = "false")
 	public static boolean BOOST_AP_NEW_PLAYER;
-
+	
 	@Property(key = "gameserver.boost.ap.newplayertime", defaultValue = "30")
 	public static long BOOST_AP_NEW_PLAYER_TIME;
-
+	
 	@Property(key = "gameserver.boost.ap.newplayerRatio", defaultValue = "2")
 	public static long BOOST_AP_NEW_PLAYER_RATIO;
-
+	
 	@Property(key = "gameserver.enchant.incant.time", defaultValue = "5000")
 	public static int ENCHANT_INCANT_TIME;
-
+	
 	/**
 	 * Bonus faction
 	 */
 	@Property(key = "gameserver.faction.bonus.applyto", defaultValue = "BALAUR")
 	public static String FACTION_BONUS_TO;
-
+	
 	@Property(key = "gameserver.faction.bonus.exp.hunt", defaultValue = "1.5")
 	public static float FACTION_BONUS_HUNT;
-
+	
 	@Property(key = "gameserver.faction.bonus.exp.quest", defaultValue = "1.1")
 	public static float FACTION_BONUS_QUEST;
-
+	
 	@Property(key = "gameserver.faction.bonus.exp.craft", defaultValue = "1.5")
 	public static float FACTION_BONUS_CRAFT;
-
+	
 	@Property(key = "gameserver.faction.bonus.exp.gather", defaultValue = "1.5")
 	public static float FACTION_BONUS_GATHER;
-
+	
 	@Property(key = "gameserver.faction.bonus.pvp.ap", defaultValue = "2.0")
 	public static float FACTION_BONUS_AP;
-
+	
 	@Property(key = "gameserver.faction.bonus.pvp.defense", defaultValue = "1.1")
 	public static float FACTION_BONUS_DEFENSE;
-
+	
 	@Property(key = "gameserver.faction.bonus.pvp.attack", defaultValue = "1.1")
 	public static float FACTION_BONUS_ATTACK;
-
+	
 	/**
 	 * Other customs
 	 */
 	@Property(key = "gameserver.toll.name.en", defaultValue = "Shop point")
 	public static String TOLL_NAME_EN;
-
+	
 	@Property(key = "gameserver.toll.name.fr", defaultValue = "Point boutique")
 	public static String TOLL_NAME_FR;
-
+	
 	@Property(key = "gameserver.toll.exchange.price", defaultValue = "500000")
 	public static int TOLL_EXCHANGE_PRICE;
-
+	
 	@Property(key = "gameserver.gs.disableeffect", defaultValue = "false")
 	public static boolean DISABLE_GS_EFFECT;
-
+	
 	@Property(key = "gameserver.gs.securisedeffect", defaultValue = "false")
 	public static boolean GS_SECURISED_EFFECT;
 
 	@Property(key = "gameserver.ai.balaurea.fountains.enable", defaultValue = "false")
 	public static boolean ENABLE_BALAUREA_FOUNTAIN_AI;
-
+	
 	@Property(key = "gameserver.rnd.fountain.getplatinum", defaultValue = "90")
 	public static int FOUNTAIN_PLATINUM;
-
+	
 	@Property(key = "gameserver.rnd.fountain.getgold", defaultValue = "55")
 	public static int FOUNTAIN_GOLD;
-
+	
 	@Property(key = "gameserver.rnd.fountain.getrusted", defaultValue = "0")
 	public static int FOUNTAIN_RUSTED;
-
+	
 	@Property(key = "gameserver.stats.physical.disableuseofarrow", defaultValue = "false")
 	public static boolean DISABLE_USE_OF_ARROW;
 }

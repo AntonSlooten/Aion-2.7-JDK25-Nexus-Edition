@@ -37,32 +37,31 @@ public class PlazzaThrower extends ActionItemNpcAI2 {
 		if (isRewarded) {
 			return;
 		}
-
+		
 		List<Player> playerInside = new ArrayList<Player>();
 		InstancePlayerReward playerReward = null;
 		for (InstancePlayerReward instanceReward : instance.getPlayersInside()) {
 			Player p = instanceReward.getPlayer();
-			if (p.getObjectId() == player.getObjectId()) {
+			if(p.getObjectId() == player.getObjectId()){
 				playerReward = instanceReward;
 				continue;
 			}
-			if (MathUtil.isInSphere(p, 1842, 1732, 300, 20)) {
+			if(MathUtil.isInSphere(p, 1842, 1732, 300, 20)){
 				playerInside.add(p);
 			}
 		}
-		// use skill from player
-		if (playerInside.size() > 0) {
-			SkillEngine.getInstance().getSkill(player, 20055, 50, playerInside.get(Rnd.get(0, playerInside.size() - 1)))
-					.useSkill();
+		//use skill from player
+		if(playerInside.size() > 0){
+			SkillEngine.getInstance().getSkill(player, 20055, 50, playerInside.get(Rnd.get(0, playerInside.size()-1))).useSkill();
 		}
-
-		if (playerReward != null) {
+		
+		if(playerReward != null){
 			playerReward.addPoints(500);
 			InstanceHandler instanceArena = getPosition().getWorldMapInstance().getInstanceHandler();
 			instanceArena.sendSystemMsg(player, getOwner(), 500);
 			instanceArena.sendPacket();
 		}
-
+		
 		isRewarded = true;
 		AI2Actions.handleUseItemFinishNpc(this, player);
 		AI2Actions.deleteOwner(this);

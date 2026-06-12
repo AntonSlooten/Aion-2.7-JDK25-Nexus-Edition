@@ -58,41 +58,47 @@ public class _1111InsomniaMedicine extends QuestHandler {
 					return sendQuestDialog(env, 1011);
 				else
 					return sendQuestStartDialog(env);
-			} else if (qs.getStatus() == QuestStatus.REWARD) {
+			}
+			else if (qs.getStatus() == QuestStatus.REWARD) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					if (qs.getQuestVarById(0) == 2) {
 						removeQuestItem(env, 182200222, 1);
 						return sendQuestDialog(env, 2375);
-					} else if (qs.getQuestVarById(0) == 3) {
+					}
+					else if (qs.getQuestVarById(0) == 3) {
 						removeQuestItem(env, 182200221, 1);
 						return sendQuestDialog(env, 2716);
 					}
 					return false;
-				} else if (env.getDialogId() == 1009)
+				}
+				else if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, qs.getQuestVarById(0) + 3);
 				else if (env.getDialogId() == 18) {
 					QuestService.finishQuest(env, qs.getQuestVarById(0) - 2);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
 				}
 			}
-		} else if (targetId == 203061) {
+		}
+		else if (targetId == 203061) {
 			if (env.getDialog() == QuestDialog.START_DIALOG) {
 				if (qs.getQuestVarById(0) == 0)
 					return sendQuestDialog(env, 1352);
 				else if (qs.getQuestVarById(0) == 1)
 					return sendQuestDialog(env, 1353);
 				return false;
-			} else if (env.getDialogId() == 34) {
+			}
+			else if (env.getDialogId() == 34) {
 				if (QuestService.collectItemCheck(env, true)) {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					updateQuestStatus(env);
 					return sendQuestDialog(env, 1353);
-				} else
+				}
+				else
 					return sendQuestDialog(env, 1693);
-			} else if (env.getDialog() == QuestDialog.STEP_TO_1 && qs.getStatus() != QuestStatus.COMPLETE
-					&& qs.getStatus() != QuestStatus.NONE) {
+			}
+			else if (env.getDialog() == QuestDialog.STEP_TO_1 && qs.getStatus() != QuestStatus.COMPLETE
+				&& qs.getStatus() != QuestStatus.NONE) {
 				if (!giveQuestItem(env, 182200222, 1))
 					return true;
 				qs.setQuestVarById(0, 2);
@@ -100,8 +106,9 @@ public class _1111InsomniaMedicine extends QuestHandler {
 				updateQuestStatus(env);
 				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 				return true;
-			} else if (env.getDialog() == QuestDialog.STEP_TO_2 && qs.getStatus() != QuestStatus.COMPLETE
-					&& qs.getStatus() != QuestStatus.NONE) {
+			}
+			else if (env.getDialog() == QuestDialog.STEP_TO_2 && qs.getStatus() != QuestStatus.COMPLETE
+				&& qs.getStatus() != QuestStatus.NONE) {
 				if (!giveQuestItem(env, 182200221, 1))
 					return true;
 				qs.setQuestVarById(0, 3);

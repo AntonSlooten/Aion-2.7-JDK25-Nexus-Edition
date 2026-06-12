@@ -24,8 +24,7 @@ import com.google.common.base.Predicate;
 /**
  * @author ATracer
  */
-public abstract class AbstractTeamPlayerEvent<T extends TemporaryPlayerTeam<?>>
-		implements Predicate<Player>, TeamEvent {
+public abstract class AbstractTeamPlayerEvent<T extends TemporaryPlayerTeam<?>> implements Predicate<Player>, TeamEvent {
 
 	protected final T team;
 	protected final Player eventPlayer;

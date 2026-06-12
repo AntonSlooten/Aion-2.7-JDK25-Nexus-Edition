@@ -24,7 +24,7 @@ import com.google.common.base.Predicate;
  */
 public class PlayerFilters {
 
-	public static final Predicate<Player> ONLINE = new Predicate<>() {
+	public static final Predicate<Player> ONLINE = new Predicate<Player>() {
 
 		@Override
 		public boolean apply(Player member) {

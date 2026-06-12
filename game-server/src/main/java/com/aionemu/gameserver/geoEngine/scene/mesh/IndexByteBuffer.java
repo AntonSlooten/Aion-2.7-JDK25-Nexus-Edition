@@ -41,30 +41,30 @@ import java.nio.ByteBuffer;
  */
 public class IndexByteBuffer extends IndexBuffer {
 
-	private ByteBuffer buf;
+    private ByteBuffer buf;
 
-	public IndexByteBuffer(ByteBuffer buffer) {
-		this.buf = buffer;
-	}
+    public IndexByteBuffer(ByteBuffer buffer) {
+        this.buf = buffer;
+    }
+    
+    @Override
+    public int get(int i) {
+        return buf.get(i) & 0x000000FF;
+    }
 
-	@Override
-	public int get(int i) {
-		return buf.get(i) & 0x000000FF;
-	}
+    @Override
+    public void put(int i, int value) {
+        buf.put(i, (byte) value);
+    }
 
-	@Override
-	public void put(int i, int value) {
-		buf.put(i, (byte) value);
-	}
+    @Override
+    public int size() {
+        return buf.limit();
+    }
 
-	@Override
-	public int size() {
-		return buf.limit();
-	}
-
-	@Override
-	public Buffer getBuffer() {
-		return buf;
-	}
+    @Override
+    public Buffer getBuffer() {
+        return buf;
+    }
 
 }

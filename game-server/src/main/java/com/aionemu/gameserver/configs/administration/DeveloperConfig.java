@@ -28,4 +28,40 @@ public class DeveloperConfig {
 	 */
 	@Property(key = "gameserver.developer.spawn.enable", defaultValue = "true")
 	public static boolean SPAWN_ENABLE;
+
+	/**
+	 * Show sended cm/sm packets in game server log
+	 */
+	@Property(key = "gameserver.developer.showpackets.enable", defaultValue = "false")
+	public static boolean SHOW_PACKETS;
+
+	/**
+	 * Filters which Packets should be shown in Chat Windows? Default: * e.g. SM_MOVE, CM_CASTSPELL, CM_ATTACK
+	 */
+	@Property(key = "gameserver.developer.filter.packets.inchat", defaultValue = "*")
+	public static String FILTERED_PACKETS_INCHAT;
+
+	/**
+	 * How many Packet Bytes should be shown in Chat Window? Default: 200-Hexed bytes
+	 */
+	@Property(key = "gameserver.developer.show.packetbytes.inchat.total", defaultValue = "200")
+	public static int TOTAL_PACKET_BYTES_INCHAT;
+
+	/**
+	 * Display Packets Name in Chat Window
+	 */
+	@Property(key = "gameserver.developer.show.packetnames.inchat.enable", defaultValue = "false")
+	public static boolean SHOW_PACKET_NAMES_INCHAT;
+	/**
+	 * Display Packets Hex-Bytes in Chat Window
+	 */
+	@Property(key = "gameserver.developer.show.packetbytes.inchat.enable", defaultValue = "false")
+	public static boolean SHOW_PACKET_BYTES_INCHAT;
+
+	/**
+	 * if Player Access Level is meet, display Packets-Name or Hex-Bytes in Chat Window Tip: Player Access-Level higher than or equal to 3 is recommended 10 - Server-Owner 9 - Server-CoOwner 8 -
+	 * Server-Admin 7 - Server-CoAdmin 6 - Developer 5 - Admin 4 - Head-GM 3 - Senior-GM 2 - Junior-GM 1 - Supporter 0 - Players
+	 */
+	@Property(key = "gameserver.developer.show.packets.inchat.accesslevel", defaultValue = "6")
+	public static int SHOW_PACKETS_INCHAT_ACCESSLEVEL;
 }

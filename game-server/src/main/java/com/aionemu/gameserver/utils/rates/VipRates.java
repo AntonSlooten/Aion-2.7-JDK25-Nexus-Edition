@@ -77,7 +77,7 @@ public class VipRates extends Rates {
 	public float getXpPlayerGainRate() {
 		return RateConfig.VIP_XP_PLAYER_GAIN_RATE;
 	}
-
+	
 	@Override
 	public float getApPlayerLossRate() {
 		return RateConfig.VIP_AP_PLAYER_LOSS_RATE;
@@ -87,6 +87,7 @@ public class VipRates extends Rates {
 	public float getApNpcRate() {
 		return RateConfig.VIP_AP_NPC_RATE;
 	}
+
 
 	@Override
 	public float getDpNpcRate() {

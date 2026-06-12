@@ -25,7 +25,14 @@ import javax.xml.bind.annotation.XmlEnum;
 @XmlEnum
 public enum ConditionOperation {
 
-	EQUAL, GREATER, GREATER_EQUAL, LESSER, LESSER_EQUAL, NOT_EQUAL, IN, NOT_IN;
+	EQUAL,
+	GREATER,
+	GREATER_EQUAL,
+	LESSER,
+	LESSER_EQUAL,
+	NOT_EQUAL,
+	IN,
+	NOT_IN;
 
 	public String value() {
 		return name();

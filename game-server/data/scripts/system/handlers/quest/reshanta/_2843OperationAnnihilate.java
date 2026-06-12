@@ -113,10 +113,12 @@ public class _2843OperationAnnihilate extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 268081)
 				return true;
-		} else if (qs.getStatus() == QuestStatus.REWARD && targetId == 268081) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD && targetId == 268081) {
 			qs.setQuestVarById(0, 0);
 			updateQuestStatus(env);
 			return sendQuestEndDialog(env);
@@ -139,7 +141,8 @@ public class _2843OperationAnnihilate extends QuestHandler {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					updateQuestStatus(env);
 					return true;
-				} else if (qs.getQuestVarById(0) == 79 || qs.getQuestVarById(0) > 79) {
+				}
+				else if (qs.getQuestVarById(0) == 79 || qs.getQuestVarById(0) > 79) {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);

@@ -28,12 +28,12 @@ import com.aionemu.gameserver.skillengine.model.Effect;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "PolymorphEffect")
 public class PolymorphEffect extends TransformEffect {
-
+	
 	@Override
 	public void startEffect(Effect effect) {
 		super.startEffect(effect, AbnormalState.NOFLY);
 	}
-
+	
 	@Override
 	public void endEffect(Effect effect) {
 		super.endEffect(effect, AbnormalState.NOFLY);

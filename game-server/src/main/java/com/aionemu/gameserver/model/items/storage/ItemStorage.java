@@ -57,7 +57,7 @@ public class ItemStorage {
 		}
 		return temp;
 	}
-
+	
 	public int countItemsById(int itemId) {
 		int count = 0;
 		for (Item item : items.values()) {
@@ -92,11 +92,10 @@ public class ItemStorage {
 
 	public int getSlotIdByObjId(int objId) {
 		Item item = this.getItemByObjId(objId);
-		if (item != null) {
+		if (item != null)
 			return item.getEquipmentSlot();
-		} else {
+		else
 			return -1;
-		}
 	}
 
 	public int getNextAvailableSlot() {
@@ -104,9 +103,8 @@ public class ItemStorage {
 	}
 
 	public boolean putItem(Item item) {
-		if (this.items.containsKey(item.getObjectId())) {
+		if (this.items.containsKey(item.getObjectId()))
 			return false;
-		}
 
 		this.items.put(item.getObjectId(), item);
 		return true;

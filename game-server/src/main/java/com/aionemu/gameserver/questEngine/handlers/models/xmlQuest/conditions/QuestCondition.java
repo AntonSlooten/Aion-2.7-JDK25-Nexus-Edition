@@ -32,7 +32,7 @@ import com.aionemu.gameserver.questEngine.model.QuestEnv;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "QuestCondition")
 @XmlSeeAlso({ NpcIdCondition.class, DialogIdCondition.class, PcInventoryCondition.class, QuestVarCondition.class,
-		QuestStatusCondition.class })
+	QuestStatusCondition.class })
 public abstract class QuestCondition {
 
 	@XmlAttribute(required = true)
@@ -40,7 +40,7 @@ public abstract class QuestCondition {
 
 	/**
 	 * Gets the value of the op property.
-	 *
+	 * 
 	 * @return possible object is {@link ConditionOperation }
 	 */
 	public ConditionOperation getOp() {

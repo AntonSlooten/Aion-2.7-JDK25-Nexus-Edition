@@ -53,42 +53,45 @@ public class _11460TheShulackofTaloc extends QuestHandler {
 			if (targetId == 798954) { // Tialla
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 799502: { // Dorkin
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1352);
+				case 799502: { // Dorkin
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1, 182209509, 1, 0, 0); // 1
+						}
+					}
+					break;
+				}
+				case 798985: { // Seikin
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case SELECT_REWARD: {
+							if (removeQuestItem(env, 182209509, 1))
+								changeQuestStep(env, 1, 1, true); // reward
+							return sendQuestDialog(env, 5);
+						}
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1, 182209509, 1, 0, 0); // 1
-				}
-				}
-				break;
 			}
-			case 798985: { // Seikin
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 2375);
-					}
-				}
-				case SELECT_REWARD: {
-					if (removeQuestItem(env, 182209509, 1))
-						changeQuestStep(env, 1, 1, true); // reward
-					return sendQuestDialog(env, 5);
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798985) { // Seikin
 				return sendQuestEndDialog(env);
 			}

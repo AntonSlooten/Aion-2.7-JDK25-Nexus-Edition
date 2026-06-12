@@ -56,13 +56,11 @@ public class CraftService {
 		if (recipetemplate.getMaxProductionCount() != null) {
 			player.getRecipeList().deleteRecipe(player, recipetemplate.getId());
 			if (critCount == 0) {
-				QuestEngine.getInstance().onFailCraft(new QuestEnv(null, player, 0, 0),
-						recipetemplate.getComboProduct(1) == null ? 0 : recipetemplate.getComboProduct(1));
+				QuestEngine.getInstance().onFailCraft(new QuestEnv(null, player, 0, 0), recipetemplate.getComboProduct(1) == null? 0 : recipetemplate.getComboProduct(1));
 			}
 		}
 
-		int xpReward = (int) ((0.008 * (recipetemplate.getSkillpoint() + 100) * (recipetemplate.getSkillpoint() + 100)
-				+ 60));
+		int xpReward = (int) ((0.008 * (recipetemplate.getSkillpoint() + 100) * (recipetemplate.getSkillpoint() + 100) + 60));
 
 		int productItemId = critCount > 0 ? recipetemplate.getComboProduct(critCount) : recipetemplate.getProductid();
 
@@ -79,17 +77,17 @@ public class CraftService {
 
 		int gainedCraftExp = (int) RewardType.CRAFTING.calcReward(player, xpReward);
 
-		if (player.getSkillList().addSkillXp(player, recipetemplate.getSkillid(), gainedCraftExp,
-				recipetemplate.getSkillpoint())) {
+		if (player.getSkillList().addSkillXp(player, recipetemplate.getSkillid(), gainedCraftExp, recipetemplate.getSkillpoint())) {
 			player.getCommonData().addExp(xpReward, RewardType.CRAFTING);
-		} else {
-			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_DONT_GET_PRODUCTION_EXP(new DescriptionId(
-					DataManager.SKILL_DATA.getSkillTemplate(recipetemplate.getSkillid()).getNameId())));
+		}
+		else {
+			PacketSendUtility.sendPacket(player,
+				SM_SYSTEM_MESSAGE.STR_MSG_DONT_GET_PRODUCTION_EXP(new DescriptionId(DataManager.SKILL_DATA.getSkillTemplate(recipetemplate.getSkillid()).getNameId())));
 		}
 
 		if (recipetemplate.getCraftDelayId() != null) {
 			player.getCraftCooldownList().addCraftCooldown(recipetemplate.getCraftDelayId(),
-					recipetemplate.getCraftDelayTime());
+				recipetemplate.getCraftDelayTime());
 		}
 	}
 
@@ -111,21 +109,30 @@ public class CraftService {
 			return;
 		}
 
-		if (recipeTemplate.getDp() != null) {
+		if (recipeTemplate.getDp() != null)
 			player.getCommonData().addDp(-recipeTemplate.getDp());
-		}
 
 		int skillLvlDiff = player.getSkillList().getSkillLevel(skillId) - recipeTemplate.getSkillpoint();
 		player.setCraftingTask(new CraftingTask(player, (StaticObject) target, recipeTemplate, skillLvlDiff));
-
+		
+		if(skillId == 40009)
+			player.getCraftingTask().setInterval(850);
+		
 		player.getCraftingTask().start();
 	}
 
 	private static boolean checkCraft(Player player, RecipeTemplate recipeTemplate, int skillId, VisibleObject target,
-			ItemTemplate itemTemplate) {
+		ItemTemplate itemTemplate) {
 
-		if ((recipeTemplate == null) || (itemTemplate == null)
-				|| (player.getCraftingTask() != null && player.getCraftingTask().isInProgress())) {
+		if (recipeTemplate == null) {
+			return false;
+		}
+
+		if (itemTemplate == null) {
+			return false;
+		}
+
+		if (player.getCraftingTask() != null && player.getCraftingTask().isInProgress()) {
 			return false;
 		}
 
@@ -160,7 +167,7 @@ public class CraftService {
 		}
 
 		if (!player.getSkillList().isSkillPresent(skillId)
-				|| player.getSkillList().getSkillLevel(skillId) < recipeTemplate.getSkillpoint()) {
+			|| player.getSkillList().getSkillLevel(skillId) < recipeTemplate.getSkillpoint()) {
 			log.info("[AUDIT] Player " + player.getName() + " tried craft without required skill.");
 			return false;
 		}
@@ -171,7 +178,6 @@ public class CraftService {
 	private static void sendCancelCraft(Player player, int skillId, int targetObjId, ItemTemplate itemTemplate) {
 
 		PacketSendUtility.sendPacket(player, new SM_CRAFT_UPDATE(skillId, itemTemplate, 0, 0, 4));
-		PacketSendUtility.broadcastPacket(player, new SM_CRAFT_ANIMATION(player.getObjectId(), targetObjId, 0, 2),
-				true);
+		PacketSendUtility.broadcastPacket(player, new SM_CRAFT_ANIMATION(player.getObjectId(), targetObjId, 0, 2), true);
 	}
 }

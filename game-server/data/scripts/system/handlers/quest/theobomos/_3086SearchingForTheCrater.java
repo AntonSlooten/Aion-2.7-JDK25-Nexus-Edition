@@ -56,11 +56,11 @@ public class _3086SearchingForTheCrater extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 798132) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				default:
-					return sendQuestStartDialog(env);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
@@ -70,20 +70,21 @@ public class _3086SearchingForTheCrater extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 700418: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					if (player.getInventory().getItemCountByItemId(182208062) < 1) {
-						qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return true;
+				case 700418: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							if (player.getInventory().getItemCountByItemId(182208062) < 1) {
+								qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return true;
+							}
+						}
 					}
 				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798201) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

@@ -58,60 +58,64 @@ public class _1034DisappearingAether extends QuestHandler {
 			if (targetId == 203903) { // Valerius
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 2375);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203903: { // Valerius
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 203903: { // Valerius
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+					}
+					break;
+				}
+				case 204032: { // Lakaias
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+							else if (var == 3) {
+								return sendQuestDialog(env, 1693);
+							}
+							else if (var == 4) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 4, 4, true, 2035, 2120); // reward
+						}
+						case SELECT_ACTION_1353: {
+							playQuestMovie(env, 179);
+							return sendQuestDialog(env, 1353);
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+						case STEP_TO_3: {
+							return defaultCloseDialog(env, 3, 4); // 4
+						}
+						case FINISH_DIALOG: {
+							return defaultCloseDialog(env, 4, 4);
+						}
+					}
+					break;
+				}
+				case 700149: {
+					if (env.getDialog() == QuestDialog.USE_OBJECT && var == 2) {
+						return useQuestObject(env, 2, 3, false, 0); // 3
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-				break;
-			}
-			case 204032: { // Lakaias
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					} else if (var == 3) {
-						return sendQuestDialog(env, 1693);
-					} else if (var == 4) {
-						return sendQuestDialog(env, 2034);
-					}
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 4, 4, true, 2035, 2120); // reward
-				}
-				case SELECT_ACTION_1353: {
-					playQuestMovie(env, 179);
-					return sendQuestDialog(env, 1353);
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				case STEP_TO_3: {
-					return defaultCloseDialog(env, 3, 4); // 4
-				}
-				case FINISH_DIALOG: {
-					return defaultCloseDialog(env, 4, 4);
-				}
-				}
-				break;
-			}
-			case 700149: {
-				if (env.getDialog() == QuestDialog.USE_OBJECT && var == 2) {
-					return useQuestObject(env, 2, 3, false, 0); // 3
-				}
-			}
 			}
 		}
 		return false;

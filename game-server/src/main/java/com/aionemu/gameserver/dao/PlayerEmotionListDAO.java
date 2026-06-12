@@ -29,7 +29,6 @@ public abstract class PlayerEmotionListDAO implements DAO {
 
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see com.aionemu.commons.database.dao.DAO#getClassName()
 	 */
 	@Override
@@ -46,6 +45,7 @@ public abstract class PlayerEmotionListDAO implements DAO {
 	 * @param player
 	 */
 	public abstract void insertEmotion(Player player, Emotion emotion);
-
+	
+	
 	public abstract void deleteEmotion(int playerId, int emotionId);
 }

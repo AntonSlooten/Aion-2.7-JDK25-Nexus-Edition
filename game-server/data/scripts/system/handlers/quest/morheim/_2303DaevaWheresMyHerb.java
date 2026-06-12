@@ -56,79 +56,88 @@ public class _2303DaevaWheresMyHerb extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 798082) { // Bicorunerk
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 4762);
-				}
-				case ASK_ACCEPTION: {
-					return sendQuestDialog(env, 4);
-				}
-				case ACCEPT_QUEST: {
-					return sendQuestDialog(env, 1003);
-				}
-				case REFUSE_QUEST: {
-					return sendQuestDialog(env, 1004);
-				}
-				case STEP_TO_10: {
-					if (QuestService.startQuest(env)) {
-						changeQuestStep(env, 0, 11, false); // 11
-						choice = 0;
-						return sendQuestDialog(env, 1012);
-					} else {
+					case START_DIALOG: {
+						return sendQuestDialog(env, 4762);
+					}
+					case ASK_ACCEPTION: {
+						return sendQuestDialog(env, 4);
+					}
+					case ACCEPT_QUEST: {
+						return sendQuestDialog(env, 1003);
+					}
+					case REFUSE_QUEST: {
+						return sendQuestDialog(env, 1004);
+					}
+					case STEP_TO_10: {
+						if (QuestService.startQuest(env)) {
+							changeQuestStep(env, 0, 11, false); // 11
+							choice = 0;
+							return sendQuestDialog(env, 1012);
+						}
+						else {
+							return sendQuestSelectionDialog(env);
+						}
+					}
+					case STEP_TO_20: {
+						if (QuestService.startQuest(env)) {
+							changeQuestStep(env, 0, 21, false); // 21
+							choice = 1;
+							return sendQuestDialog(env, 1097);
+						}
+						else {
+							return sendQuestSelectionDialog(env);
+						}
+					}
+					case FINISH_DIALOG: {
 						return sendQuestSelectionDialog(env);
 					}
-				}
-				case STEP_TO_20: {
-					if (QuestService.startQuest(env)) {
-						changeQuestStep(env, 0, 21, false); // 21
-						choice = 1;
-						return sendQuestDialog(env, 1097);
-					} else {
-						return sendQuestSelectionDialog(env);
-					}
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			if (targetId == 798082) { // Bicorunerk
 				if (dialog == QuestDialog.FINISH_DIALOG) {
 					return sendQuestSelectionDialog(env);
-				} else if (dialog == QuestDialog.USE_OBJECT) {
+				}
+				else if (dialog == QuestDialog.USE_OBJECT) {
 					if (var == 0) {
 						return sendQuestDialog(env, 1003);
-					} else {
+					}
+					else {
 						return sendQuestSelectionDialog(env);
 					}
-				} else if (dialog == QuestDialog.STEP_TO_10) {
+				}
+				else if (dialog == QuestDialog.STEP_TO_10) {
 					changeQuestStep(env, 0, 11, false); // 11
 					choice = 0;
 					return sendQuestDialog(env, 1012);
-				} else if (dialog == QuestDialog.STEP_TO_20) {
+				}
+				else if (dialog == QuestDialog.STEP_TO_20) {
 					changeQuestStep(env, 0, 21, false); // 21
 					choice = 1;
 					return sendQuestDialog(env, 1097);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			int var = qs.getQuestVarById(0);
 			if (targetId == 798082) { // Bicorunerk
 				switch (dialog) {
-				case USE_OBJECT: {
-					if (var == 15) {
-						return sendQuestDialog(env, 1353);
-					} else if (var == 25) {
-						return sendQuestDialog(env, 1438);
+					case USE_OBJECT: {
+						if (var == 15) {
+							return sendQuestDialog(env, 1353);
+						}
+						else if (var == 25) {
+							return sendQuestDialog(env, 1438);
+						}
 					}
-				}
-				case SELECT_REWARD: {
-					return sendQuestDialog(env, 5 + choice);
-				}
-				default: {
-					return sendQuestEndDialog(env, choice);
-				}
+					case SELECT_REWARD: {
+						return sendQuestDialog(env, 5 + choice);
+					}
+					default: {
+						return sendQuestEndDialog(env, choice);
+					}
 				}
 			}
 		}
@@ -146,27 +155,30 @@ public class _2303DaevaWheresMyHerb extends QuestHandler {
 			int[] ettins = { 211304, 211297 };
 			if (var >= 11 && var < 15) {
 				return defaultOnKillEvent(env, daru, 10, 15); // 15
-			} else if (var == 15) {
+			}
+			else if (var == 15) {
 				switch (targetId) {
-				case 211298:
-				case 211305: {
-					qs.setQuestVar(15);
-					qs.setStatus(QuestStatus.REWARD); // reward
-					updateQuestStatus(env);
-					return true;
+					case 211298:
+					case 211305: {
+						qs.setQuestVar(15);
+						qs.setStatus(QuestStatus.REWARD); // reward
+						updateQuestStatus(env);
+						return true;
+					}
 				}
-				}
-			} else if (var >= 21 && var < 25) {
+			}
+			else if (var >= 21 && var < 25) {
 				return defaultOnKillEvent(env, ettins, 20, 25); // 25
-			} else if (var == 25) {
+			}
+			else if (var == 25) {
 				switch (targetId) {
-				case 211304:
-				case 211297: {
-					qs.setQuestVar(25);
-					qs.setStatus(QuestStatus.REWARD); // reward
-					updateQuestStatus(env);
-					return true;
-				}
+					case 211304:
+					case 211297: {
+						qs.setQuestVar(25);
+						qs.setStatus(QuestStatus.REWARD); // reward
+						updateQuestStatus(env);
+						return true;
+					}
 				}
 			}
 		}

@@ -40,7 +40,7 @@ public enum LegionHistoryType {
 
 	/**
 	 * Returns client-side id for this
-	 *
+	 * 
 	 * @return byte
 	 */
 	public byte getHistoryId() {

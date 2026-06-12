@@ -47,7 +47,7 @@ public class ChangeAllianceLeaderEvent extends ChangeLeaderEvent<PlayerAlliance>
 		Player oldLeader = team.getLeaderObject();
 		if (eventPlayer == null) {
 			Collection<Integer> viceCaptainIds = team.getViceCaptainIds();
-			for (Integer viceCaptainId : viceCaptainIds) {
+			for(Integer viceCaptainId : viceCaptainIds){
 				PlayerAllianceMember viceCaptain = team.getMember(viceCaptainId);
 				if (viceCaptain.isOnline()) {
 					changeLeaderTo(viceCaptain.getObject());
@@ -58,7 +58,8 @@ public class ChangeAllianceLeaderEvent extends ChangeLeaderEvent<PlayerAlliance>
 			if (team.isLeader(oldLeader)) {
 				team.applyOnMembers(this);
 			}
-		} else {
+		}
+		else {
 			changeLeaderTo(eventPlayer);
 		}
 		checkLeaderChanged(oldLeader);
@@ -76,9 +77,9 @@ public class ChangeAllianceLeaderEvent extends ChangeLeaderEvent<PlayerAlliance>
 			public boolean apply(Player member) {
 				PacketSendUtility.sendPacket(member, new SM_ALLIANCE_INFO(team));
 				if (!player.equals(member)) {
-					PacketSendUtility.sendPacket(member,
-							SM_SYSTEM_MESSAGE.STR_FORCE_HE_IS_NEW_LEADER(player.getName()));
-				} else {
+					PacketSendUtility.sendPacket(member, SM_SYSTEM_MESSAGE.STR_FORCE_HE_IS_NEW_LEADER(player.getName()));
+				}
+				else {
 					PacketSendUtility.sendPacket(member, SM_SYSTEM_MESSAGE.STR_FORCE_YOU_BECOME_NEW_LEADER);
 				}
 				return true;

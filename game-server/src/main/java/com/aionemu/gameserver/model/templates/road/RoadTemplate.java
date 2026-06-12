@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  *
  *  aion-lightning is free software: you can redistribute it and/or modify
@@ -82,7 +82,7 @@ public class RoadTemplate {
 
 	public RoadTemplate() {
 
-	}
+	};
 
 	public RoadTemplate(String name, int mapId, Point3D center, Point3D p1, Point3D p2) {
 		this.name = name;

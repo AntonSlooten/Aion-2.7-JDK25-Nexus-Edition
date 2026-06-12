@@ -10,25 +10,24 @@ import com.aionemu.gameserver.model.items.storage.Storage;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /**
- *
+ * 
  * @author Ferosia
  *
  */
 
 public class CmdDelItem extends BaseCommand {
-
+	
 	public static Logger log = LoggerFactory.getLogger(CmdDelItem.class);
-
-	@Override
+	
 	public void execute(Player player, String... params) {
 		if (params.length != 1) {
 			showHelp(player);
 			return;
 		}
-		String[] itemLink = params[0].split(";");
-		String[] itemIdArray = itemLink[0].split(":");
+		String [] itemLink = params[0].split(";");
+		String [] itemIdArray = itemLink[0].split(":");
 		int itemId = ParseInteger(itemIdArray[1]);
-
+		
 		if (player == null) {
 			PacketSendUtility.sendMessage(player, "Player isn't online.");
 			return;
@@ -38,8 +37,7 @@ public class CmdDelItem extends BaseCommand {
 
 		long itemsInBag = bag.getItemCountByItemId(itemId);
 		if (itemsInBag == 0) {
-			PacketSendUtility.sendMessage(player,
-					"[DelItem] L'objet " + params[0] + " n'a pas \u00E9t\u00E9 trouv\u00E9 dans votre inventaire.");
+			PacketSendUtility.sendMessage(player, "[DelItem] L'objet " + params[0] + " n'a pas \u00E9t\u00E9 trouv\u00E9 dans votre inventaire.");
 			return;
 		}
 
@@ -47,7 +45,6 @@ public class CmdDelItem extends BaseCommand {
 		int itemCount = (int) item.getItemCount();
 		bag.decreaseByObjectId(item.getObjectId(), itemCount);
 
-		PacketSendUtility.sendMessage(player,
-				"[DelItem] L'objet " + params[0] + " a bien \u00E9t\u00E9 supprim\u00E9 de votre inventaire.");
-	}
+		PacketSendUtility.sendMessage(player, "[DelItem] L'objet " + params[0] + " a bien \u00E9t\u00E9 supprim\u00E9 de votre inventaire.");
+	}	
 }

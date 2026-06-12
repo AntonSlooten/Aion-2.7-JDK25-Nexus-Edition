@@ -23,7 +23,7 @@ public class TeleLocationData {
 	private List<TelelocationTemplate> tlist;
 
 	/** A map containing all teleport location templates */
-	private TIntObjectHashMap<TelelocationTemplate> loctlistData = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<TelelocationTemplate> loctlistData = new TIntObjectHashMap<TelelocationTemplate>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (TelelocationTemplate loc : tlist) {

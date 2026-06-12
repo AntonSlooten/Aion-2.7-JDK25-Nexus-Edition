@@ -83,107 +83,105 @@ public class _1071SpeakingBalaur extends QuestHandler {
 					return sendQuestEndDialog(env);
 			}
 			return false;
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 278532) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-			case STEP_TO_1:
-				if (var == 0) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+				case STEP_TO_1:
+					if (var == 0) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
 			}
-		} else if (targetId == 798026) {
+		}
+		else if (targetId == 798026) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-				else if (var == 4)
-					return sendQuestDialog(env, 2375);
-				else if (var == 6 || var == 8)
-					return sendQuestDialog(env, 3057);
-			case STEP_TO_5:
-				if (var == 4) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					removeQuestItem(env, 182202002, 1);
-					giveQuestItem(env, 182202001, 1);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
-			case STEP_TO_7:
-				if (var == 6 || var == 8) {
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+					else if (var == 4)
+						return sendQuestDialog(env, 2375);
+					else if (var == 6 || var == 8)
+						return sendQuestDialog(env, 3057);
+				case STEP_TO_5:
+					if (var == 4) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						removeQuestItem(env, 182202002, 1);
+						giveQuestItem(env, 182202001, 1);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
+				case STEP_TO_7:
+					if (var == 6 || var == 8) {
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
 
-			case STEP_TO_11:
-				if (var == 1 && player.getInventory().tryDecreaseKinah(20000)) {
-					if (!giveQuestItem(env, 182202001, 1))
+				case STEP_TO_11:
+					if (var == 1 && player.getInventory().tryDecreaseKinah(20000)) {
+						if (!giveQuestItem(env, 182202001, 1))
+							return true;
+						qs.setQuestVar(7);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 						return true;
-					qs.setQuestVar(7);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				} else
-					return sendQuestDialog(env, 1355);
-			case STEP_TO_12:
-				if (var == 1) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
-			}
-		} else if (targetId == 798025) {
-			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 2)
-					return sendQuestDialog(env, 1693);
-			case STEP_TO_3:
-				if (var == 2) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
-			}
-		} else if (targetId == 279019) {
-			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 3)
-					return sendQuestDialog(env, 2034);
-				return false;
-			case STEP_TO_4:
-				if (var == 3) {
-					if (!giveQuestItem(env, 182202002, 1))
+					}
+					else
+						return sendQuestDialog(env, 1355);
+				case STEP_TO_12:
+					if (var == 1) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 						return true;
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-				return false;
+					}
+					return false;
+			}
+		}
+		else if (targetId == 798025) {
+			switch (env.getDialog()) {
+				case START_DIALOG:
+					if (var == 2)
+						return sendQuestDialog(env, 1693);
+				case STEP_TO_3:
+					if (var == 2) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
+			}
+		}
+		else if (targetId == 279019) {
+			switch (env.getDialog()) {
+				case START_DIALOG:
+					if (var == 3)
+						return sendQuestDialog(env, 2034);
+					return false;
+				case STEP_TO_4:
+					if (var == 3) {
+						if (!giveQuestItem(env, 182202002, 1))
+							return true;
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+					return false;
 			}
 		}
 
@@ -203,7 +201,7 @@ public class _1071SpeakingBalaur extends QuestHandler {
 			return HandlerResult.FAILED;
 
 		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 1, 1, 0), true);
+			new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 1, 1, 0), true);
 		removeQuestItem(env, 182202001, 1);
 		qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 		updateQuestStatus(env);

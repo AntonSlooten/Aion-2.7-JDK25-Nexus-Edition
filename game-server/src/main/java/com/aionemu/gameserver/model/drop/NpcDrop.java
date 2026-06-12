@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  *
  *  aion-lightning is free software: you can redistribute it and/or modify
@@ -36,41 +36,41 @@ import com.aionemu.gameserver.model.Race;
  */
 @XmlRootElement(name = "npc_drop")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "npcDrop", propOrder = { "dropGroup" })
-public class NpcDrop implements DropCalculator {
+@XmlType(name = "npcDrop", propOrder = {
+    "dropGroup"
+})
+public class NpcDrop implements DropCalculator{
 
-	@XmlElement(name = "drop_group")
-	protected List<DropGroup> dropGroup;
-	@XmlAttribute(name = "npc_id", required = true)
-	protected int npcId;
+    @XmlElement(name = "drop_group")
+    protected List<DropGroup> dropGroup;
+    @XmlAttribute(name = "npc_id", required = true)
+    protected int npcId;
 
-	public List<DropGroup> getDropGroup() {
-		if (dropGroup == null) {
-			return Collections.emptyList();
-		}
-		return this.dropGroup;
-	}
+    public List<DropGroup> getDropGroup() {
+    	if (dropGroup == null)
+    		return Collections.emptyList();
+    	return this.dropGroup;
+    }
 
-	/**
-	 * Gets the value of the npcId property.
-	 * 
-	 */
-	public int getNpcId() {
-		return npcId;
-	}
-
-	@Override
-	public int dropCalculator(Set<DropItem> result, int index, float dropModifier, Race race) {
-		if (dropGroup == null || dropGroup.isEmpty()) {
-			return index;
-		}
-		for (DropGroup dg : dropGroup) {
-			if (dg.getRace() == Race.PC_ALL || dg.getRace() == race) {
-				index = dg.dropCalculator(result, index, dropModifier, race, npcId);
-			}
-		}
-		return index;
-	}
+    /**
+     * Gets the value of the npcId property.
+     * 
+     */
+    public int getNpcId() {
+        return npcId;
+    }
+    
+    @Override
+    public int dropCalculator(Set<DropItem> result, int index, float dropModifier, Race race){
+    	if (dropGroup == null || dropGroup.isEmpty())
+    		return index;
+    	for (DropGroup dg : dropGroup){
+    		if (dg.getRace() == Race.PC_ALL || dg.getRace() == race){
+    			index = dg.dropCalculator(result, index, dropModifier, race, npcId);
+    		}
+    	}
+      return index;
+    }
 
 	@Override
 	public int dropCalculator(Set<DropItem> result, int index, float dropModifier, Race race, int npcId) {

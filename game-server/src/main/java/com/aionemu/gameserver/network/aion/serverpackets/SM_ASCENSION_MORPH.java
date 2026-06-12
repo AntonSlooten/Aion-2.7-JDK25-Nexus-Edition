@@ -16,12 +16,13 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * ascension quest's morph
- *
+ * 
  * @author wylovech
  */
 public class SM_ASCENSION_MORPH extends AionServerPacket {

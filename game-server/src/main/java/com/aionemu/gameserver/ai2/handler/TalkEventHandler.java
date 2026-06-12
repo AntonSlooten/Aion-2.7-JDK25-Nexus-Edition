@@ -40,9 +40,8 @@ public class TalkEventHandler {
 
 		if (creature instanceof Player) {
 			Player player = (Player) creature;
-			if (QuestEngine.getInstance().onDialog(new QuestEnv(npcAI.getOwner(), player, 0, -1))) {
+			if (QuestEngine.getInstance().onDialog(new QuestEnv(npcAI.getOwner(), player, 0, -1)))
 				return;
-			}
 			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(npcAI.getOwner().getObjectId(), 10));
 		}
 
@@ -71,7 +70,7 @@ public class TalkEventHandler {
 
 	/**
 	 * No SM_LOOKATOBJECT broadcast
-	 *
+	 * 
 	 * @param npcAI
 	 * @param creature
 	 */

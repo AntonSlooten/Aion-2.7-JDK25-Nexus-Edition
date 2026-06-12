@@ -34,13 +34,11 @@ public class AI2HandlerClassListener implements ClassListener {
 	@Override
 	public void postLoad(Class<?>[] classes) {
 		for (Class<?> c : classes) {
-			if (log.isDebugEnabled()) {
+			if (log.isDebugEnabled())
 				log.debug("Load class " + c.getName());
-			}
 
-			if (!isValidClass(c)) {
+			if (!isValidClass(c))
 				continue;
-			}
 
 			if (ClassUtils.isSubclass(c, AbstractAI.class)) {
 				Class<? extends AbstractAI> tmp = (Class<? extends AbstractAI>) c;
@@ -54,18 +52,19 @@ public class AI2HandlerClassListener implements ClassListener {
 	@Override
 	public void preUnload(Class<?>[] classes) {
 		if (log.isDebugEnabled()) {
-			for (Class<?> c : classes) {
+			for (Class<?> c : classes)
 				log.debug("Unload class " + c.getName());
-			}
 		}
 	}
 
 	public boolean isValidClass(Class<?> clazz) {
 		final int modifiers = clazz.getModifiers();
 
-		if (Modifier.isAbstract(modifiers) || Modifier.isInterface(modifiers) || !Modifier.isPublic(modifiers)) {
+		if (Modifier.isAbstract(modifiers) || Modifier.isInterface(modifiers))
 			return false;
-		}
+
+		if (!Modifier.isPublic(modifiers))
+			return false;
 
 		return true;
 	}

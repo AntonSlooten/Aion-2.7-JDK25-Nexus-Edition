@@ -33,9 +33,8 @@ public class FpAttackEffect extends AbstractOverTimeEffect {
 	@Override
 	public void calculate(Effect effect) {
 		// Only players have FP
-		if (effect.getEffected() instanceof Player) {
+		if (effect.getEffected() instanceof Player)
 			super.calculate(effect, null, null);
-		}
 	}
 
 	@Override
@@ -44,9 +43,8 @@ public class FpAttackEffect extends AbstractOverTimeEffect {
 		int maxFP = effected.getLifeStats().getMaxFp();
 		int newValue = value;
 		// Support for values in percentage
-		if (percent) {
-			newValue = (maxFP * value) / 100;
-		}
+		if (percent)
+			newValue = (int) ((maxFP * value) / 100);
 		effected.getLifeStats().reduceFp(newValue);
 	}
 }

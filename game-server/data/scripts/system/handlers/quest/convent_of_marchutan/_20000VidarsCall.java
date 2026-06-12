@@ -78,18 +78,18 @@ public class _20000VidarsCall extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 204052) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-				case SET_REWARD:
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+					case SET_REWARD:
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798800) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 10002);
@@ -97,7 +97,7 @@ public class _20000VidarsCall extends QuestHandler {
 					int[] quests = { 20001, 20026, 20020, 20021, 20022, 20023, 20024, 20025 };
 					for (int quest : quests) {
 						QuestEngine.getInstance().onEnterZoneMissionEnd(
-								new QuestEnv(env.getVisibleObject(), env.getPlayer(), quest, env.getDialogId()));
+							new QuestEnv(env.getVisibleObject(), env.getPlayer(), quest, env.getDialogId()));
 					}
 					return sendQuestEndDialog(env);
 				}

@@ -66,14 +66,16 @@ public class _3093RecetteSecretedeQuenelles extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs != null && qs.getStatus() == QuestStatus.REWARD) // Reward
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.REWARD) // Reward
 		{
 			if (env.getDialog() == QuestDialog.START_DIALOG)
 				return sendQuestDialog(env, 2375);
 			else if (env.getDialogId() == 1009) {
 				removeQuestItem(env, 182208052, 1);
 				return sendQuestEndDialog(env);
-			} else
+			}
+			else
 				return sendQuestEndDialog(env);
 		}
 
@@ -86,10 +88,10 @@ public class _3093RecetteSecretedeQuenelles extends QuestHandler {
 				else if (env.getDialog() == QuestDialog.STEP_TO_1) {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 
@@ -103,10 +105,10 @@ public class _3093RecetteSecretedeQuenelles extends QuestHandler {
 				else if (env.getDialog() == QuestDialog.STEP_TO_2) {
 					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -121,10 +123,10 @@ public class _3093RecetteSecretedeQuenelles extends QuestHandler {
 						;
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}

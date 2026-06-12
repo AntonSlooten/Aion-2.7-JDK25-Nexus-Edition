@@ -32,18 +32,17 @@ import com.aionemu.gameserver.model.stats.container.StatEnum;
 import com.aionemu.gameserver.skillengine.model.Effect;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
+
 /**
  * @author MrPoke
  */
 public class CmdStat extends BaseCommand {
 
 	private static final Logger log = LoggerFactory.getLogger(CmdStat.class);
-
 	/**
 	 * @param alias
 	 */
-
-	@Override
+	
 	public void execute(Player admin, String... params) {
 		if (params.length >= 1) {
 			VisibleObject target = admin.getTarget();
@@ -55,12 +54,13 @@ public class CmdStat extends BaseCommand {
 				Creature creature = (Creature) target;
 
 				TreeSet<IStatFunction> stats = creature.getGameStats().getStatsByStatEnum(StatEnum.valueOf(params[0]));
-
+				
 				if (params.length == 1) {
 					for (IStatFunction stat : stats) {
 						PacketSendUtility.sendMessage(admin, stat.toString());
 					}
-				} else if ("details".equals(params[1])) {
+				}
+				else if ("details".equals(params[1])) {
 					for (IStatFunction stat : stats) {
 						String details = collectDetails(stat);
 						PacketSendUtility.sendMessage(admin, details);
@@ -74,12 +74,12 @@ public class CmdStat extends BaseCommand {
 	private String collectDetails(IStatFunction stat) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(stat.toString() + "\n");
-		if (stat instanceof StatFunctionProxy) {
+		if(stat instanceof StatFunctionProxy){
 			StatFunctionProxy proxy = (StatFunctionProxy) stat;
 			sb.append(" -- " + proxy.getProxiedFunction().toString());
 		}
 		StatOwner owner = stat.getOwner();
-		if (owner instanceof Effect) {
+		if(owner instanceof Effect){
 			Effect effect = (Effect) owner;
 			sb.append("\n -- skillId: " + effect.getSkillId());
 			sb.append("\n -- skillName: " + effect.getSkillName());

@@ -8,11 +8,13 @@ import com.aionemu.gameserver.services.teleport.TeleportService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.World;
 
-public class CmdMoveToMeAll extends BaseCommand {
 
-	@Override
+public class CmdMoveToMeAll extends BaseCommand {
+	
+
+
 	public void execute(Player admin, String... params) {
-		if (params.length < 1) {
+		if (params.length < 1 ) {
 			showHelp(admin);
 			return;
 		}
@@ -21,7 +23,7 @@ public class CmdMoveToMeAll extends BaseCommand {
 			for (final Player p : World.getInstance().getAllPlayers()) {
 				if (!p.equals(admin)) {
 					TeleportService.teleportTo(p, admin.getWorldId(), admin.getInstanceId(), admin.getX(), admin.getY(),
-							admin.getZ(), admin.getHeading(), 0, true);
+						admin.getZ(), admin.getHeading(), 0, true);
 					PacketSendUtility.sendPacket(p, new SM_PLAYER_SPAWN(p));
 
 					PacketSendUtility.sendMessage(admin, "Player " + p.getName() + " teleported.");
@@ -34,8 +36,8 @@ public class CmdMoveToMeAll extends BaseCommand {
 			for (final Player p : World.getInstance().getAllPlayers()) {
 				if (!p.equals(admin)) {
 					if (p.getRace() == Race.ELYOS) {
-						TeleportService.teleportTo(p, admin.getWorldId(), admin.getInstanceId(), admin.getX(),
-								admin.getY(), admin.getZ(), admin.getHeading(), 0, true);
+						TeleportService.teleportTo(p, admin.getWorldId(), admin.getInstanceId(), admin.getX(), admin.getY(),
+							admin.getZ(), admin.getHeading(), 0, true);
 						PacketSendUtility.sendPacket(p, new SM_PLAYER_SPAWN(p));
 
 						PacketSendUtility.sendMessage(admin, "Player " + p.getName() + " teleported.");
@@ -49,8 +51,8 @@ public class CmdMoveToMeAll extends BaseCommand {
 			for (final Player p : World.getInstance().getAllPlayers()) {
 				if (!p.equals(admin)) {
 					if (p.getRace() == Race.ASMODIANS) {
-						TeleportService.teleportTo(p, admin.getWorldId(), admin.getInstanceId(), admin.getX(),
-								admin.getY(), admin.getZ(), admin.getHeading(), 3000, true);
+						TeleportService.teleportTo(p, admin.getWorldId(), admin.getInstanceId(), admin.getX(), admin.getY(),
+							admin.getZ(), admin.getHeading(), 3000, true);
 						PacketSendUtility.sendPacket(p, new SM_PLAYER_SPAWN(p));
 
 						PacketSendUtility.sendMessage(admin, "Player " + p.getName() + " teleported.");
@@ -59,6 +61,6 @@ public class CmdMoveToMeAll extends BaseCommand {
 				}
 			}
 		}
-
+	
 	}
 }

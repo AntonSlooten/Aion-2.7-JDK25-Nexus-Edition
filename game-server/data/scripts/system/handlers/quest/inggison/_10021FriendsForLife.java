@@ -31,15 +31,12 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.WorldMapInstance;
 
 /**
- * Talk with Brigade General Versetti (798927). Talk with Tialla (798954). Talk
- * with Lothas (799022). Destroy Ruthless Brohums (34): Woodland Brohum
- * (215522), Woodland Brohie (215520), Thicket Brohum (215523), Thicket Brohie
- * (215521). Talk with Lothas. Use a Taloc Fruit (182206627) to maximize your
- * power. Use Taloc's Tears (182206628) to purify the inside of Taloc (20)
- * Vanquish Celestius (215488) to obtain its heart then take it to Lothas.
- * Report back to Tialla. Report back to Brigade General Versetti. Talk with
- * Daminu (730008). Talk with Lodas (730019). Talk with Trajanus (730024). Talk
- * with Lothas.
+ * Talk with Brigade General Versetti (798927). Talk with Tialla (798954). Talk with Lothas (799022). Destroy Ruthless
+ * Brohums (34): Woodland Brohum (215522), Woodland Brohie (215520), Thicket Brohum (215523), Thicket Brohie (215521).
+ * Talk with Lothas. Use a Taloc Fruit (182206627) to maximize your power. Use Taloc's Tears (182206628) to purify the
+ * inside of Taloc (20) Vanquish Celestius (215488) to obtain its heart then take it to Lothas. Report back to Tialla.
+ * Report back to Brigade General Versetti. Talk with Daminu (730008). Talk with Lodas (730019). Talk with Trajanus
+ * (730024). Talk with Lothas.
  * 
  * @author vlog
  */
@@ -81,87 +78,100 @@ public class _10021FriendsForLife extends QuestHandler {
 		int targetId = env.getTargetId();
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798927: { // Versetti
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
-					}
-				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-				break;
-			}
-			case 798954: { // Tialla
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					} else if (var == 8) {
-						return sendQuestDialog(env, 3057);
-					}
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				case SET_REWARD: {
-					return defaultCloseDialog(env, 8, 8, true, false); // reward
-				}
-				}
-				break;
-			}
-			case 799022: { // Lothas
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 2) {
-						return sendQuestDialog(env, 1693);
-					} else if (var == 4) {
-						return sendQuestDialog(env, 2375);
-					} else if (var == 7) {
-						return sendQuestDialog(env, 2716);
-					}
-				}
-				case STEP_TO_3: {
-					return defaultCloseDialog(env, 2, 3); // 3
-				}
-				case STEP_TO_5: {
-					if (var == 4) {
-						if (player.isInGroup2()) {
-							return sendQuestDialog(env, 2546);
-						} else {
-							if (giveQuestItem(env, 182206627, 1) && giveQuestItem(env, 182206628, 1)) {
-								WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(300190000);
-								InstanceService.registerPlayerWithInstance(newInstance, player);
-								TeleportService.teleportTo(player, 300190000, newInstance.getInstanceId(), 202.26694f,
-										226.0532f, 1098.236f, 3000, true);
-								changeQuestStep(env, 4, 5, false); // 5
-								return closeDialogWindow(env);
-							} else {
-								PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_FULL_INVENTORY);
-								return sendQuestSelectionDialog(env);
+				case 798927: { // Versetti
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
 							}
 						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+					default:
+						break;
 					}
+					break;
 				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 7, 8, false, 10000, 10001); // 8
+				case 798954: { // Tialla
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+							else if (var == 8) {
+								return sendQuestDialog(env, 3057);
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+						case SET_REWARD: {
+							return defaultCloseDialog(env, 8, 8, true, false); // reward
+						}
+					default:
+						break;
+					}
+					break;
 				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
+				case 799022: { // Lothas
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 2) {
+								return sendQuestDialog(env, 1693);
+							}
+							else if (var == 4) {
+								return sendQuestDialog(env, 2375);
+							}
+							else if (var == 7) {
+								return sendQuestDialog(env, 2716);
+							}
+						}
+						case STEP_TO_3: {
+							return defaultCloseDialog(env, 2, 3); // 3
+						}
+						case STEP_TO_5: {
+							if (var == 4) {
+								if (player.isInGroup2()) {
+									return sendQuestDialog(env, 2546);
+								}
+								else {
+									if (giveQuestItem(env, 182206627, 1) && giveQuestItem(env, 182206628, 1)) {
+										WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(300190000);
+										InstanceService.registerPlayerWithInstance(newInstance, player);
+										TeleportService.teleportTo(player, 300190000, newInstance.getInstanceId(), 202.26694f, 226.0532f,
+											1098.236f, 3000, true);
+										changeQuestStep(env, 4, 5, false); // 5
+										return closeDialogWindow(env);
+									}
+									else {
+										PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_FULL_INVENTORY);
+										return sendQuestSelectionDialog(env);
+									}
+								}
+							}
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 7, 8, false, 10000, 10001); // 8
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
+					default:
+						break;
+					}
+					break;
 				}
-				}
-				break;
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798927) { // Versetti
 				if (dialog == QuestDialog.USE_OBJECT) {
 					removeQuestItem(env, 182206627, 1);
 					removeQuestItem(env, 182206628, 1);
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
@@ -182,7 +192,8 @@ public class _10021FriendsForLife extends QuestHandler {
 				int var1 = qs.getQuestVarById(1);
 				if (var1 >= 0 && var1 < 33) {
 					return defaultOnKillEvent(env, mobs, var1, var1 + 1, 1); // 1: 1 - 33
-				} else if (var1 == 33) {
+				}
+				else if (var1 == 33) {
 					qs.setQuestVar(4); // 4
 					updateQuestStatus(env);
 					return true;
@@ -205,16 +216,18 @@ public class _10021FriendsForLife extends QuestHandler {
 						changeQuestStep(env, 5, 6, false); // 6
 						return HandlerResult.SUCCESS; // TODO: Should not remove, but use the skill
 					}
-				} else if (itemId == 182206628) {
+				}
+				else if (itemId == 182206628) {
 					if (var == 6) {
 						int var2 = qs.getQuestVarById(2);
 						if (var2 >= 0 && var2 < 19) {
 							changeQuestStep(env, var2, var2 + 1, false, 2); // 2: 1 - 19
-							return HandlerResult.SUCCESS;
-						} else if (var2 == 19) {
+							return  HandlerResult.SUCCESS;
+						}
+						else if (var2 == 19) {
 							qs.setQuestVar(7); // 7
 							updateQuestStatus(env);
-							return HandlerResult.SUCCESS;
+							return  HandlerResult.SUCCESS;
 						}
 					}
 				}

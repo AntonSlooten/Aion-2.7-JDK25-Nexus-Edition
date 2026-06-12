@@ -57,40 +57,41 @@ public class _2005TeachingaLesson extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203540: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 1)
-						return sendQuestDialog(env, 1352);
-					break;
-				case SELECT_ACTION_1012:
-					playQuestMovie(env, 54);
-					break;
-				case STEP_TO_1:
-					if (var == 0) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
+				case 203540: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+							else if (var == 1)
+								return sendQuestDialog(env, 1352);
+							break;
+						case SELECT_ACTION_1012:
+							playQuestMovie(env, 54);
+							break;
+						case STEP_TO_1:
+							if (var == 0) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
+							break;
+						case CHECK_COLLECTED_ITEMS:
+							if (var == 1) {
+								if (QuestService.collectItemCheck(env, true)) {
+									qs.setStatus(QuestStatus.REWARD);
+									updateQuestStatus(env);
+									return sendQuestDialog(env, 5);
+								}
+								else
+									return sendQuestDialog(env, 1693);
+							}
+							break;
 					}
-					break;
-				case CHECK_COLLECTED_ITEMS:
-					if (var == 1) {
-						if (QuestService.collectItemCheck(env, true)) {
-							qs.setStatus(QuestStatus.REWARD);
-							updateQuestStatus(env);
-							return sendQuestDialog(env, 5);
-						} else
-							return sendQuestDialog(env, 1693);
-					}
-					break;
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203540)
 				return sendQuestEndDialog(env);
 		}

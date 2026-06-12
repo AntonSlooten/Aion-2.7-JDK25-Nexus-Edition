@@ -28,7 +28,7 @@ import com.aionemu.gameserver.network.aion.AionServerPacket;
  *
  */
 public class SM_MOTION extends AionServerPacket {
-
+	
 	byte action;
 	short motionId;
 	int remainingTime;
@@ -37,9 +37,9 @@ public class SM_MOTION extends AionServerPacket {
 	Map<Integer, Motion> activeMotions;
 
 	Collection<Motion> motions;
-
+	
 	byte type;
-
+	
 	/**
 	 * @param motions
 	 */
@@ -57,7 +57,7 @@ public class SM_MOTION extends AionServerPacket {
 		this.motionId = motionId;
 		this.remainingTime = remainingTime;
 	}
-
+	
 	/**
 	 * @param motionId
 	 * @param remainingTime
@@ -90,36 +90,35 @@ public class SM_MOTION extends AionServerPacket {
 	@Override
 	protected void writeImpl(AionConnection con) {
 		writeC(action);
-		switch (action) {
-		case 1:
-			writeH(motions.size());
-			for (Motion motion : motions) {
-				writeH(motion.getId());
-				writeD(motion.getRemainingTime());
-				writeC(motion.isActive() ? 1 : 0);
-			}
-			break;
-		case 2: // Add motion
-			writeH(motionId);
-			writeD(remainingTime);
-			break;
-		case 5: // Set motion
-			writeH(motionId);
-			writeC(type);
-			break;
-		case 6: // remove
-			writeH(motionId);
-			break;
-		case 7: // Player motions
-			writeD(playerId);
-			for (int i = 1; i < 6; i++) {
-				Motion motion = activeMotions.get(i);
-				if (motion == null) {
-					writeH(0);
-				} else {
+		switch(action){
+			case 1:
+				writeH(motions.size());
+				for (Motion motion : motions){
 					writeH(motion.getId());
+					writeD(motion.getRemainingTime());
+					writeC(motion.isActive()? 1: 0);
 				}
-			}
+				break;
+			case 2: //Add motion
+				writeH(motionId);
+				writeD(remainingTime);
+				break;
+			case 5: //Set motion
+				writeH(motionId);
+				writeC(type);
+				break;
+			case 6: //remove
+				writeH(motionId);
+				break;
+			case 7: //Player motions
+				writeD(playerId);
+				for (int i=1; i<6; i++){
+					Motion motion = activeMotions.get(i);
+					if (motion == null)
+						writeH(0);
+					else
+						writeH(motion.getId());
+				}
 		}
 	}
 }

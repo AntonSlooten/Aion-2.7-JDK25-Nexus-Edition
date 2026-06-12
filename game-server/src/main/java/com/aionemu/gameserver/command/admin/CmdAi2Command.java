@@ -19,12 +19,13 @@ import com.aionemu.gameserver.world.World;
 
 /*syntax //ai2 <set|event|event2|info|log|print|createlog|eventlog|movelog>*/
 
+
 /**
  * @author ATracer
  */
 public class CmdAi2Command extends BaseCommand {
 
-	@Override
+
 	public void execute(Player admin, String... params) {
 		/**
 		 * Non target commands
@@ -92,12 +93,14 @@ public class CmdAi2Command extends BaseCommand {
 		if (params[0].equalsIgnoreCase("set")) {
 			String aiName = params[1];
 			AI2Engine.getInstance().setupAI(aiName, npc);
-		} else if (params[0].equalsIgnoreCase("event")) {
+		}
+		else if (params[0].equalsIgnoreCase("event")) {
 			AIEventType eventType = AIEventType.valueOf(params[1].toUpperCase());
 			if (eventType != null) {
 				npc.getAi2().onGeneralEvent(eventType);
 			}
-		} else if (params[0].equalsIgnoreCase("event2")) {
+		}
+		else if (params[0].equalsIgnoreCase("event2")) {
 			AIEventType eventType = AIEventType.valueOf(params[1].toUpperCase());
 			Creature creature = (Creature) World.getInstance().findVisibleObject(Integer.valueOf(params[2]));
 			if (eventType != null) {

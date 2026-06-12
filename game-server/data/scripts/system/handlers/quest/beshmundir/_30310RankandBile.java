@@ -56,7 +56,7 @@ public class _30310RankandBile extends QuestHandler {
 					return sendQuestStartDialog(env);
 			}
 		}
-
+		
 		if (qs == null)
 			return false;
 
@@ -70,20 +70,22 @@ public class _30310RankandBile extends QuestHandler {
 						removeQuestItem(env, 182209713, 40);
 						changeQuestStep(env, 0, 0, true, 0);
 						return sendQuestDialog(env, 10000);
-					} else
+					}
+					else
 						return sendQuestDialog(env, 10001);
 				}
 				return false;
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799322) {
 				switch (dialog) {
-				case USE_OBJECT:
-					return sendQuestDialog(env, 10002);
-				case SELECT_REWARD:
-					return sendQuestDialog(env, 5);
-				default:
-					return sendQuestEndDialog(env);
+					case USE_OBJECT:
+						return sendQuestDialog(env, 10002);
+					case SELECT_REWARD:
+						return sendQuestDialog(env, 5);
+					default:
+						return sendQuestEndDialog(env);
 				}
 			}
 		}

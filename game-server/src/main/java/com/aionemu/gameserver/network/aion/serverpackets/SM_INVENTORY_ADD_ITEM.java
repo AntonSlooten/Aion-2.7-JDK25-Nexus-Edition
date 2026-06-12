@@ -43,14 +43,13 @@ public class SM_INVENTORY_ADD_ITEM extends AionServerPacket {
 
 	@Override
 	protected void writeImpl(AionConnection con) {
-		// TODO! why its not use ItemAddType!?
+		//TODO! why its not use ItemAddType!?
 		// 0x1C after buy, 0x35 after quest, 0x40 questionnaire;
 		int mask = (size == 1 && items.get(0).getEquipmentSlot() != ItemStorage.FIRST_AVAILABLE_SLOT) ? 0x07 : 0x19;
 		writeH(mask); //
 		writeH(size); // number of entries
-		for (Item item : items) {
+		for (Item item : items)
 			writeItemInfo(item);
-		}
 	}
 
 	private void writeItemInfo(Item item) {
@@ -64,6 +63,6 @@ public class SM_INVENTORY_ADD_ITEM extends AionServerPacket {
 		itemInfoBlob.writeMe(getBuf());
 
 		writeH(item.isEquipped() ? 255 : item.getEquipmentSlot()); // FF FF equipment
-		writeC(0x00);// isEquiped?
+		writeC(0x00);//isEquiped?
 	}
 }

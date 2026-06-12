@@ -37,7 +37,7 @@ public class SiegeTeleporterAI2 extends GeneralNpcAI2 {
 		canTeleport(false);
 		super.handleDied();
 	}
-
+	
 	@Override
 	protected void handleDespawned() {
 		canTeleport(false);

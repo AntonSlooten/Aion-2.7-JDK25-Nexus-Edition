@@ -57,35 +57,34 @@ public class _2902DispatchtoAltgard extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204191: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1352);
-					break;
-				case STEP_TO_1:
-					if (var == 0) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						TeleportService.teleportTo(player, 220030000, player.getInstanceId(), 1748f, 1807f, 255f, 3000,
-								true);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-						return true;
+				case 204191: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1352);
+							break;
+						case STEP_TO_1:
+							if (var == 0) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								TeleportService.teleportTo(player, 220030000, player.getInstanceId(), 1748f, 1807f, 255f, 3000, true);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+								return true;
+							}
 					}
 				}
-			}
-			case 203559:
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1) {
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 2375);
+				case 203559:
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 1) {
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 2375);
+							}
 					}
-				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203559) {
 				return sendQuestEndDialog(env);
 			}

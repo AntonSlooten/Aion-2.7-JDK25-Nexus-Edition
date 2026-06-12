@@ -25,7 +25,7 @@ public class GSConfig {
 
 	/**
 	 * Time Zone name (used for event config atm)
-	 */
+	 */	
 	@Property(key = "gameserver.timezone", defaultValue = "")
 	public static String TIME_ZONE_ID = Calendar.getInstance().getTimeZone().getID();
 
@@ -44,13 +44,13 @@ public class GSConfig {
 	/**
 	 * Server MOTD & Display revision
 	 */
-
+	
 	@Property(key = "gameserver.rev", defaultValue = "-1")
 	public static int SERVER_REV;
-
+	
 	@Property(key = "gameserver.motd", defaultValue = "")
 	public static String SERVER_MOTD;
-
+	
 	@Property(key = "gameserver.revisiondisplay.enable", defaultValue = "false")
 	public static boolean SERVER_MOTD_DISPLAYREV;
 
@@ -155,7 +155,7 @@ public class GSConfig {
 	 */
 	@Property(key = "gameserver.security.broker.prebuy", defaultValue = "true")
 	public static boolean BROKER_PREBUY_CHECK;
-
+	
 	@Property(key = "gameserver.abyssranking.small.cache", defaultValue = "false")
 	public static boolean ABYSSRANKING_SMALL_CACHE;
 

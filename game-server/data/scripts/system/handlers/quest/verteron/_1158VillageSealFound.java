@@ -78,7 +78,8 @@ public class _1158VillageSealFound extends QuestHandler {
 					return sendQuestEndDialog(env);
 			}
 			return false;
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 700003 && var == 0) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT)
 					return sendQuestDialog(env, 1352);
@@ -88,12 +89,12 @@ public class _1158VillageSealFound extends QuestHandler {
 					qs.setQuestVarById(0, 1);
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else if (env.getDialogId() == 1353) {
+				}
+				else if (env.getDialogId() == 1353) {
 					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
-					return sendQuestDialog(env, 1353);
+						return sendQuestDialog(env, 1353);
 				}
 			}
 		}

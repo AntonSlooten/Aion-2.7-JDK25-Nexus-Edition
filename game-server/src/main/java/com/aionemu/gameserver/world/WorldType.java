@@ -20,5 +20,10 @@ package com.aionemu.gameserver.world;
  * @author ATracer
  */
 public enum WorldType {
-	ASMODAE, ELYSEA, ABYSS, BALAUREA, PRISON, NONE
+	ASMODAE,
+	ELYSEA,
+	ABYSS,
+	BALAUREA,
+	PRISON,
+	NONE
 }

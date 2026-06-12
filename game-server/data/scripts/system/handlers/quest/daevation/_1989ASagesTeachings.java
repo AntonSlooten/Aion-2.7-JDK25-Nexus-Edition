@@ -74,114 +74,112 @@ public class _1989ASagesTeachings extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			PlayerClass playerClass = player.getCommonData().getPlayerClass();
 			switch (targetId) {
-			case 203704:// Boreas
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (playerClass == PlayerClass.GLADIATOR || playerClass == PlayerClass.TEMPLAR)
-						return sendQuestDialog(env, 1352);
-					else
-						return sendQuestDialog(env, 1438);
-				case STEP_TO_1:
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			case 203705:// Jumentis
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (playerClass == PlayerClass.ASSASSIN || playerClass == PlayerClass.RANGER)
-						return sendQuestDialog(env, 1693);
-					else
-						return sendQuestDialog(env, 1779);
-				case STEP_TO_1:
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			case 203706:// Charna
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (playerClass == PlayerClass.SORCERER || playerClass == PlayerClass.SPIRIT_MASTER)
-						return sendQuestDialog(env, 2034);
-					else
-						return sendQuestDialog(env, 2120);
-				case STEP_TO_1:
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			case 203707:// Thrasymedes
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (playerClass == PlayerClass.CLERIC || playerClass == PlayerClass.CHANTER)
-						return sendQuestDialog(env, 2375);
-					else
-						return sendQuestDialog(env, 2461);
-				case STEP_TO_1:
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			case 203771:
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 2716);
-					else if (var == 2)
-						return sendQuestDialog(env, 3057);
-					else if (var == 3) {
-						if (player.getCommonData().getDp() < 4000)
-							return sendQuestDialog(env, 3484);
-						else
-							return sendQuestDialog(env, 3398);
-					} else if (var == 4) {
-						if (player.getCommonData().getDp() < 4000)
-							return sendQuestDialog(env, 3825);
-						else
-							return sendQuestDialog(env, 3739);
+				case 203704:// Boreas
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (playerClass == PlayerClass.GLADIATOR || playerClass == PlayerClass.TEMPLAR)
+								return sendQuestDialog(env, 1352);
+							else
+								return sendQuestDialog(env, 1438);
+						case STEP_TO_1:
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
 					}
-				case SELECT_REWARD:
-					if (var == 3) {
-						playQuestMovie(env, 105);
-						player.getCommonData().setDp(0);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 5);
-					} else if (var == 4) {
-						playQuestMovie(env, 105);
-						player.getCommonData().setDp(0);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestDialog(env, 5);
-					} else
-						return this.sendQuestEndDialog(env);
-				case STEP_TO_2:
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					return sendQuestDialog(env, 3057);
-				case STEP_TO_4:
-					qs.setQuestVarById(0, 3);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				case STEP_TO_5:
-					qs.setQuestVarById(0, 4);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
+				case 203705:// Jumentis
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (playerClass == PlayerClass.ASSASSIN || playerClass == PlayerClass.RANGER)
+								return sendQuestDialog(env, 1693);
+							else
+								return sendQuestDialog(env, 1779);
+						case STEP_TO_1:
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+					}
+				case 203706:// Charna
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (playerClass == PlayerClass.SORCERER || playerClass == PlayerClass.SPIRIT_MASTER)
+								return sendQuestDialog(env, 2034);
+							else
+								return sendQuestDialog(env, 2120);
+						case STEP_TO_1:
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+					}
+				case 203707:// Thrasymedes
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (playerClass == PlayerClass.CLERIC || playerClass == PlayerClass.CHANTER)
+								return sendQuestDialog(env, 2375);
+							else
+								return sendQuestDialog(env, 2461);
+						case STEP_TO_1:
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+					}
+				case 203771:
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 1)
+								return sendQuestDialog(env, 2716);
+							else if (var == 2)
+								return sendQuestDialog(env, 3057);
+							else if (var == 3) {
+								if (player.getCommonData().getDp() < 4000)
+									return sendQuestDialog(env, 3484);
+								else
+									return sendQuestDialog(env, 3398);
+							}
+							else if (var == 4) {
+								if (player.getCommonData().getDp() < 4000)
+									return sendQuestDialog(env, 3825);
+								else
+									return sendQuestDialog(env, 3739);
+							}
+						case SELECT_REWARD:
+							if (var == 3) {
+								playQuestMovie(env, 105);
+								player.getCommonData().setDp(0);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 5);
+							}
+							else if (var == 4) {
+								playQuestMovie(env, 105);
+								player.getCommonData().setDp(0);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestDialog(env, 5);
+							}
+							else
+								return this.sendQuestEndDialog(env);
+						case STEP_TO_2:
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							return sendQuestDialog(env, 3057);
+						case STEP_TO_4:
+							qs.setQuestVarById(0, 3);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						case STEP_TO_5:
+							qs.setQuestVarById(0, 4);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+					}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203771)
 				return sendQuestEndDialog(env);
 		}

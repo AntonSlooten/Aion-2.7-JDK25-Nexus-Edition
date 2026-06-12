@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.smfnew.com>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -15,6 +15,7 @@
  *  along with aion-unique.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
+
 
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.network.aion.AionConnection;
@@ -34,9 +35,22 @@ public class SM_ATTACK_STATUS extends AionServerPacket {
 	private int logId;
 
 	public static enum TYPE {
-		NATURAL_HP(3), USED_HP(4), // when skill uses hp as cost parameter
-		REGULAR(5), ABSORBED_HP(6), DAMAGE(7), HP(7), PROTECTDMG(8), DELAYDAMAGE(10), FALL_DAMAGE(17), HEAL_MP(19),
-		ABSORBED_MP(20), MP(21), NATURAL_MP(22), FP_RINGS(23), FP(25), NATURAL_FP(26);
+		NATURAL_HP(3),
+		USED_HP(4),//when skill uses hp as cost parameter
+		REGULAR(5),
+		ABSORBED_HP(6),
+		DAMAGE(7),
+		HP(7),
+		PROTECTDMG(8),
+		DELAYDAMAGE(10),
+		FALL_DAMAGE(17),
+		HEAL_MP(19),
+		ABSORBED_MP(20),
+		MP(21),
+		NATURAL_MP(22),
+		FP_RINGS(23),
+		FP(25),
+		NATURAL_FP(26);
 
 		private int value;
 
@@ -48,10 +62,21 @@ public class SM_ATTACK_STATUS extends AionServerPacket {
 			return this.value;
 		}
 	}
-
+	
 	public static enum LOG {
-		SPELLATK(1), HEAL(3), MPHEAL(4), SKILLLATKDRAININSTANT(23), SPELLATKDRAININSTANT(24), POISON(25), BLEED(26),
-		PROCATKINSTANT(92), DELAYEDSPELLATKINSTANT(95), SPELLATKDRAIN(130), FPHEAL(133), REGULARHEAL(170), REGULAR(171);
+		SPELLATK(1),
+		HEAL(3),
+		MPHEAL(4),
+		SKILLLATKDRAININSTANT(23),
+		SPELLATKDRAININSTANT(24),
+		POISON(25),
+		BLEED(26),
+		PROCATKINSTANT(92),
+		DELAYEDSPELLATKINSTANT(95),
+		SPELLATKDRAIN(130),
+		FPHEAL(133),
+		REGULARHEAL(170),
+		REGULAR(171);
 
 		private int value;
 
@@ -71,7 +96,7 @@ public class SM_ATTACK_STATUS extends AionServerPacket {
 		this.value = value;
 		this.logId = log.getValue();
 	}
-
+	
 	public SM_ATTACK_STATUS(Creature creature, TYPE type, int skillId, int value) {
 		this(creature, type, skillId, value, LOG.REGULAR);
 	}
@@ -88,12 +113,12 @@ public class SM_ATTACK_STATUS extends AionServerPacket {
 	protected void writeImpl(AionConnection con) {
 		writeD(creature.getObjectId());
 		switch (type) {
-		case DAMAGE:
-		case DELAYDAMAGE:
-			writeD(-value);
-			break;
-		default:
-			writeD(value);
+			case DAMAGE:
+			case DELAYDAMAGE:
+				writeD(-value);
+				break;
+			default:
+				writeD(value);
 		}
 		writeC(type.getValue());
 		writeC(creature.getLifeStats().getHpPercentage());

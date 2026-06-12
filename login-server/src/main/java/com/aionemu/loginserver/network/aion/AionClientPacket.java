@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -19,7 +19,6 @@ package com.aionemu.loginserver.network.aion;
 import java.nio.ByteBuffer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.aionemu.commons.network.packet.BaseClientPacket;
 import com.aionemu.loginserver.model.Account;
 
@@ -45,7 +44,6 @@ public abstract class AionClientPacket extends BaseClientPacket<LoginConnection>
 	 * @param opcode
 	 *          packet id
 	 */
-	@SuppressWarnings("this-escape")
 	protected AionClientPacket(ByteBuffer buf, LoginConnection client, int opcode) {
 		super(buf, opcode);
 		setConnection(client);

@@ -42,23 +42,18 @@ public class SignetBurstEffect extends DamageEffect {
 		// TODO
 		Effect signetEffect = effect.getEffected().getEffectController().getAnormalEffect(signet);
 		if (!super.calculate(effect, DamageType.MAGICAL)) {
-			if (signetEffect != null) {
+			if (signetEffect != null)
 				signetEffect.endEffect();
-			}
 			return;
 		}
 		int valueWithDelta = value + delta * effect.getSkillLevel();
-		// int critAddDmg = this.critAddDmg2 + this.critAddDmg1 *
-		// effect.getSkillLevel();
+		//int critAddDmg = this.critAddDmg2 + this.critAddDmg1 * effect.getSkillLevel();
 
 		if (signetEffect == null) {
-			valueWithDelta *= (int) 0.05f;
+			valueWithDelta *= 0.05f;
 			AttackUtil.calculateMagicalSkillResult(effect, valueWithDelta, 0, getElement(), true, false);
-			/*
-			 * AttackUtil.calculateMagicalSkillResult(effect, valueWithDelta, null,
-			 * getElement(), true, true, false, getMode(), this.critProbMod2, critAddDmg,
-			 * shared, false);
-			 */
+			/*AttackUtil.calculateMagicalSkillResult(effect, valueWithDelta, null, getElement(), true, true, false,
+					getMode(), this.critProbMod2, critAddDmg, shared, false);*/
 			effect.setLaunchSubEffect(false);
 		} else {
 
@@ -67,25 +62,25 @@ public class SignetBurstEffect extends DamageEffect {
 
 			switch (level) {
 			case 1:
-				valueWithDelta *= (int) 0.2f;
+				valueWithDelta *= 0.2f;
 				break;
 			case 2:
-				valueWithDelta *= (int) 0.5f;
+				valueWithDelta *= 0.5f;
 				break;
 			case 3:
-				valueWithDelta *= (int) 1.0f;
+				valueWithDelta *= 1.0f;
 				break;
 			case 4:
-				valueWithDelta *= (int) 1.2f;
+				valueWithDelta *= 1.2f;
 				break;
 			case 5:
-				valueWithDelta *= (int) 1.5f;
+				valueWithDelta *= 1.5f;
 				break;
 			}
 
 			/**
-			 * custom bonuses for magical accurancy according to rune level and effector
-			 * level follows same logic as damage
+			 * custom bonuses for magical accurancy according to rune level and
+			 * effector level follows same logic as damage
 			 */
 			int accmod = 0;
 			int mAccurancy = effect.getEffector().getGameStats().getMAccuracy().getCurrent();

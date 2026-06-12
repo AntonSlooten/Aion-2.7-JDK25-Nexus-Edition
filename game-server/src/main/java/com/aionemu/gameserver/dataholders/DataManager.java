@@ -23,13 +23,11 @@ import com.aionemu.gameserver.dataholders.loadingutils.XmlDataLoader;
 import com.aionemu.gameserver.utils.Util;
 
 /**
- * This class is holding whole static data, that is loaded from
- * /data/static_data directory.<br>
+ * This class is holding whole static data, that is loaded from /data/static_data directory.<br>
  * The data is loaded by XMLDataLoader using JAXB.<br>
  * <br>
- * This class temporarily also contains data loaded from txt files by
- * DataLoaders. It'll be changed later.
- *
+ * This class temporarily also contains data loaded from txt files by DataLoaders. It'll be changed later.
+ * 
  * @author Luno , orz modified by Wakizashi
  */
 
@@ -38,9 +36,9 @@ public final class DataManager {
 	static Logger log = LoggerFactory.getLogger(DataManager.class);
 
 	public static NpcData NPC_DATA;
-
+	
 	public static NpcDropData NPC_DROP_DATA;
-
+	
 	public static NpcShoutData NPC_SHOUT_DATA;
 
 	public static GatherableData GATHERABLE_DATA;
@@ -76,7 +74,7 @@ public final class DataManager {
 	public static PlayerInitialData PLAYER_INITIAL_DATA;
 
 	public static SkillData SKILL_DATA;
-
+	
 	public static MotionData MOTION_DATA;
 
 	public static SkillTreeData SKILL_TREE_DATA;
@@ -115,6 +113,10 @@ public final class DataManager {
 
 	public static PetData PET_DATA;
 
+	public static PetFeedData PET_FEED_DATA;
+
+	public static PetDopingData PET_DOPING_DATA;
+
 	public static RoadData ROAD_DATA;
 
 	public static InstanceCooltimeData INSTANCE_COOLTIME_DATA;
@@ -132,23 +134,22 @@ public final class DataManager {
 	public static AssembledNpcsData ASSEMBLED_NPC_DATA;
 
 	public static CosmeticItemsData COSMETIC_ITEMS_DATA;
-
+	
 	public static ItemGroupsData ITEM_GROUPS_DATA;
 
 	public static SpawnsData2 SPAWNS_DATA2;
-
+	
 	public static AutoGroupData AUTO_GROUP;
 
-	public static EventData EVENT_DATA;
-
+	public static EventData	 EVENT_DATA;
+	
 	public static PvpZoneData PVP_ZONE_DATA;
 
 	private XmlDataLoader loader;
 
 	/**
 	 * Constructor creating <tt>DataManager</tt> instance.<br>
-	 * NOTICE: calling constructor implies loading whole data from /data/static_data
-	 * immediately
+	 * NOTICE: calling constructor implies loading whole data from /data/static_data immediately
 	 */
 	public static final DataManager getInstance() {
 		return SingletonHolder.instance;
@@ -202,6 +203,8 @@ public final class DataManager {
 		FLY_RING_DATA = data.flyRingData;
 		SHIELD_DATA = data.shieldData;
 		PET_DATA = data.petData;
+		PET_FEED_DATA = data.petFeedData;
+		PET_DOPING_DATA = data.petDopingData;
 		GUIDE_HTML_DATA = data.guideData;
 		ROAD_DATA = data.roadData;
 		INSTANCE_COOLTIME_DATA = data.instanceCooltimeData;
@@ -217,7 +220,7 @@ public final class DataManager {
 		EVENT_DATA = data.eventData;
 		PVP_ZONE_DATA = data.pvpZoneData;
 		ITEM_DATA.cleanup();
-
+		
 		// some sexy time message
 		long seconds = time / 1000;
 
@@ -226,7 +229,6 @@ public final class DataManager {
 		log.info("##### [Static Data loaded in: " + timeMsg + "] #####");
 	}
 
-	@SuppressWarnings("synthetic-access")
 	private static class SingletonHolder {
 
 		protected static final DataManager instance = new DataManager();

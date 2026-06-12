@@ -23,26 +23,30 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_CUSTOM_PACKET.Packet
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.ThreadPoolManager;
 
+
 /*send [file */
+
 
 public class CmdSend extends BaseCommand {
 
+	
 	private static final Logger logger = LoggerFactory.getLogger(CmdSend.class);
 
 	private static final File FOLDER = new File("./data/packets");
 
 	private Unmarshaller unmarshaller;
 
-	@Override
+	
 	public void execute(Player admin, String... params) {
 		if (params.length != 1) {
 			showHelp(admin);
 			return;
 		}
-
+		
 		try {
 			unmarshaller = JAXBContext.newInstance(Packets.class, Packet.class, Part.class).createUnmarshaller();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new GameServerError("Failed to initialize unmarshaller.", e);
 		}
 
@@ -63,7 +67,8 @@ public class CmdSend extends BaseCommand {
 
 		try {
 			packetsTemplate = (Packets) unmarshaller.unmarshal(packetsData);
-		} catch (JAXBException e) {
+		}
+		catch (JAXBException e) {
 			logger.error("Unmarshalling error", e);
 			return;
 		}
@@ -91,23 +96,20 @@ public class CmdSend extends BaseCommand {
 
 				String value = part.getValue();
 
-				if (value.indexOf("${objectId}") != -1) {
+				if (value.indexOf("${objectId}") != -1)
 					value = value.replace("${objectId}", targetObjectId);
-				}
-				if (value.indexOf("${senderObjectId}") != -1) {
+				if (value.indexOf("${senderObjectId}") != -1)
 					value = value.replace("${senderObjectId}", senderObjectId);
-				}
-				if (value.indexOf("${targetObjectId}") != -1) {
+				if (value.indexOf("${targetObjectId}") != -1)
 					value = value.replace("${targetObjectId}", targetObjectId);
-				}
 
 				if (part.getRepeatCount() == 1) // skip loop
 				{
 					packet.addElement(byCode, value);
-				} else {
-					for (int i = 0; i < part.getRepeatCount(); i++) {
+				}
+				else {
+					for (int i = 0; i < part.getRepeatCount(); i++)
 						packet.addElement(byCode, value);
-					}
 				}
 			}
 
@@ -138,7 +140,7 @@ public class CmdSend extends BaseCommand {
 	private static class Packets implements Iterable<Packet> {
 
 		@XmlElement(name = "packet")
-		private List<Packet> packets = new ArrayList<>();
+		private List<Packet> packets = new ArrayList<Packet>();
 
 		@XmlAttribute(name = "delay")
 		private long delay = -1;
@@ -177,7 +179,7 @@ public class CmdSend extends BaseCommand {
 	private static class Packet {
 
 		@XmlElement(name = "part")
-		private Collection<Part> parts = new ArrayList<>();
+		private Collection<Part> parts = new ArrayList<Part>();
 
 		@XmlAttribute(name = "opcode")
 		private String opcode = "-1";

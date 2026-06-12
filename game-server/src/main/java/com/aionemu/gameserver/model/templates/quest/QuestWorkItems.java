@@ -35,13 +35,12 @@ public class QuestWorkItems {
 	/**
 	 * Gets the value of the questWorkItem property.
 	 * <p>
-	 * This accessor method returns a reference to the live list, not a snapshot.
-	 * Therefore any modification you make to the returned list will be present
-	 * inside the JAXB object. This is why there is not a <CODE>set</CODE> method
-	 * for the questWorkItem property.
+	 * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+	 * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+	 * the questWorkItem property.
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 *
+	 * 
 	 * <pre>
 	 * getQuestWorkItem().add(newItem);
 	 * </pre>
@@ -50,7 +49,7 @@ public class QuestWorkItems {
 	 */
 	public List<QuestItems> getQuestWorkItem() {
 		if (questWorkItem == null) {
-			questWorkItem = new ArrayList<>();
+			questWorkItem = new ArrayList<QuestItems>();
 		}
 		return this.questWorkItem;
 	}

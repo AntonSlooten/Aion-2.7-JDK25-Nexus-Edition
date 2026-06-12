@@ -8,14 +8,14 @@ import com.aionemu.gameserver.network.chatserver.ChatServer;
 
 /**
  * Client sends this only once.
- *
+ * 
  * @author Luno
  */
 public class CM_CHAT_AUTH extends AionClientPacket {
 
 	/**
 	 * Constructor
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_CHAT_AUTH(int opcode, State state, State... restStates) {

@@ -60,51 +60,47 @@ public class _1467TheFourLeaders extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 204045) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 4762);
-				}
-				case ACCEPT_QUEST: {
-					return sendQuestDialog(env, 1011);
-				}
-				case STEP_TO_1: {
-					if (QuestService.startQuest(env)) {
-						qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
+					case START_DIALOG: {
+						return sendQuestDialog(env, 4762);
 					}
-				}
-				case STEP_TO_2: {
-					if (QuestService.startQuest(env)) {
-						qs.setQuestVarById(0, qs.getQuestVarById(0) + 2);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
+					case ACCEPT_QUEST: {
+						return sendQuestDialog(env, 1011);
 					}
+					case STEP_TO_1: {
+						if (QuestService.startQuest(env)) {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
+					}
+					case STEP_TO_2: {
+						if (QuestService.startQuest(env)) {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 2);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
 
-				}
-				case STEP_TO_3: {
-					if (QuestService.startQuest(env)) {
-						qs.setQuestVarById(0, qs.getQuestVarById(0) + 3);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
 					}
-				}
-				case STEP_TO_4: {
-					if (QuestService.startQuest(env)) {
-						qs.setQuestVarById(0, qs.getQuestVarById(0) + 4);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
+					case STEP_TO_3: {
+						if (QuestService.startQuest(env)) {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 3);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
 					}
-				}
-				default:
-					return sendQuestStartDialog(env);
+					case STEP_TO_4: {
+						if (QuestService.startQuest(env)) {
+							qs.setQuestVarById(0, qs.getQuestVarById(0) + 4);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
+					}
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
@@ -115,28 +111,27 @@ public class _1467TheFourLeaders extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204045) {
 				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					switch (qs.getQuestVarById(0)) {
-					case 1: {
-						return sendQuestDialog(env, 5);
+					case USE_OBJECT: {
+						switch (qs.getQuestVarById(0)) {
+							case 1: {
+								return sendQuestDialog(env, 5);
+							}
+							case 2: {
+								return sendQuestDialog(env, 6);
+							}
+							case 3: {
+								return sendQuestDialog(env, 7);
+							}
+							case 4: {
+								return sendQuestDialog(env, 8);
+							}
+						}
 					}
-					case 2: {
-						return sendQuestDialog(env, 6);
+					case SELECT_NO_REWARD: {
+						QuestService.finishQuest(env, qs.getQuestVarById(0) - 1);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
 					}
-					case 3: {
-						return sendQuestDialog(env, 7);
-					}
-					case 4: {
-						return sendQuestDialog(env, 8);
-					}
-					}
-				}
-				case SELECT_NO_REWARD: {
-					QuestService.finishQuest(env, qs.getQuestVarById(0) - 1);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
 				}
 			}
 		}
@@ -159,46 +154,46 @@ public class _1467TheFourLeaders extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 
 		switch (targetId) {
-		case 211696: {
-			if (qs.getQuestVarById(0) == 1) {
-				if (var == 0) {
-					var = 1;
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return true;
+			case 211696: {
+				if (qs.getQuestVarById(0) == 1) {
+					if (var == 0) {
+						var = 1;
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						return true;
+					}
 				}
 			}
-		}
-		case 211697: {
-			if (qs.getQuestVarById(0) == 2) {
-				if (var == 0) {
-					var = 1;
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return true;
+			case 211697: {
+				if (qs.getQuestVarById(0) == 2) {
+					if (var == 0) {
+						var = 1;
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						return true;
+					}
 				}
 			}
-		}
-		case 211698: {
-			if (qs.getQuestVarById(0) == 3) {
-				if (var == 0) {
-					var = 1;
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return true;
+			case 211698: {
+				if (qs.getQuestVarById(0) == 3) {
+					if (var == 0) {
+						var = 1;
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						return true;
+					}
 				}
 			}
-		}
-		case 211699: {
-			if (qs.getQuestVarById(0) == 4) {
-				if (var == 0) {
-					var = 1;
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return true;
+			case 211699: {
+				if (qs.getQuestVarById(0) == 4) {
+					if (var == 0) {
+						var = 1;
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						return true;
+					}
 				}
 			}
-		}
 		}
 		return false;
 	}

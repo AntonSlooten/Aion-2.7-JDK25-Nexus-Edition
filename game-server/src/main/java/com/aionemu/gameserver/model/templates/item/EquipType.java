@@ -26,7 +26,10 @@ import javax.xml.bind.annotation.XmlType;
 @XmlEnum
 public enum EquipType {
 
-	ARMOR, WEAPON, STIGMA, NONE;
+	ARMOR,
+	WEAPON,
+	STIGMA,
+	NONE;
 
 	public String value() {
 		return name();

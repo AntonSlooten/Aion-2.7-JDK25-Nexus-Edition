@@ -57,16 +57,15 @@ public class EventQuestList {
 	}
 
 	List<Integer> getQuestsFromData(String data) {
-		Set<String> q = new HashSet<>();
+		Set<String> q = new HashSet<String>();
 		Collections.addAll(q, data.split(";"));
-		List<Integer> result = new ArrayList<>();
+		List<Integer> result = new ArrayList<Integer>();
 
 		if (q.size() > 0) {
-			result = new ArrayList<>();
+			result = new ArrayList<Integer>();
 			Iterator<String> it = q.iterator();
-			while (it.hasNext()) {
+			while (it.hasNext())
 				result.add(Integer.parseInt(it.next()));
-			}
 		}
 
 		return result;
@@ -76,9 +75,8 @@ public class EventQuestList {
 	 * @return the startQuests (automatically started on logon)
 	 */
 	public List<Integer> getStartableQuests() {
-		if (startQuests == null) {
-			startQuests = new ArrayList<>();
-		}
+		if (startQuests == null)
+			startQuests = new ArrayList<Integer>();
 		return startQuests;
 	}
 
@@ -86,9 +84,8 @@ public class EventQuestList {
 	 * @return the maintainQuests (started indirectly from other quests)
 	 */
 	public List<Integer> getMaintainQuests() {
-		if (maintainQuests == null) {
-			maintainQuests = new ArrayList<>();
-		}
+		if (maintainQuests == null)
+			maintainQuests = new ArrayList<Integer>();
 		return maintainQuests;
 	}
 

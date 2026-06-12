@@ -28,47 +28,46 @@ public class StatCapUtil {
 
 		// TODO more stats????
 		switch (stat.getStat()) {
-		case MAIN_HAND_POWER:
-		case MAIN_HAND_ACCURACY:
-		case MAIN_HAND_CRITICAL:
-		case OFF_HAND_POWER:
-		case OFF_HAND_ACCURACY:
-		case OFF_HAND_CRITICAL:
-		case MAGICAL_RESIST:
-		case PHYSICAL_CRITICAL_RESIST:
-		case EVASION:
-		case PHYSICAL_DEFENSE:
-			lowerCap = 0;
-			break;
-		case ATTACK_SPEED:
-			int base = stat.getBase() / 2;
-			if (stat.getBonus() > 0 && base < stat.getBonus()) {
-				stat.setBonus(base);
-			} else if (stat.getBonus() < 0 && base < -stat.getBonus()) {
-				stat.setBonus(-base);
-			}
-			break;
-		case SPEED:
-			lowerCap = 600;
-			upperCap = 12000;
-			if (isPlayer == 2) {
+			case MAIN_HAND_POWER:
+			case MAIN_HAND_ACCURACY:
+			case MAIN_HAND_CRITICAL:
+			case OFF_HAND_POWER:
+			case OFF_HAND_ACCURACY:
+			case OFF_HAND_CRITICAL:
+			case MAGICAL_RESIST:
+			case PHYSICAL_CRITICAL_RESIST:
+			case EVASION:
+			case PHYSICAL_DEFENSE:
+				lowerCap = 0;
+				break;
+			case ATTACK_SPEED:
+				int base = stat.getBase() / 2;
+				if (stat.getBonus() > 0 && base < stat.getBonus())
+					stat.setBonus(base);
+				else if (stat.getBonus() < 0 && base < -stat.getBonus())
+					stat.setBonus(-base);
+				break;
+			case SPEED:
+				lowerCap = 600;
+				upperCap = 12000;
+				if(isPlayer == 2)
+					upperCap = Integer.MAX_VALUE;
+				break;
+			case FLY_SPEED:
+				lowerCap = 600;
+				upperCap = 16000;
+				if(isPlayer == 2)
+					upperCap = Integer.MAX_VALUE;
+				break;
+			case BOOST_MAGICAL_SKILL:
+				upperCap = 2700;
+				break;
+			case MAXHP:
+			case MAXMP:
+				lowerCap = 0;
 				upperCap = Integer.MAX_VALUE;
-			}
-			break;
-		case FLY_SPEED:
-			lowerCap = 600;
-			upperCap = 16000;
-			if (isPlayer == 2) {
-				upperCap = Integer.MAX_VALUE;
-			}
-			break;
-		case BOOST_MAGICAL_SKILL:
-			upperCap = 2700;
-			break;
-		case MAXHP:
-		case MAXMP:
-			lowerCap = 0;
-			upperCap = Integer.MAX_VALUE;
+				break;
+		default:
 			break;
 		}
 		calculate(stat, lowerCap, upperCap);

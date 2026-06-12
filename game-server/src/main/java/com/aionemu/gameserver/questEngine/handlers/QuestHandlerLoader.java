@@ -17,7 +17,6 @@
 package com.aionemu.gameserver.questEngine.handlers;
 
 import com.aionemu.commons.scripting.classlistener.ClassListener;
-import com.aionemu.commons.utils.ClassUtils;
 import com.aionemu.gameserver.questEngine.QuestEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,35 +37,30 @@ public class QuestHandlerLoader implements ClassListener {
 	@Override
 	public void postLoad(Class<?>[] classes) {
 		for (Class<?> c : classes) {
-			if (logger.isDebugEnabled()) {
+			if (logger.isDebugEnabled())
 				logger.debug("Load class " + c.getName());
-			}
 
-			if (!isValidClass(c)) {
+			if (!isValidClass(c))
 				continue;
-			}
 
-			if (ClassUtils.isSubclass(c, QuestHandler.class)) {
-				try {
-					Class<? extends QuestHandler> tmp = (Class<? extends QuestHandler>) c;
-					if (tmp != null) {
-						QuestEngine.getInstance().addQuestHandler(tmp.getDeclaredConstructor().newInstance());
-					}
-				} catch (Exception e) {
-					throw new RuntimeException("Failed to load quest handler class: " + c.getName(), e);
-				}
+			try {
+				Class<? extends QuestHandler> tmp = (Class<? extends QuestHandler>) c;
+				if (tmp != null)
+					// PERBAIKAN
+					QuestEngine.getInstance().addQuestHandler(tmp.getDeclaredConstructor().newInstance());
+			}
+			catch (Exception e) {
+				throw new RuntimeException("Failed to load quest handler class: " + c.getName(), e);
 			}
 		}
 	}
 
 	@Override
 	public void preUnload(Class<?>[] classes) {
-		if (logger.isDebugEnabled()) {
-			for (Class<?> c : classes) {
+		if (logger.isDebugEnabled())
+			for (Class<?> c : classes)
 				// debug messages
 				logger.debug("Unload class " + c.getName());
-			}
-		}
 
 		QuestEngine.getInstance().clear();
 	}
@@ -74,9 +68,11 @@ public class QuestHandlerLoader implements ClassListener {
 	public boolean isValidClass(Class<?> clazz) {
 		final int modifiers = clazz.getModifiers();
 
-		if (Modifier.isAbstract(modifiers) || Modifier.isInterface(modifiers) || !Modifier.isPublic(modifiers)) {
+		if (Modifier.isAbstract(modifiers) || Modifier.isInterface(modifiers))
 			return false;
-		}
+
+		if (!Modifier.isPublic(modifiers))
+			return false;
 
 		return true;
 	}

@@ -48,10 +48,10 @@ public class SulfurTreeNestInstance extends GeneralInstanceHandler {
 	}
 
 	private void spawnRings() {
-		FlyRing f1 = new FlyRing(
-				new FlyRingTemplate("SULFUR_1", mapId, new Point3D(462.9394, 380.34888, 168.97256),
-						new Point3D(462.9394, 380.34888, 174.97256), new Point3D(468.9229, 380.7933, 168.97256), 6),
-				instanceId);
+		FlyRing f1 = new FlyRing(new FlyRingTemplate("SULFUR_1", mapId,
+				new Point3D(462.9394, 380.34888, 168.97256),
+				new Point3D(462.9394, 380.34888, 174.97256),
+				new Point3D(468.9229, 380.7933, 168.97256), 6), instanceId);
 		f1.spawn();
 	}
 

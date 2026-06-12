@@ -40,15 +40,14 @@ public class ReportToManyData extends XMLQuest {
 	@Override
 	public void register(QuestEngine questEngine) {
 		int maxVar = 0;
-		FastMap<Integer, NpcInfos> NpcInfo = new FastMap<>();
+		FastMap<Integer, NpcInfos> NpcInfo = new FastMap<Integer, NpcInfos>();
 		for (NpcInfos mi : npcInfos) {
 			NpcInfo.put(mi.getNpcId(), mi);
-			if (mi.getVar() > maxVar) {
+			if (mi.getVar() > maxVar)
 				maxVar = mi.getVar();
-			}
 		}
-		ReportToMany template = new ReportToMany(id, startItemId, startNpcId2, startNpcId, endNpc, endNpc2, NpcInfo,
-				startDialog, endDialog, maxVar);
+		ReportToMany template = new ReportToMany(id, startItemId, startNpcId2, startNpcId, endNpc, endNpc2, NpcInfo, startDialog, endDialog,
+			maxVar);
 		questEngine.addQuestHandler(template);
 	}
 }

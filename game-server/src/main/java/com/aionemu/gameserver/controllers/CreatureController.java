@@ -1,5 +1,5 @@
 /*
- * This file is part of aion_gates
+ * This file is part of aion_gates 
  *
  *  aion-emu is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * This class is for controlling Creatures [npc's, players etc]
- *
+ * 
  * @author -Nemesiss-, ATracer(2009-09-29), Sarynth
  * @modified by Wakizashi
  */
@@ -120,7 +120,7 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 
 	/**
 	 * Zone update mask management
-	 *
+	 * 
 	 * @param mode
 	 */
 	public final void updateZone() {
@@ -129,7 +129,7 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 
 	/**
 	 * Will be called by ZoneManager when creature enters specific zone
-	 *
+	 * 
 	 * @param zoneInstance
 	 */
 	public void onEnterZone(ZoneInstance zoneInstance) {
@@ -137,7 +137,7 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 
 	/**
 	 * Will be called by ZoneManager when player leaves specific zone
-	 *
+	 * 
 	 * @param zoneInstance
 	 */
 	public void onLeaveZone(ZoneInstance zoneInstance) {
@@ -145,7 +145,7 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 
 	/**
 	 * Perform tasks on Creature death
-	 *
+	 * 
 	 * @param lastAttacker
 	 */
 	public void onDie(Creature lastAttacker) {
@@ -153,42 +153,38 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 		this.getOwner().setCasting(null);
 		this.getOwner().getEffectController().removeAllEffects();
 		// exception for player
-		if (getOwner() instanceof Player && ((Player) getOwner()).getIsFlyingBeforeDeath()) {
+		if (getOwner() instanceof Player && ((Player) getOwner()).getIsFlyingBeforeDeath())
 			this.getOwner().setState(CreatureState.FLOATING_CORPSE);
-		} else {
+		else
 			this.getOwner().setState(CreatureState.DEAD);
-		}
 		this.getOwner().getObserveController().notifyDeathObservers(lastAttacker);
-
-		// CQFDLisener need Opti
-		if (getOwner() instanceof Player) {
+		
+		//CQFDLisener need Opti
+		if(getOwner() instanceof Player){
 			CQFDListenerManager.onEvent(CQFDListenerType.PLAYERDEATH, lastAttacker, getOwner(), null);
-			if (lastAttacker instanceof Player) {
+			if(lastAttacker instanceof Player)
 				CQFDListenerManager.onEvent(CQFDListenerType.PLAYER_KILL_PLAYER, lastAttacker, getOwner(), null);
-			} else {
+			else
 				CQFDListenerManager.onEvent(CQFDListenerType.MONSTER_KILL_PLAYER, lastAttacker, getOwner(), null);
-			}
-		} else {
+		}
+		else{
 			CQFDListenerManager.onEvent(CQFDListenerType.MONSTERDEATH, lastAttacker, getOwner(), null);
-			if (lastAttacker instanceof Player) {
+			if(lastAttacker instanceof Player)
 				CQFDListenerManager.onEvent(CQFDListenerType.PLAYER_KILL_MONSTER, lastAttacker, getOwner(), null);
-			} else {
+			else
 				CQFDListenerManager.onEvent(CQFDListenerType.MONSTER_KILL_MONSTER, lastAttacker, getOwner(), null);
-			}
 		}
 	}
 
 	/**
-	 * Perform tasks when Creature was attacked //TODO may be pass only Skill object
-	 * - but need to add properties in it
+	 * Perform tasks when Creature was attacked //TODO may be pass only Skill object - but need to add properties in it
 	 */
-	public void onAttack(final Creature creature, int skillId, TYPE type, int damage, boolean notifyAttack, LOG log) {
+	public void onAttack(final Creature creature, int skillId, TYPE type, int damage, boolean notifyAttack, LOG log) {		
 		// Reduce the damage to exactly what is required to ensure death.
 		// - Important that we don't include 7k worth of damage when the
 		// creature only has 100 hp remaining. (For AggroList dmg count.)
-		if (damage > getOwner().getLifeStats().getCurrentHp()) {
+		if (damage > getOwner().getLifeStats().getCurrentHp())
 			damage = getOwner().getLifeStats().getCurrentHp() + 1;
-		}
 
 		if (damage != 0 && !((getOwner() instanceof Npc) && ((Npc) getOwner()).isBoss())) {
 			Skill skill = getOwner().getCastingSkill();
@@ -198,14 +194,12 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 				float maxHp = getOwner().getGameStats().getMaxHp().getCurrent();
 
 				float cancel = ((7f * (damage / maxHp) * 100f) - conc / 2f) * (cancelRate / 100f);
-				if (Rnd.get(100) < cancel) {
+				if (Rnd.get(100) < cancel)
 					cancelCurrentSkill();
-				}
 			}
 		}
 
-		// Do NOT notify attacked observers if the damage is 0 and shield is up (means
-		// the attack has been absorbed)
+		// Do NOT notify attacked observers if the damage is 0 and shield is up (means the attack has been absorbed)
 		if (damage == 0 && getIsUnderShield()) {
 			notifyAttack = false;
 		}
@@ -218,20 +212,19 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 		if (getOwner() instanceof Npc) {
 			AI2 ai = getOwner().getAi2();
 			if (ai.poll(AIQuestion.CAN_SHOUT)) {
-				if (creature instanceof Player) {
-					ShoutEventHandler.onHelp((NpcAI2) ai, creature);
-				} else {
-					ShoutEventHandler.onEnemyAttack((NpcAI2) ai, creature);
-				}
-			}
-		} else if (getOwner() instanceof Player && creature instanceof Npc) {
-			AI2 ai = creature.getAi2();
-			if (ai.poll(AIQuestion.CAN_SHOUT)) {
-				ShoutEventHandler.onAttack((NpcAI2) ai, getOwner());
+				if (creature instanceof Player)
+					ShoutEventHandler.onHelp((NpcAI2)ai, creature);
+				else
+					ShoutEventHandler.onEnemyAttack((NpcAI2)ai, creature);
 			}
 		}
+		else if (getOwner() instanceof Player && creature instanceof Npc) {
+			AI2 ai = creature.getAi2();
+			if (ai.poll(AIQuestion.CAN_SHOUT))
+				ShoutEventHandler.onAttack((NpcAI2)ai, getOwner());
+		}
 		getOwner().incrementAttackedCount();
-
+		
 		// notify all NPC's around that creature is attacking me
 		getOwner().getKnownList().doOnAllNpcs(new Visitor<Npc>() {
 
@@ -259,21 +252,21 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 	 */
 	public void onRestore(HealType hopType, int value) {
 		switch (hopType) {
-		case HP:
-			getOwner().getLifeStats().increaseHp(TYPE.HP, value);
-			break;
-		case MP:
-			getOwner().getLifeStats().increaseMp(TYPE.MP, value);
-			break;
-		case FP:
-			getOwner().getLifeStats().increaseFp(TYPE.FP, value);
-			break;
+			case HP:
+				getOwner().getLifeStats().increaseHp(TYPE.HP, value);
+				break;
+			case MP:
+				getOwner().getLifeStats().increaseMp(TYPE.MP, value);
+				break;
+			case FP:
+				getOwner().getLifeStats().increaseFp(TYPE.FP, value);
+				break;
 		}
 	}
 
 	/**
 	 * Perform drop operation
-	 *
+	 * 
 	 * @param player
 	 */
 	public void doDrop(Player player) {
@@ -287,7 +280,7 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 
 	/**
 	 * This method should be overriden in more specific controllers
-	 *
+	 * 
 	 * @param player
 	 */
 	public void onDialogRequest(Player player) {
@@ -302,9 +295,10 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 		 * Check all prerequisites
 		 */
 		if (target == null || !getOwner().canAttack() || getOwner().getLifeStats().isAlreadyDead()
-				|| !getOwner().isSpawned() || !getOwner().isEnemy(target)) {
+			|| !getOwner().isSpawned() || !getOwner().isEnemy(target)) {
 			return;
-		} else if (!GeoService.getInstance().canSee(getOwner(), target)) {
+		}
+		else if(!GeoService.getInstance().canSee(getOwner(), target)){
 			notSee(target, true);
 			return;
 		}
@@ -313,11 +307,11 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 		 */
 		int attackType = 0;
 		List<AttackResult> attackResult;
-		if (getOwner().getAttackType() == ItemAttackType.PHYSICAL) {
+		if (getOwner().getAttackType() == ItemAttackType.PHYSICAL)
 			attackResult = AttackUtil.calculatePhysicalAttackResult(getOwner(), target);
-		} else {
-			attackResult = AttackUtil.calculateMagicalAttackResult(getOwner(), target,
-					getOwner().getAttackType().getMagicalElement());
+		else {
+			attackResult = AttackUtil.calculateMagicalAttackResult(getOwner(), target, getOwner().getAttackType()
+				.getMagicalElement());
 			attackType = 1;
 		}
 
@@ -326,8 +320,8 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 			damage += result.getDamage();
 		}
 
-		PacketSendUtility.broadcastPacketAndReceive(getOwner(), new SM_ATTACK(getOwner(), target,
-				getOwner().getGameStats().getAttackCounter(), time, attackType, attackResult));
+		PacketSendUtility.broadcastPacketAndReceive(getOwner(), new SM_ATTACK(getOwner(), target, getOwner().getGameStats()
+			.getAttackCounter(), time, attackType, attackResult));
 
 		getOwner().getGameStats().increaseAttackCounter();
 		getOwner().getObserveController().notifyAttackObservers(target);
@@ -335,7 +329,8 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 		final Creature creature = getOwner();
 		if (time == 0) {
 			target.getController().onAttack(getOwner(), damage, true);
-		} else {
+		}
+		else {
 			ThreadPoolManager.getInstance().schedule(new DelayedOnAttack(target, creature, damage), time);
 		}
 	}
@@ -351,7 +346,7 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 
 	/**
 	 * Handle Dialog_Select
-	 *
+	 * 
 	 * @param dialogId
 	 * @param player
 	 * @param questId
@@ -398,7 +393,7 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 
 	/**
 	 * If task already exist - it will be canceled
-	 *
+	 * 
 	 * @param taskId
 	 * @param task
 	 */
@@ -451,7 +446,8 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 			if (skill != null) {
 				return skill.useSkill();
 			}
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			log.error("Exception during skill use: " + skillId, ex);
 		}
 		return false;
@@ -459,27 +455,23 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 
 	/**
 	 * Notify hate value to all visible creatures
-	 *
+	 * 
 	 * @param value
 	 */
 	public void broadcastHate(int value) {
-		for (VisibleObject visibleObject : getOwner().getKnownList().getKnownObjects().values()) {
-			if (visibleObject instanceof Creature) {
+		for (VisibleObject visibleObject : getOwner().getKnownList().getKnownObjects().values())
+			if (visibleObject instanceof Creature)
 				((Creature) visibleObject).getAggroList().notifyHate(getOwner(), value);
-			}
-		}
 	}
 
 	public void abortCast() {
 		Creature creature = getOwner();
 		Skill skill = creature.getCastingSkill();
-		if (skill == null) {
+		if (skill == null)
 			return;
-		}
 		creature.setCasting(null);
-		if (creature.getSkillNumber() > 0) {
+		if (creature.getSkillNumber() > 0)
 			creature.setSkillNumber(creature.getSkillNumber() - 1);
-		}
 	}
 
 	/**
@@ -495,15 +487,14 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 		castingSkill.cancelCast();
 		creature.removeSkillCoolDown(castingSkill.getSkillTemplate().getCooldownId());
 		creature.setCasting(null);
-		PacketSendUtility.broadcastPacketAndReceive(creature,
-				new SM_SKILL_CANCEL(creature, castingSkill.getSkillTemplate().getSkillId()));
+		PacketSendUtility.broadcastPacketAndReceive(creature, new SM_SKILL_CANCEL(creature, castingSkill.getSkillTemplate()
+			.getSkillId()));
 		if (getOwner().getAi2() instanceof NpcAI2) {
 			NpcAI2 npcAI = (NpcAI2) getOwner().getAi2();
 			npcAI.setSubStateIfNot(AISubState.NONE);
 			npcAI.onGeneralEvent(AIEventType.ATTACK_COMPLETE);
-			if (creature.getSkillNumber() > 0) {
+			if (creature.getSkillNumber() > 0)
 				creature.setSkillNumber(creature.getSkillNumber() - 1);
-			}
 		}
 	}
 

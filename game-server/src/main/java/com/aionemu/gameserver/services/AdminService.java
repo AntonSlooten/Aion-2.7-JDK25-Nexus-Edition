@@ -30,25 +30,22 @@ public class AdminService {
 
 	public AdminService() {
 		list = FastList.newInstance();
-		if (AdminConfig.ENABLE_TRADEITEM_RESTRICTION) {
+		if(AdminConfig.ENABLE_TRADEITEM_RESTRICTION)
 			reload();
-		}
 	}
 
 	public void reload() {
-		if (list.size() > 0) {
+		if(list.size() > 0)
 			list.clear();
-		}
-
+		
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader("./config/administration/item.restriction.txt"));
 			String line = null;
 			while ((line = br.readLine()) != null) {
-				if (line.startsWith("#") || line.trim().length() == 0) {
+				if(line.startsWith("#") || line.trim().length() == 0)
 					continue;
-				}
-
+				
 				String pt = line.split("#")[0].replaceAll(" ", "");
 				list.add(Integer.parseInt(pt));
 			}
@@ -63,36 +60,33 @@ public class AdminService {
 				}
 			}
 		}
-
-		log.info("AdminService loaded " + list.size() + " operational items.");
+		
+		log.info("AdminService loaded "+list.size()+" operational items.");
 	}
-
+	
 	public boolean canOperate(Player player, Player target, Item item, String type) {
 		return canOperate(player, target, item.getItemId(), type);
 	}
-
+	
 	public boolean canOperate(Player player, Player target, int itemId, String type) {
-		if (!AdminConfig.ENABLE_TRADEITEM_RESTRICTION || (target != null && target.getAccessLevel() > 0)) { // allow
-																											// between
-																											// gms
+		if(!AdminConfig.ENABLE_TRADEITEM_RESTRICTION)
 			return true;
-		}
-
-		if (player.getAccessLevel() > 0 && player.getAccessLevel() < 4) { // run check only for 1-3 level gms
+		
+		if(target != null && target.getAccessLevel() > 0) //allow between gms
+			return true;
+		
+		if(player.getAccessLevel() > 0 && player.getAccessLevel() < 4) { // run check only for 1-3 level gms
 			boolean value = list.contains(itemId);
-			String str = "GM " + player.getName() + "|" + player.getObjectId() + " (" + type + "): " + itemId
-					+ "|result=" + value;
-			if (target != null) {
-				str += "|target=" + target.getName() + "|" + target.getObjectId();
-			}
+			String str = "GM "+player.getName()+"|"+player.getObjectId()+" ("+type+"): "+itemId+"|result="+value;
+			if(target != null)
+				str += "|target="+target.getName()+"|"+target.getObjectId();
 			itemLog.info(str);
-			if (!value) {
-				PacketSendUtility.sendMessage(player, "You cannot use " + type + " with this item.");
-			}
-
+			if(!value) 
+				PacketSendUtility.sendMessage(player, "You cannot use "+type+" with this item.");
+				
 			return value;
-		} else {
-			return true;
 		}
+		else
+			return true;
 	}
 }

@@ -30,7 +30,7 @@ import com.aionemu.gameserver.model.templates.item.ItemTemplate;
  */
 public class PlayerStatFunctions {
 
-	private static final List<IStatFunction> FUNCTIONS = new ArrayList<>();
+	private static final List<IStatFunction> FUNCTIONS = new ArrayList<IStatFunction>();
 
 	static {
 		FUNCTIONS.add(new PhysicalAttackFunction());
@@ -157,9 +157,8 @@ class PDefFunction extends StatFunction {
 
 	@Override
 	public void apply(Stat2 stat) {
-		if (stat.getOwner().isInFlyingState()) {
+		if (stat.getOwner().isInFlyingState())
 			stat.setBonus(stat.getBonus() - (stat.getBase() / 2));
-		}
 	}
 
 	@Override
@@ -217,7 +216,8 @@ class DuplicateStatFunction extends StatFunction {
 						}
 					}
 				}
-			} else if (offWeapon != null) {
+			}
+			else if (offWeapon != null) {
 				List<StatFunction> functions2 = offWeapon.getItemTemplate().getModifiers();
 				if (functions2 != null) {
 					for (StatFunction func : functions2) {
@@ -227,24 +227,26 @@ class DuplicateStatFunction extends StatFunction {
 					}
 				}
 			}
-
-			if (func2 == null && func1 == null) {
+			
+			if (func2 == null && func1 == null)
 				return;
-			} else if (func2 != null && func1 == null) {
+			else if (func2 != null && func1 == null) {
 				func2.apply(stat);
-			} else if (func2 == null && func1 != null) {
+			}
+			else if (func2 == null && func1 != null) {
 				func1.apply(stat);
-			} else {
+			}
+			else {
 				// pvp attack ratio should be stacked on dual wield
 				if (offWeapon != null && getName() == StatEnum.PVP_ATTACK_RATIO) {
 					func1.apply(stat);
 					func2.apply(stat);
-				} else {
-					if (Math.abs(func1.getValue()) >= Math.abs(func2.getValue())) {
+				}
+				else {
+					if (Math.abs(func1.getValue()) >= Math.abs(func2.getValue()))
 						func1.apply(stat);
-					} else {
+					else
 						func2.apply(stat);
-					}
 				}
 			}
 		}

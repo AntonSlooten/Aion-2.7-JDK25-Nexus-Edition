@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -22,7 +22,6 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.commons.network.IPRange;
 import com.aionemu.commons.utils.NetworkUtils;
@@ -108,18 +107,17 @@ public class GameServerTable {
 		 */
 		if (!gsi.getPassword().equals(password) || !NetworkUtils.checkIPMatching(gsi.getIp(), gsConnection.getIP())) {
 			
-			if (!gsi.getPassword().equals(password) || !NetworkUtils.checkIPMatching(gsi.getIp(), gsConnection.getIP())) {
-				log.warn(gsConnection + " wrong ip or password for game server #" + requestedId);
-				return GsAuthResponse.NOT_AUTHED;
-			}
-
+			log.info(gsi.getPassword() + " "+password);
+			log.info(gsConnection + " wrong ip or password!");
+			return GsAuthResponse.NOT_AUTHED;
 		}
+
 		gsi.setDefaultAddress(defaultAddress);
 		gsi.setIpRanges(ipRanges);
 		gsi.setPort(port);
 		gsi.setMaxPlayers(maxPlayers);
 		gsi.setConnection(gsConnection);
-		
+
 		gsConnection.setGameServerInfo(gsi);
 		return GsAuthResponse.AUTHED;
 	}

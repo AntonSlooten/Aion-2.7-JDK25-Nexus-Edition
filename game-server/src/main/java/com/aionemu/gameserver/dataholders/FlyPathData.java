@@ -20,7 +20,7 @@ public class FlyPathData {
 	@XmlElement(name = "flypath_location")
 	private List<FlyPathEntry> list;
 
-	private TIntObjectHashMap<FlyPathEntry> loctlistData = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<FlyPathEntry> loctlistData = new TIntObjectHashMap<FlyPathEntry>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (FlyPathEntry loc : list) {

@@ -41,15 +41,14 @@ public class NpcSkillData {
 	private List<NpcSkillTemplates> npcSkills;
 
 	/** A map containing all npc skill templates */
-	private TIntObjectHashMap<NpcSkillTemplates> npcSkillData = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<NpcSkillTemplates> npcSkillData = new TIntObjectHashMap<NpcSkillTemplates>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (NpcSkillTemplates npcSkill : npcSkills) {
 			npcSkillData.put(npcSkill.getNpcId(), npcSkill);
 
-			if (npcSkill.getNpcSkills() == null) {
+			if (npcSkill.getNpcSkills() == null)
 				LoggerFactory.getLogger(NpcSkillData.class).error("NO SKILL");
-			}
 		}
 
 	}

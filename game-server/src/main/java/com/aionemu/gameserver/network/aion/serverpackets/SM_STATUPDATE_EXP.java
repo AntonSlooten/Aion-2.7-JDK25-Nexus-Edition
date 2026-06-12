@@ -16,12 +16,13 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 
 /**
  * This packet is used to update current exp / recoverable exp / max exp values.
- *
+ * 
  * @author Luno
  * @updated by alexa026
  */

@@ -112,8 +112,7 @@ public class _20001TravelingtoGelkmaros extends QuestHandler {
 				else if (env.getDialog() == QuestDialog.STEP_TO_1) {
 					qs.setQuestVar(++var);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
 				}
 			}
@@ -124,66 +123,73 @@ public class _20001TravelingtoGelkmaros extends QuestHandler {
 					else if (env.getDialog() == QuestDialog.STEP_TO_2) {
 						qs.setQuestVar(++var);
 						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 						return true;
-					} else
+					}
+					else
 						return sendQuestStartDialog(env);
-				} else if (var == 5) {
+				}
+				else if (var == 5) {
 					if (env.getDialog() == QuestDialog.START_DIALOG)
 						return sendQuestDialog(env, 2716);
 					else if (env.getDialogId() == 10255) {
 						TeleportService.teleportTo(player, 220070000, 1, 1868, 2746, 531, (byte) 20, 3000, true);
 						return true;
-					} else
+					}
+					else
 						return sendQuestStartDialog(env);
 				}
-			} else if (targetId == 204202 && var == 2) {
+			}
+			else if (targetId == 204202 && var == 2) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 1693);
 				else if (env.getDialog() == QuestDialog.STEP_TO_3) {
 					qs.setQuestVar(++var);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
-			} else if (targetId == 204073 && var == 3) {
+			}
+			else if (targetId == 204073 && var == 3) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 2034);
 				else if (env.getDialog() == QuestDialog.STEP_TO_4) {
 					qs.setQuestVar(++var);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
-			} else if (targetId == 204283 && var == 4) {
+			}
+			else if (targetId == 204283 && var == 4) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 2375);
 				else if (env.getDialogId() == 10004) {
 					qs.setQuestVar(++var);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799225) {
 				if (env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 2802);
 				else {
 					return sendQuestEndDialog(env);
 				}
-			} else if (targetId == 798409) {
-				if (env.getDialogId() == 10009) {
+			}
+			else if(targetId == 798409){
+				if(env.getDialogId() == 10009){
 					TeleportService.teleportTo(player, 220070000, 1, 1868, 2746, 531, (byte) 20, 3000, true);
 					return true;
-				} else {
+				}else{
 					return sendQuestDialog(env, 2802);
 				}
 			}

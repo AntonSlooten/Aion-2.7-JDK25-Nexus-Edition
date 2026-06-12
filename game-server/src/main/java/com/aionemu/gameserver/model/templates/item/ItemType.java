@@ -26,5 +26,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "item_type")
 @XmlEnum
 public enum ItemType {
-	NORMAL, ABYSS, DRACONIC, DEVANION
+	NORMAL,
+	ABYSS,
+	DRACONIC,
+	DEVANION
 }

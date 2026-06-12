@@ -65,6 +65,8 @@ public class _80008PieceOfCake extends QuestHandler {
 				case SELECT_REWARD:
 					removeQuestItem(env, 182214006, 1);
 					return defaultCloseDialog(env, 0, 1, true, true);
+				default:
+					break;
 				}
 			}
 		}

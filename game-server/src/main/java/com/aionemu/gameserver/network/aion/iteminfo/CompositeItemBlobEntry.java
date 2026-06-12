@@ -25,19 +25,21 @@ import com.aionemu.gameserver.model.stats.calc.functions.StatFunction;
 import com.aionemu.gameserver.network.aion.iteminfo.ItemInfoBlob.ItemBlobType;
 
 /**
- * This blob is sending info about the item that were fused with current item.
- *
+ * This blob is sending info about the item that were fused with 
+ * current item.
+ * 
  * @author -Nemesiss-
  *
  */
-public class CompositeItemBlobEntry extends ItemBlobEntry {
+public class CompositeItemBlobEntry extends ItemBlobEntry{
 
 	CompositeItemBlobEntry() {
 		super(ItemBlobType.COMPOSITE_ITEM);
 	}
 
 	@Override
-	public void writeThisBlob(ByteBuffer buf) {
+	public
+	void writeThisBlob(ByteBuffer buf) {
 		Item item = parent.item;
 
 		writeD(buf, item.getFusionedItemId());
@@ -53,9 +55,8 @@ public class CompositeItemBlobEntry extends ItemBlobEntry {
 			Set<ManaStone> itemStones = item.getFusionStones();
 
 			for (ManaStone itemStone : itemStones) {
-				if (count == 6) {
+				if (count == 6)
 					break;
-				}
 
 				StatFunction modifier = itemStone.getFirstModifier();
 				if (modifier != null) {
@@ -65,7 +66,8 @@ public class CompositeItemBlobEntry extends ItemBlobEntry {
 				}
 			}
 			skip(buf, (6 - count) * 4);
-		} else {
+		}
+		else {
 			skip(buf, 24);
 		}
 		// for now max 6 stones - write some junk

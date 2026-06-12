@@ -34,9 +34,9 @@ import com.aionemu.gameserver.world.knownlist.Visitor;
 @AIName("trap")
 public class TrapNpcAI2 extends NpcAI2 {
 	public static int EVENT_SET_TRAP_RANGE = 1;
-
+	
 	private int trapRange = 0;
-
+	
 	@Override
 	protected void handleCreatureMoved(Creature creature) {
 		tryActivateTrap(creature);
@@ -72,10 +72,10 @@ public class TrapNpcAI2 extends NpcAI2 {
 			}
 		}
 	}
-
+	
 	@Override
 	protected void handleCustomEvent(int eventId, Object... args) {
-		if (eventId == EVENT_SET_TRAP_RANGE)
+		if(eventId == EVENT_SET_TRAP_RANGE)
 			trapRange = (Integer) args[0];
 	}
 
@@ -87,14 +87,14 @@ public class TrapNpcAI2 extends NpcAI2 {
 	@Override
 	protected AIAnswer pollInstance(AIQuestion question) {
 		switch (question) {
-		case SHOULD_DECAY:
-			return AIAnswers.NEGATIVE;
-		case SHOULD_RESPAWN:
-			return AIAnswers.NEGATIVE;
-		case SHOULD_REWARD:
-			return AIAnswers.NEGATIVE;
-		default:
-			return null;
+			case SHOULD_DECAY:
+				return AIAnswers.NEGATIVE;
+			case SHOULD_RESPAWN:
+				return AIAnswers.NEGATIVE;
+			case SHOULD_REWARD:
+				return AIAnswers.NEGATIVE;
+			default:
+				return null;
 		}
 	}
 

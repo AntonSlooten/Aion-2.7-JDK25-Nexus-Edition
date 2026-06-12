@@ -57,7 +57,8 @@ public class _1612LepharistSecrets extends QuestHandler {
 			if (targetId == 204530) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -68,24 +69,25 @@ public class _1612LepharistSecrets extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 700352: {
-				switch (env.getDialog()) {
-				case USE_OBJECT: {
-					switch (qs.getQuestVarById(0)) {
-					case 0:
-					case 1:
-					case 2: {
-						return useQuestObject(env, var, var + 1, false, true); // var++
-					}
-					case 3: {
-						return useQuestObject(env, 3, 3, true, true); // reward
-					}
+				case 700352: {
+					switch (env.getDialog()) {
+						case USE_OBJECT: {
+							switch (qs.getQuestVarById(0)) {
+								case 0:
+								case 1:
+								case 2: {
+									return useQuestObject(env, var, var + 1, false, true); // var++
+								}
+								case 3: {
+									return useQuestObject(env, 3, 3, true, true); // reward
+								}
+							}
+						}
 					}
 				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204530) {
 				if (env.getDialogId() == 1009)
 					return sendQuestDialog(env, 5);

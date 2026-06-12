@@ -18,7 +18,7 @@ package com.aionemu.gameserver.utils.gametime;
 
 /**
  * Responsible for updating the clock
- *
+ * 
  * @author Ben
  */
 public class GameTimeUpdater implements Runnable {
@@ -27,8 +27,9 @@ public class GameTimeUpdater implements Runnable {
 
 	/**
 	 * Constructs GameTimeUpdater to update the given GameTime
-	 *
-	 * @param time GameTime to update
+	 * 
+	 * @param time
+	 *          GameTime to update
 	 */
 	public GameTimeUpdater(GameTime time) {
 		this.time = time;

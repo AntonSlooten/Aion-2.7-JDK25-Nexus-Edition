@@ -57,7 +57,8 @@ public class PlayerDisconnectedEvent implements TeamEvent, Predicate<PlayerAllia
 		alliance.apply(this);
 		if (alliance.onlineMembers() == 0) {
 			PlayerAllianceService.disband(alliance);
-		} else {
+		}
+		else {
 			if (disconnected.equals(alliance.getLeader().getObject())) {
 				alliance.onEvent(new ChangeAllianceLeaderEvent(alliance));
 			}
@@ -69,8 +70,8 @@ public class PlayerDisconnectedEvent implements TeamEvent, Predicate<PlayerAllia
 		Player player = member.getObject();
 		if (!disconnected.getObjectId().equals(player.getObjectId())) {
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_FORCE_HE_BECOME_OFFLINE(disconnected.getName()));
-			PacketSendUtility.sendPacket(player,
-					new SM_ALLIANCE_MEMBER_INFO(disconnectedMember, PlayerAllianceEvent.DISCONNECTED));
+			PacketSendUtility.sendPacket(player, new SM_ALLIANCE_MEMBER_INFO(disconnectedMember,
+				PlayerAllianceEvent.DISCONNECTED));
 		}
 		return true;
 	}

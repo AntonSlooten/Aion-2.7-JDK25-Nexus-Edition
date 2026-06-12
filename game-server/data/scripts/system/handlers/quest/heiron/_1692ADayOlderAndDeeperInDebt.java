@@ -61,7 +61,8 @@ public class _1692ADayOlderAndDeeperInDebt extends QuestHandler {
 			if (targetId == 798386) {
 				if (env.getDialog() == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 		}
@@ -71,31 +72,31 @@ public class _1692ADayOlderAndDeeperInDebt extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 798386: {
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					long itemCount1 = player.getInventory().getItemCountByItemId(152000104);
-					if (itemCount1 >= 10) {
-						return sendQuestDialog(env, 5);
+				case 798386: {
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							long itemCount1 = player.getInventory().getItemCountByItemId(152000104);
+							if (itemCount1 >= 10) {
+								return sendQuestDialog(env, 5);
+							}
+						}
+						case SELECT_NO_REWARD: {
+							removeQuestItem(env, 152000104, 1);
+							removeQuestItem(env, 182400001, 1);
+							qs.setStatus(QuestStatus.COMPLETE);
+							qs.setCompleteCount(1);
+							Rewards rewards = DataManager.QUEST_DATA.getQuestById(questId).getRewards().get(0);
+							int rewardExp = rewards.getExp();
+							int rewardKinah = (int) (player.getRates().getQuestKinahRate() * rewards.getGold());
+							giveQuestItem(env, 182400001, rewardKinah);
+							player.getCommonData().addExp(rewardExp, RewardType.QUEST);
+							PacketSendUtility.sendPacket(player, new SM_QUEST_ACTION(questId, QuestStatus.COMPLETE, 2));
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
+							updateQuestStatus(env);
+							return true;
+						}
 					}
 				}
-				case SELECT_NO_REWARD: {
-					removeQuestItem(env, 152000104, 1);
-					removeQuestItem(env, 182400001, 1);
-					qs.setStatus(QuestStatus.COMPLETE);
-					qs.setCompleteCount(1);
-					Rewards rewards = DataManager.QUEST_DATA.getQuestById(questId).getRewards().get(0);
-					int rewardExp = rewards.getExp();
-					int rewardKinah = (int) (player.getRates().getQuestKinahRate() * rewards.getGold());
-					giveQuestItem(env, 182400001, rewardKinah);
-					player.getCommonData().addExp(rewardExp, RewardType.QUEST);
-					PacketSendUtility.sendPacket(player, new SM_QUEST_ACTION(questId, QuestStatus.COMPLETE, 2));
-					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 0));
-					updateQuestStatus(env);
-					return true;
-				}
-				}
-			}
 			}
 		}
 		return false;

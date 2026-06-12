@@ -38,13 +38,11 @@ public class ProcAtkInstantEffect extends DamageEffect {
 
 	@Override
 	public void applyEffect(Effect effect) {
-		if (effect.getEffector() instanceof Player) {
-			PacketSendUtility.sendPacket((Player) effect.getEffector(),
-					new SM_SYSTEM_MESSAGE(1301062, new DescriptionId(effect.getSkillTemplate().getNameId())));
-		}
-
-		effect.getEffected().getController().onAttack(effect.getEffector(), effect.getSkillId(), TYPE.DAMAGE,
-				effect.getReserved1(), false, LOG.PROCATKINSTANT);
+		if (effect.getEffector() instanceof Player)
+			PacketSendUtility.sendPacket((Player)effect.getEffector(), new SM_SYSTEM_MESSAGE(1301062, new DescriptionId(effect.getSkillTemplate().getNameId())));
+		
+		effect.getEffected().getController()
+			.onAttack(effect.getEffector(), effect.getSkillId(), TYPE.DAMAGE, effect.getReserved1(), false, LOG.PROCATKINSTANT);
 	}
 
 	@Override

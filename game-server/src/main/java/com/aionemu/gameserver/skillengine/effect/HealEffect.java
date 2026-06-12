@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlType;
 import com.aionemu.gameserver.skillengine.model.Effect;
 import com.aionemu.gameserver.skillengine.model.HealType;
 
+
 /**
  * @author kecimis
  *
@@ -40,7 +41,7 @@ public class HealEffect extends HealOverTimeEffect {
 	public void onPeriodicAction(Effect effect) {
 		super.onPeriodicAction(effect, HealType.HP);
 	}
-
+	
 	@Override
 	protected int getCurrentStatValue(Effect effect) {
 		return effect.getEffected().getLifeStats().getCurrentHp();

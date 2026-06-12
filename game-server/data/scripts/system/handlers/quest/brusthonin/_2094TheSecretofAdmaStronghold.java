@@ -77,89 +77,92 @@ public class _2094TheSecretofAdmaStronghold extends QuestHandler {
 			if (targetId == 204057)
 				return sendQuestEndDialog(env);
 			return false;
-		} else if (qs.getStatus() != QuestStatus.START) {
+		}
+		else if (qs.getStatus() != QuestStatus.START) {
 			return false;
 		}
 		if (targetId == 205150) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-				return true;
-			case STEP_TO_1:
-				if (var == 0) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
 					return true;
-				}
-			}
-		} else if (targetId == 205192) {
-			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 1)
-					return sendQuestDialog(env, 1352);
-				else if (var == 2)
-					return sendQuestDialog(env, 1693);
-				else if (var == 3)
-					return sendQuestDialog(env, 2034);
-				return true;
-			case STEP_TO_2:
-				if (var == 1) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			case CHECK_COLLECTED_ITEMS:
-				if (var == 2) {
-					if (QuestService.collectItemCheck(env, true)) {
+				case STEP_TO_1:
+					if (var == 0) {
 						qs.setQuestVarById(0, var + 1);
 						updateQuestStatus(env);
-						return sendQuestDialog(env, 10001);
-					} else
-						return sendQuestDialog(env, 10008);
-				}
-			case STEP_TO_4:
-				if (var == 3) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-				}
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
 			}
-		} else if (targetId == 205155) {
+		}
+		else if (targetId == 205192) {
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 5)
-					return sendQuestDialog(env, 2716);
-			case STEP_TO_6:
-				if (var == 5) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+				case START_DIALOG:
+					if (var == 1)
+						return sendQuestDialog(env, 1352);
+					else if (var == 2)
+						return sendQuestDialog(env, 1693);
+					else if (var == 3)
+						return sendQuestDialog(env, 2034);
 					return true;
-				}
+				case STEP_TO_2:
+					if (var == 1) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+				case CHECK_COLLECTED_ITEMS:
+					if (var == 2) {
+						if (QuestService.collectItemCheck(env, true)) {
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							return sendQuestDialog(env, 10001);
+						}
+						else
+							return sendQuestDialog(env, 10008);
+					}
+				case STEP_TO_4:
+					if (var == 3) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+					}
 			}
-		} else if (targetId == 730164) {
+		}
+		else if (targetId == 205155) {
 			switch (env.getDialog()) {
-			case USE_OBJECT:
-				if (var == 6) {
-					QuestService.addNewSpawn(220050000, 1, 205191, npc.getX(), npc.getY(), npc.getZ(), (byte) 0);
-					npc.getController().scheduleRespawn();
-					npc.getController().onDelete();
-					return true;
-				}
+				case START_DIALOG:
+					if (var == 5)
+						return sendQuestDialog(env, 2716);
+				case STEP_TO_6:
+					if (var == 5) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
 			}
-		} else if (targetId == 205191) {
+		}
+		else if (targetId == 730164) {
 			switch (env.getDialog()) {
-			case USE_OBJECT:
-				if (var == 6) {
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return true;
-				}
+				case USE_OBJECT:
+					if (var == 6) {
+						QuestService.addNewSpawn(220050000, 1, 205191, npc.getX(), npc.getY(), npc.getZ(), (byte) 0);
+						npc.getController().scheduleRespawn();
+						npc.getController().onDelete();
+						return true;
+					}
+			}
+		}
+		else if (targetId == 205191) {
+			switch (env.getDialog()) {
+				case USE_OBJECT:
+					if (var == 6) {
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						return true;
+					}
 			}
 		}
 		return false;

@@ -104,13 +104,15 @@ public class SummonerAI2 extends AggressiveNpcAI2 {
 
 				if (percent.isIndividual()) {
 					handleIndividualSpawnedSummons(percent);
-				} else if (percent.getSummons() != null) {
+				}
+				else if (percent.getSummons() != null) {
 					handleSpawnedSummons(percent);
 					for (SummonGroup summonGroup : percent.getSummons()) {
 						int count = 0;
 						if (summonGroup.getCount() != 0) {
 							count = summonGroup.getCount();
-						} else {
+						}
+						else {
 							count = Rnd.get(summonGroup.getMinCount(), summonGroup.getMaxCount());
 						}
 
@@ -134,7 +136,8 @@ public class SummonerAI2 extends AggressiveNpcAI2 {
 					SpawnTemplate summon = null;
 					if (summonGroup.getDistance() != 0) {
 						summon = rndSpawnInRange(summonGroup.getNpcId(), summonGroup.getDistance());
-					} else {
+					}
+					else {
 						summon = SpawnEngine.addNewSingleTimeSpawn(getPosition().getMapId(), summonGroup.getNpcId(),
 								summonGroup.getX(), summonGroup.getY(), summonGroup.getZ(), summonGroup.getH());
 					}
@@ -149,8 +152,8 @@ public class SummonerAI2 extends AggressiveNpcAI2 {
 		float direction = Rnd.get(0, 199) / 100f;
 		float x = (float) (Math.cos(Math.PI * direction) * distance);
 		float y = (float) (Math.sin(Math.PI * direction) * distance);
-		return SpawnEngine.addNewSingleTimeSpawn(getPosition().getMapId(), npcId, getPosition().getX() + x,
-				getPosition().getY() + y, getPosition().getZ(), getPosition().getHeading());
+		return SpawnEngine.addNewSingleTimeSpawn(getPosition().getMapId(), npcId, getPosition().getX() + x, getPosition().getY()
+			+ y, getPosition().getZ(), getPosition().getHeading());
 	}
 
 	protected void handleSpawnedSummons(Percentage percent) {

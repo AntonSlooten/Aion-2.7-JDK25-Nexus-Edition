@@ -38,7 +38,6 @@ public class MoveTaskManager extends AbstractPeriodicTaskManager {
 
 	private MoveTaskManager() {
 		super(100);
-		registerStartupHook();
 	}
 
 	public void addCreature(Creature creature) {
@@ -54,14 +53,14 @@ public class MoveTaskManager extends AbstractPeriodicTaskManager {
 		final FastList<Creature> arrivedCreatures = FastList.newInstance();
 		final FastList<Creature> followingCreatures = FastList.newInstance();
 
-		for (FastMap.Entry<Integer, Creature> e = movingCreatures.head(),
-				mapEnd = movingCreatures.tail(); (e = e.getNext()) != mapEnd;) {
+		for (FastMap.Entry<Integer, Creature> e = movingCreatures.head(), mapEnd = movingCreatures.tail(); (e = e.getNext()) != mapEnd;) {
 			Creature creature = e.getValue();
 			creature.getMoveController().moveToDestination();
 			if (creature.getAi2().poll(AIQuestion.DESTINATION_REACHED)) {
 				movingCreatures.remove(e.getKey());
 				arrivedCreatures.add(e.getValue());
-			} else {
+			}
+			else {
 				followingCreatures.add(e.getValue());
 			}
 		}
@@ -89,7 +88,8 @@ public class MoveTaskManager extends AbstractPeriodicTaskManager {
 			try {
 				creature.getAi2().onGeneralEvent(AIEventType.MOVE_ARRIVED);
 				ZoneUpdateService.getInstance().add(creature);
-			} catch (RuntimeException e) {
+			}
+			catch (RuntimeException e) {
 				log.warn("", e);
 			}
 		}
@@ -102,7 +102,8 @@ public class MoveTaskManager extends AbstractPeriodicTaskManager {
 			final Creature creature = removeFirst();
 			try {
 				creature.getAi2().onGeneralEvent(AIEventType.MOVE_VALIDATE);
-			} catch (RuntimeException e) {
+			}
+			catch (RuntimeException e) {
 				log.warn("", e);
 			}
 		}

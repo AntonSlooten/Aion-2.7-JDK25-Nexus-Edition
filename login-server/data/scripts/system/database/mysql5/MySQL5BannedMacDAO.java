@@ -20,7 +20,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+
+import javolution.util.FastMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,7 @@ public class MySQL5BannedMacDAO extends BannedMacDAO {
 
 	@Override
 	public Map<String, BannedMacEntry> load() {
-		Map<String, BannedMacEntry> map = new ConcurrentHashMap<>();
+		Map<String, BannedMacEntry> map = new FastMap<String, BannedMacEntry>();
 		PreparedStatement ps = DB.prepareStatement("SELECT `address`,`time`,`details` FROM `banned_mac`");
 		try {
 			ResultSet rs = ps.executeQuery();

@@ -38,41 +38,41 @@ public class EmpyreanRecordKeeperAI2 extends NpcAI2 {
 
 	@Override
 	public boolean onDialogSelect(Player player, int dialogId, int questId) {
-
+		
 		InstanceHandler instanceHandler = getPosition().getWorldMapInstance().getInstanceHandler();
 		if (dialogId == 10000) {
 			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 0));
 			switch (getNpcId()) {
-			case 799567:
-				instanceHandler.onChangeStage(StageType.START_STAGE_1_ELEVATOR);
-				break;
-			case 799568:
-				instanceHandler.onChangeStage(StageType.START_STAGE_2_ELEVATOR);
-				break;
-			case 799569:
-				instanceHandler.onChangeStage(StageType.START_STAGE_3_ELEVATOR);
-				break;
-			case 205331:
-				instanceHandler.onChangeStage(StageType.START_STAGE_4_ELEVATOR);
-				break;
-			case 205338: // teleport to stage 5
-				instanceHandler.onChangeStage(StageType.START_STAGE_5);
-				break;
-			case 205332:
-				instanceHandler.onChangeStage(StageType.START_STAGE_5_ROUND_1);
-				break;
-			case 205339: // teleport to stage 6
-				instanceHandler.onChangeStage(StageType.START_STAGE_6);
-				break;
-			case 205333:
-				instanceHandler.onChangeStage(StageType.START_STAGE_6_ROUND_1);
-				break;
-			case 205340: // teleport to stage 7
-				instanceHandler.onChangeStage(StageType.START_STAGE_7);
-				break;
-			case 205334:
-				instanceHandler.onChangeStage(StageType.START_STAGE_7_ROUND_1);
-				break;
+				case 799567:
+					instanceHandler.onChangeStage(StageType.START_STAGE_1_ELEVATOR);
+					break;
+				case 799568:
+					instanceHandler.onChangeStage(StageType.START_STAGE_2_ELEVATOR);
+					break;
+				case 799569:
+					instanceHandler.onChangeStage(StageType.START_STAGE_3_ELEVATOR);
+					break;
+				case 205331:
+					instanceHandler.onChangeStage(StageType.START_STAGE_4_ELEVATOR);
+					break;
+				case 205338: // teleport to stage 5
+					instanceHandler.onChangeStage(StageType.START_STAGE_5);
+					break;
+				case 205332:
+					instanceHandler.onChangeStage(StageType.START_STAGE_5_ROUND_1);
+					break;
+				case 205339: // teleport to stage 6
+					instanceHandler.onChangeStage(StageType.START_STAGE_6);
+					break;
+				case 205333:
+					instanceHandler.onChangeStage(StageType.START_STAGE_6_ROUND_1);
+					break;
+				case 205340: // teleport to stage 7
+					instanceHandler.onChangeStage(StageType.START_STAGE_7);
+					break;
+				case 205334:
+					instanceHandler.onChangeStage(StageType.START_STAGE_7_ROUND_1);
+					break;
 			}
 			AI2Actions.deleteOwner(this);
 		}

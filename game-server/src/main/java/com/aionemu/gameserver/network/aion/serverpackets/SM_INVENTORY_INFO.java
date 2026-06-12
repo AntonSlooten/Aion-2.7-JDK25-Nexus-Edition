@@ -28,7 +28,7 @@ import com.aionemu.gameserver.network.aion.iteminfo.ItemInfoBlob;
 
 /**
  * In this packet Server is sending Inventory Info
- *
+ * 
  * @author -Nemesiss-
  * @updater alexa026
  * @finisher Avol ;d modified by ATracer
@@ -83,12 +83,12 @@ public class SM_INVENTORY_INFO extends AionServerPacket {
 		writeC(0); // unk?
 		writeH(items.size()); // number of entries
 
-		for (Item item : items) {
+		for (Item item : items)
 			writeItemInfo(item);
-		}
 	}
 
-	private void writeItemInfo(Item item) {
+	private void writeItemInfo(Item item)
+	{
 		ItemTemplate itemTemplate = item.getItemTemplate();
 
 		writeD(item.getObjectId());
@@ -99,6 +99,6 @@ public class SM_INVENTORY_INFO extends AionServerPacket {
 		itemInfoBlob.writeMe(getBuf());
 
 		writeH(item.isEquipped() ? 255 : item.getEquipmentSlot()); // FF FF equipment
-		writeC(0x00);// isEquiped?
+		writeC(0x00);//isEquiped?
 	}
 }

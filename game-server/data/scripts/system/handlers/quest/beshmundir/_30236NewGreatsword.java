@@ -58,18 +58,21 @@ public class _30236NewGreatsword extends QuestHandler {
 				if (player.getInventory().getItemCountByItemId(100900716) >= 1) { // Noble Siel's Supreme Greatsword
 					if (dialog == QuestDialog.START_DIALOG) {
 						return sendQuestDialog(env, 4762);
-					} else {
+					}
+					else {
 						return sendQuestStartDialog(env);
 					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799032) { // Gefeios
 				if (dialog == QuestDialog.USE_OBJECT) {
 					if (player.getInventory().getItemCountByItemId(182209634) > 0) {
 						return sendQuestDialog(env, 10002);
 					}
-				} else {
+				}
+				else {
 					removeQuestItem(env, 182209634, 1);
 					return sendQuestEndDialog(env);
 				}
@@ -85,13 +88,13 @@ public class _30236NewGreatsword extends QuestHandler {
 		int targetId = env.getTargetId();
 		if (qs != null && qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 286904:
-			case 281419:
-			case 215795: {
-				if (QuestService.collectItemCheck(env, true)) {
-					return giveQuestItem(env, 182209634, 1);
+				case 286904:
+				case 281419:
+				case 215795: {
+					if (QuestService.collectItemCheck(env, true)) {
+						return giveQuestItem(env, 182209634, 1);
+					}
 				}
-			}
 			}
 		}
 		return false;

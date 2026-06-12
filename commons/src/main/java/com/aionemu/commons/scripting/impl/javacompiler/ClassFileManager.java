@@ -16,11 +16,10 @@
  */
 package com.aionemu.commons.scripting.impl.javacompiler;
 
-import javax.tools.*;
-import javax.tools.JavaFileObject.Kind;
-
 import com.aionemu.commons.scripting.ScriptClassLoader;
 
+import javax.tools.*;
+import javax.tools.JavaFileObject.Kind;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
@@ -51,8 +50,10 @@ public class ClassFileManager extends ForwardingJavaFileManager<JavaFileManager>
 	/**
 	 * Creates new ClassFileManager.
 	 *
-	 * @param compiler that will be used
-	 * @param listener class that will report compilation errors
+	 * @param compiler
+	 *          that will be used
+	 * @param listener
+	 *          class that will report compilation errors
 	 */
 	public ClassFileManager(JavaCompiler compiler, DiagnosticListener<? super JavaFileObject> listener) {
 		super(compiler.getStandardFileManager(listener, null, null));
@@ -61,16 +62,21 @@ public class ClassFileManager extends ForwardingJavaFileManager<JavaFileManager>
 	/**
 	 * Returns JavaFileObject that will be used to write class data into it by compier
 	 *
-	 * @param location  not used
-	 * @param className JavaFileObject will have this className
-	 * @param kind      not used
-	 * @param sibling   not used
+	 * @param location
+	 *          not used
+	 * @param className
+	 *          JavaFileObject will have this className
+	 * @param kind
+	 *          not used
+	 * @param sibling
+	 *          not used
 	 * @return JavaFileObject that will be uesd to store compiled class data
-	 * @throws IOException never thrown
+	 * @throws IOException
+	 *           never thrown
 	 */
 	@Override
 	public JavaFileObject getJavaFileForOutput(Location location, String className, Kind kind, FileObject sibling)
-			throws IOException {
+		throws IOException {
 		BinaryClass co = new BinaryClass(className);
 		compiledClasses.put(className, co);
 		return co;
@@ -79,7 +85,8 @@ public class ClassFileManager extends ForwardingJavaFileManager<JavaFileManager>
 	/**
 	 * Returns classloaded of this ClassFileManager. If not exists, creates new
 	 *
-	 * @param location not used
+	 * @param location
+	 *          not used
 	 * @return classLoader of this ClassFileManager
 	 */
 	@Override
@@ -87,7 +94,8 @@ public class ClassFileManager extends ForwardingJavaFileManager<JavaFileManager>
 		if (loader == null) {
 			if (parentClassLoader != null) {
 				loader = new ScriptClassLoaderImpl(this, parentClassLoader);
-			} else {
+			}
+			else {
 				loader = new ScriptClassLoaderImpl(this);
 			}
 		}
@@ -97,7 +105,8 @@ public class ClassFileManager extends ForwardingJavaFileManager<JavaFileManager>
 	/**
 	 * Sets paraentClassLoader for this classLoader
 	 *
-	 * @param classLoader parent class loader
+	 * @param classLoader
+	 *          parent class loader
 	 */
 	public void setParentClassLoader(ScriptClassLoader classLoader) {
 		this.parentClassLoader = classLoader;
@@ -106,8 +115,10 @@ public class ClassFileManager extends ForwardingJavaFileManager<JavaFileManager>
 	/**
 	 * Adds library file. Library file must be a .jar archieve
 	 *
-	 * @param file link to jar archieve
-	 * @throws IOException if something goes wrong
+	 * @param file
+	 *          link to jar archieve
+	 * @throws IOException
+	 *           if something goes wrong
 	 */
 	public void addLibrary(File file) throws IOException {
 		ScriptClassLoaderImpl classLoader = getClassLoader(null);
@@ -117,8 +128,10 @@ public class ClassFileManager extends ForwardingJavaFileManager<JavaFileManager>
 	/**
 	 * Adds list of files as libraries. Files must be jar archieves
 	 *
-	 * @param files list of jar archives
-	 * @throws IOException if something goes wrong
+	 * @param files
+	 *          list of jar archives
+	 * @throws IOException
+	 *           if something goes wrong
 	 */
 	public void addLibraries(Iterable<File> files) throws IOException {
 		for (File f : files) {
@@ -140,16 +153,21 @@ public class ClassFileManager extends ForwardingJavaFileManager<JavaFileManager>
 	 * may need during compilation. Compiler by itself can't detect them. So we have to use this hack here. Hack is used
 	 * only if compiler requests for classes in classpath.
 	 *
-	 * @param location    Location to search classes
-	 * @param packageName package to scan for classes
-	 * @param kinds       FileTypes to search
-	 * @param recurse     not used
+	 * @param location
+	 *          Location to search classes
+	 * @param packageName
+	 *          package to scan for classes
+	 * @param kinds
+	 *          FileTypes to search
+	 * @param recurse
+	 *          not used
 	 * @return list of requered files
-	 * @throws IOException if something foes wrong
+	 * @throws IOException
+	 *           if something foes wrong
 	 */
 	@Override
 	public Iterable<JavaFileObject> list(Location location, String packageName, Set<Kind> kinds, boolean recurse)
-			throws IOException {
+		throws IOException {
 		Iterable<JavaFileObject> objects = super.list(location, packageName, kinds, recurse);
 
 		if (StandardLocation.CLASS_PATH.equals(location) && kinds.contains(Kind.CLASS)) {
@@ -169,7 +187,7 @@ public class ClassFileManager extends ForwardingJavaFileManager<JavaFileManager>
 	@Override
 	public String inferBinaryName(Location location, JavaFileObject file) {
 		if (file instanceof BinaryClass) {
-			return ((BinaryClass) file).inferBinaryName();
+			return ((BinaryClass) file).inferBinaryName(null);
 		}
 
 		return super.inferBinaryName(location, file);

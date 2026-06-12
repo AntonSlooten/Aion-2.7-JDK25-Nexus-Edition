@@ -62,11 +62,10 @@ public class ArtifactLocation extends SiegeLocation {
 	public int getCoolDown() {
 		long i = this.template.getActivation().getCd();
 		long l = System.currentTimeMillis() - this.lastArtifactActivation;
-		if (l > i) {
+		if (l > i)
 			return 0;
-		} else {
+		else
 			return (int) ((i - l) / 1000);
-		}
 	}
 
 	/**

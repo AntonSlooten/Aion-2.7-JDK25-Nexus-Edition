@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.com>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -15,6 +15,7 @@
  *  along with aion-unique.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
+
 
 import javolution.util.FastMap;
 
@@ -35,9 +36,8 @@ public class SM_NEARBY_QUESTS extends AionServerPacket {
 
 	@Override
 	protected void writeImpl(AionConnection con) {
-		if (questIds == null || con.getActivePlayer() == null) {
+		if (questIds == null || con.getActivePlayer() == null)
 			return;
-		}
 
 		writeC(0);
 		writeH(-questIds.size() & 0xFFFF);

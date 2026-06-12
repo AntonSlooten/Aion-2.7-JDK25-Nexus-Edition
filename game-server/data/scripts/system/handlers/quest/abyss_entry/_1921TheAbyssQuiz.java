@@ -58,48 +58,49 @@ public class _1921TheAbyssQuiz extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203752: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1); // 1
+				case 203752: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+						case STEP_TO_1:
+							return defaultCloseDialog(env, 0, 1); // 1
+					}
 				}
-			}
-				break;
-			case 203836: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_2:
-					return defaultCloseDialog(env, 1, 2); // 2
+					break;
+				case 203836: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 1)
+								return sendQuestDialog(env, 1352);
+						case STEP_TO_2:
+							return defaultCloseDialog(env, 1, 2); // 2
+					}
 				}
-			}
-				break;
-			case 203834: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 2)
-						return sendQuestDialog(env, 1693);
-				case STEP_TO_3:
-					return defaultCloseDialog(env, 2, 3); // 3
+					break;
+				case 203834: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 2)
+								return sendQuestDialog(env, 1693);
+						case STEP_TO_3:
+							return defaultCloseDialog(env, 2, 3); // 3
+					}
 				}
-			}
-				break;
-			case 203833: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 3)
-						return sendQuestDialog(env, 2034);
-				case SET_REWARD:
-					return defaultCloseDialog(env, 3, 3, true, false); // reward
+					break;
+				case 203833: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 3)
+								return sendQuestDialog(env, 2034);
+						case SET_REWARD:
+							return defaultCloseDialog(env, 3, 3, true, false); // reward
+					}
 				}
+					break;
 			}
-				break;
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203830) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT)
 					return sendQuestDialog(env, 10002);

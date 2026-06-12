@@ -25,9 +25,8 @@ import com.aionemu.gameserver.questEngine.model.QuestStatus;
 import com.aionemu.gameserver.services.QuestService;
 
 /**
- * Speak to Telemachus (203901). Talk with Daedalus (203930) about your flight
- * test. Go through all the rings within the time limit. Talk with Daedalus
- * again. Report to Telemachus.
+ * Speak to Telemachus (203901). Talk with Daedalus (203930) about your flight test. Go through all the rings within the
+ * time limit. Talk with Daedalus again. Report to Telemachus.
  * 
  * @author Hellboy, aion4Free, Hilgert
  * @reworked vlog
@@ -36,8 +35,8 @@ public class _1044TestingFlightSkills extends QuestHandler {
 
 	private final static int questId = 1044;
 	private String[] rings = { "ELTNEN_FORTRESS_210020000_1", "ELTNEN_FORTRESS_210020000_2",
-			"ELTNEN_FORTRESS_210020000_3", "ELTNEN_FORTRESS_210020000_4", "ELTNEN_FORTRESS_210020000_5",
-			"ELTNEN_FORTRESS_210020000_6" };
+		"ELTNEN_FORTRESS_210020000_3", "ELTNEN_FORTRESS_210020000_4", "ELTNEN_FORTRESS_210020000_5",
+		"ELTNEN_FORTRESS_210020000_6" };
 
 	public _1044TestingFlightSkills() {
 		super(questId);
@@ -68,61 +67,66 @@ public class _1044TestingFlightSkills extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203901: { // Telemachus
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 203901: { // Telemachus
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+						case FINISH_DIALOG: {
+							return defaultCloseDialog(env, 0, 0);
+						}
+					}
+					break;
+				}
+				case 203930: { // Daedalus
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+							else if (var == 8) {
+								return sendQuestDialog(env, 1693);
+							}
+							else if (var == 9) {
+								return sendQuestDialog(env, 3057);
+							}
+						}
+						case STEP_TO_2: {
+							if (var == 1) {
+								QuestService.questTimerStart(env, 150);
+								return defaultCloseDialog(env, 1, 2); // 2
+							}
+							else if (var == 9) {
+								QuestService.questTimerStart(env, 150);
+								return defaultCloseDialog(env, 9, 2); // 2
+							}
+						}
+						case SET_REWARD: {
+							if (var == 8) {
+								qs.setQuestVar(9);
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestSelectionDialog(env);
+							}
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				case FINISH_DIALOG: {
-					return defaultCloseDialog(env, 0, 0);
-				}
-				}
-				break;
 			}
-			case 203930: { // Daedalus
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					} else if (var == 8) {
-						return sendQuestDialog(env, 1693);
-					} else if (var == 9) {
-						return sendQuestDialog(env, 3057);
-					}
-				}
-				case STEP_TO_2: {
-					if (var == 1) {
-						QuestService.questTimerStart(env, 150);
-						return defaultCloseDialog(env, 1, 2); // 2
-					} else if (var == 9) {
-						QuestService.questTimerStart(env, 150);
-						return defaultCloseDialog(env, 9, 2); // 2
-					}
-				}
-				case SET_REWARD: {
-					if (var == 8) {
-						qs.setQuestVar(9);
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestSelectionDialog(env);
-					}
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203901) { // Telemachus
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
@@ -143,19 +147,24 @@ public class _1044TestingFlightSkills extends QuestHandler {
 			if (rings[0].equals(flyingRing)) {
 				changeQuestStep(env, 2, 3, false); // 3
 				return true;
-			} else if (rings[1].equals(flyingRing)) {
+			}
+			else if (rings[1].equals(flyingRing)) {
 				changeQuestStep(env, 3, 4, false); // 4
 				return true;
-			} else if (rings[2].equals(flyingRing)) {
+			}
+			else if (rings[2].equals(flyingRing)) {
 				changeQuestStep(env, 4, 5, false); // 5
 				return true;
-			} else if (rings[3].equals(flyingRing)) {
+			}
+			else if (rings[3].equals(flyingRing)) {
 				changeQuestStep(env, 5, 6, false); // 6
 				return true;
-			} else if (rings[4].equals(flyingRing)) {
+			}
+			else if (rings[4].equals(flyingRing)) {
 				changeQuestStep(env, 6, 7, false); // 7
 				return true;
-			} else if (rings[5].equals(flyingRing)) {
+			}
+			else if (rings[5].equals(flyingRing)) {
 				changeQuestStep(env, 7, 8, false); // 8
 				QuestService.questTimerEnd(env);
 				return true;

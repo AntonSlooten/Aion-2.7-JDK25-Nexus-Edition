@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import com.aionemu.gameserver.model.templates.factions.NpcFactionTemplate;
 
+
 /**
  * @author vlog
  */
@@ -37,23 +38,22 @@ public class NpcFactionsData {
 
 	@XmlElement(name = "npc_faction", required = true)
 	protected List<NpcFactionTemplate> npcFactionsData;
-	private TIntObjectHashMap<NpcFactionTemplate> factionsById = new TIntObjectHashMap<>();
-	private TIntObjectHashMap<NpcFactionTemplate> factionsByNpcId = new TIntObjectHashMap<>();
-
+	private TIntObjectHashMap<NpcFactionTemplate> factionsById =  new TIntObjectHashMap<NpcFactionTemplate>();
+	private TIntObjectHashMap<NpcFactionTemplate> factionsByNpcId =  new TIntObjectHashMap<NpcFactionTemplate>();
+	
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		factionsById.clear();
 		for (NpcFactionTemplate template : npcFactionsData) {
 			factionsById.put(template.getId(), template);
-			if (template.getNpcId() != 0) {
+			if (template.getNpcId() != 0)
 				factionsByNpcId.put(template.getNpcId(), template);
-			}
 		}
 	}
-
+	
 	public NpcFactionTemplate getNpcFactionById(int id) {
 		return factionsById.get(id);
 	}
-
+	
 	public NpcFactionTemplate getNpcFactionByNpcId(int id) {
 		return factionsByNpcId.get(id);
 	}
@@ -61,7 +61,7 @@ public class NpcFactionsData {
 	public List<NpcFactionTemplate> getNpcFactionsData() {
 		return npcFactionsData;
 	}
-
+	
 	public int size() {
 		return npcFactionsData.size();
 	}

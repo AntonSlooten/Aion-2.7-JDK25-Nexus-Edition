@@ -3565,10 +3565,12 @@
 		</spawn>
 		<!-- Gellner -->
 		<spawn npc_id="798369" respawn_time="295">
+			<temporary_spawn spawn_time="7.*.*" despawn_time="9.*.*"/>
 			<spot x="2074.94" y="1257.39" z="171.088" h="9"/>
 		</spawn>
 		<!-- Natorp -->
 		<spawn npc_id="798370" respawn_time="295">
+			<temporary_spawn spawn_time="5.*.*" despawn_time="7.*.*"/>
 			<spot x="1765.54" y="2183.49" z="243.493" h="64"/>
 		</spawn>
 		<!-- Muir -->

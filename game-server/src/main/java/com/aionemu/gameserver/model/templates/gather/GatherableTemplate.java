@@ -67,20 +67,19 @@ public class GatherableTemplate extends VisibleObjectTemplate {
 	protected int checkType;
 	@XmlAttribute
 	protected int eraseValue;
-
 	/**
 	 * Gets the value of the materials property.
-	 *
+	 * 
 	 * @return possible object is {@link Materials }
 	 */
 	public Materials getMaterials() {
 		return materials;
 	}
-
+	
 	public ExMaterials getExtraMaterials() {
 		return exmaterials;
 	}
-
+	
 	/**
 	 * Gets the value of the id property.
 	 */
@@ -91,7 +90,7 @@ public class GatherableTemplate extends VisibleObjectTemplate {
 
 	/**
 	 * Gets the value of the aerialAdj property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public int getAerialAdj() {
@@ -100,7 +99,7 @@ public class GatherableTemplate extends VisibleObjectTemplate {
 
 	/**
 	 * Gets the value of the failureAdj property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public int getFailureAdj() {
@@ -109,7 +108,7 @@ public class GatherableTemplate extends VisibleObjectTemplate {
 
 	/**
 	 * Gets the value of the successAdj property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public int getSuccessAdj() {
@@ -118,7 +117,7 @@ public class GatherableTemplate extends VisibleObjectTemplate {
 
 	/**
 	 * Gets the value of the harvestSkill property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public int getHarvestSkill() {
@@ -127,7 +126,7 @@ public class GatherableTemplate extends VisibleObjectTemplate {
 
 	/**
 	 * Gets the value of the skillLevel property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public int getSkillLevel() {
@@ -136,7 +135,7 @@ public class GatherableTemplate extends VisibleObjectTemplate {
 
 	/**
 	 * Gets the value of the harvestCount property.
-	 *
+	 * 
 	 * @return possible object is {@link Integer }
 	 */
 	public int getHarvestCount() {
@@ -145,7 +144,7 @@ public class GatherableTemplate extends VisibleObjectTemplate {
 
 	/**
 	 * Gets the value of the sourceType property.
-	 *
+	 * 
 	 * @return possible object is {@link String }
 	 */
 	public String getSourceType() {
@@ -154,7 +153,7 @@ public class GatherableTemplate extends VisibleObjectTemplate {
 
 	/**
 	 * Gets the value of the name property.
-	 *
+	 * 
 	 * @return possible object is {@link String }
 	 */
 	@Override
@@ -173,15 +172,15 @@ public class GatherableTemplate extends VisibleObjectTemplate {
 	public int getCaptchaRate() {
 		return captcha;
 	}
-
+	
 	public int getLevelLimit() {
 		return lvlLimit;
 	}
-
+	
 	public int getRequiredItemId() {
 		return reqItem;
 	}
-
+	
 	public int getRequiredItemNameId() {
 		return reqItemNameId * 2 + 1;
 	}
@@ -189,7 +188,7 @@ public class GatherableTemplate extends VisibleObjectTemplate {
 	public int getCheckType() {
 		return checkType;
 	}
-
+	
 	public boolean isRequiredToDestroy() {
 		return eraseValue == 1;
 	}

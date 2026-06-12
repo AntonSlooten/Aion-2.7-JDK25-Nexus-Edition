@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.smfnew.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify

@@ -74,6 +74,8 @@ public class _89999ItemGiving extends QuestHandler {
 				return true;
 			}
 		}
+		default:
+			break;
 		}
 		return false;
 

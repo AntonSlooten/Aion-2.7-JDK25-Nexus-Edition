@@ -32,7 +32,7 @@ import com.aionemu.gameserver.services.player.PlayerService;
  * Client sends request to delete macro #3.<br>
  * And macro #4 becomes macro #3.<br>
  * So we have to use a list to store macros properly.
- *
+ * 
  * @author SoulKeeper
  */
 public class CM_MACRO_DELETE extends AionClientPacket {
@@ -49,7 +49,7 @@ public class CM_MACRO_DELETE extends AionClientPacket {
 
 	/**
 	 * Constructs new client packet instance.
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_MACRO_DELETE(int opcode, State state, State... restStates) {

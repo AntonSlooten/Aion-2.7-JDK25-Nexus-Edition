@@ -37,6 +37,8 @@
 			<xs:enumeration value="WAREHOUSE"/>
 			<xs:enumeration value="BAG"/>
 			<xs:enumeration value="WING"/>
+			<xs:enumeration value="LOOT"/>
+			<xs:enumeration value="DOPING"/>
 		</xs:restriction>
 	</xs:simpleType>
 </xs:schema>

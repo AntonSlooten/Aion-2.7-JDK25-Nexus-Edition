@@ -25,7 +25,11 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "TargetAttribute")
 @XmlEnum
 public enum TargetAttribute {
-	NPC, PC, ALL, SELF, NONE;
+	NPC,
+	PC,
+	ALL,
+	SELF,
+	NONE;
 
 	public String value() {
 		return name();

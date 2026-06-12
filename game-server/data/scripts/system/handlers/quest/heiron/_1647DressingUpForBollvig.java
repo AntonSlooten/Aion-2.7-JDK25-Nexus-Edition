@@ -52,20 +52,21 @@ public class _1647DressingUpForBollvig extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 790019) { // Zetus
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 4762);
-				}
-				default: {
-					return sendQuestStartDialog(env, 182201783, 1);
-				}
+					case START_DIALOG: {
+						return sendQuestDialog(env, 4762);
+					}
+					default: {
+						return sendQuestStartDialog(env, 182201783, 1);
+					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 700272) { // Suspicious Stone Statue
 				if (dialog == QuestDialog.USE_OBJECT) {
 					// Wearing Stenon Blouse and Stenon Skirt
 					if (!player.getEquipment().getEquippedItemsByItemId(110100150).isEmpty()
-							&& !player.getEquipment().getEquippedItemsByItemId(113100144).isEmpty()) {
+						&& !player.getEquipment().getEquippedItemsByItemId(113100144).isEmpty()) {
 						// Having Myanee's Flute
 						if (player.getInventory().getItemCountByItemId(182201783) > 0) {
 							// TODO: movie
@@ -74,15 +75,16 @@ public class _1647DressingUpForBollvig extends QuestHandler {
 					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 790019) { // Zetus
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 10002);
-				}
-				default: {
-					return sendQuestEndDialog(env);
-				}
+					case START_DIALOG: {
+						return sendQuestDialog(env, 10002);
+					}
+					default: {
+						return sendQuestEndDialog(env);
+					}
 				}
 			}
 		}

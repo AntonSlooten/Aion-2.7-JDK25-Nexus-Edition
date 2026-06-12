@@ -52,11 +52,13 @@ public class MoveBehindEffect extends DamageEffect {
 
 	@Override
 	public void calculate(Effect effect) {
-		if ((effect.getEffected() == null) || !(effect.getEffector() instanceof Player)
-				|| !super.calculate(effect, DamageType.PHYSICAL)) {
+		if (effect.getEffected() == null)
 			return;
-		}
-
+		if (!(effect.getEffector() instanceof Player))
+			return;
+		if (!super.calculate(effect, DamageType.PHYSICAL))
+			return;
+		
 		effect.setDashStatus(DashStatus.MOVEBEHIND);
 
 		final Creature effected = effect.getEffected();
@@ -64,7 +66,7 @@ public class MoveBehindEffect extends DamageEffect {
 		float x1 = (float) (Math.cos(Math.PI + radian) * 1.3F);
 		float y1 = (float) (Math.sin(Math.PI + radian) * 1.3F);
 		float z = GeoService.getInstance().getZAfterMoveBehind(effected.getWorldId(), effected.getX() + x1,
-				effected.getY() + y1, effected.getZ(), effected.getInstanceId());
+			effected.getY() + y1, effected.getZ(), effected.getInstanceId());
 		effect.getSkill().setTargetPosition(effected.getX() + x1, effected.getY() + y1, z, effected.getHeading());
 	}
 }

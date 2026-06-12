@@ -51,7 +51,7 @@ public class ExchangeService {
 
 	private static final Logger log = LoggerFactory.getLogger(ExchangeService.class);
 
-	private Map<Integer, Exchange> exchanges = new HashMap<>();
+	private Map<Integer, Exchange> exchanges = new HashMap<Integer, Exchange>();
 
 	private ExchangePeriodicTaskManager saveManager;
 
@@ -73,9 +73,8 @@ public class ExchangeService {
 	 * @param objectId2
 	 */
 	public void registerExchange(Player player1, Player player2) {
-		if (!validateParticipants(player1, player2)) {
+		if (!validateParticipants(player1, player2))
 			return;
-		}
 
 		player1.setTrading(true);
 		player2.setTrading(true);
@@ -130,9 +129,11 @@ public class ExchangeService {
 	 */
 	public void addKinah(Player activePlayer, long itemCount) {
 		Exchange currentExchange = getCurrentExchange(activePlayer);
-		if (currentExchange == null || currentExchange.isLocked() || (itemCount < 1)) {
+		if (currentExchange == null || currentExchange.isLocked())
 			return;
-		}
+
+		if (itemCount < 1)
+			return;
 
 		// count total amount in inventory
 		long availableCount = activePlayer.getInventory().getKinah();
@@ -147,11 +148,6 @@ public class ExchangeService {
 			PacketSendUtility.sendPacket(activePlayer, new SM_EXCHANGE_ADD_KINAH(countToAdd, 0));
 			PacketSendUtility.sendPacket(partner, new SM_EXCHANGE_ADD_KINAH(countToAdd, 1));
 			currentExchange.addKinah(countToAdd);
-			if (LoggingConfig.LOG_PLAYER_EXCHANGE) {
-				log.info("[PLAYER EXCHANGE] > [Player: " + activePlayer.getName() + "] exchanged [Item: 182400001"
-						+ (LoggingConfig.ENABLE_ADVANCED_LOGGING ? "] [Item Name: Kinah]" : "]") + " [Count: "
-						+ countToAdd + "] with [Partner: " + partner.getName() + "]");
-			}
 		}
 	}
 
@@ -162,41 +158,35 @@ public class ExchangeService {
 	 */
 	public void addItem(Player activePlayer, int itemObjId, long itemCount) {
 		Item item = activePlayer.getInventory().getItemByObjId(itemObjId);
-		if (item == null) {
+		if (item == null)
 			return;
-		}
 
 		Player partner = getCurrentParter(activePlayer);
-		if (partner == null) {
+		if (partner == null)
 			return;
-		}
-		if (!TemporaryTradeTimeTask.getInstance().canTrade(item, partner.getObjectId())) {
-			if (!item.isTradeable(activePlayer)) {
+		if (!TemporaryTradeTimeTask.getInstance().canTrade(item, partner.getObjectId()))
+			if (!item.isTradeable(activePlayer))
 				return;
-			}
-		}
 
-		if ((itemCount < 1) || (itemCount > item.getItemCount())) {
+		if (itemCount < 1)
 			return;
-		}
+
+		if (itemCount > item.getItemCount())
+			return;
 
 		Exchange currentExchange = getCurrentExchange(activePlayer);
 
-		if (currentExchange == null) {
+		if (currentExchange == null)
 			return;
-		}
 
-		if (currentExchange.isLocked()) {
+		if (currentExchange.isLocked())
 			return;
-		}
 
-		if (currentExchange.isExchangeListFull()) {
+		if (currentExchange.isExchangeListFull())
 			return;
-		}
-
-		if (!AdminService.getInstance().canOperate(activePlayer, partner, item, "trade")) {
+		
+		if(!AdminService.getInstance().canOperate(activePlayer, partner, item, "trade"))
 			return;
-		}
 
 		ExchangeItem exchangeItem = currentExchange.getItems().get(item.getObjectId());
 
@@ -206,7 +196,8 @@ public class ExchangeService {
 			Item newItem = null;
 			if (itemCount < item.getItemCount()) {
 				newItem = ItemFactory.newItem(item.getItemId(), itemCount);
-			} else {
+			}
+			else {
 				newItem = item;
 			}
 			exchangeItem = new ExchangeItem(itemObjId, itemCount, newItem);
@@ -217,9 +208,8 @@ public class ExchangeService {
 		else {
 			// if player add item count that is more than possible
 			// happens with exploits
-			if (item.getItemCount() == exchangeItem.getItemCount()) {
+			if (item.getItemCount() == exchangeItem.getItemCount())
 				return;
-			}
 
 			long possibleToAdd = item.getItemCount() - exchangeItem.getItemCount();
 			actuallAddCount = itemCount > possibleToAdd ? possibleToAdd : itemCount;
@@ -228,16 +218,6 @@ public class ExchangeService {
 
 		PacketSendUtility.sendPacket(activePlayer, new SM_EXCHANGE_ADD_ITEM(0, exchangeItem.getItem(), activePlayer));
 		PacketSendUtility.sendPacket(partner, new SM_EXCHANGE_ADD_ITEM(1, exchangeItem.getItem(), partner));
-
-		Item exchangedItem = exchangeItem.getItem();
-
-		if (LoggingConfig.LOG_PLAYER_EXCHANGE) {
-			log.info("[PLAYER EXCHANGE] > [Player: " + activePlayer.getName() + "] exchanged [Item: "
-					+ exchangedItem.getItemId()
-					+ (LoggingConfig.ENABLE_ADVANCED_LOGGING ? "] [Item Name: " + exchangedItem.getItemName() + "]"
-							: "]")
-					+ " [Count: " + exchangeItem.getItemCount() + " with [Partner: " + partner.getName() + "]");
-		}
 	}
 
 	/**
@@ -258,25 +238,22 @@ public class ExchangeService {
 	public void cancelExchange(Player activePlayer) {
 		Player currentParter = getCurrentParter(activePlayer);
 		cleanupExchanges(activePlayer, currentParter);
-		if (currentParter != null) {
+		if (currentParter != null)
 			PacketSendUtility.sendPacket(currentParter, new SM_EXCHANGE_CONFIRMATION(1));
-		}
 	}
 
 	/**
 	 * @param activePlayer
 	 */
 	public void confirmExchange(Player activePlayer) {
-		if (activePlayer == null || !activePlayer.isOnline()) {
+		if (activePlayer == null || !activePlayer.isOnline())
 			return;
-		}
 
 		Exchange currentExchange = getCurrentExchange(activePlayer);
 
 		// TODO: Why is exchange null =/
-		if (currentExchange == null) {
+		if (currentExchange == null)
 			return;
-		}
 		currentExchange.confirm();
 
 		Player currentPartner = getCurrentParter(activePlayer);
@@ -292,7 +269,6 @@ public class ExchangeService {
 	 * @param currentPartner
 	 */
 	private void performTrade(Player activePlayer, Player currentPartner) {
-		// TODO message here
 		// TODO release item id if return
 		if (!validateExchange(activePlayer, currentPartner)) {
 			cleanupExchanges(activePlayer, currentPartner);
@@ -304,9 +280,9 @@ public class ExchangeService {
 
 		cleanupExchanges(activePlayer, currentPartner);
 
-		if (!removeItemsFromInventory(activePlayer, exchange1)
-				|| !removeItemsFromInventory(currentPartner, exchange2)) {
-			AuditLogger.info(activePlayer, "Exchange kinah exploit partner: " + currentPartner.getName());
+		if (!removeItemsFromInventory(activePlayer, exchange1) || !removeItemsFromInventory(currentPartner, exchange2)) {
+			AuditLogger.info(activePlayer, "Exchange kinah exploit partner: "
+				+ currentPartner.getName());
 			return;
 		}
 
@@ -315,9 +291,34 @@ public class ExchangeService {
 
 		putItemToInventory(currentPartner, exchange1, exchange2);
 		putItemToInventory(activePlayer, exchange2, exchange1);
-
-		saveManager.add(new ExchangeOpSaveTask(exchange1.getActiveplayer().getObjectId(),
-				exchange2.getActiveplayer().getObjectId(), exchange1.getItemsToUpdate(), exchange2.getItemsToUpdate()));
+		
+		if(LoggingConfig.LOG_PLAYER_EXCHANGE) {
+			//TODO: improve the code here 
+			for (ExchangeItem exchangeItem : exchange1.getItems().values()) {
+				Item itemToPut = exchangeItem.getItem();
+				log.info("[PLAYER EXCHANGE] > [Player: " + activePlayer.getName() + "] exchanged "
+						+ "[Item: " + itemToPut.getItemId() 
+						+ (LoggingConfig.ENABLE_ADVANCED_LOGGING ? "] [Item Name: " + itemToPut.getItemName() + "]" : "]") 
+						+ " [Count: " + exchangeItem.getItemCount() + " with [Partner: " + currentPartner.getName() + "]");
+			}
+			for (ExchangeItem exchangeItem : exchange2.getItems().values()) {
+				Item itemToPut = exchangeItem.getItem();
+				log.info("[PLAYER EXCHANGE] > [Player: " + currentPartner.getName() + "] exchanged "
+						+ "[Item: " + itemToPut.getItemId() 
+						+ (LoggingConfig.ENABLE_ADVANCED_LOGGING ? "] [Item Name: " + itemToPut.getItemName() + "]" : "]") 
+						+ " [Count: " + exchangeItem.getItemCount() + " with [Partner: " + activePlayer.getName() + "]");
+			}
+			long kinahToExchange = exchange1.getKinahCount() + exchange2.getKinahCount();
+			if (kinahToExchange > 0) {
+				log.info("[PLAYER EXCHANGE] > [Player: " + activePlayer.getName() + "] exchanged " + exchange1.getKinahCount()
+						+ " kinahs with " + currentPartner.getName());
+				log.info("[PLAYER EXCHANGE] > [Player: " + currentPartner.getName() + "] exchanged " + exchange2.getKinahCount()
+						+ " kinahs with " + activePlayer.getName());
+			}
+		}
+		
+		saveManager.add(new ExchangeOpSaveTask(exchange1.getActiveplayer().getObjectId(), exchange2.getActiveplayer()
+			.getObjectId(), exchange1.getItemsToUpdate(), exchange2.getItemsToUpdate()));
 	}
 
 	/**
@@ -346,31 +347,30 @@ public class ExchangeService {
 		for (ExchangeItem exchangeItem : exchange.getItems().values()) {
 			Item item = exchangeItem.getItem();
 			Item itemInInventory = inventory.getItemByObjId(exchangeItem.getItemObjId());
-			if (itemInInventory == null) {
+			if(itemInInventory == null) {
 				AuditLogger.info(player, "Try to trade unexisting item.");
 				return false;
 			}
-
+			
 			long itemCount = exchangeItem.getItemCount();
 
 			if (itemCount < itemInInventory.getItemCount()) {
 				inventory.decreaseItemCount(itemInInventory, itemCount);
 				exchange.addItemToUpdate(itemInInventory);
-			} else {
-				// remove from source inventory only
+			}
+			else {
+				//remove from source inventory only
 				inventory.remove(itemInInventory);
 				exchangeItem.setItem(itemInInventory);
-				// release when only part stack was added in the beginning -> full stack in the
-				// end
-				if (item.getObjectId() != exchangeItem.getItemObjId()) {
+				// release when only part stack was added in the beginning -> full stack in the end
+				if (item.getObjectId() != exchangeItem.getItemObjId()){
 					ItemService.releaseItemId(item);
 				}
 				PacketSendUtility.sendPacket(player, new SM_DELETE_ITEM(itemInInventory.getObjectId()));
 			}
 		}
-		if (!player.getInventory().tryDecreaseKinah(exchange.getKinahCount())) {
+		if (!player.getInventory().tryDecreaseKinah(exchange.getKinahCount()))
 			return false;
-		}
 		exchange.addItemToUpdate(player.getInventory().getKinahItem());
 		return true;
 	}
@@ -438,8 +438,7 @@ public class ExchangeService {
 	}
 
 	/**
-	 * This class is used for storing all items in one shot after any exchange
-	 * operation
+	 * This class is used for storing all items in one shot after any exchange operation
 	 */
 	public static final class ExchangeOpSaveTask implements Runnable {
 

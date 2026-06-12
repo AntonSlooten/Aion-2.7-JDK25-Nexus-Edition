@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.org>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -62,7 +62,7 @@ public class WarehouseExpandTemplate {
 
 	/**
 	 * Gets the value of the name property.
-	 *
+	 * 
 	 * @return possible object is {@link String }
 	 */
 	public String getName() {
@@ -71,28 +71,26 @@ public class WarehouseExpandTemplate {
 
 	/**
 	 * Returns true if list contains level
-	 *
+	 * 
 	 * @return true or false
 	 */
 	public boolean contains(int level) {
 		for (Expand expand : warehouseExpands) {
-			if (expand.getLevel() == level) {
+			if (expand.getLevel() == level)
 				return true;
-			}
 		}
 		return false;
 	}
 
 	/**
 	 * Returns true if list contains level
-	 *
+	 * 
 	 * @return expand
 	 */
 	public Expand get(int level) {
 		for (Expand expand : warehouseExpands) {
-			if (expand.getLevel() == level) {
+			if (expand.getLevel() == level)
 				return expand;
-			}
 		}
 		return null;
 	}

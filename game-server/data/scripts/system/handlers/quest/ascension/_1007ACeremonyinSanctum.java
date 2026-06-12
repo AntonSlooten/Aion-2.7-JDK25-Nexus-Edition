@@ -63,131 +63,131 @@ public class _1007ACeremonyinSanctum extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 790001: { // Pernos
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 790001: { // Pernos
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							changeQuestStep(env, 0, 1, false); // 1
+							TeleportService.teleportTo(player, 110010000, 1313f, 1512f, 568f, 0);
+							return closeDialogWindow(env);
+						}
+					}
+					break;
+				}
+				case 203725: { // Leah
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case SELECT_ACTION_1353: {
+							return playQuestMovie(env, 92);
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+					}
+					break;
+				}
+				case 203752: { // Jucleas
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 2) {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case SELECT_ACTION_1694: {
+							return playQuestMovie(env, 91);
+						}
+						case STEP_TO_3: {
+							if (var == 2) {
+								PlayerClass playerClass = PlayerClass.getStartingClassFor(player.getCommonData().getPlayerClass());
+								switch (playerClass) {
+									case WARRIOR: {
+										qs.setQuestVar(10);
+										break;
+									}
+									case SCOUT: {
+										qs.setQuestVar(20);
+										break;
+									}
+									case MAGE: {
+										qs.setQuestVar(30);
+										break;
+									}
+									case PRIEST: {
+										qs.setQuestVar(40);
+										break;
+									}
+								}
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								return sendQuestSelectionDialog(env);
+							}
+						}
 					}
 				}
-				case STEP_TO_1: {
-					changeQuestStep(env, 0, 1, false); // 1
-					TeleportService.teleportTo(player, 110010000, 1313f, 1512f, 568f, 0);
-					return closeDialogWindow(env);
-				}
-				}
-				break;
 			}
-			case 203725: { // Leah
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					}
-				}
-				case SELECT_ACTION_1353: {
-					return playQuestMovie(env, 92);
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				}
-				break;
-			}
-			case 203752: { // Jucleas
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 2) {
-						return sendQuestDialog(env, 1693);
-					}
-				}
-				case SELECT_ACTION_1694: {
-					return playQuestMovie(env, 91);
-				}
-				case STEP_TO_3: {
-					if (var == 2) {
-						PlayerClass playerClass = PlayerClass
-								.getStartingClassFor(player.getCommonData().getPlayerClass());
-						switch (playerClass) {
-						case WARRIOR: {
-							qs.setQuestVar(10);
-							break;
-						}
-						case SCOUT: {
-							qs.setQuestVar(20);
-							break;
-						}
-						case MAGE: {
-							qs.setQuestVar(30);
-							break;
-						}
-						case PRIEST: {
-							qs.setQuestVar(40);
-							break;
-						}
-						}
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						return sendQuestSelectionDialog(env);
-					}
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			switch (var) {
-			case 10: {
-				if (targetId == 203758) { // Macus
-					switch (dialog) {
-					case USE_OBJECT: {
-						return sendQuestDialog(env, 2034);
+				case 10: {
+					if (targetId == 203758) { // Macus
+						switch (dialog) {
+							case USE_OBJECT: {
+								return sendQuestDialog(env, 2034);
+							}
+							default: {
+								return sendQuestEndDialog(env, 0);
+							}
+						}
 					}
-					default: {
-						return sendQuestEndDialog(env, 0);
-					}
-					}
+					break;
 				}
-				break;
-			}
-			case 20: {
-				if (targetId == 203759) { // Eumelos
-					switch (dialog) {
-					case USE_OBJECT: {
-						return sendQuestDialog(env, 2375);
+				case 20: {
+					if (targetId == 203759) { // Eumelos
+						switch (dialog) {
+							case USE_OBJECT: {
+								return sendQuestDialog(env, 2375);
+							}
+							default: {
+								return sendQuestEndDialog(env, 1);
+							}
+						}
 					}
-					default: {
-						return sendQuestEndDialog(env, 1);
-					}
-					}
+					break;
 				}
-				break;
-			}
-			case 30: {
-				if (targetId == 203760) { // Bellia
-					switch (dialog) {
-					case USE_OBJECT: {
-						return sendQuestDialog(env, 2716);
+				case 30: {
+					if (targetId == 203760) { // Bellia
+						switch (dialog) {
+							case USE_OBJECT: {
+								return sendQuestDialog(env, 2716);
+							}
+							default: {
+								return sendQuestEndDialog(env, 2);
+							}
+						}
 					}
-					default: {
-						return sendQuestEndDialog(env, 2);
-					}
-					}
+					break;
 				}
-				break;
-			}
-			case 40: {
-				if (targetId == 203761) { // Hygea
-					switch (dialog) {
-					case USE_OBJECT: {
-						return sendQuestDialog(env, 3057);
+				case 40: {
+					if (targetId == 203761) { // Hygea
+						switch (dialog) {
+							case USE_OBJECT: {
+								return sendQuestDialog(env, 3057);
+							}
+							default: {
+								return sendQuestEndDialog(env, 3);
+							}
+						}
 					}
-					default: {
-						return sendQuestEndDialog(env, 3);
-					}
-					}
+					break;
 				}
-				break;
-			}
 			}
 		}
 		return false;

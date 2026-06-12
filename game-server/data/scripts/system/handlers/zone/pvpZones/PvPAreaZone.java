@@ -29,13 +29,13 @@ public class PvPAreaZone extends PvPZone {
 
 	@Override
 	protected void doTeleport(Player player, ZoneName zoneName) {
-		switch (zoneName) {
-		case LC1_PVP_SUB_C:
-			TeleportService.teleportTo(player, 110010000, 1470.3f, 1343.5f, 563.7f, 0, true);
-			break;
-		case DC1_PVP_ZONE:
-			TeleportService.teleportTo(player, 120010000, 1005.1f, 1528.9f, 222.1f, 0, true);
-			break;
+		switch (zoneName){
+			case LC1_PVP_SUB_C:
+				TeleportService.teleportTo(player, 110010000, 1470.3f, 1343.5f, 563.7f, 0, true);
+				break;
+			case DC1_PVP_ZONE:
+				TeleportService.teleportTo(player, 120010000, 1005.1f, 1528.9f, 222.1f, 0, true);
+				break;
 		}
 	}
 }

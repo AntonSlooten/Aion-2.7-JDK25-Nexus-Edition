@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -16,27 +16,14 @@
  */
 package com.aionemu.loginserver.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.aionemu.commons.utils.concurrent.AionRejectedExecutionHandler;
 import com.aionemu.commons.utils.concurrent.RunnableWrapper;
 import com.aionemu.commons.utils.concurrent.ScheduledFutureWrapper;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.*;
 
 /**
  * @author -Nemesiss-, NB4L1, MrPoke, lord_rex
@@ -50,29 +37,26 @@ public final class ThreadPoolManager {
 
 	private final ScheduledThreadPoolExecutor scheduledPool;
 	private final ThreadPoolExecutor instantPool;
-	private final ExecutorService longRunningPool;
-	private final AtomicInteger longRunningActive = new AtomicInteger();
-	private final AtomicLong longRunningSubmitted = new AtomicLong();
-	private final AtomicLong longRunningCompleted = new AtomicLong();
+	private final ThreadPoolExecutor longRunningPool;
 
 	private ThreadPoolManager() {
 		
 		int threadpoolsize = 2 + Runtime.getRuntime().availableProcessors() * 4;
 		final int instantPoolSize = Math.max(1, threadpoolsize / 3);
 
-		scheduledPool = new ScheduledThreadPoolExecutor(threadpoolsize - instantPoolSize,
-			new NamedThreadFactory("LoginServer-Scheduler-"));
+		scheduledPool = new ScheduledThreadPoolExecutor(threadpoolsize - instantPoolSize);
 		scheduledPool.setRejectedExecutionHandler(new AionRejectedExecutionHandler());
-		scheduledPool.setRemoveOnCancelPolicy(true);
 		scheduledPool.prestartAllCoreThreads();
 
 		instantPool = new ThreadPoolExecutor(instantPoolSize, instantPoolSize, 0, TimeUnit.SECONDS,
-			new ArrayBlockingQueue<Runnable>(100000), new NamedThreadFactory("LoginServer-Instant-"));
+			new ArrayBlockingQueue<Runnable>(100000));
 		instantPool.setRejectedExecutionHandler(new AionRejectedExecutionHandler());
 		instantPool.prestartAllCoreThreads();
 
-		ThreadFactory longRunningFactory = Thread.ofVirtual().name("LoginServer-LongRunning-", 1).factory();
-		longRunningPool = Executors.newThreadPerTaskExecutor(longRunningFactory);
+		longRunningPool = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS,
+			new SynchronousQueue<Runnable>());
+		longRunningPool.setRejectedExecutionHandler(new AionRejectedExecutionHandler());
+		longRunningPool.prestartAllCoreThreads();
 
 		scheduleAtFixedRate(new Runnable() {
 
@@ -83,7 +67,7 @@ public final class ThreadPoolManager {
 		}, 150000, 150000);
 
 		log.info("ThreadPoolManager: Initialized with " + scheduledPool.getPoolSize() + " scheduler, "
-			+ instantPool.getPoolSize() + " instant, virtual long running executor.");
+			+ instantPool.getPoolSize() + " instant, " + longRunningPool.getPoolSize() + " long running thread(s).");
 	}
 
 	private long validate(long delay) {
@@ -137,7 +121,9 @@ public final class ThreadPoolManager {
 	}
 
 	public final void executeLongRunning(Runnable r) {
-		longRunningPool.execute(wrapLongRunning(r));
+		r = new RunnableWrapper(r);
+
+		longRunningPool.execute(r);
 	}
 
 	// ===========================================================================================
@@ -149,26 +135,12 @@ public final class ThreadPoolManager {
 	}
 
 	public final Future<?> submitLongRunning(Runnable r) {
-		return CompletableFuture.runAsync(wrapLongRunning(r), longRunningPool);
+		r = new RunnableWrapper(r);
+
+		return longRunningPool.submit(r);
 	}
 
 	// ===========================================================================================
-
-	private Runnable wrapLongRunning(Runnable runnable) {
-		Runnable wrapped = new RunnableWrapper(runnable);
-		longRunningSubmitted.incrementAndGet();
-
-		return () -> {
-			longRunningActive.incrementAndGet();
-			try {
-				wrapped.run();
-			}
-			finally {
-				longRunningActive.decrementAndGet();
-				longRunningCompleted.incrementAndGet();
-			}
-		};
-	}
 
 	/**
 	 * Executes a loginServer packet task
@@ -196,6 +168,7 @@ public final class ThreadPoolManager {
 	public void purge() {
 		scheduledPool.purge();
 		instantPool.purge();
+		longRunningPool.purge();
 	}
 
 	/**
@@ -207,7 +180,7 @@ public final class ThreadPoolManager {
 		log.info("ThreadPoolManager: Shutting down.");
 		log.info("\t... executing " + getTaskCount(scheduledPool) + " scheduled tasks.");
 		log.info("\t... executing " + getTaskCount(instantPool) + " instant tasks.");
-		log.info("\t... executing " + getLongRunningTaskCount() + " long running tasks.");
+		log.info("\t... executing " + getTaskCount(longRunningPool) + " long running tasks.");
 
 		scheduledPool.shutdown();
 		instantPool.shutdown();
@@ -229,15 +202,11 @@ public final class ThreadPoolManager {
 		log.info("\t... success: " + success + " in " + (System.currentTimeMillis() - begin) + " msec.");
 		log.info("\t... " + getTaskCount(scheduledPool) + " scheduled tasks left.");
 		log.info("\t... " + getTaskCount(instantPool) + " instant tasks left.");
-		log.info("\t... " + getLongRunningTaskCount() + " long running tasks left.");
+		log.info("\t... " + getTaskCount(longRunningPool) + " long running tasks left.");
 	}
 
 	private int getTaskCount(ThreadPoolExecutor tp) {
 		return tp.getQueue().size() + tp.getActiveCount();
-	}
-
-	private long getLongRunningTaskCount() {
-		return Math.max(0L, longRunningSubmitted.get() - longRunningCompleted.get());
 	}
 
 	public List<String> getStats() {
@@ -266,12 +235,16 @@ public final class ThreadPoolManager {
 		list.add("\tgetQueuedTaskCount: .. " + instantPool.getQueue().size());
 		list.add("\tgetTaskCount: ........ " + instantPool.getTaskCount());
 		list.add("");
-		list.add("Long running virtual executor:");
+		list.add("Long running pool:");
 		list.add("=================================================");
-		list.add("\tgetActiveCount: ...... " + longRunningActive.get());
-		list.add("\tgetCompletedTaskCount: " + longRunningCompleted.get());
-		list.add("\tgetTaskCount: ........ " + longRunningSubmitted.get());
-		list.add("\tgetQueuedTaskCount: .. 0");
+		list.add("\tgetActiveCount: ...... " + longRunningPool.getActiveCount());
+		list.add("\tgetCorePoolSize: ..... " + longRunningPool.getCorePoolSize());
+		list.add("\tgetPoolSize: ......... " + longRunningPool.getPoolSize());
+		list.add("\tgetLargestPoolSize: .. " + longRunningPool.getLargestPoolSize());
+		list.add("\tgetMaximumPoolSize: .. " + longRunningPool.getMaximumPoolSize());
+		list.add("\tgetCompletedTaskCount: " + longRunningPool.getCompletedTaskCount());
+		list.add("\tgetQueuedTaskCount: .. " + longRunningPool.getQueue().size());
+		list.add("\tgetTaskCount: ........ " + longRunningPool.getTaskCount());
 		list.add("");
 
 		return list;
@@ -287,7 +260,7 @@ public final class ThreadPoolManager {
 			if (!instantPool.awaitTermination(10, TimeUnit.MILLISECONDS) && instantPool.getActiveCount() > 0)
 				continue;
 
-			if (!longRunningPool.awaitTermination(10, TimeUnit.MILLISECONDS) && getLongRunningTaskCount() > 0)
+			if (!longRunningPool.awaitTermination(10, TimeUnit.MILLISECONDS) && longRunningPool.getActiveCount() > 0)
 				continue;
 
 			return true;

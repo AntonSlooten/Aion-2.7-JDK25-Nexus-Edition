@@ -81,154 +81,155 @@ public class _1929ASliverofDarkness extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203752: { // Jucleas
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
-					}
-				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-				break;
-			}
-			case 203852: { // Ludina
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					}
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				}
-				break;
-			}
-			case 203164: { // Morai
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 2) {
-						return sendQuestDialog(env, 1693);
-					} else if (var == 8) {
-						return sendQuestDialog(env, 3057);
-					}
-				}
-				case STEP_TO_3: {
-					if (var == 2) {
-						changeQuestStep(env, 2, 93, false); // 93
-						WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(310070000);
-						InstanceService.registerPlayerWithInstance(newInstance, player);
-						TeleportService.teleportTo(player, 310070000, newInstance.getInstanceId(), 338, 101, 1191, 3000,
-								true);
-						return closeDialogWindow(env);
-					}
-				}
-				case STEP_TO_7: {
-					return defaultCloseDialog(env, 8, 9); // 9
-				}
-				}
-				break;
-			}
-			case 205110: { // Icaronix
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 93) {
-						return sendQuestDialog(env, 2034);
-					}
-				}
-				case STEP_TO_4: {
-					if (var == 93) {
-						changeQuestStep(env, 93, 94, false); // 94
-						player.setState(CreatureState.FLIGHT_TELEPORT);
-						player.unsetState(CreatureState.ACTIVE);
-						player.setFlightTeleportId(31001);
-						PacketSendUtility.sendPacket(player,
-								new SM_EMOTION(player, EmotionType.START_FLYTELEPORT, 31001, 0));
-						return true;
-					}
-				}
-				}
-				break;
-			}
-			case 700240: { // Icaronix's Box
-				if (dialog == QuestDialog.USE_OBJECT) {
-					if (var == 94) {
-						return playQuestMovie(env, 155);
-					}
-				}
-				break;
-			}
-			case 205111: { // Ecus
-				switch (dialog) {
-				case USE_OBJECT: {
-					if (var == 96) {
-						if (isStigmaEquipped(env)) {
-							return sendQuestDialog(env, 2716);
-						} else {
-							PacketSendUtility.sendPacket(player,
-									new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 1));
-							return closeDialogWindow(env);
+				case 203752: { // Jucleas
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
 						}
 					}
+					break;
 				}
-				case START_DIALOG: {
-					if (var == 98) {
-						return sendQuestDialog(env, 2375);
+				case 203852: { // Ludina
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
 					}
+					break;
 				}
-				case SELECT_ACTION_2546: {
-					if (var == 98) {
-						if (giveQuestItem(env, getStoneId(player), 1)) {
-							long existendStigmaShards = player.getInventory().getItemCountByItemId(141000001);
-							if (existendStigmaShards < 60) {
-								if (!player.getInventory().isFull()) {
-									ItemService.addItem(player, 141000001, 60 - existendStigmaShards);
-									PacketSendUtility.sendPacket(player,
-											new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 1));
-									return true;
-								}
-							} else {
-								PacketSendUtility.sendPacket(player,
-										new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 1));
+				case 203164: { // Morai
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 2) {
+								return sendQuestDialog(env, 1693);
+							}
+							else if (var == 8) {
+								return sendQuestDialog(env, 3057);
+							}
+						}
+						case STEP_TO_3: {
+							if (var == 2) {
+								changeQuestStep(env, 2, 93, false); // 93
+								WorldMapInstance newInstance = InstanceService.getNextAvailableInstance(310070000);
+								InstanceService.registerPlayerWithInstance(newInstance, player);
+								TeleportService.teleportTo(player, 310070000, newInstance.getInstanceId(), 338, 101, 1191, 3000, true);
+								return closeDialogWindow(env);
+							}
+						}
+						case STEP_TO_7: {
+							return defaultCloseDialog(env, 8, 9); // 9
+						}
+					}
+					break;
+				}
+				case 205110: { // Icaronix
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 93) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case STEP_TO_4: {
+							if (var == 93) {
+								changeQuestStep(env, 93, 94, false); // 94
+								player.setState(CreatureState.FLIGHT_TELEPORT);
+								player.unsetState(CreatureState.ACTIVE);
+								player.setFlightTeleportId(31001);
+								PacketSendUtility.sendPacket(player, new SM_EMOTION(player, EmotionType.START_FLYTELEPORT, 31001, 0));
 								return true;
 							}
 						}
 					}
+					break;
 				}
-				case SELECT_ACTION_2720: {
-					if (var == 96) {
-						Npc npc = (Npc) env.getVisibleObject();
-						npc.getController().delete();
-						QuestService.addNewSpawn(310070000, player.getInstanceId(), 212992, (float) 191.9,
-								(float) 267.68, (float) 1374, (byte) 0);
-						changeQuestStep(env, 96, 97, false); // 97
-						return closeDialogWindow(env);
+				case 700240: { // Icaronix's Box
+					if (dialog == QuestDialog.USE_OBJECT) {
+						if (var == 94) {
+							return playQuestMovie(env, 155);
+						}
+					}
+					break;
+				}
+				case 205111: { // Ecus
+					switch (dialog) {
+						case USE_OBJECT: {
+							if (var == 96) {
+								if (isStigmaEquipped(env)) {
+									return sendQuestDialog(env, 2716);
+								}
+								else {
+									PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 1));
+									return closeDialogWindow(env);
+								}
+							}
+						}
+						case START_DIALOG: {
+							if (var == 98) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case SELECT_ACTION_2546: {
+							if (var == 98) {
+								if (giveQuestItem(env, getStoneId(player), 1)) {
+									long existendStigmaShards = player.getInventory().getItemCountByItemId(141000001);
+									if (existendStigmaShards < 60) {
+										if (!player.getInventory().isFull()) {
+											ItemService.addItem(player, 141000001, 60 - existendStigmaShards);
+											PacketSendUtility.sendPacket(player,
+												new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 1));
+											return true;
+										}
+									}
+									else {
+										PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 1));
+										return true;
+									}
+								}
+							}
+						}
+						case SELECT_ACTION_2720: {
+							if (var == 96) {
+								Npc npc = (Npc) env.getVisibleObject();
+								npc.getController().delete();
+								QuestService.addNewSpawn(310070000, player.getInstanceId(), 212992, (float) 191.9, (float) 267.68,
+									(float) 1374, (byte) 0);
+								changeQuestStep(env, 96, 97, false); // 97
+								return closeDialogWindow(env);
+							}
+						}
+					}
+					break;
+				}
+				case 203701: { // Lavirintos
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 9) {
+								return sendQuestDialog(env, 3398);
+							}
+						}
+						case STEP_TO_8: {
+							return defaultCloseDialog(env, 9, 9, true, false); // reward
+						}
 					}
 				}
-				}
-				break;
 			}
-			case 203701: { // Lavirintos
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 9) {
-						return sendQuestDialog(env, 3398);
-					}
-				}
-				case STEP_TO_8: {
-					return defaultCloseDialog(env, 9, 9, true, false); // reward
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203711) { // Miriya
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
@@ -240,8 +241,8 @@ public class _1929ASliverofDarkness extends QuestHandler {
 	public boolean onMovieEndEvent(QuestEnv env, int movieId) {
 		final Player player = env.getPlayer();
 		if (movieId == 155) {
-			QuestService.addNewSpawn(310070000, player.getInstanceId(), 205111, (float) 197.6, (float) 265.9,
-					(float) 1374.0, (byte) 0);
+			QuestService.addNewSpawn(310070000, player.getInstanceId(), 205111, (float) 197.6, (float) 265.9, (float) 1374.0,
+				(byte) 0);
 			changeQuestStep(env, 94, 98, false); // 98
 			return true;
 		}
@@ -280,7 +281,7 @@ public class _1929ASliverofDarkness extends QuestHandler {
 				qs.setQuestVar(2);
 				updateQuestStatus(env);
 				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(SystemMessageId.QUEST_FAILED_$1,
-						DataManager.QUEST_DATA.getQuestById(questId).getName()));
+					DataManager.QUEST_DATA.getQuestById(questId).getName()));
 				return true;
 			}
 		}
@@ -299,9 +300,10 @@ public class _1929ASliverofDarkness extends QuestHandler {
 					qs.setQuestVar(2);
 					updateQuestStatus(env);
 					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(SystemMessageId.QUEST_FAILED_$1,
-							DataManager.QUEST_DATA.getQuestById(questId).getName()));
+						DataManager.QUEST_DATA.getQuestById(questId).getName()));
 					return true;
-				} else if (var == 8) {
+				}
+				else if (var == 8) {
 					removeStigma(env);
 					return true;
 				}
@@ -312,33 +314,33 @@ public class _1929ASliverofDarkness extends QuestHandler {
 
 	private int getStoneId(Player player) {
 		switch (player.getCommonData().getPlayerClass()) {
-		case GLADIATOR: {
-			return 140000008;// Improved Stamina I
-		}
-		case TEMPLAR: {
-			return 140000027;// Divine Fury I
-		}
-		case RANGER: {
-			return 140000047;// Arrow Deluge I
-		}
-		case ASSASSIN: {
-			return 140000076;// Sigil Strike I
-		}
-		case SORCERER: {
-			return 140000131;// Lumiel's Wisdom I
-		}
-		case SPIRIT_MASTER: {
-			return 140000147;// Absorb Vitality I
-		}
-		case CLERIC: {
-			return 140000098;// Grace of Empyrean Lord I
-		}
-		case CHANTER: {
-			return 140000112;// Rage Spell I
-		}
-		default: {
-			return 0;
-		}
+			case GLADIATOR: {
+				return 140000008;// Improved Stamina I
+			}
+			case TEMPLAR: {
+				return 140000027;// Divine Fury I
+			}
+			case RANGER: {
+				return 140000047;// Arrow Deluge I
+			}
+			case ASSASSIN: {
+				return 140000076;// Sigil Strike I
+			}
+			case SORCERER: {
+				return 140000131;// Lumiel's Wisdom I
+			}
+			case SPIRIT_MASTER: {
+				return 140000147;// Absorb Vitality I
+			}
+			case CLERIC: {
+				return 140000098;// Grace of Empyrean Lord I
+			}
+			case CHANTER: {
+				return 140000112;// Rage Spell I
+			}
+			default: {
+				return 0;
+			}
 		}
 	}
 

@@ -58,34 +58,36 @@ public class _3937GroupTheDecorationsofSanctum extends QuestHandler {
 
 		if (qs == null)
 			return false;
-
+			
 		int var = qs.getQuestVarById(0);
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203708:
-				switch (dialog) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1); // 1
-				case CHECK_COLLECTED_ITEMS:
-					long itemCount1 = player.getInventory().getItemCountByItemId(182206095);
-					if (itemCount1 >= 1) {
-						removeQuestItem(env, 182206095, 1);
-						changeQuestStep(env, 1, 1, true);
-						return sendQuestDialog(env, 5);
-					} else
-						return sendQuestDialog(env, 10001);
-				}
-				break;
-			default:
-				return sendQuestStartDialog(env);
+				case 203708:
+					switch (dialog) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+							else if (var == 1)
+								return sendQuestDialog(env, 1352);
+						case STEP_TO_1:
+							return defaultCloseDialog(env, 0, 1); // 1
+						case CHECK_COLLECTED_ITEMS:
+							long itemCount1 = player.getInventory().getItemCountByItemId(182206095);
+							if (itemCount1 >= 1) {
+								removeQuestItem(env, 182206095, 1);
+								changeQuestStep(env, 1, 1, true);
+								return sendQuestDialog(env, 5);
+							}
+							else
+								return sendQuestDialog(env, 10001);
+					}
+					break;
+				default:
+					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203708)
 				return sendQuestEndDialog(env);
 		}

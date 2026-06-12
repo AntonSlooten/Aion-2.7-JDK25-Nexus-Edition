@@ -49,7 +49,7 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 	private static FastMap<Integer, Point3D> mumuRakeLocked = new FastMap<Integer, Point3D>();
 	private static List<Point3D> casusManorAvalable = new ArrayList<Point3D>();
 	private static FastMap<Integer, Point3D> casusManorLocked = new FastMap<Integer, Point3D>();
-
+	
 	static {
 		mumuRakeAvalable.add(new Point3D(1352.883f, 1057.614f, 337.265));
 		mumuRakeAvalable.add(new Point3D(1314.494f, 1093.471f, 337.500));
@@ -98,7 +98,7 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 		super.onInstanceCreate(instance);
 	}
 
-	protected void spawnOnStart() {
+	protected void spawnOnStart(){
 		spawnRings();
 		spawnRelicsPlazza(0);
 		spawnRelicsFlamme(0);
@@ -109,14 +109,13 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 		spawnCasus(0, 7);
 		spawnGather(0, null);
 	}
-
+	
 	@Override
 	public void handleUseItemFinish(Player player, Npc npc) {
 		int timeRnd = Rnd.get(0, 10) - 5;
 
 		// No super on plazza flamme thrower, point handle int IA mob
-		if (npc.getNpcId() == 701169 || npc.getNpcId() == 701170 || npc.getNpcId() == 701171
-				|| npc.getNpcId() == 701172) {
+		if (npc.getNpcId() == 701169 || npc.getNpcId() == 701170 || npc.getNpcId() == 701171 || npc.getNpcId() == 701172) {
 			spawnPlazzaFlamme((flamme + timeRnd) * 1000, npc);
 			return;
 		}
@@ -125,34 +124,33 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 		if (npc.getNpcId() == 701174 || npc.getNpcId() == 701173) {
 			spawnRelicsFlamme((relicTime + timeRnd) * 1000);
 		}
-
+		
 		if (npc.getNpcId() == 701187 || npc.getNpcId() == 701188) {
 			spawnRelicsPlazza((relicTime + timeRnd) * 1000);
 		}
-
+		
 		if (npc.getNpcId() == 701318) {
 			spawnRelicsIllusion((relicTime + timeRnd) * 1000);
 		}
 	}
-
+	
 	@Override
 	public void onDie(Npc npc) {
 		super.onDie(npc);
 		int timeRnd = Rnd.get(0, 10) - 5;
 
 		// Mumu rake
-		if (npc.getNpcId() == 218695) {
-			spawnMumu((mumu + timeRnd) * 1000, 1);
+		if(npc.getNpcId() == 218695){
+			spawnMumu((mumu + timeRnd)*1000, 1);
 			mumuRakeAvalable.add(mumuRakeLocked.remove(npc.getObjectId()));
 		}
 		// Mau
-		if (npc.getNpcId() == 218696) {
-			spawnMau((mumu + timeRnd) * 1000);
+		if(npc.getNpcId() == 218696){
+			spawnMau((mumu + timeRnd)*1000);
 		}
 		// Casus Manor
-		if (npc.getNpcId() == 218699 || npc.getNpcId() == 218698 || npc.getNpcId() == 218702 || npc.getNpcId() == 218700
-				|| npc.getNpcId() == 218688) {
-			spawnCasus((mumu + timeRnd) * 1000, 1);
+		if(npc.getNpcId() == 218699 || npc.getNpcId() == 218698 || npc.getNpcId() == 218702 || npc.getNpcId() == 218700 || npc.getNpcId() == 218688){
+			spawnCasus((mumu + timeRnd)*1000, 1);
 			casusManorAvalable.add(casusManorLocked.remove(npc.getObjectId()));
 		}
 		npc.getController().delete();
@@ -165,9 +163,9 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 				if (isInstanceDestroyed || instanceReward.isRewarded()) {
 					return;
 				}
-				for (int i = 0; i < j; i++) {
-					Point3D point = mumuRakeAvalable.remove(Rnd.get(0, mumuRakeAvalable.size() - 1));
-					VisibleObject npc = spawn(218695, (float) point.x, (float) point.y, (float) point.z, (byte) 0);
+				for(int i=0; i<j; i++){
+					Point3D point = mumuRakeAvalable.remove(Rnd.get(0, mumuRakeAvalable.size()-1));
+					VisibleObject npc = spawn(218695, (float)point.x, (float)point.y, (float)point.z, (byte) 0);
 					mumuRakeLocked.put(npc.getObjectId(), point);
 				}
 			}
@@ -182,23 +180,23 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 				if (isInstanceDestroyed || instanceReward.isRewarded()) {
 					return;
 				}
-				for (int i = 0; i < j; i++) {
+				for(int i=0; i<j; i++){
 					int npcId = 218699;
 					int rnd = Rnd.get(0, 4);
-					if (rnd == 1) {
+					if(rnd == 1){
 						npcId = 218698;
 					}
-					if (rnd == 2) {
+					if(rnd == 2){
 						npcId = 218702;
 					}
-					if (rnd == 3) {
+					if(rnd == 3){
 						npcId = 218700;
 					}
-					if (rnd == 4) {
+					if(rnd == 4){
 						npcId = 218688;
 					}
-					Point3D point = casusManorAvalable.remove(Rnd.get(0, casusManorAvalable.size() - 1));
-					VisibleObject npc = spawn(npcId, (float) point.x, (float) point.y, (float) point.z, (byte) 0);
+					Point3D point = casusManorAvalable.remove(Rnd.get(0, casusManorAvalable.size()-1));
+					VisibleObject npc = spawn(npcId, (float)point.x, (float)point.y, (float)point.z, (byte) 0);
 					casusManorLocked.put(npc.getObjectId(), point);
 				}
 			}
@@ -217,9 +215,9 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 		DescriptionId name = new DescriptionId(nameId * 2 + 1);
 		PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400237, name, 1250));
 		int timeRnd = Rnd.get(0, 10) - 5;
-		spawnGather((40 + timeRnd) * 1000, gatherable);
+		spawnGather((40 + timeRnd)*1000, gatherable);
 	}
-
+	
 	private void spawnPlazzaFlamme(int time, final Npc npc) {
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
@@ -243,7 +241,7 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 
 		}, time);
 	}
-
+	
 	private void spawnRelicsPlazza(int time) {
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
@@ -256,7 +254,7 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 
 		}, time);
 	}
-
+	
 	private void spawnRelicsFlamme(int time) {
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
@@ -264,16 +262,16 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 				if (isInstanceDestroyed || instanceReward.isRewarded()) {
 					return;
 				}
-				if (Rnd.get(1, 2) == 1) {
+				if(Rnd.get(1, 2) == 1){
 					spawn(Rnd.get(1, 2) == 1 ? 701174 : 701173, 674.517f, 1778.428f, 204.693f, (byte) 0); // Position 1
-				} else {
+				}else{
 					spawn(Rnd.get(1, 2) == 1 ? 701174 : 701173, 663.49f, 1756.89f, 145.24f, (byte) 0); // Position 2
 				}
 			}
 
 		}, time);
 	}
-
+	
 	private void spawnGather(int time, final Gatherable npc) {
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
@@ -281,20 +279,20 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 				if (isInstanceDestroyed || instanceReward.isRewarded()) {
 					return;
 				}
-				if (npc == null) {
+				if(npc == null){
 					spawn(Rnd.get(1, 2) == 1 ? 405000 : 405001, 1349.522f, 1057.374f, 337.375f, (byte) 0);
 					spawn(Rnd.get(1, 2) == 1 ? 405000 : 405001, 1316.816f, 1097.861f, 337.500f, (byte) 0);
 					spawn(Rnd.get(1, 2) == 1 ? 405000 : 405001, 1349.552f, 1093.443f, 337.625f, (byte) 0);
 					spawn(Rnd.get(1, 2) == 1 ? 405000 : 405001, 1317.240f, 1058.067f, 337.375f, (byte) 0);
 					return;
 				}
-
+				
 				spawn(Rnd.get(1, 2) == 1 ? 405000 : 405001, npc.getX(), npc.getY(), npc.getZ(), (byte) 0);
 			}
 
 		}, time);
 	}
-
+	
 	private void spawnMau(int time) {
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
@@ -302,16 +300,16 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 				if (isInstanceDestroyed || instanceReward.isRewarded()) {
 					return;
 				}
-				if (Rnd.get(1, 2) == 1) {
+				if(Rnd.get(1, 2) == 1){
 					spawn(218696, 1366.265f, 1077.497f, 339.479f, (byte) 0); // Position 1
-				} else {
+				}else{
 					spawn(218696, 1328.881f, 1039.994f, 339.766f, (byte) 0); // Position 2
 				}
 			}
 
 		}, time);
 	}
-
+	
 	private void spawnRelicsIllusion(int time) {
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
@@ -326,35 +324,35 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 	}
 
 	protected void spawnRings() {
-		FlyRing f1 = new FlyRing(
-				new FlyRingTemplate("PVP_ARENA_1", mapId, new Point3D(674.66974, 1792.8499, 149.77501),
-						new Point3D(674.66974, 1792.8499, 155.77501), new Point3D(678.83636, 1788.5325, 149.77501), 6),
-				instanceId);
+		FlyRing f1 = new FlyRing(new FlyRingTemplate("PVP_ARENA_1", mapId,
+				new Point3D(674.66974, 1792.8499, 149.77501),
+				new Point3D(674.66974, 1792.8499, 155.77501),
+				new Point3D(678.83636, 1788.5325, 149.77501), 6), instanceId);
 		f1.spawn();
-		FlyRing f2 = new FlyRing(
-				new FlyRingTemplate("PVP_ARENA_2", mapId, new Point3D(688.30615, 1769.7937, 149.88556),
-						new Point3D(688.30615, 1769.7937, 155.88556), new Point3D(689.42096, 1763.8982, 149.88556), 6),
-				instanceId);
+		FlyRing f2 = new FlyRing(new FlyRingTemplate("PVP_ARENA_2", mapId,
+				new Point3D(688.30615, 1769.7937, 149.88556),
+				new Point3D(688.30615, 1769.7937, 155.88556),
+				new Point3D(689.42096, 1763.8982, 149.88556), 6), instanceId);
 		f2.spawn();
-		FlyRing f3 = new FlyRing(
-				new FlyRingTemplate("PVP_ARENA_3", mapId, new Point3D(664.2252, 1761.671, 170.95732),
-						new Point3D(664.2252, 1761.671, 176.95732), new Point3D(669.2843, 1764.8967, 170.95732), 6),
-				instanceId);
+		FlyRing f3 = new FlyRing(new FlyRingTemplate("PVP_ARENA_3", mapId,
+				new Point3D(664.2252, 1761.671, 170.95732),
+				new Point3D(664.2252, 1761.671, 176.95732),
+				new Point3D(669.2843, 1764.8967, 170.95732), 6), instanceId);
 		f3.spawn();
-		FlyRing fv1 = new FlyRing(
-				new FlyRingTemplate("PVP_ARENA_VOID_1", mapId, new Point3D(690.28625, 1753.8561, 192.07726),
-						new Point3D(690.28625, 1753.8561, 198.07726), new Point3D(689.4365, 1747.9165, 192.07726), 6),
-				instanceId);
+		FlyRing fv1 = new FlyRing(new FlyRingTemplate("PVP_ARENA_VOID_1", mapId,
+				new Point3D(690.28625, 1753.8561, 192.07726),
+				new Point3D(690.28625, 1753.8561, 198.07726),
+				new Point3D(689.4365, 1747.9165, 192.07726), 6), instanceId);
 		fv1.spawn();
-		FlyRing fv2 = new FlyRing(
-				new FlyRingTemplate("PVP_ARENA_VOID_2", mapId, new Point3D(690.1935, 1797.0029, 203.79236),
-						new Point3D(690.1935, 1797.0029, 209.79236), new Point3D(692.8295, 1802.3928, 203.79236), 6),
-				instanceId);
+		FlyRing fv2 = new FlyRing(new FlyRingTemplate("PVP_ARENA_VOID_2", mapId,
+				new Point3D(690.1935, 1797.0029, 203.79236),
+				new Point3D(690.1935, 1797.0029, 209.79236),
+				new Point3D(692.8295, 1802.3928, 203.79236), 6), instanceId);
 		fv2.spawn();
-		FlyRing fv3 = new FlyRing(
-				new FlyRingTemplate("PVP_ARENA_VOID_3", mapId, new Point3D(659.2784, 1766.0273, 207.25465),
-						new Point3D(659.2784, 1766.0273, 213.25465), new Point3D(665.2619, 1766.4718, 207.25465), 6),
-				instanceId);
+		FlyRing fv3 = new FlyRing(new FlyRingTemplate("PVP_ARENA_VOID_3", mapId,
+				new Point3D(659.2784, 1766.0273, 207.25465),
+				new Point3D(659.2784, 1766.0273, 213.25465),
+				new Point3D(665.2619, 1766.4718, 207.25465), 6), instanceId);
 		fv3.spawn();
 	}
 
@@ -373,7 +371,8 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 				sendSystemMsg(player, npc, 250);
 				sendPacket();
 			}
-		} else if (flyingRing.equals("PVP_ARENA_2")) {
+		}
+		else if (flyingRing.equals("PVP_ARENA_2")) {
 			npc = getNpc(688.410f, 1769.611f, 150.964f);
 			if (npc != null && npc.isSpawned()) {
 				npc.getController().scheduleRespawn();
@@ -382,7 +381,8 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 				sendSystemMsg(player, npc, 250);
 				sendPacket();
 			}
-		} else if (flyingRing.equals("PVP_ARENA_3")) {
+		}
+		else if (flyingRing.equals("PVP_ARENA_3")) {
 			npc = getNpc(664.160f, 1761.933f, 171.504f);
 			if (npc != null && npc.isSpawned()) {
 				npc.getController().scheduleRespawn();
@@ -391,21 +391,24 @@ public class ChaosTrainingGroundsInstance extends PvPArenaInstance {
 				sendSystemMsg(player, npc, 250);
 				sendPacket();
 			}
-		} else if (flyingRing.equals("PVP_ARENA_VOID_1")) {
+		}
+		else if (flyingRing.equals("PVP_ARENA_VOID_1")) {
 			npc = getNpc(693.061f, 1752.479f, 186.750f);
 			if (npc != null && npc.isSpawned()) {
 				useSkill(npc, player, 20059, 1);
 				npc.getController().scheduleRespawn();
 				npc.getController().onDelete();
 			}
-		} else if (flyingRing.equals("PVP_ARENA_VOID_2")) {
+		}
+		else if (flyingRing.equals("PVP_ARENA_VOID_2")) {
 			npc = getNpc(688.061f, 1798.229f, 198.500f);
 			if (npc != null && npc.isSpawned()) {
 				useSkill(npc, player, 20059, 1);
 				npc.getController().scheduleRespawn();
 				npc.getController().onDelete();
 			}
-		} else if (flyingRing.equals("PVP_ARENA_VOID_3")) {
+		}
+		else if (flyingRing.equals("PVP_ARENA_VOID_3")) {
 			npc = getNpc(659.311f, 1768.979f, 201.500f);
 			if (npc != null && npc.isSpawned()) {
 				useSkill(npc, player, 20059, 1);

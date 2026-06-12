@@ -22,7 +22,7 @@ import java.util.Iterator;
 
 /**
  * This is implementation of <code>Dispatcher</code> that may only accept connections.
- *
+ * 
  * @author -Nemesiss-
  * @see com.aionemu.commons.network.Dispatcher
  * @see java.nio.channels.Selector
@@ -31,7 +31,7 @@ public class AcceptDispatcherImpl extends Dispatcher {
 
 	/**
 	 * Constructor that accept <code>String</code> name as parameter.
-	 *
+	 * 
 	 * @param name
 	 * @throws IOException
 	 */
@@ -41,7 +41,7 @@ public class AcceptDispatcherImpl extends Dispatcher {
 
 	/**
 	 * Dispatch <code>Selector</code> selected-key set.
-	 *
+	 * 
 	 * @see com.aionemu.commons.network.Dispatcher#dispatch()
 	 */
 	@Override
@@ -60,8 +60,9 @@ public class AcceptDispatcherImpl extends Dispatcher {
 
 	/**
 	 * This method should never be called on this implementation of <code>Dispatcher</code>
-	 *
-	 * @throws UnsupportedOperationException always!
+	 * 
+	 * @throws UnsupportedOperationException
+	 *           always!
 	 * @see com.aionemu.commons.network.Dispatcher#closeConnection(com.aionemu.commons.network.AConnection)
 	 */
 	@Override

@@ -56,13 +56,11 @@ public class ItemEquipmentListener {
 		if (itemTemplate.isItemSet()) {
 			recalculateItemSet(itemTemplate.getItemSet(), owner, item.getItemTemplate().isWeapon());
 		}
-		if (item.hasManaStones()) {
+		if (item.hasManaStones())
 			addStonesStats(item, item.getItemStones(), owner.getGameStats());
-		}
 
-		if (item.hasFusionStones()) {
+		if (item.hasFusionStones())
 			addStonesStats(item, item.getFusionStones(), owner.getGameStats());
-		}
 
 		addGodstoneEffect(owner, item);
 		if (item.getConditioningInfo() != null) {
@@ -87,13 +85,11 @@ public class ItemEquipmentListener {
 
 		owner.getGameStats().endEffect(item);
 
-		if (item.hasManaStones()) {
+		if (item.hasManaStones())
 			removeStoneStats(item.getItemStones(), owner.getGameStats());
-		}
 
-		if (item.hasFusionStones()) {
+		if (item.hasFusionStones())
 			removeStoneStats(item.getFusionStones(), owner.getGameStats());
-		}
 
 		if (item.getConditioningInfo() != null) {
 			owner.getObserveController().removeObserver(item.getConditioningInfo());
@@ -131,16 +127,17 @@ public class ItemEquipmentListener {
 					int boostMagicalSkill = Math.round(0.1f * weaponStats.getBoostMagicalSkill());
 					int attack = Math.round(0.1f * weaponStats.getMeanDamage());
 					if (fusionedItemTemplate.getWeaponType() == WeaponType.ORB_2H
-							|| fusionedItemTemplate.getWeaponType() == WeaponType.BOOK_2H) {
+						|| fusionedItemTemplate.getWeaponType() == WeaponType.BOOK_2H) {
 						allModifiers.add(new StatAddFunction(StatEnum.MAGICAL_ATTACK, attack, false));
 						allModifiers.add(new StatAddFunction(StatEnum.BOOST_MAGICAL_SKILL, boostMagicalSkill, false));
-					} else {
-						allModifiers.add(new StatAddFunction(StatEnum.MAIN_HAND_POWER, attack, false));
 					}
+					else
+						allModifiers.add(new StatAddFunction(StatEnum.MAIN_HAND_POWER, attack, false));
 				}
 			}
 			cgs.addEffect(item, allModifiers);
-		} else {
+		}
+		else {
 			cgs.addEffect(item, modifiers);
 		}
 
@@ -151,21 +148,21 @@ public class ItemEquipmentListener {
 	 * 1) don't include fusioned stats which will be taken only from 1 weapon <br>
 	 * 2) wrap stats which are different for MAIN and OFF hands<br>
 	 * 3) add the rest<br>
-	 *
+	 * 
 	 * @param item
 	 * @param modifiers
 	 * @return
 	 */
 	private static List<IStatFunction> wrapModifiers(Item item, List<StatFunction> modifiers) {
-		List<IStatFunction> allModifiers = new ArrayList<>();
+		List<IStatFunction> allModifiers = new ArrayList<IStatFunction>();
 		for (StatFunction modifier : modifiers) {
 			switch (modifier.getName()) {
-			case ATTACK_SPEED:
-			case PVP_ATTACK_RATIO:
-			case BOOST_CASTING_TIME:
-				continue;
-			default:
-				allModifiers.add(modifier);
+				case ATTACK_SPEED:
+				case PVP_ATTACK_RATIO:
+				case BOOST_CASTING_TIME:
+					continue;
+				default:
+					allModifiers.add(modifier);
 			}
 		}
 		return allModifiers;
@@ -177,9 +174,8 @@ public class ItemEquipmentListener {
 	 * @param isWeapon
 	 */
 	private static void recalculateItemSet(ItemSetTemplate itemSetTemplate, Player player, boolean isWeapon) {
-		if (itemSetTemplate == null) {
+		if (itemSetTemplate == null)
 			return;
-		}
 
 		// TODO quite
 		player.getGameStats().endEffect(itemSetTemplate);
@@ -189,12 +185,10 @@ public class ItemEquipmentListener {
 		// If main hand and off hand is same , no bonus
 		int mainHandItemId = 0;
 		int offHandItemId = 0;
-		if (player.getEquipment().getMainHandWeapon() != null) {
+		if (player.getEquipment().getMainHandWeapon() != null)
 			mainHandItemId = player.getEquipment().getMainHandWeapon().getItemId();
-		}
-		if (player.getEquipment().getOffHandWeapon() != null) {
+		if (player.getEquipment().getOffHandWeapon() != null)
 			offHandItemId = player.getEquipment().getOffHandWeapon().getItemId();
-		}
 		boolean mainAndOffNotSame = mainHandItemId != offHandItemId;
 
 		// 2.- Check Item Set Parts and add effects one by one if not done already
@@ -204,7 +198,8 @@ public class ItemEquipmentListener {
 				if (itempartbonus.getCount() <= itemSetPartsEquipped) {
 					player.getGameStats().addEffect(itemSetTemplate, itempartbonus.getModifiers());
 				}
-			} else if (!isWeapon) {
+			}
+			else if (!isWeapon) {
 				// If the partbonus was not applied before, do it now
 				if (itempartbonus.getCount() <= itemSetPartsEquipped) {
 					player.getGameStats().addEffect(itemSetTemplate, itempartbonus.getModifiers());
@@ -212,12 +207,10 @@ public class ItemEquipmentListener {
 			}
 		}
 
-		// 3.- Finally check if all items are applied and set the full bonus if not
-		// already applied
+		// 3.- Finally check if all items are applied and set the full bonus if not already applied
 		FullBonus fullbonus = itemSetTemplate.getFullbonus();
 		if (fullbonus != null && itemSetPartsEquipped == fullbonus.getCount()) {
-			// Add the full bonus with index = total parts + 1 to avoid confusion with part
-			// bonus equal to number of
+			// Add the full bonus with index = total parts + 1 to avoid confusion with part bonus equal to number of
 			// objects
 			player.getGameStats().addEffect(itemSetTemplate, fullbonus.getModifiers());
 		}
@@ -225,14 +218,13 @@ public class ItemEquipmentListener {
 
 	/**
 	 * All modifiers of stones will be applied to character
-	 *
+	 * 
 	 * @param item
 	 * @param cgs
 	 */
 	private static void addStonesStats(Item item, Set<? extends ManaStone> itemStones, CreatureGameStats<?> cgs) {
-		if (itemStones == null || itemStones.size() == 0) {
+		if (itemStones == null || itemStones.size() == 0)
 			return;
-		}
 
 		for (ManaStone stone : itemStones) {
 			addStoneStats(item, stone, cgs);
@@ -241,7 +233,7 @@ public class ItemEquipmentListener {
 
 	/**
 	 * Used when socketing of equipped item
-	 *
+	 * 
 	 * @param item
 	 * @param stone
 	 * @param cgs
@@ -257,14 +249,13 @@ public class ItemEquipmentListener {
 
 	/**
 	 * All modifiers of stones will be removed
-	 *
+	 * 
 	 * @param itemStones
 	 * @param cgs
 	 */
 	public static void removeStoneStats(Set<? extends ManaStone> itemStones, CreatureGameStats<?> cgs) {
-		if (itemStones == null || itemStones.size() == 0) {
+		if (itemStones == null || itemStones.size() == 0)
 			return;
-		}
 
 		for (ManaStone stone : itemStones) {
 			List<StatFunction> modifiers = stone.getModifiers();

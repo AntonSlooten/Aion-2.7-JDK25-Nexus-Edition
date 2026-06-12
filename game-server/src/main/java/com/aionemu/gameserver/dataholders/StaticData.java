@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * An instance of this class is the result of data loading.
- *
+ * 
  * @author Luno, orz Modified by Wakizashi
  */
 @XmlRootElement(name = "ae_static_data")
@@ -66,7 +66,7 @@ public class StaticData {
 
 	@XmlElement(name = "npc_templates")
 	public NpcData npcData;
-
+	
 	@XmlElement(name = "npc_shouts")
 	public NpcShoutData npcShoutData;
 
@@ -75,7 +75,7 @@ public class StaticData {
 
 	@XmlElement(name = "skill_data")
 	public SkillData skillData;
-
+	
 	@XmlElement(name = "motion_times")
 	public MotionData motionData;
 
@@ -120,7 +120,7 @@ public class StaticData {
 
 	@XmlElement(name = "item_sets")
 	public ItemSetData itemSetData;
-
+	
 	@XmlElement(name = "npc_factions")
 	public NpcFactionsData npcFactionsData;
 
@@ -142,6 +142,12 @@ public class StaticData {
 	@XmlElement(name = "pets")
 	public PetData petData;
 
+	@XmlElement(name = "pet_feed")
+	public PetFeedData petFeedData;
+
+	@XmlElement(name = "dopings")
+	public PetDopingData petDopingData;
+
 	@XmlElement(name = "guides")
 	public GuideHtmlData guideData;
 
@@ -159,10 +165,10 @@ public class StaticData {
 
 	@XmlElement(name = "flypath_template")
 	public FlyPathData flyPath;
-
+	
 	@XmlElement(name = "windstreams")
 	public WindstreamData windstreamsData;
-
+	
 	@XmlElement(name = "item_restriction_cleanups")
 	public ItemRestrictionCleanupData itemCleanup;
 
@@ -177,16 +183,16 @@ public class StaticData {
 
 	@XmlElement(name = "auto_groups")
 	public AutoGroupData autoGroupData;
-
+	
 	@XmlElement(name = "events_config")
 	public EventData eventData;
 
 	@XmlElement(name = "spawns")
 	public SpawnsData2 spawnsData2;
-
-	@XmlElement(name = "pvp_zone_data")
+	
+	@XmlElement(name="pvp_zone_data")
 	public PvpZoneData pvpZoneData;
-
+	
 	@XmlElement(name = "item_groups")
 	public ItemGroupsData itemGroupsData;
 
@@ -231,7 +237,8 @@ public class StaticData {
 		DataManager.log.info("Loaded " + siegeLocationData.size() + " siege location entries");
 		DataManager.log.info("Loaded " + flyRingData.size() + " fly ring entries");
 		DataManager.log.info("Loaded " + shieldData.size() + " shield entries");
-		DataManager.log.info("Loaded " + petData.size() + " pet entries");
+		DataManager.log.info("Loaded " + petData.size() + " pet templates " + petFeedData.size() + " food flavours");
+		DataManager.log.info("Loaded " + petDopingData.size() + " pet doping templates");
 		DataManager.log.info("Loaded " + guideData.size() + " guide entries");
 		DataManager.log.info("Loaded " + roadData.size() + " road entries");
 		DataManager.log.info("Loaded " + instanceCooltimeData.size() + " instance cooltime entries");

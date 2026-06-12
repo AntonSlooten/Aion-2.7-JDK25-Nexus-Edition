@@ -18,6 +18,7 @@
  */
 package com.aionemu.gameserver.model.templates.item.actions;
 
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -59,13 +60,10 @@ public class EmotionLearnAction extends AbstractItemAction {
 	@Override
 	public void act(final Player player, final Item parentItem, Item targetItem) {
 		ItemTemplate itemTemplate = parentItem.getItemTemplate();
-		PacketSendUtility.sendPacket(player,
-				SM_SYSTEM_MESSAGE.STR_USE_ITEM(new DescriptionId(itemTemplate.getNameId())));
-		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(),
-				parentItem.getObjectId(), itemTemplate.getTemplateId()), true);
+		PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_USE_ITEM(new DescriptionId(itemTemplate.getNameId())));
+		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), parentItem.getObjectId(), itemTemplate.getTemplateId()), true);
 
-		player.getEmotions().add(emotionid,
-				minutes == null ? 0 : (int) (System.currentTimeMillis() / 1000) + minutes * 60, true);
+		player.getEmotions().add(emotionid,  minutes == null ? 0 : (int)(System.currentTimeMillis()/1000)+minutes*60, true);
 		player.getInventory().delete(parentItem);
 
 	}

@@ -29,18 +29,16 @@ public class CubeExpandTemplate {
 
 	public boolean contains(int level) {
 		for (Expand expand : cubeExpands) {
-			if (expand.getLevel() == level) {
+			if (expand.getLevel() == level)
 				return true;
-			}
 		}
 		return false;
 	}
 
 	public Expand get(int level) {
 		for (Expand expand : cubeExpands) {
-			if (expand.getLevel() == level) {
+			if (expand.getLevel() == level)
 				return expand;
-			}
 		}
 		return null;
 	}

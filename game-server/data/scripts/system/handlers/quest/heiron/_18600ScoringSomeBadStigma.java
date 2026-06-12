@@ -26,9 +26,8 @@ import com.aionemu.gameserver.questEngine.model.QuestStatus;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /**
- * Report-To-Quest Start: Perento (204500) Take the paper voucher (182213000) to
- * Koruchinerk (798321) Go to New Heiron Gate and meet Herthia (205228) Bring
- * the Fake Stigma (182213001) to Perento
+ * Report-To-Quest Start: Perento (204500) Take the paper voucher (182213000) to Koruchinerk (798321) Go to New Heiron
+ * Gate and meet Herthia (205228) Bring the Fake Stigma (182213001) to Perento
  * 
  * @author vlog
  * @modified Gigi
@@ -63,7 +62,8 @@ public class _18600ScoringSomeBadStigma extends QuestHandler {
 				else if (env.getDialogId() == 1002) {
 					giveQuestItem(env, 182213000, 1);
 					return sendQuestStartDialog(env);
-				} else
+				}
+				else
 					return sendQuestStartDialog(env);
 			}
 			if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
@@ -72,7 +72,8 @@ public class _18600ScoringSomeBadStigma extends QuestHandler {
 				else if (env.getDialogId() == 1009) {
 					removeQuestItem(env, 182213001, 1);
 					return sendQuestEndDialog(env);
-				} else
+				}
+				else
 					return sendQuestEndDialog(env);
 			}
 		}
@@ -94,8 +95,7 @@ public class _18600ScoringSomeBadStigma extends QuestHandler {
 					qs.setQuestVar(3);
 					qs.setStatus(QuestStatus.REWARD);
 					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
 					return true;
 				}
 			}

@@ -34,7 +34,8 @@ public class CharacterPasskey {
 	}
 
 	/**
-	 * @param objectId the objectId to set
+	 * @param objectId
+	 *          the objectId to set
 	 */
 	public void setObjectId(int objectId) {
 		this.objectId = objectId;
@@ -48,7 +49,8 @@ public class CharacterPasskey {
 	}
 
 	/**
-	 * @param count the wrongCount to set
+	 * @param count
+	 *          the wrongCount to set
 	 */
 	public void setWrongCount(int count) {
 		this.wrongCount = count;
@@ -62,7 +64,8 @@ public class CharacterPasskey {
 	}
 
 	/**
-	 * @param isPass the isPass to set
+	 * @param isPass
+	 *          the isPass to set
 	 */
 	public void setIsPass(boolean isPass) {
 		this.isPass = isPass;
@@ -76,13 +79,15 @@ public class CharacterPasskey {
 	}
 
 	/**
-	 * @param connectType the connectType to set
+	 * @param connectType
+	 *          the connectType to set
 	 */
 	public void setConnectType(ConnectType connectType) {
 		this.connectType = connectType;
 	}
 
 	public enum ConnectType {
-		ENTER, DELETE
+		ENTER,
+		DELETE
 	}
 }

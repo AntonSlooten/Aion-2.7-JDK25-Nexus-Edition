@@ -17,8 +17,8 @@
 package com.aionemu.gameserver.spawnengine;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.slf4j.Logger;
@@ -47,18 +47,19 @@ public class RiftSpawnManager {
 
 	private static final Logger log = LoggerFactory.getLogger(RiftSpawnManager.class);
 
-	private static final ConcurrentLinkedQueue<Npc> rifts = new ConcurrentLinkedQueue<>();
+	private static final ConcurrentLinkedQueue<Npc> rifts = new ConcurrentLinkedQueue<Npc>();
 
-	private static final int RIFT_RESPAWN_DELAY = 3600; // 1 hour
-	private static final int RIFT_LIFETIME = 3500; // 1 hour
+	private static final int RIFT_RESPAWN_DELAY	= 3600;	// 1 hour
+	private static final int RIFT_LIFETIME		= 3500;	// 1 hour
 
-	private static final Map<String, SpawnTemplate> spawnGroups = new ConcurrentHashMap<>();
+	private static final Map<String, SpawnTemplate> spawnGroups = new HashMap<String, SpawnTemplate>();
 
 	public static void addRiftSpawnTemplate(SpawnGroup2 spawn) {
 		if (spawn.hasPool()) {
 			SpawnTemplate template = spawn.getSpawnTemplates().get(0);
 			spawnGroups.put(template.getAnchor(), template);
-		} else {
+		}
+		else {
 			for (SpawnTemplate template : spawn.getSpawnTemplates()) {
 				spawnGroups.put(template.getAnchor(), template);
 			}
@@ -66,24 +67,27 @@ public class RiftSpawnManager {
 	}
 
 	public static void spawnAll() {
-		ThreadPoolManager.getInstance().scheduleAtFixedRate(() -> {
+		ThreadPoolManager.getInstance().scheduleAtFixedRate(new Runnable() {
+
+			@Override
+			public void run() {
+
 				log.info("Rift Manager");
-				ArrayList<Integer> rifts = new ArrayList<>();
+				ArrayList<Integer> rifts = new ArrayList<Integer>();
 				int nbRift, rndRift;
 
-				for (int i = 0; i < 4; i++) {
+				for (int i = 0; i < 4; i++){
 					// Generate number of rift for each town
 					nbRift = getNbRift();
 
 					log.info("Spawning " + nbRift + " rifts for the map : " + getMapName(i));
 
-					for (int j = 0; j < nbRift; j++) {
-						rndRift = Rnd.get(i * 7, (i + 1) * 7 - 1);
+					for (int j = 0; j < nbRift; j++){
+						rndRift = Rnd.get(i*7, (i+1)*7-1);
 
 						// try to avoid duplicate
-						while (rifts.contains(rndRift)) {
-							rndRift = Rnd.get(i * 7, (i + 1) * 7 - 1);
-						}
+						while (rifts.contains(rndRift))
+							rndRift = Rnd.get(i*7, (i+1)*7-1);
 
 						// Save rift spawned
 						rifts.add(rndRift);
@@ -93,6 +97,7 @@ public class RiftSpawnManager {
 					}
 					rifts.clear();
 				}
+			}
 		}, 0, RIFT_RESPAWN_DELAY * 1000);
 	}
 
@@ -100,27 +105,32 @@ public class RiftSpawnManager {
 	 *
 	 * @return
 	 */
-	private static int getNbRift() {
+	private static int getNbRift(){
 		double rnd = Rnd.get(0, 99);
 
 		/*
-		 * 0 : 29% 1 : 45% 2 : 15% 3 : 5% 4 : 3% 5 : 2% 6 : 1%
+		 * 0 : 29%
+		 * 1 : 45%
+		 * 2 : 15%
+		 * 3 : 5%
+		 * 4 : 3%
+		 * 5 : 2%
+		 * 6 : 1%
 		 */
-		if (rnd == 0) {
+		if (rnd == 0)
 			return 6;
-		} else if (rnd <= 2) {
+		else if (rnd <= 2)
 			return 5;
-		} else if (rnd <= 5) {
+		else if (rnd <= 5)
 			return 4;
-		} else if (rnd <= 10) {
+		else if (rnd <= 10)
 			return 3;
-		} else if (rnd <= 25) {
+		else if (rnd <= 25)
 			return 2;
-		} else if (rnd <= 70) {
+		else if (rnd <= 70)
 			return 1;
-		} else {
+		else
 			return 0;
-		}
 	}
 
 	/**
@@ -128,18 +138,18 @@ public class RiftSpawnManager {
 	 * @param mapId
 	 * @return
 	 */
-	private static String getMapName(int mapId) {
-		switch (mapId) {
-		case 0:
-			return "ELTNEN";
-		case 1:
-			return "HEIRON";
-		case 2:
-			return "MORHEIM";
-		case 3:
-			return "BELUSLAN";
-		default:
-			return "UNKNOWN";
+	private static String getMapName(int mapId){
+		switch (mapId){
+			case 0:
+				return "ELTNEN";
+			case 1:
+				return "HEIRON";
+			case 2:
+				return "MORHEIM";
+			case 3:
+				return "BELUSLAN";
+			default:
+				return "UNKNOWN";
 		}
 	}
 
@@ -151,9 +161,8 @@ public class RiftSpawnManager {
 		SpawnTemplate masterTemplate = spawnGroups.get(rift.getMaster());
 		SpawnTemplate slaveTemplate = spawnGroups.get(rift.getSlave());
 
-		if (masterTemplate == null || slaveTemplate == null) {
+		if (masterTemplate == null || slaveTemplate == null)
 			return;
-		}
 
 		int instanceCount = World.getInstance().getWorldMap(masterTemplate.getWorldId()).getInstanceCount();
 
@@ -176,8 +185,8 @@ public class RiftSpawnManager {
 
 		World world = World.getInstance();
 		world.storeObject(npc);
-		world.setPosition(npc, spawnTemplate.getWorldId(), instanceIndex, spawnTemplate.getX(), spawnTemplate.getY(),
-				spawnTemplate.getZ(), spawnTemplate.getHeading());
+		world.setPosition(npc, spawnTemplate.getWorldId(), instanceIndex, spawnTemplate.getX(),
+			spawnTemplate.getY(), spawnTemplate.getZ(), spawnTemplate.getHeading());
 		world.spawn(npc);
 		rifts.add(npc);
 

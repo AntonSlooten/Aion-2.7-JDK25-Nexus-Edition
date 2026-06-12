@@ -40,7 +40,7 @@ public class YamenessPortalSummonedAI2 extends AggressiveNpcAI2 {
 
 			@Override
 			public void run() {
-				if (isAlreadyDead()) {
+				if(isAlreadyDead()){
 					AI2Actions.deleteOwner(YamenessPortalSummonedAI2.this);
 					return;
 				}
@@ -56,7 +56,7 @@ public class YamenessPortalSummonedAI2 extends AggressiveNpcAI2 {
 
 			@Override
 			public void run() {
-				if (!isAlreadyDead()) {
+				if(!isAlreadyDead()){
 					spawn(281903, getOwner().getX() + 3, getOwner().getY() - 3, getOwner().getZ(), (byte) 0);
 					spawn(281904, getOwner().getX() - 3, getOwner().getY() + 3, getOwner().getZ(), (byte) 0);
 				}

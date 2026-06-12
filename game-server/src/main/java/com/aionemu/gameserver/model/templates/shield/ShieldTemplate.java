@@ -67,7 +67,7 @@ public class ShieldTemplate {
 	}
 
 	public ShieldTemplate() {
-	}
+	};
 
 	public ShieldTemplate(String name, int mapId, Point3D center) {
 		this.name = name;

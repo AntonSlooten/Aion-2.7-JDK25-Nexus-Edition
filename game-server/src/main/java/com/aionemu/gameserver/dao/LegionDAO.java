@@ -28,7 +28,7 @@ import com.aionemu.gameserver.model.team.legion.LegionWarehouse;
 
 /**
  * Class that is responsible for storing/loading legion data
- *
+ * 
  * @author Simple
  */
 
@@ -36,29 +36,30 @@ public abstract class LegionDAO implements IDFactoryAwareDAO {
 
 	/**
 	 * Returns true if name is used, false in other case
-	 *
-	 * @param name name to check
+	 * 
+	 * @param name
+	 *          name to check
 	 * @return true if name is used, false in other case
 	 */
 	public abstract boolean isNameUsed(String name);
 
 	/**
 	 * Creates legion in DB
-	 *
+	 * 
 	 * @param legion
 	 */
 	public abstract boolean saveNewLegion(Legion legion);
 
 	/**
 	 * Stores legion to DB
-	 *
+	 * 
 	 * @param legion
 	 */
 	public abstract void storeLegion(Legion legion);
 
 	/**
 	 * Loads a legion
-	 *
+	 * 
 	 * @param legionName
 	 * @return
 	 */
@@ -66,7 +67,7 @@ public abstract class LegionDAO implements IDFactoryAwareDAO {
 
 	/**
 	 * Loads a legion
-	 *
+	 * 
 	 * @param legionId
 	 * @return Legion
 	 */
@@ -74,14 +75,15 @@ public abstract class LegionDAO implements IDFactoryAwareDAO {
 
 	/**
 	 * Removes legion and all related data (Done by CASCADE DELETION)
-	 *
-	 * @param legionId legion to delete
+	 * 
+	 * @param legionId
+	 *          legion to delete
 	 */
 	public abstract void deleteLegion(int legionId);
 
 	/**
 	 * Returns the announcement list of a legion
-	 *
+	 * 
 	 * @param legion
 	 * @return announcementList
 	 */
@@ -89,7 +91,7 @@ public abstract class LegionDAO implements IDFactoryAwareDAO {
 
 	/**
 	 * Creates announcement in DB
-	 *
+	 * 
 	 * @param legionId
 	 * @param currentTime
 	 * @param message
@@ -99,7 +101,7 @@ public abstract class LegionDAO implements IDFactoryAwareDAO {
 
 	/**
 	 * Identifier name for all LegionDAO classes
-	 *
+	 * 
 	 * @return LegionDAO.class.getName()
 	 */
 	@Override
@@ -109,7 +111,7 @@ public abstract class LegionDAO implements IDFactoryAwareDAO {
 
 	/**
 	 * Stores a legion emblem in the database
-	 *
+	 * 
 	 * @param legionId
 	 * @param emblemId
 	 * @param red
@@ -127,7 +129,7 @@ public abstract class LegionDAO implements IDFactoryAwareDAO {
 
 	/**
 	 * Loads a legion emblem
-	 *
+	 * 
 	 * @param legion
 	 * @return LegionEmblem
 	 */
@@ -135,7 +137,7 @@ public abstract class LegionDAO implements IDFactoryAwareDAO {
 
 	/**
 	 * Loads the warehouse of legions
-	 *
+	 * 
 	 * @param legion
 	 * @return Storage
 	 */

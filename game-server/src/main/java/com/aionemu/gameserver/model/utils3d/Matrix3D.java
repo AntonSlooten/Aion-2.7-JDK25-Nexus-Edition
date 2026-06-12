@@ -51,31 +51,25 @@ public class Matrix3D {
 			throw new RuntimeException("Invalid column dimension");
 		}
 		Matrix3D B = new Matrix3D(data);
-		for (int j = 0; j < 3; j++) {
+		for (int j = 0; j < 3; j++)
 			B.data[j][i] = newColumn[j];
-		}
 		return B;
 	}
 
 	public Matrix3D multiply(Matrix3D B) {
 		Matrix3D C = new Matrix3D();
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				for (int k = 0; k < 3; k++) {
+		for (int i = 0; i < 3; i++)
+			for (int j = 0; j < 3; j++)
+				for (int k = 0; k < 3; k++)
 					C.data[i][j] += (data[i][k] * B.data[k][j]);
-				}
-			}
-		}
 		return C;
 	}
 
 	public Matrix3D multiply(double b) {
 		Matrix3D C = new Matrix3D();
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
+		for (int i = 0; i < 3; i++)
+			for (int j = 0; j < 3; j++)
 				C.data[i][j] = b * data[i][j];
-			}
-		}
 		return C;
 	}
 
@@ -116,8 +110,8 @@ public class Matrix3D {
 		}
 
 		double[] result = new double[] { data[0][0] * v[0] + data[0][1] * v[1] + data[0][2] * v[2],
-				data[1][0] * v[0] + data[1][1] * v[1] + data[1][2] * v[2],
-				data[2][0] * v[0] + data[2][1] * v[1] + data[2][2] * v[2] };
+			data[1][0] * v[0] + data[1][1] * v[1] + data[1][2] * v[2],
+			data[2][0] * v[0] + data[2][1] * v[1] + data[2][2] * v[2] };
 
 		return result;
 	}

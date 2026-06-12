@@ -35,10 +35,9 @@ public class SpinEffect extends EffectTemplate {
 	@Override
 	public void applyEffect(Effect effect) {
 		final Creature effected = effect.getEffected();
-
-		if (!effected.getEffectController().applyPhysicalAbnormalEffect()) {
+		
+		if(!effected.getEffectController().applyPhysicalAbnormalEffect())
 			return;
-		}
 		effect.addToEffectedController();
 	}
 

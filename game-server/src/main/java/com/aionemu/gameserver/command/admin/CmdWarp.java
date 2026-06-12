@@ -14,16 +14,16 @@ import com.aionemu.gameserver.world.geo.GeoService;
  * @author Source
  */
 public class CmdWarp extends BaseCommand {
-
-	@Override
+	
+	
 	public void execute(Player player, String... params) {
 		String locS, first, last;
 		float xF, yF, zF;
 		locS = "";
 		int mapL = 0;
 		int layerI = -1;
-
-		if (params.length < 5) {
+		
+		if(params.length < 5) {
 			if (!GeoDataConfig.GEO_ENABLE) {
 				PacketSendUtility.sendMessage(player, "You must turn on geo in config to use this command!");
 				return;
@@ -47,19 +47,19 @@ public class CmdWarp extends BaseCommand {
 			locS = fm.group(1);
 			mapL = ParseInteger(fm.group(2));
 		}
-		if (lm.find()) {
+		if (lm.find())
 			layerI = ParseInteger(lm.group(1));
-		}
 
 		zF = GeoService.getInstance().getZ(mapL, xF, yF);
-		PacketSendUtility.sendMessage(player,
-				"MapId (" + mapL + ")\n" + "x:" + xF + " y:" + yF + " z:" + zF + " l(" + layerI + ")");
+		PacketSendUtility.sendMessage(player, "MapId (" + mapL + ")\n" + "x:" + xF + " y:" + yF + " z:" + zF + " l("
+			+ layerI + ")");
 
-		if (mapL == 400010000) {
+		if (mapL == 400010000)
 			PacketSendUtility.sendMessage(player, "Sorry you can't warp at abyss");
-		} else {
+		else {
 			TeleportService.teleportTo(player, mapL, xF, yF, zF, 0);
 			PacketSendUtility.sendMessage(player, "You have successfully warp -> " + locS);
 		}
 	}
 }
+

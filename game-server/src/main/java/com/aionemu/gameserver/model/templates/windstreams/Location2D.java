@@ -7,36 +7,41 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * @author LokiReborn
- *
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Location2D")
-public class Location2D {
+public class Location2D
+{
 	@XmlAttribute(name = "id")
-	protected int id;
+	protected int	id;
 	@XmlAttribute(name = "boost")
-	protected int boost;
+	protected int	boost;
 	@XmlAttribute(name = "bidirectional")
-	protected int bidirectional;
+	protected int	bidirectional;
 
 	/**
 	 * @return the id
 	 */
-	public int getId() {
+	public int getId()
+	{
 		return id;
 	}
 
 	/**
 	 * @return the boost
 	 */
-	public int getBoost() {
+	public int getBoost()
+	{
 		return boost;
 	}
-
+	
 	/**
 	 * @return the bidirectional
 	 */
-	public int getBidirectional() {
+	public int getBidirectional()
+	{
 		return bidirectional;
-	}
+	}	
 }
+

@@ -18,7 +18,7 @@ package com.aionemu.commons.utils;
 
 /**
  * Class that contains exit codes for server
- *
+ * 
  * @author SoulKeeper
  */
 public final class ExitCode {

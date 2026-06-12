@@ -55,7 +55,8 @@ public abstract class Siege<SL extends SiegeLocation> {
 		synchronized (this) {
 			if (started) {
 				doubleStart = true;
-			} else {
+			}
+			else {
 				startTime = new Date();
 				started = true;
 			}
@@ -67,7 +68,7 @@ public abstract class Siege<SL extends SiegeLocation> {
 		}
 
 		onSiegeStart();
-		// Check for Balaur Assault
+		//Check for Balaur Assault
 		if (SiegeConfig.BALAUR_AUTO_ASSAULT) {
 			BalaurAssaultService.getInstance().onSiegeStart(this);
 		}
@@ -76,11 +77,12 @@ public abstract class Siege<SL extends SiegeLocation> {
 	public final void stopSiege() {
 		if (finished.compareAndSet(false, true)) {
 			onSiegeFinish();
-			// Check for Balaur Assault
+			//Check for Balaur Assault
 			if (SiegeConfig.BALAUR_AUTO_ASSAULT) {
 				BalaurAssaultService.getInstance().onSiegeFinish(this);
 			}
-		} else {
+		}
+		else {
 			log.error("Attempt to stop siege of SiegeLocation#" + siegeLocation.getLocationId() + " for 2 times");
 		}
 	}
@@ -127,9 +129,13 @@ public abstract class Siege<SL extends SiegeLocation> {
 
 	public void addBossDamage(Creature attacker, int damage) {
 		// We don't have to add damage anymore if siege is finished
+		if (isFinished()) {
+			return;
+		}
+
 		// Just to be sure that attacker exists.
 		// if don't - dunno what to do
-		if (isFinished() || (attacker == null)) {
+		if (attacker == null) {
 			return;
 		}
 
@@ -142,7 +148,8 @@ public abstract class Siege<SL extends SiegeLocation> {
 	/**
 	 * Returns siege duration in seconds or -1 if it's endless
 	 *
-	 * @return siege duration in seconnd or -1 if siege should never end using timer
+	 * @return siege duration in seconnd or -1 if siege should never end using
+	 * timer
 	 */
 	public abstract int getDurationInSeconds();
 

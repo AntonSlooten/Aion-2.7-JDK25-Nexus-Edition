@@ -35,21 +35,21 @@ public class DummyGeoMap extends GeoMap {
 	}
 
 	@Override
-	public final boolean canSee(float x, float y, float z, float targetX, float targetY, float targetZ, float limit,
-			int instanceId) {
+	public final boolean canSee(float x, float y, float z, float targetX, float targetY, float targetZ, float limit, int instanceId) {
 		return true;
 	}
 
 	@Override
 	public Vector3f getClosestCollision(float x, float y, float z, float targetX, float targetY, float targetZ,
-			boolean changeDirction, boolean fly, int instanceId) {
+		boolean changeDirction, boolean fly, int instanceId) {
 		return new Vector3f(targetX, targetY, targetZ);
 	}
 
 	@Override
-	public void setDoorState(int instanceId, String name, boolean state) {
-
+	public void setDoorState(int instanceId, String name, boolean state){
+		
 	}
+	
 
 	@Override
 	public int attachChild(Spatial child) {

@@ -67,7 +67,8 @@ public class SM_GROUP_MEMBER_INFO extends AionServerPacket {
 			writeF(wp.getX());
 			writeF(wp.getY());
 			writeF(wp.getZ());
-		} else {
+		}
+		else {
 			writeD(0);
 			writeD(0);
 			writeD(0);
@@ -90,31 +91,31 @@ public class SM_GROUP_MEMBER_INFO extends AionServerPacket {
 		writeC(player.isMentor() ? 0x01 : 0x00);
 
 		switch (event) {
-		case MOVEMENT:
-			break;
-		case LEAVE:
-			writeH(0x00); // unk
-			writeC(0x00); // unk
-			break;
-		case ENTER_OFFLINE:
-		case JOIN:
-			writeS(pcd.getName()); // name
-			break;
-		default:
-			writeS(pcd.getName()); // name
-			writeD(0x00); // unk
-			writeD(0x00); // unk
-			List<Effect> abnormalEffects = player.getEffectController().getAbnormalEffects();
-			writeH(abnormalEffects.size()); // Abnormal effects
-			for (Effect effect : abnormalEffects) {
-				writeD(effect.getEffectorId()); // casterid
-				writeH(effect.getSkillId()); // spellid
-				writeC(effect.getSkillLevel()); // spell level
-				writeC(effect.getTargetSlot()); // unk ?
-				writeD(effect.getRemainingTime()); // estimatedtime
-			}
-			writeD(0x25F7); // unk 9719
-			break;
+			case MOVEMENT:
+				break;
+			case LEAVE:
+				writeH(0x00); // unk
+				writeC(0x00); // unk
+				break;
+			case ENTER_OFFLINE:
+			case JOIN:
+				writeS(pcd.getName()); // name
+				break;
+			default:
+				writeS(pcd.getName()); // name
+				writeD(0x00); // unk
+				writeD(0x00); // unk
+				List<Effect> abnormalEffects = player.getEffectController().getAbnormalEffects();
+				writeH(abnormalEffects.size()); // Abnormal effects
+				for (Effect effect : abnormalEffects) {
+					writeD(effect.getEffectorId()); // casterid
+					writeH(effect.getSkillId()); // spellid
+					writeC(effect.getSkillLevel()); // spell level
+					writeC(effect.getTargetSlot()); // unk ?
+					writeD(effect.getRemainingTime()); // estimatedtime
+				}
+				writeD(0x25F7); // unk 9719
+				break;
 		}
 	}
 

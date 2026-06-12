@@ -48,7 +48,7 @@ public class ArmorCondition extends Condition {
 	public boolean validate(Stat2 stat, IStatFunction statFunction) {
 		return isValidArmor(stat.getOwner());
 	}
-
+	
 	@Override
 	public boolean validate(Effect effect) {
 		return isValidArmor(effect.getEffector());

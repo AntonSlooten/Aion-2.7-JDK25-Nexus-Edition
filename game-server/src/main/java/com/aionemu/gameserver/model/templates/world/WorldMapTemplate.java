@@ -70,7 +70,7 @@ public class WorldMapTemplate {
 
 	@XmlAttribute(name = "except_buff")
 	private boolean exceptBuff = false;
-
+	
 	public String getName() {
 		return name;
 	}
@@ -115,6 +115,7 @@ public class WorldMapTemplate {
 		return fly;
 	}
 
+	
 	/**
 	 * @return the exceptBuff
 	 */

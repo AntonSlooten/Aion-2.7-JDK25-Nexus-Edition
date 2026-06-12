@@ -25,13 +25,11 @@ import com.aionemu.gameserver.questEngine.model.QuestStatus;
 import com.aionemu.gameserver.services.QuestService;
 
 /**
- * Talk with Gaia (203917). Talk with Ophelos (203992). Retrieve a Life Bead
- * (182201014) and put it into the Laquepin Life Stone (700158). Talk with
- * Ophelos. Talk with Castor (203965). Talk with Corybantes (203968). Talk with
- * Heratos (203987). Go to the Desert Life Stone (700160) and insert the Life
- * Bead (182201024) within three minutes. Talk with Heratos. Talk with Sirink
- * (203934). Restore the Mystic Spring by putting the Bead (182201025) into the
- * Temple Life Stone (700159). Talk with Sirink. Talk with Gaia.
+ * Talk with Gaia (203917). Talk with Ophelos (203992). Retrieve a Life Bead (182201014) and put it into the Laquepin
+ * Life Stone (700158). Talk with Ophelos. Talk with Castor (203965). Talk with Corybantes (203968). Talk with Heratos
+ * (203987). Go to the Desert Life Stone (700160) and insert the Life Bead (182201024) within three minutes. Talk with
+ * Heratos. Talk with Sirink (203934). Restore the Mystic Spring by putting the Bead (182201025) into the Temple Life
+ * Stone (700159). Talk with Sirink. Talk with Gaia.
  * 
  * @author Rhys2002
  * @reworked vlog
@@ -69,142 +67,146 @@ public class _1035RefreshingtheSprings extends QuestHandler {
 			if (targetId == 203917) { // Gaia
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 4080);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203917: { // Gaia
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 203917: { // Gaia
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 4, 5); // 5
+						}
+					}
+					break;
+				}
+				case 203992: { // Ophelos
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+							else if (var == 3) {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+						case STEP_TO_3: {
+							return defaultCloseDialog(env, 3, 4); // 4
+						}
+					}
+					break;
+				}
+				case 700158: { // Laquepin Life Stone
+					if (var == 2) {
+						if (dialog == QuestDialog.USE_OBJECT && player.getInventory().getItemCountByItemId(182201014) == 1) {
+							return useQuestObject(env, 2, 3, false, 0, 0, 0, 182201014, 1); // 3
+						}
+					}
+					break;
+				}
+				case 203965: { // Castor
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 4) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case STEP_TO_4: {
+							return defaultCloseDialog(env, 4, 5); // 5
+						}
+					}
+					break;
+				}
+				case 203968: { // Corybantes
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 5) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case STEP_TO_5: {
+							return defaultCloseDialog(env, 5, 6); // 6
+						}
+					}
+					break;
+				}
+				case 203987: { // Heratos
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 6) {
+								return sendQuestDialog(env, 2716);
+							}
+							else if (var == 7) {
+								return sendQuestDialog(env, 2887);
+							}
+							else if (var == 8) {
+								return sendQuestDialog(env, 3057);
+							}
+						}
+						case STEP_TO_6: {
+							QuestService.questTimerStart(env, 180);
+							giveQuestItem(env, 182201024, 1);
+							return defaultCloseDialog(env, 6, 7); // 7
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
+						case STEP_TO_7: {
+							return defaultCloseDialog(env, 8, 9, 182201025, 1, 0, 0); // 9
+						}
+					}
+					break;
+				}
+				case 700160: { // Desert Life Stone
+					if (var == 7) {
+						if (dialog == QuestDialog.USE_OBJECT && player.getInventory().getItemCountByItemId(182201024) == 1) {
+							return playQuestMovie(env, 31);
+						}
+					}
+					break;
+				}
+				case 203934: { // Sirink
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 9) {
+								return sendQuestDialog(env, 3398);
+							}
+							else if (var == 11) {
+								return sendQuestDialog(env, 3739);
+							}
+						}
+						case STEP_TO_8: {
+							if (var == 9) {
+								return defaultCloseDialog(env, 9, 10); // 10
+							}
+							else if (var == 11) {
+								return defaultCloseDialog(env, 11, 11, true, false); // reward
+							}
+						}
+					}
+					break;
+				}
+				case 700159: { // Temple Life Stone
+					if (var == 10) {
+						if (dialog == QuestDialog.USE_OBJECT && player.getInventory().getItemCountByItemId(182201025) >= 1) {
+							return useQuestObject(env, 10, 11, false, 0, 0, 0, 182201025, 1); // 11
+						}
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 4, 5); // 5
-				}
-				}
-				break;
-			}
-			case 203992: { // Ophelos
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					} else if (var == 3) {
-						return sendQuestDialog(env, 1693);
-					}
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				case STEP_TO_3: {
-					return defaultCloseDialog(env, 3, 4); // 4
-				}
-				}
-				break;
-			}
-			case 700158: { // Laquepin Life Stone
-				if (var == 2) {
-					if (dialog == QuestDialog.USE_OBJECT
-							&& player.getInventory().getItemCountByItemId(182201014) == 1) {
-						return useQuestObject(env, 2, 3, false, 0, 0, 0, 182201014, 1); // 3
-					}
-				}
-				break;
-			}
-			case 203965: { // Castor
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 4) {
-						return sendQuestDialog(env, 2034);
-					}
-				}
-				case STEP_TO_4: {
-					return defaultCloseDialog(env, 4, 5); // 5
-				}
-				}
-				break;
-			}
-			case 203968: { // Corybantes
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 5) {
-						return sendQuestDialog(env, 2375);
-					}
-				}
-				case STEP_TO_5: {
-					return defaultCloseDialog(env, 5, 6); // 6
-				}
-				}
-				break;
-			}
-			case 203987: { // Heratos
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 6) {
-						return sendQuestDialog(env, 2716);
-					} else if (var == 7) {
-						return sendQuestDialog(env, 2887);
-					} else if (var == 8) {
-						return sendQuestDialog(env, 3057);
-					}
-				}
-				case STEP_TO_6: {
-					QuestService.questTimerStart(env, 180);
-					giveQuestItem(env, 182201024, 1);
-					return defaultCloseDialog(env, 6, 7); // 7
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				case STEP_TO_7: {
-					return defaultCloseDialog(env, 8, 9, 182201025, 1, 0, 0); // 9
-				}
-				}
-				break;
-			}
-			case 700160: { // Desert Life Stone
-				if (var == 7) {
-					if (dialog == QuestDialog.USE_OBJECT
-							&& player.getInventory().getItemCountByItemId(182201024) == 1) {
-						return playQuestMovie(env, 31);
-					}
-				}
-				break;
-			}
-			case 203934: { // Sirink
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 9) {
-						return sendQuestDialog(env, 3398);
-					} else if (var == 11) {
-						return sendQuestDialog(env, 3739);
-					}
-				}
-				case STEP_TO_8: {
-					if (var == 9) {
-						return defaultCloseDialog(env, 9, 10); // 10
-					} else if (var == 11) {
-						return defaultCloseDialog(env, 11, 11, true, false); // reward
-					}
-				}
-				}
-				break;
-			}
-			case 700159: { // Temple Life Stone
-				if (var == 10) {
-					if (dialog == QuestDialog.USE_OBJECT
-							&& player.getInventory().getItemCountByItemId(182201025) >= 1) {
-						return useQuestObject(env, 10, 11, false, 0, 0, 0, 182201025, 1); // 11
-					}
-				}
-			}
 			}
 		}
 		return false;
@@ -216,7 +218,8 @@ public class _1035RefreshingtheSprings extends QuestHandler {
 			int var = env.getPlayer().getQuestStateList().getQuestState(questId).getQuestVarById(0);
 			if (var == 7) {
 				changeQuestStep(env, 7, 8, false); // 8
-			} else if (var == 6) { // If timer stopped before movie ends
+			}
+			else if (var == 6) { // If timer stopped before movie ends
 				changeQuestStep(env, 6, 8, false); // 8
 			}
 			removeQuestItem(env, 182201024, 1);

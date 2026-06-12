@@ -32,12 +32,12 @@ public class BarrelAI2 extends NpcAI2 {
 		super.handleDied();
 		int npcId = 0;
 		switch (getNpcId()) {
-		case 218560:
-			npcId = 218561;
-			break;
-		case 217840:
-			npcId = 217841;
-			break;
+			case 218560:
+				npcId = 218561;
+				break;
+			case 217840:
+				npcId = 217841;
+				break;
 		}
 		float direction = Rnd.get(0, 199) / 100f;
 		float x1 = (float) (Math.cos(Math.PI * direction) * 4);

@@ -1,94 +1,248 @@
+/*
+ * This file is part of InPanic Core <Ver:3.1>.
+ *
+ *  InPanic-Core is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  InPanic-Core is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with InPanic-Core.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package com.aionemu.commons.utils;
 
-import java.util.AbstractCollection;
+import java.lang.reflect.Array;
 import java.util.Collection;
-import java.util.Iterator;
+import java.util.List;
+import java.util.RandomAccess;
+
+import javolution.util.FastCollection;
+import javolution.util.FastCollection.Record;
 
 /**
- * Compatibility collection used by legacy Aion code.
- *
- * <p>Older versions were backed by Javolution. This implementation uses only
- * the Java Collections API so it is safe on Java 25.</p>
+ * @author NB4L1
  */
-public abstract class AEFastCollection<E> extends AbstractCollection<E> {
+@SuppressWarnings("unchecked")
+public abstract class AEFastCollection<E> implements Collection<E> {
 
-    public E getFirst() {
-        Iterator<E> iterator = iterator();
-        return iterator.hasNext() ? iterator.next() : null;
-    }
+	public abstract Record head();
 
-    public E getLast() {
-        E last = null;
-        for (E value : this) {
-            last = value;
-        }
-        return last;
-    }
+	public abstract Record tail();
 
-    public E removeFirst() {
-        Iterator<E> iterator = iterator();
-        if (!iterator.hasNext()) {
-            return null;
-        }
+	public abstract E valueOf(Record record);
 
-        E value = iterator.next();
-        iterator.remove();
-        return value;
-    }
+	public abstract void delete(Record record);
 
-    public E removeLast() {
-        E last = null;
-        for (E value : this) {
-            last = value;
-        }
+	public abstract void delete(Record record, E value);
 
-        if (last != null) {
-            remove(last);
-        }
+	public final E getFirst() {
+		final Record first = head().getNext();
+		if (first == tail())
+			return null;
 
-        return last;
-    }
+		return valueOf(first);
+	}
 
-    public boolean addAll(E[] values) {
-        boolean modified = false;
-        for (E value : values) {
-            modified |= add(value);
-        }
-        return modified;
-    }
+	public final E getLast() {
+		final Record last = tail().getPrevious();
+		if (last == head())
+			return null;
 
-    @Override
-    public boolean addAll(Collection<? extends E> values) {
-        boolean modified = false;
-        for (E value : values) {
-            modified |= add(value);
-        }
-        return modified;
-    }
+		return valueOf(last);
+	}
 
-    public boolean addAll(Iterable<? extends E> values) {
-        boolean modified = false;
-        for (E value : values) {
-            modified |= add(value);
-        }
-        return modified;
-    }
+	public final E removeFirst() {
+		final Record first = head().getNext();
+		if (first == tail())
+			return null;
 
-    public boolean containsAll(Object[] values) {
-        for (Object value : values) {
-            if (!contains(value)) {
-                return false;
-            }
-        }
-        return true;
-    }
+		final E value = valueOf(first);
+		delete(first, value);
+		return value;
+	}
 
-    public boolean containsAll(Iterable<?> values) {
-        for (Object value : values) {
-            if (!contains(value)) {
-                return false;
-            }
-        }
-        return true;
-    }
+	public final E removeLast() {
+		final Record last = tail().getPrevious();
+		if (last == head())
+			return null;
+
+		final E value = valueOf(last);
+		delete(last, value);
+		return value;
+	}
+
+	public boolean addAll(E[] c) {
+		boolean modified = false;
+
+		for (E e : c)
+			if (add(e))
+				modified = true;
+
+		return modified;
+	}
+
+	@Override
+	public boolean addAll(Collection<? extends E> c) {
+		return addAll((Iterable<? extends E>) c);
+	}
+
+	public boolean addAll(Iterable<? extends E> c) {
+		if (c instanceof RandomAccess && c instanceof List<?>)
+			return addAll((List<? extends E>) c);
+
+		if (c instanceof FastCollection<?>)
+			return addAll((FastCollection<? extends E>) c);
+
+		if (c instanceof AEFastCollection<?>)
+			return addAll((AEFastCollection<? extends E>) c);
+
+		boolean modified = false;
+
+		for (E e : c)
+			if (add(e))
+				modified = true;
+
+		return modified;
+	}
+
+	private boolean addAll(AEFastCollection<? extends E> c) {
+		boolean modified = false;
+
+		for (Record r = c.head(), end = c.tail(); (r = r.getNext()) != end;)
+			if (add(c.valueOf(r)))
+				modified = true;
+
+		return modified;
+	}
+
+	private boolean addAll(FastCollection<? extends E> c) {
+		boolean modified = false;
+
+		for (Record r = c.head(), end = c.tail(); (r = r.getNext()) != end;)
+			if (add(c.valueOf(r)))
+				modified = true;
+
+		return modified;
+	}
+
+	private boolean addAll(List<? extends E> c) {
+		boolean modified = false;
+
+		for (int i = 0, size = c.size(); i < size;)
+			if (add(c.get(i++)))
+				modified = true;
+
+		return modified;
+	}
+
+	public boolean containsAll(Object[] c) {
+		for (Object obj : c)
+			if (!contains(obj))
+				return false;
+
+		return true;
+	}
+
+	@Override
+	public boolean containsAll(Collection<?> c) {
+		return containsAll((Iterable<? extends E>) c);
+	}
+
+	public boolean containsAll(Iterable<?> c) {
+		if (c instanceof RandomAccess && c instanceof List<?>)
+			return containsAll((List<?>) c);
+
+		if (c instanceof FastCollection<?>)
+			return containsAll((FastCollection<?>) c);
+
+		if (c instanceof AEFastCollection<?>)
+			return containsAll((AEFastCollection<?>) c);
+
+		for (Object obj : c)
+			if (!contains(obj))
+				return false;
+
+		return true;
+	}
+
+	private boolean containsAll(AEFastCollection<?> c) {
+		for (Record r = c.head(), end = c.tail(); (r = r.getNext()) != end;)
+			if (!contains(c.valueOf(r)))
+				return false;
+
+		return true;
+	}
+
+	private boolean containsAll(FastCollection<?> c) {
+		for (Record r = c.head(), end = c.tail(); (r = r.getNext()) != end;)
+			if (!contains(c.valueOf(r)))
+				return false;
+
+		return true;
+	}
+
+	private boolean containsAll(List<?> c) {
+		for (int i = 0, size = c.size(); i < size;)
+			if (!contains(c.get(i++)))
+				return false;
+
+		return true;
+	}
+
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		boolean modified = false;
+
+		for (Record head = head(), r = tail().getPrevious(), previous; r != head; r = previous) {
+			previous = r.getPrevious();
+			if (c.contains(valueOf(r))) {
+				delete(r);
+				modified = true;
+			}
+		}
+
+		return modified;
+	}
+
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		boolean modified = false;
+
+		for (Record head = head(), r = tail().getPrevious(), previous; r != head; r = previous) {
+			previous = r.getPrevious();
+			if (!c.contains(valueOf(r))) {
+				delete(r);
+				modified = true;
+			}
+		}
+
+		return modified;
+	}
+
+	@Override
+	public Object[] toArray() {
+		return toArray(new Object[size()]);
+	}
+
+	@Override
+	public <T> T[] toArray(T[] array) {
+		int size = size();
+
+		if (array.length != size)
+			array = (T[]) Array.newInstance(array.getClass().getComponentType(), size);
+
+		if (size == 0 && array.length == 0)
+			return array;
+
+		int i = 0;
+		for (Record r = head(), end = tail(); (r = r.getNext()) != end;)
+			array[i++] = (T) valueOf(r);
+
+		return array;
+	}
 }

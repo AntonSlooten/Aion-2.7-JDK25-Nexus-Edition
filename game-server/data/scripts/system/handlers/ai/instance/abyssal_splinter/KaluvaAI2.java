@@ -36,7 +36,7 @@ public class KaluvaAI2 extends SummonerAI2 {
 	@Override
 	protected void handleAttack(Creature creature) {
 		super.handleAttack(creature);
-		if (!isStart) {
+		if(!isStart){
 			isStart = true;
 			scheduleTask();
 			scheduleTransfo();
@@ -59,7 +59,7 @@ public class KaluvaAI2 extends SummonerAI2 {
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
-			public void run() {
+			public void run(){
 				canThink = true;
 				Creature creature = getAggroList().getMostHated();
 				if (creature != null && getOwner().canSee(creature) && !NpcActions.isAlreadyDead(creature)) {
@@ -99,7 +99,7 @@ public class KaluvaAI2 extends SummonerAI2 {
 		int time = Rnd.get(0, 20) - 10 + TASK_TIME;
 		task = ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
-			public void run() {
+			public void run(){
 				doTask();
 			}
 		}, time * 1000);
@@ -109,15 +109,15 @@ public class KaluvaAI2 extends SummonerAI2 {
 		int time = Rnd.get(0, 20) - 10 + TRANSFO_TIME;
 		transfo = ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
-			public void run() {
+			public void run(){
 				doTransfo();
 			}
 		}, time * 1000);
 	}
-
-	private void doTransfo() {
+	
+	private void doTransfo(){
 		Player p = getTargetPlayer();
-		if (p == null) {
+		if(p == null){
 			return;
 		}
 
@@ -126,20 +126,19 @@ public class KaluvaAI2 extends SummonerAI2 {
 		((KaluvaWeb) npc.getAi2()).setP(p);
 	}
 
-	private void doTask() {
+	private void doTask(){
 		spawn();
 		canThink = false;
 		EmoteManager.emoteStopAttacking(getOwner());
 		setStateIfNot(AIState.FOLLOWING);
 		getOwner().setState(1);
-		PacketSendUtility.broadcastPacket(getOwner(),
-				new SM_EMOTION(getOwner(), EmotionType.START_EMOTE2, 0, getObjectId()));
+		PacketSendUtility.broadcastPacket(getOwner(), new SM_EMOTION(getOwner(), EmotionType.START_EMOTE2, 0, getObjectId()));
 		AI2Actions.targetCreature(this, getPosition().getWorldMapInstance().getNpc(281902));
 		getMoveController().moveToTargetObject();
 
 		scheduleTask();
 	}
-
+	
 	private Player getTargetPlayer() {
 		List<Player> players = getClosePlayer(50);
 		return !players.isEmpty() ? players.get(Rnd.get(players.size())) : null;
@@ -147,18 +146,18 @@ public class KaluvaAI2 extends SummonerAI2 {
 
 	private void spawn() {
 		switch (Rnd.get(1, 4)) {
-		case 1:
-			spawn(281902, 663.322021f, 556.731995f, 424.295013f, (byte) 64);
-			break;
-		case 2:
-			spawn(281902, 644.0224f, 523.9641f, 423.09103f, (byte) 32);
-			break;
-		case 3:
-			spawn(281902, 611.008f, 539.73395f, 423.25034f, (byte) 119);
-			break;
-		case 4:
-			spawn(281902, 628.4426f, 585.4443f, 424.31854f, (byte) 93);
-			break;
+			case 1:
+				spawn(281902, 663.322021f, 556.731995f, 424.295013f, (byte) 64);
+				break;
+			case 2:
+				spawn(281902, 644.0224f, 523.9641f, 423.09103f, (byte) 32);
+				break;
+			case 3:
+				spawn(281902, 611.008f, 539.73395f, 423.25034f, (byte) 119);
+				break;
+			case 4:
+				spawn(281902, 628.4426f, 585.4443f, 424.31854f, (byte) 93);
+				break;
 		}
 	}
 
@@ -171,9 +170,9 @@ public class KaluvaAI2 extends SummonerAI2 {
 		if (transfo != null && !transfo.isCancelled()) {
 			transfo.cancel(true);
 		}
-
+		
 		getEffectController().removeEffect(19152);
-
+		
 		List<Npc> npcs = new ArrayList<Npc>();
 		npcs.addAll(getPosition().getWorldMapInstance().getNpcs(281902));
 		npcs.addAll(getPosition().getWorldMapInstance().getNpcs(281911));

@@ -46,7 +46,8 @@ public class LeagueInvite extends RequestResponseHandler {
 
 			if (league == null) {
 				league = LeagueService.createLeague(inviter, invited);
-			} else if (league.size() == 8) {
+			}
+			else if (league.size() == 8) {
 				PacketSendUtility.sendMessage(invited, "That league is already full.");
 				PacketSendUtility.sendMessage(inviter, "Your league is already full.");
 				return;
@@ -62,7 +63,7 @@ public class LeagueInvite extends RequestResponseHandler {
 	public void denyRequest(Creature requester, Player responder) {
 		// TODO correct message
 		PacketSendUtility.sendPacket(inviter,
-				SM_SYSTEM_MESSAGE.STR_PARTY_ALLIANCE_HE_REJECT_INVITATION(responder.getName()));
+			SM_SYSTEM_MESSAGE.STR_PARTY_ALLIANCE_HE_REJECT_INVITATION(responder.getName()));
 	}
 
 }

@@ -55,10 +55,12 @@ public class CM_CRAFT extends AionClientPacket {
 	protected void runImpl() {
 		Player player = getConnection().getActivePlayer();
 
-		// disallow crafting in shutdown progress..
-		if (!player.isSpawned() || player.getController().isInShutdownProgress()) {
+		if (!player.isSpawned())
 			return;
-		}
+
+		// disallow crafting in shutdown progress..
+		if (player.getController().isInShutdownProgress())
+			return;
 
 		CraftService.startCrafting(player, recipeId, targetObjId);
 	}

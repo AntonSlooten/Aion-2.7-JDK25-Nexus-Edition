@@ -6,8 +6,8 @@ import com.aionemu.gameserver.services.teleport.TeleportService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public class CmdMissyou extends BaseCommand {
-
-	@Override
+	
+	
 	public void execute(Player player, String... params) {
 
 		Player partner = player.findPartner();
@@ -20,13 +20,12 @@ public class CmdMissyou extends BaseCommand {
 			return;
 		}
 		if (partner.getWorldId() == 510010000 || partner.getWorldId() == 520010000) {
-			PacketSendUtility.sendMessage(player,
-					"You can't teleported to " + partner.getName() + ", your partner is on prison.");
+			PacketSendUtility.sendMessage(player, "You can't teleported to " + partner.getName() +", your partner is on prison.");
 			return;
 		}
 
-		TeleportService.teleportTo(player, partner.getWorldId(), partner.getInstanceId(), partner.getX(),
-				partner.getY(), partner.getZ(), partner.getHeading(), 3000, true);
+		TeleportService.teleportTo(player, partner.getWorldId(), partner.getInstanceId(), partner.getX(), partner.getY(),
+			partner.getZ(), partner.getHeading(), 3000, true);
 		PacketSendUtility.sendMessage(player, "Teleported to player " + partner.getName() + ".");
 	}
 

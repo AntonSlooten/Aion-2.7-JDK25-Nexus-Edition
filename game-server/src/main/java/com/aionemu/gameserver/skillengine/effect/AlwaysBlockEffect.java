@@ -44,16 +44,15 @@ public class AlwaysBlockEffect extends EffectTemplate {
 			@Override
 			public boolean checkStatus(AttackStatus status) {
 				if (status == AttackStatus.BLOCK) {
-					if (value <= 1) {
+					if (value <= 1)
 						effect.endEffect();
-					} else {
+					else
 						value--;
-					}
-
+					
 					return true;
-				} else {
-					return false;
 				}
+				else
+					return false;
 			}
 
 		};
@@ -64,8 +63,7 @@ public class AlwaysBlockEffect extends EffectTemplate {
 	@Override
 	public void endEffect(Effect effect) {
 		AttackCalcObserver acObserver = effect.getAttackStatusObserver(position);
-		if (acObserver != null) {
+		if (acObserver != null)
 			effect.getEffected().getObserveController().removeAttackCalcObserver(acObserver);
-		}
 	}
 }

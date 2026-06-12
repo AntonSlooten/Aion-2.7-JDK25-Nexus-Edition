@@ -9,13 +9,13 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_MAIL_SERVICE;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public class CM_OPEN_MAIL_WINDOW extends AionClientPacket {
-
+		
 	private int type;
 
 	public CM_OPEN_MAIL_WINDOW(int opcode, State state, State... restStates) {
 		super(opcode, state, restStates);
 	}
-
+	
 	@Override
 	protected void readImpl() {
 		this.type = readC();
@@ -24,14 +24,13 @@ public class CM_OPEN_MAIL_WINDOW extends AionClientPacket {
 	@Override
 	protected void runImpl() {
 		Player player = this.getConnection().getActivePlayer();
-		if (type == 1) {
+		if(type == 1) {
 			PacketSendUtility.sendPacket(player, new SM_MAIL_SERVICE(player, player.getMailbox().getExpressLetters()));
-			for (Letter letter : player.getMailbox().getExpressLetters()) {
+			for (Letter letter : player.getMailbox().getExpressLetters())
 				letter.setExpress(false);
-			}
-		} else {
-			PacketSendUtility.sendPacket(player, new SM_MAIL_SERVICE(player, player.getMailbox().getLetters()));
 		}
+		else
+			PacketSendUtility.sendPacket(player, new SM_MAIL_SERVICE(player, player.getMailbox().getLetters()));
 	}
 
 }

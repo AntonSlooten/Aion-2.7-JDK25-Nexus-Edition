@@ -54,49 +54,54 @@ public class _1948WheresVindachinerk extends QuestHandler {
 			if (targetId == 798012) {
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 798004: {
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1352);
+				case 798004: {
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case SELECT_ACTION_1353: {
+							playQuestMovie(env, 0);
+							return sendQuestDialog(env, 1353);
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1);
+						}
 					}
 				}
-				case SELECT_ACTION_1353: {
-					playQuestMovie(env, 0);
-					return sendQuestDialog(env, 1353);
-				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1);
-				}
-				}
-			}
-			case 798132: {
-				switch (dialog) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1693);
-				case STEP_TO_2:
-					return defaultCloseDialog(env, 1, 2, true, false);
+				case 798132: {
+					switch(dialog)
+					{
+						case START_DIALOG:
+							if(var == 1)
+								return sendQuestDialog(env, 1693);
+						case STEP_TO_2:
+							return defaultCloseDialog(env, 1, 2, true, false);
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 279006) {
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 2375);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
 		}
 		return false;
 	}
-
+	
 }

@@ -13795,7 +13795,7 @@
         <effects>
             <shield basiclvl="20" duration="20000" e="1" effectid="154" hitvalue="927" hopb="628" hoptype="SKILLLV" noresist="true" value="927"/>
             <onetimeboostheal duration="20000" e="2" effectid="172" element="EARTH" noresist="true" preeffect="1">
-                <change func="PERCENT" stat="HEAL_BOOST" value="100"/>
+                <change func="PERCENT" stat="HEAL_BOOST" value="256"/>
             </onetimeboostheal>
         </effects>
         <actions>
@@ -65011,7 +65011,7 @@
         <motion name="buff"/>
     </skill_template>
   <skill_template activation="ACTIVE" cooldown="0" cooldownId="1" duration="3000" lvl="1" name="Powerful Brandish" nameId="579471" skill_id="17220" skillsubtype="ATTACK" skilltype="PHYSICAL" stack="BNWA_SATKLRTA_DF1CH" tslot="NONE">
-        <properties first_target="TARGET" first_target_range="2" target_distance="25" target_maxcount="6" target_relation="ENEMY" target_type="AREA"/>
+        <properties first_target="TARGET" first_target_range="2" target_distance="25" target_maxcount="8" target_relation="ENEMY" target_type="AREA"/>
         <startconditions>
             <weapon weapon="SWORD_2H BOOK_2H BOW DAGGER_1H MACE_1H ORB_2H POLEARM_2H STAFF_2H SWORD_1H"/>
         </startconditions>
@@ -93688,7 +93688,7 @@
         <motion name="areaatk"/>
     </skill_template>
   <skill_template activation="ACTIVE" cooldown="0" cooldownId="2" dispel_category="BUFF" duration="0" lvl="1" name="Splendid Blessing" nameId="592733" skill_id="19146" skillsubtype="BUFF" skilltype="MAGICAL" stack="IDABRE_COREB_LIGHTBUFF" tslot="BUFF">
-        <properties first_target="ME" first_target_range="2" target_distance="20" target_maxcount="12" target_relation="FRIEND" target_type="AREA"/>
+        <properties first_target="ME" first_target_range="2" target_distance="30" target_maxcount="12" target_relation="FRIEND" target_type="AREA"/>
         <startconditions>
             <weapon weapon="SWORD_2H BOOK_2H BOW DAGGER_1H MACE_1H ORB_2H POLEARM_2H STAFF_2H SWORD_1H"/>
         </startconditions>
@@ -93705,7 +93705,7 @@
         <motion instant_skill="true" name="normalfire"/>
     </skill_template>
   <skill_template activation="ACTIVE" cooldown="0" cooldownId="3" dispel_category="BUFF" duration="0" lvl="1" name="Umbral Blessing" nameId="592739" skill_id="19147" skillsubtype="BUFF" skilltype="MAGICAL" stack="IDABRE_COREB_DARKBUFF" tslot="BUFF">
-        <properties first_target="ME" first_target_range="2" target_distance="20" target_maxcount="12" target_relation="FRIEND" target_type="AREA"/>
+        <properties first_target="ME" first_target_range="2" target_distance="30" target_maxcount="12" target_relation="FRIEND" target_type="AREA"/>
         <startconditions>
             <weapon weapon="SWORD_2H BOOK_2H BOW DAGGER_1H MACE_1H ORB_2H POLEARM_2H STAFF_2H SWORD_1H"/>
         </startconditions>
@@ -93718,7 +93718,7 @@
         </effects>
         <motion instant_skill="true" name="normalfire"/>
     </skill_template>
-  <skill_template activation="ACTIVE" cooldown="0" cooldownId="4" dispel_category="DEBUFF_PHYSICAL" tslot_level="2" duration="0" lvl="1" name="Resistance" nameId="592745" skill_id="19148" skillsubtype="DEBUFF" skilltype="PHYSICAL" stack="IDABRE_COREB_BLOCKUP" tslot="DEBUFF">
+  <skill_template activation="ACTIVE" cooldown="0" cooldownId="4" dispel_category="DEBUFF_PHYSICAL" duration="0" lvl="1" name="Resistance" nameId="592745" skill_id="19148" skillsubtype="DEBUFF" skilltype="PHYSICAL" stack="IDABRE_COREB_BLOCKUP" tslot="DEBUFF">
         <properties first_target="TARGET" first_target_range="20" target_maxcount="1" target_relation="ENEMY" target_type="ONLYONE"/>
         <startconditions>
             <weapon weapon="SWORD_2H BOOK_2H BOW DAGGER_1H MACE_1H ORB_2H POLEARM_2H STAFF_2H SWORD_1H"/>
@@ -93776,7 +93776,7 @@
             <weapon weapon="SWORD_2H BOOK_2H BOW DAGGER_1H MACE_1H ORB_2H POLEARM_2H STAFF_2H SWORD_1H"/>
         </startconditions>
         <effects>
-            <!--<heal checktime="3000" duration="86400000" e="1" effectid="10191521" hopa="60" hopb="60" hoptype="SKILLLV" noresist="true" percent="true" value="3"/>-->
+            <heal checktime="3000" duration="86400000" e="1" effectid="10191521" hopa="60" hopb="60" hoptype="SKILLLV" noresist="true" percent="true" value="3"/>
             <statup duration="86400000" e="2" effectid="10191522" hopa="60" hopb="60" hoptype="SKILLLV" noresist="true" preeffect="1">
                 <change func="ADD" stat="WATER_RESISTANCE" value="1300"/>
                 <change func="ADD" stat="WIND_RESISTANCE" value="1300"/>
@@ -93853,7 +93853,7 @@
         </effects>
         <motion instant_skill="true" name="normalfire"/>
     </skill_template>
-  <skill_template activation="ACTIVE" cooldown="0" cooldownId="9" dispel_category="DEBUFF_PHYSICAL" duration="0" lvl="1" name="Constricting Webs" nameId="592805" skill_id="19158" skillsubtype="DEBUFF" skilltype="MAGICAL" stack="IDABRE_COREB_LONGPARALYZE" tslot="DEBUFF" tslot_level="2">
+  <skill_template activation="ACTIVE" cooldown="0" cooldownId="9" dispel_category="DEBUFF_PHYSICAL" duration="0" lvl="1" name="Constricting Webs" nameId="592805" skill_id="19158" skillsubtype="DEBUFF" skilltype="MAGICAL" stack="IDABRE_COREB_LONGPARALYZE" tslot="DEBUFF">
         <properties first_target="TARGET" first_target_range="2" target_maxcount="1" target_relation="ENEMY" target_type="ONLYONE"/>
         <startconditions>
             <weapon weapon="SWORD_2H BOOK_2H BOW DAGGER_1H MACE_1H ORB_2H POLEARM_2H STAFF_2H SWORD_1H"/>
@@ -94729,7 +94729,7 @@
         </startconditions>
         <effects>
             <statdown duration="25000" e="1" effectid="154" element="EARTH" hopa="60" hopb="60" hoptype="SKILLLV" noresist="true">
-                <!--<change func="PERCENT" stat="MAXHP" value="-50"/>-->
+                <change func="PERCENT" stat="MAXHP" value="-50"/>
                 <change func="PERCENT" stat="PHYSICAL_DEFENSE" value="-90"/>
                 <change func="ADD" stat="WATER_RESISTANCE" value="-300"/>
                 <change func="ADD" stat="WIND_RESISTANCE" value="-300"/>
@@ -95340,7 +95340,7 @@
             <playermove allow="false"/>
         </useconditions>
         <effects>
-            <heal checktime="15000" duration="86400000" e="1" effectid="10191521" hopa="60" hopb="60" hoptype="SKILLLV" noresist="true" percent="true" value="5"/>
+            <heal checktime="5000" duration="86400000" e="1" effectid="10191521" hopa="60" hopb="60" hoptype="SKILLLV" noresist="true" percent="true" value="5"/>
             <statup duration="86400000" e="2" effectid="10191522" hopa="60" hopb="60" hoptype="SKILLLV" noresist="true" preeffect="1">
                 <change func="ADD" stat="WATER_RESISTANCE" value="1300"/>
                 <change func="ADD" stat="WIND_RESISTANCE" value="1300"/>
@@ -95566,7 +95566,7 @@
         </effects>
         <motion name="areaatk"/>
     </skill_template>
-  <skill_template activation="ACTIVE" cooldown="0" cooldownId="2" dispel_category="DEBUFF_PHYSICAL" duration="0" lvl="1" name="Healing Impairment" nameId="593493" skill_id="19282" skillsubtype="DEBUFF" skilltype="MAGICAL" stack="IDABRE_CORE_NMDD_REDUCEHEAL" tslot="DEBUFF" tslot_level="2">
+  <skill_template activation="ACTIVE" cooldown="0" cooldownId="2" dispel_category="DEBUFF_PHYSICAL" duration="0" lvl="1" name="Healing Impairment" nameId="593493" skill_id="19282" skillsubtype="DEBUFF" skilltype="MAGICAL" stack="IDABRE_CORE_NMDD_REDUCEHEAL" tslot="DEBUFF">
         <properties first_target="TARGET" first_target_range="50" target_maxcount="1" target_relation="ENEMY" target_type="ONLYONE"/>
         <startconditions>
             <weapon weapon="SWORD_2H BOOK_2H BOW DAGGER_1H MACE_1H ORB_2H POLEARM_2H STAFF_2H SWORD_1H"/>
@@ -95575,7 +95575,7 @@
             <playermove allow="false"/>
         </useconditions>
         <effects>
-            <deboostheal duration="20000" e="1" effectid="10192821" element="DARK" hopa="60" hopb="60" hoptype="SKILLLV" noresist="true"/>
+            <deboostheal duration="60000" e="1" effectid="10192821" element="DARK" hopa="60" hopb="60" hoptype="SKILLLV" noresist="true"/>
         </effects>
         <motion name="poweratk"/>
     </skill_template>

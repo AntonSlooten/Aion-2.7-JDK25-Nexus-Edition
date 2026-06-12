@@ -53,20 +53,19 @@ public class PortalService {
 	private static Logger log = LoggerFactory.getLogger(PortalService.class);
 
 	/**
-	 * Add portation task to player with talkDelay delay to location specified by
-	 * portalTemplate
+	 * Add portation task to player with talkDelay delay to location specified by portalTemplate
 	 */
 	public static void port(final PortalTemplate portalTemplate, final Player player, int npcObjectId, int talkDelay) {
-		if (!CustomConfig.ENABLE_INSTANCES) {
+		if (!CustomConfig.ENABLE_INSTANCES)
 			return;
-		}
 
 		talkDelay *= 1000;
 		if (talkDelay > 0) {
 			PacketSendUtility.sendPacket(player, new SM_USE_OBJECT(player.getObjectId(), npcObjectId, talkDelay, 1));
-
-			PacketSendUtility.broadcastPacket(player,
-					new SM_EMOTION(player, EmotionType.START_QUESTLOOT, 0, npcObjectId), true);
+                      
+                           
+			PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.START_QUESTLOOT, 0, npcObjectId),
+				true);
 		}
 		player.getController().addTask(TaskId.PORTAL, ThreadPoolManager.getInstance().schedule(new Runnable() {
 
@@ -109,10 +108,8 @@ public class PortalService {
 					PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MOVE_PORTAL_ERROR_INVALID_RACE);
 					Item usingItem = player.getUsingItem();
 					player.setUsingItem(null);
-					PacketSendUtility.sendPacket(player,
-							new SM_ITEM_USAGE_ANIMATION(player.getObjectId(),
-									usingItem == null ? 0 : usingItem.getObjectId(),
-									usingItem == null ? 0 : usingItem.getItemTemplate().getTemplateId(), 0, 3, 0));
+					PacketSendUtility.sendPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), usingItem == null ? 0
+						: usingItem.getObjectId(), usingItem == null ? 0 : usingItem.getItemTemplate().getTemplateId(), 0, 3, 0));
 					player.getController().cancelPortalUseItem();
 					return;
 				}
@@ -120,9 +117,8 @@ public class PortalService {
 		}
 
 		if (portalTemplate.getIdTitle() != 0 && player.getCommonData().getTitleId() != portalTemplate.getIdTitle()
-				&& instanceTitleReq) {
+			&& instanceTitleReq)
 			return;
-		}
 
 		if (!portalTemplate.existsExitForRace(player.getRace()) && instanceRaceReq) {
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MOVE_PORTAL_ERROR_INVALID_RACE);
@@ -130,11 +126,11 @@ public class PortalService {
 		}
 
 		if (!(portalTemplate.isInstance()
-				&& DataManager.INSTANCE_COOLTIME_DATA.getInstanceCooltimeByWorldId(mapId) != null
-				&& DataManager.INSTANCE_COOLTIME_DATA.getInstanceCooltimeByWorldId(mapId).getCanEnterMentor()
-				&& player.isMentor())) {
-			if (((portalTemplate.getMaxLevel() != 0 && player.getLevel() > portalTemplate.getMaxLevel())
-					|| player.getLevel() < portalTemplate.getMinLevel()) && instanceLevelReq) {
+			&& DataManager.INSTANCE_COOLTIME_DATA.getInstanceCooltimeByWorldId(mapId)!= null
+			&& DataManager.INSTANCE_COOLTIME_DATA.getInstanceCooltimeByWorldId(mapId).getCanEnterMentor()
+			&& player.isMentor())) {
+			if (((portalTemplate.getMaxLevel() != 0 && player.getLevel() > portalTemplate.getMaxLevel()) || player.getLevel() < portalTemplate
+				.getMinLevel()) && instanceLevelReq) {
 				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_CANT_INSTANCE_ENTER_LEVEL);
 				return;
 			}
@@ -143,35 +139,35 @@ public class PortalService {
 		PlayerGroup group = player.getPlayerGroup2();
 		PlayerAlliance allianceGroup = player.getPlayerAlliance2();
 		switch (portalTemplate.getPlayerSize()) {
-		case 12:
-			if (allianceGroup == null && instanceGroupReq) {
-				// to do sniff
-				PacketSendUtility.sendMessage(player, "You must be in Alliance.");
-				return;
-			}
-			break;
-		case 6:
-			if (group == null && instanceGroupReq) {
-				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_ENTER_ONLY_PARTY_DON);
-				return;
-			}
-			break;
+			case 12:
+				if (allianceGroup == null && instanceGroupReq) {
+					// to do sniff
+					PacketSendUtility.sendMessage(player, "You must be in Alliance.");
+					return;
+				}
+				break;
+			case 6:
+				if (group == null && instanceGroupReq) {
+					PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_ENTER_ONLY_PARTY_DON);
+					return;
+				}
+				break;
 		}
 
 		if (instanceQuestReq && portalTemplate.needQuest()) {
 			int[][] quests = portalTemplate.getQuests();
 			boolean present = false;
-			for (int[] quest : quests) {
+			for (int i = 0; i < quests.length; i++) {
 				// TEMP: please remove when Quest 1044 get fixed
-				if (quest[0] == 1044) {
+				if (quests[i][0] == 1044) {
 					present = true;
 					break;
 				}
 
-				final QuestState qs = player.getQuestStateList().getQuestState(quest[0]);
+				final QuestState qs = player.getQuestStateList().getQuestState(quests[i][0]);
 				if (qs != null) {
-					if ((quest[1] == 0 && qs.getStatus() == QuestStatus.COMPLETE) || (quest[1] != 0
-							&& (qs.getStatus() == QuestStatus.COMPLETE || qs.getQuestVarById(0) >= quest[1]))) {
+					if ((quests[i][1] == 0 && qs.getStatus() == QuestStatus.COMPLETE)
+						|| (quests[i][1] != 0 && (qs.getStatus() == QuestStatus.COMPLETE || qs.getQuestVarById(0) >= quests[i][1]))) {
 						present = true;
 						break;
 					}
@@ -183,8 +179,8 @@ public class PortalService {
 				return;
 			}
 		}
-
-		if (CustomConfig.INSTANCE_KEYCHECK) {
+		
+		if(CustomConfig.INSTANCE_KEYCHECK) {
 			if (portalTemplate.getPortalItem() != null && !portalTemplate.getPortalItem().isEmpty()) {
 				for (PortalItem pi : portalTemplate.getPortalItem()) {
 					if (!player.getInventory().decreaseByItemId(pi.getItemid(), pi.getQuantity())) {
@@ -206,51 +202,124 @@ public class PortalService {
 		if (player.getPortalCooldownList().isPortalUseDisabled(mapId) && useDelay > 0) {
 
 			switch (portalTemplate.getPlayerSize()) {
-			case 6: // group
-				if (player.getPlayerGroup2() != null) {
-					instance = InstanceService.getRegisteredInstance(mapId, player.getPlayerGroup2().getTeamId());
-				}
-				break;
-			case 12: // alliance
-				if (player.isInAlliance2()) {
-					instance = InstanceService.getRegisteredInstance(mapId, player.getPlayerAlliance2().getObjectId());
-				}
-				break;
-			default: // solo
-				instance = InstanceService.getRegisteredInstance(mapId, player.getObjectId());
-				break;
+				case 6: // group
+					if (player.getPlayerGroup2() != null) {
+						instance = InstanceService.getRegisteredInstance(mapId, player.getPlayerGroup2().getTeamId());
+					}
+					break;
+				case 12: // alliance
+					if (player.isInAlliance2()) {
+						instance = InstanceService.getRegisteredInstance(mapId, player.getPlayerAlliance2().getObjectId());
+					}
+					break;
+				default: // solo
+					instance = InstanceService.getRegisteredInstance(mapId, player.getObjectId());
+					break;
 			}
 
 			if (instance == null) {
 				PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_CANNOT_MAKE_INSTANCE_COOL_TIME);
 				return;
-			} else {
+			}
+			else {
 				if (!instance.isRegistered(player.getObjectId())) {
 					PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_CANNOT_MAKE_INSTANCE_COOL_TIME);
 					return;
-				} else {
+				}
+				else {
 					reenter = true;
 					log.debug(player.getName() + "has been in intance and also have cd, can reenter.");
 				}
 			}
-		} else {
-			log.debug(player.getName()
-					+ "doesn't have cd of this instance, can enter and will be registed to this intance");
 		}
-
+		else {
+			log.debug(player.getName() + "doesn't have cd of this instance, can enter and will be registed to this intance");
+		}
+		
 		switch (portalTemplate.getPlayerSize()) {
-		case 6:
-			if (group != null || !instanceGroupReq) {
+			case 6:
+				if (group != null || !instanceGroupReq) {
+					// If there is a group (whatever group requirement exists or not)...
+					if (group != null) {
+						instance = InstanceService.getRegisteredInstance(mapId, group.getTeamId());
+					}
+					// But if there is no group (and solo is enabled, of course)
+					else {
+						instance = InstanceService.getRegisteredInstance(mapId, player.getObjectId());
+					}
+
+					// No instance (for group), group on and default requirement off
+					if (instance == null && group != null && !instanceGroupReq) {
+						// For each player from group
+						for (Player member : group.getMembers()) {
+							// Get his instance
+							instance = InstanceService.getRegisteredInstance(mapId, member.getObjectId());
+
+							// If some player is soloing and I found no one else yet, I get his instance
+							if (instance != null) {
+								break;
+							}
+						}
+
+						// No solo instance found
+						if (instance == null)
+							instance = registerGroup(group, mapId);
+					}
+
+					// No instance and default requirement on = Group on
+					else if (instance == null && instanceGroupReq) {
+						instance = registerGroup(group, mapId);
+					}
+					// No instance, default requirement off, no group = Register new instance with player ID
+					else if (instance == null && !instanceGroupReq && group == null) {
+						instance = InstanceService.getNextAvailableInstance(mapId);
+					}
+
+					transfer(player, portalTemplate, instance, reenter);
+				}
+				break;
+			case 12:
+				if (allianceGroup != null || !instanceGroupReq) {
+					if (allianceGroup != null) {
+						instance = InstanceService.getRegisteredInstance(mapId, allianceGroup.getObjectId());
+					}
+					else {
+						instance = InstanceService.getRegisteredInstance(mapId, player.getObjectId());
+					}
+
+					if (instance == null && allianceGroup != null && !instanceGroupReq) {
+						for (Player member : allianceGroup.getMembers()) {
+							instance = InstanceService.getRegisteredInstance(mapId, member.getObjectId());
+							if (instance != null) {
+								break;
+							}
+						}
+						if (instance == null) {
+							instance = registerAlliance(allianceGroup, mapId);
+						}
+					}
+					else if (instance == null && instanceGroupReq) {
+						instance = registerAlliance(allianceGroup, mapId);
+					}
+					else if (instance == null && !instanceGroupReq && allianceGroup == null) {
+						instance = InstanceService.getNextAvailableInstance(mapId);
+					}
+					if (instance.getPlayersInside().size() < portalTemplate.getPlayerSize()) {
+						transfer(player, portalTemplate, instance, reenter);
+					}
+				}
+				break;
+			default:
 				// If there is a group (whatever group requirement exists or not)...
-				if (group != null) {
+				if (group != null && !instanceGroupReq) {
 					instance = InstanceService.getRegisteredInstance(mapId, group.getTeamId());
 				}
-				// But if there is no group (and solo is enabled, of course)
+				// But if there is no group, go to solo
 				else {
 					instance = InstanceService.getRegisteredInstance(mapId, player.getObjectId());
 				}
 
-				// No instance (for group), group on and default requirement off
+				// No group instance, group on and default requirement off
 				if (instance == null && group != null && !instanceGroupReq) {
 					// For each player from group
 					for (Player member : group.getMembers()) {
@@ -264,89 +333,18 @@ public class PortalService {
 					}
 
 					// No solo instance found
-					if (instance == null) {
+					if (instance == null && portalTemplate.isInstance())
 						instance = registerGroup(group, mapId);
-					}
 				}
 
-				// No instance and default requirement on = Group on
-				else if (instance == null && instanceGroupReq) {
-					instance = registerGroup(group, mapId);
-				}
-				// No instance, default requirement off, no group = Register new instance with
-				// player ID
-				else if (instance == null && !instanceGroupReq && group == null) {
-					instance = InstanceService.getNextAvailableInstance(mapId);
-				}
-
-				transfer(player, portalTemplate, instance, reenter);
-			}
-			break;
-		case 12:
-			if (allianceGroup != null || !instanceGroupReq) {
-				if (allianceGroup != null) {
-					instance = InstanceService.getRegisteredInstance(mapId, allianceGroup.getObjectId());
-				} else {
-					instance = InstanceService.getRegisteredInstance(mapId, player.getObjectId());
-				}
-
-				if (instance == null && allianceGroup != null && !instanceGroupReq) {
-					for (Player member : allianceGroup.getMembers()) {
-						instance = InstanceService.getRegisteredInstance(mapId, member.getObjectId());
-						if (instance != null) {
-							break;
-						}
-					}
-					if (instance == null) {
-						instance = registerAlliance(allianceGroup, mapId);
-					}
-				} else if (instance == null && instanceGroupReq) {
-					instance = registerAlliance(allianceGroup, mapId);
-				} else if (instance == null && !instanceGroupReq && allianceGroup == null) {
-					instance = InstanceService.getNextAvailableInstance(mapId);
-				}
-				if (instance.getPlayersInside().size() < portalTemplate.getPlayerSize()) {
+				// if already registered - just teleport
+				if (instance != null) {
+					reenter = true;
 					transfer(player, portalTemplate, instance, reenter);
+					return;
 				}
-			}
-			break;
-		default:
-			// If there is a group (whatever group requirement exists or not)...
-			if (group != null && !instanceGroupReq) {
-				instance = InstanceService.getRegisteredInstance(mapId, group.getTeamId());
-			}
-			// But if there is no group, go to solo
-			else {
-				instance = InstanceService.getRegisteredInstance(mapId, player.getObjectId());
-			}
-
-			// No group instance, group on and default requirement off
-			if (instance == null && group != null && !instanceGroupReq) {
-				// For each player from group
-				for (Player member : group.getMembers()) {
-					// Get his instance
-					instance = InstanceService.getRegisteredInstance(mapId, member.getObjectId());
-
-					// If some player is soloing and I found no one else yet, I get his instance
-					if (instance != null) {
-						break;
-					}
-				}
-
-				// No solo instance found
-				if (instance == null && portalTemplate.isInstance()) {
-					instance = registerGroup(group, mapId);
-				}
-			}
-
-			// if already registered - just teleport
-			if (instance != null) {
-				reenter = true;
-				transfer(player, portalTemplate, instance, reenter);
-				return;
-			}
-			port(player, portalTemplate, reenter);
-			break;
+				port(player, portalTemplate, reenter);
+				break;
 		}
 	}
 
@@ -357,12 +355,14 @@ public class PortalService {
 			instance = InstanceService.getNextAvailableInstance(worldId);
 			InstanceService.registerPlayerWithInstance(instance, requester);
 			transfer(requester, portalTemplate, instance, reenter);
-		} else {
-			/*
-			 * WorldMap worldMap = World.getInstance().getWorldMap(worldId); if (worldMap ==
-			 * null) { log.warn("There is no registered map with id " + worldId); return; }
-			 * instance = worldMap.getWorldMapInstance();
-			 */
+		}
+		else {
+			/*WorldMap worldMap = World.getInstance().getWorldMap(worldId);
+			if (worldMap == null) {
+				log.warn("There is no registered map with id " + worldId);
+				return;
+			}
+			instance = worldMap.getWorldMapInstance();*/
 			easyTransfer(requester, portalTemplate, reenter);
 		}
 	}
@@ -379,13 +379,12 @@ public class PortalService {
 		return instance;
 	}
 
-	private static void transfer(Player player, PortalTemplate portalTemplate, WorldMapInstance instance,
-			boolean reenter) {
+	private static void transfer(Player player, PortalTemplate portalTemplate, WorldMapInstance instance, boolean reenter) {
 		ExitPoint exitPoint = TeleportService.getExitPointByRace(portalTemplate, player.getRace());
 		player.setInstanceStartPos(exitPoint.getX(), exitPoint.getY(), exitPoint.getZ());
 		InstanceService.registerPlayerWithInstance(instance, player);
 		TeleportService.teleportTo(player, exitPoint.getMapId(), instance.getInstanceId(), exitPoint.getX(),
-				exitPoint.getY(), exitPoint.getZ(), 3000, true);
+			exitPoint.getY(), exitPoint.getZ(), 3000, true);
 		int instanceCooldownRate = InstanceService.getInstanceRate(player, exitPoint.getMapId());
 		int useDelay = 0;
 		int instanceCoolTime = DataManager.INSTANCE_COOLTIME_DATA.getInstanceEntranceCooltime(instance.getMapId());
@@ -399,14 +398,12 @@ public class PortalService {
 
 	/**
 	 * this method used to teleport players from instance
-	 *
 	 * @param player
 	 * @param portalTemplate
 	 * @param reenter
 	 */
 	private static void easyTransfer(Player player, PortalTemplate portalTemplate, boolean reenter) {
-		ExitPoint exitPoint = TeleportService.getExitPointByRace(portalTemplate, player.getRace());
-		TeleportService.teleportTo(player, exitPoint.getMapId(), exitPoint.getX(), exitPoint.getY(), exitPoint.getZ(),
-				3000, true);
+		ExitPoint exitPoint = TeleportService.getExitPointByRace(portalTemplate, player.getRace()); 
+		TeleportService.teleportTo(player, exitPoint.getMapId(), exitPoint.getX(), exitPoint.getY(), exitPoint.getZ(), 3000, true);
 	}
 }

@@ -33,9 +33,9 @@ public class Shield extends VisibleObject {
 	private int id = 0;
 
 	public Shield(ShieldTemplate template) {
-		super(IDFactory.getInstance().nextId(), new ShieldController(), null, null,
-				World.getInstance().createPosition(template.getMap(), template.getCenter().getX(),
-						template.getCenter().getY(), template.getCenter().getZ(), (byte) 0, 0));
+		super(IDFactory.getInstance().nextId(), new ShieldController(), null, null, World.getInstance().createPosition(
+			template.getMap(), template.getCenter().getX(), template.getCenter().getY(), template.getCenter().getZ(),
+			(byte) 0, 0));
 
 		((ShieldController) getController()).setOwner(this);
 		this.template = template;

@@ -37,37 +37,39 @@ public class _30361StrangeFragment extends QuestHandler {
 		int targetId = env.getTargetId();
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			return false;
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 278033: { // Erik
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1352);
+				case 278033: { // Erik
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1);
+						}
 					}
+					break;
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1);
-				}
-				}
-				break;
-			}
-			case 279029: { // Lugbug
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1693);
+				case 279029: { // Lugbug
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2, true, false); // reward
+						}
 					}
+					break;
 				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2, true, false); // reward
-				}
-				}
-				break;
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 260265) { // Gwal
 				return sendQuestEndDialog(env);
 			}

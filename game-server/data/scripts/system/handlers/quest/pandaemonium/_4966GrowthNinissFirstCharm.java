@@ -61,38 +61,41 @@ public class _4966GrowthNinissFirstCharm extends QuestHandler {
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 798068: { // Maochinicherk
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1, 182207136, 1, 0, 0); // 1
-				}
-				break;
-			}
-			case 798385: // Ninis
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1) {
-						removeQuestItem(env, 182207136, 1);
-						return sendQuestDialog(env, 2375);
+				case 798068: { // Maochinicherk
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1352);
+						case STEP_TO_1:
+							return defaultCloseDialog(env, 0, 1, 182207136, 1, 0, 0); // 1
 					}
-				case CHECK_COLLECTED_ITEMS:
-					if (var == 1 && player.getInventory().tryDecreaseKinah(40000)) {
-						changeQuestStep(env, 1, 1, true); // reward
-						return sendQuestDialog(env, 5);
-					} else
-						return sendQuestDialog(env, 2716);
-				case FINISH_DIALOG:
-					return defaultCloseDialog(env, 1, 1);
+					break;
 				}
-				break;
+				case 798385: // Ninis
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 1) {
+								removeQuestItem(env, 182207136, 1);
+								return sendQuestDialog(env, 2375);
+							}
+						case CHECK_COLLECTED_ITEMS:
+							if (var == 1 && player.getInventory().tryDecreaseKinah(40000)) {
+								changeQuestStep(env, 1, 1, true); // reward
+								return sendQuestDialog(env, 5);
+							}
+							else
+								return sendQuestDialog(env, 2716);
+						case FINISH_DIALOG:
+							return defaultCloseDialog(env, 1, 1);
+					}
+					break;
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798385) { // Ninis
 				return sendQuestEndDialog(env);
 			}

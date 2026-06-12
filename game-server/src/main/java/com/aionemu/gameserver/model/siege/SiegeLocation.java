@@ -52,9 +52,9 @@ public class SiegeLocation implements ZoneHandler {
 	protected List<SiegeZoneInstance> zone;
 	private boolean isUnderShield;
 	private boolean canTeleport;
-
-	private FastMap<Integer, Creature> creatures = new FastMap<>();
-	private FastMap<Integer, Player> players = new FastMap<>();
+	
+	private FastMap<Integer, Creature> creatures = new FastMap<Integer, Creature>();
+	private FastMap<Integer, Player> players = new FastMap<Integer, Player>();
 
 	public SiegeLocation() {
 	}
@@ -64,7 +64,7 @@ public class SiegeLocation implements ZoneHandler {
 		this.locationId = template.getId();
 		this.worldId = template.getWorldId();
 		this.type = template.getType();
-		this.zone = new ArrayList<>();
+		this.zone = new ArrayList<SiegeZoneInstance>();
 	}
 
 	public SiegeLocationTemplate getTemplate() {
@@ -179,14 +179,11 @@ public class SiegeLocation implements ZoneHandler {
 	}
 
 	public boolean isInsideLocation(Creature creature) {
-		if (zone.isEmpty()) {
+		if (zone.isEmpty())
 			return false;
-		}
-		for (SiegeZoneInstance element : zone) {
-			if (element.isInsideCreature(creature)) {
+		for (int i = 0; i < zone.size(); i++)
+			if (zone.get(i).isInsideCreature(creature))
 				return true;
-			}
-		}
 		return false;
 	}
 
@@ -210,14 +207,14 @@ public class SiegeLocation implements ZoneHandler {
 
 	public void doOnAllPlayers(Visitor<Player> visitor) {
 		try {
-			for (FastMap.Entry<Integer, Player> e = players.head(),
-					mapEnd = players.tail(); (e = e.getNext()) != mapEnd;) {
+			for (FastMap.Entry<Integer, Player> e = players.head(), mapEnd = players.tail(); (e = e.getNext()) != mapEnd;) {
 				Player player = e.getValue();
 				if (player != null) {
 					visitor.visit(player);
 				}
 			}
-		} catch (Exception ex) {
+		}
+		catch (Exception ex) {
 			log.error("Exception when running visitor on all players" + ex);
 		}
 	}

@@ -39,7 +39,7 @@ public class SubEffect {
 	public int getSkillId() {
 		return skillId;
 	}
-
+	
 	/**
 	 * @return the chance
 	 */

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ import com.aionemu.gameserver.network.loginserver.LsServerPacket;
 /**
  * This packet is sended by GameServer when player is requesting fast reconnect
  * to login server. LoginServer in response will send reconectKey.
- *
+ * 
  * @author -Nemesiss-
  */
 public class SM_ACCOUNT_RECONNECT_KEY extends LsServerPacket {
@@ -34,8 +34,9 @@ public class SM_ACCOUNT_RECONNECT_KEY extends LsServerPacket {
 
 	/**
 	 * Constructs new instance of <tt>SM_ACCOUNT_RECONNECT_KEY </tt> packet.
-	 *
-	 * @param accountId account identifier.
+	 * 
+	 * @param accountId
+	 *            account identifier.
 	 */
 	public SM_ACCOUNT_RECONNECT_KEY(int accountId) {
 		super(0x02);

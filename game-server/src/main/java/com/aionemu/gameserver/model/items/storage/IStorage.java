@@ -29,7 +29,7 @@ import com.aionemu.gameserver.services.item.ItemPacketService.ItemUpdateType;
 
 /**
  * Public interface for Storage, later will rename probably
- *
+ * 
  * @author ATracer
  */
 public interface IStorage {
@@ -116,7 +116,7 @@ public interface IStorage {
 	 * Add operation should be used for new items incoming into storage from outside
 	 */
 	Item add(Item item);
-
+	
 	/**
 	 * Put operation is used in some operations like unequip
 	 */

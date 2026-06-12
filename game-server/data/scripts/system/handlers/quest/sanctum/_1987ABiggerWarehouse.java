@@ -52,23 +52,26 @@ public class _1987ABiggerWarehouse extends QuestHandler {
 			if (targetId == 203700) { // Fasimedes
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 203749) { // Bustant
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2375);
-				}
-				case SELECT_REWARD: {
-					changeQuestStep(env, 0, 0, true); // reward
-					return sendQuestDialog(env, 5);
-				}
+					case START_DIALOG: {
+						return sendQuestDialog(env, 2375);
+					}
+					case SELECT_REWARD: {
+						changeQuestStep(env, 0, 0, true); // reward
+						return sendQuestDialog(env, 5);
+					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203749) { // Bustant
 				return sendQuestEndDialog(env);
 			}

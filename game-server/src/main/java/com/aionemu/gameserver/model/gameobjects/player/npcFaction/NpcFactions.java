@@ -37,6 +37,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_TITLE_INFO;
 import com.aionemu.gameserver.services.QuestService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
+
 /**
  * @author MrPoke
  *
@@ -44,9 +45,9 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 public class NpcFactions {
 	private Player owner;
 
-	private Map<Integer, NpcFaction> factions = new HashMap<>();
+	private Map<Integer, NpcFaction> factions = new HashMap<Integer, NpcFaction>();
 	private NpcFaction[] activeNpcFaction = new NpcFaction[2];
-	private int[] timeLimit = new int[] { 0, 0 };
+	private int[] timeLimit = new int[]{0,0};
 
 	/**
 	 * @param owner
@@ -55,53 +56,49 @@ public class NpcFactions {
 		this.owner = owner;
 	}
 
-	public void addNpcFaction(NpcFaction faction) {
+	public void addNpcFaction(NpcFaction faction){
 		factions.put(faction.getId(), faction);
 		int type = 0;
-		if (faction.isMentor()) {
+		if (faction.isMentor())
 			type = 1;
-		}
-
-		if (faction.isActive()) {
+		
+		if (faction.isActive())
 			activeNpcFaction[type] = faction;
-		}
-		if (timeLimit[type] < faction.getTime() && faction.getState() == ENpcFactionQuestState.COMPLETE) {
+		if (timeLimit[type] < faction.getTime() && faction.getState() == ENpcFactionQuestState.COMPLETE)
 			timeLimit[type] = faction.getTime();
 		}
-	}
-
-	public NpcFaction getNpcFactinById(int id) {
+	
+	public NpcFaction getNpcFactinById(int id){
 		return factions.get(id);
 	}
 
-	public Collection<NpcFaction> getNpcFactions() {
+	public Collection<NpcFaction> getNpcFactions(){
 		return factions.values();
 	}
 
-	public NpcFaction getActiveNpcFaction(boolean mentor) {
-		if (mentor) {
+	public NpcFaction getActiveNpcFaction(boolean mentor){
+		if (mentor){
 			return activeNpcFaction[1];
-		} else {
-			return activeNpcFaction[0];
 		}
+		else
+			return activeNpcFaction[0];
 	}
 
-	public NpcFaction setActive(int npcFactionId) {
+	public NpcFaction setActive(int npcFactionId){
 		NpcFaction npcFaction = factions.get(npcFactionId);
-		if (npcFaction == null) {
+		if (npcFaction == null){
 			npcFaction = new NpcFaction(npcFactionId, 0, false, ENpcFactionQuestState.NOTING, 0);
 			factions.put(npcFactionId, npcFaction);
 		}
 		npcFaction.setActive(true);
-		if (npcFaction.isMentor()) {
+		if (npcFaction.isMentor())
 			this.activeNpcFaction[1] = npcFaction;
-		} else {
+		else
 			this.activeNpcFaction[0] = npcFaction;
-		}
 		return npcFaction;
 	}
 
-	public void leaveNpcFaction(Npc npc) {
+	public void leaveNpcFaction(Npc npc){
 		int targetObjectId = npc.getObjectId();
 		NpcFactionTemplate npcFactionTemplate = DataManager.NPC_FACTIONS_DATA.getNpcFactionByNpcId(npc.getNpcId());
 		if (npcFactionTemplate == null) {
@@ -112,20 +109,20 @@ public class NpcFactions {
 			PacketSendUtility.sendPacket(owner, new SM_DIALOG_WINDOW(targetObjectId, 1438));
 			return;
 		}
-
-		PacketSendUtility.sendPacket(owner,
-				new SM_SYSTEM_MESSAGE(1300526, new DescriptionId(npcFactionTemplate.getNameId())));
+		
+		PacketSendUtility.sendPacket(owner, new SM_SYSTEM_MESSAGE(1300526, new DescriptionId(
+			npcFactionTemplate.getNameId())));
 		PacketSendUtility.sendPacket(owner, new SM_DIALOG_WINDOW(targetObjectId, 1353));
 
 		npcFaction.setActive(false);
-		activeNpcFaction[npcFactionTemplate.isMentor() ? 1 : 0] = null;
-		switch (npcFaction.getState()) {
-		case START:
-			QuestService.abandonQuest(owner, npcFaction.getQuestId());
-			npcFaction.setState(ENpcFactionQuestState.NOTING);
+		activeNpcFaction[npcFactionTemplate.isMentor()? 1: 0] = null;
+		switch(npcFaction.getState()){
+			case START:
+				QuestService.abandonQuest(owner, npcFaction.getQuestId());
+				npcFaction.setState(ENpcFactionQuestState.NOTING);
 		}
 	}
-
+	
 	public void enterGuild(Npc npc) {
 		int targetObjectId = npc.getObjectId();
 		NpcFactionTemplate npcFactionTemplate = DataManager.NPC_FACTIONS_DATA.getNpcFactionByNpcId(npc.getNpcId());
@@ -135,8 +132,7 @@ public class NpcFactions {
 		NpcFaction npcFaction = getNpcFactinById(npcFactionTemplate.getId());
 		int npcFactionId = npcFactionTemplate.getId();
 
-		if (owner.getLevel() < npcFactionTemplate.getMinLevel()
-				|| owner.getLevel() > npcFactionTemplate.getMaxLevel()) {
+		if (owner.getLevel() < npcFactionTemplate.getMinLevel() || owner.getLevel() > npcFactionTemplate.getMaxLevel()) {
 			PacketSendUtility.sendPacket(owner, new SM_DIALOG_WINDOW(targetObjectId, 1182));
 			return;
 		}
@@ -154,79 +150,74 @@ public class NpcFactions {
 			return;
 		}
 		if (npcFaction == null || !npcFaction.isActive()) {
-			PacketSendUtility.sendPacket(owner,
-					new SM_SYSTEM_MESSAGE(1300524, new DescriptionId(npcFactionTemplate.getNameId())));
+			PacketSendUtility.sendPacket(owner, new SM_SYSTEM_MESSAGE(1300524, new DescriptionId(
+				npcFactionTemplate.getNameId())));
 			PacketSendUtility.sendPacket(owner, new SM_DIALOG_WINDOW(targetObjectId, 1012));
 			setActive(npcFactionId);
-
+			
 			sendDailyQuest();
 		}
 	}
 
-	public void startQuest(QuestTemplate questTemplate) {
-		NpcFaction npcFaction = activeNpcFaction[questTemplate.isMentor() ? 1 : 0];
-		if ((npcFaction == null)
-				|| (npcFaction.getState() != ENpcFactionQuestState.NOTING && npcFaction.getQuestId() == 0)) {
+	public void startQuest(QuestTemplate questTemplate){
+		NpcFaction npcFaction = activeNpcFaction[questTemplate.isMentor()? 1 :0];
+		if (npcFaction == null)
 			return;
-		}
+		if (npcFaction.getState() != ENpcFactionQuestState.NOTING && npcFaction.getQuestId() == 0)
+			return;
 		npcFaction.setState(ENpcFactionQuestState.START);
 	}
-
-	public void abortQuest(QuestTemplate questTemplate) {
+	
+	public void abortQuest(QuestTemplate questTemplate){
 		NpcFaction npcFaction = this.factions.get(questTemplate.getNpcFactionId());
-		if (npcFaction == null || !npcFaction.isActive()) {
+		if (npcFaction == null || !npcFaction.isActive())
 			return;
-		}
 		npcFaction.setState(ENpcFactionQuestState.NOTING);
 		sendDailyQuest();
 	}
-
-	public void completeQuest(QuestTemplate questTemplate) {
-		NpcFaction npcFaction = activeNpcFaction[questTemplate.isMentor() ? 1 : 0];
-		if (npcFaction == null) {
+	
+	public void completeQuest(QuestTemplate questTemplate){
+		NpcFaction npcFaction = activeNpcFaction[questTemplate.isMentor()? 1 :0];
+		if (npcFaction == null)
 			return;
-		}
 		npcFaction.setTime(getNextTime());
 		npcFaction.setState(ENpcFactionQuestState.COMPLETE);
-		this.timeLimit[npcFaction.isMentor() ? 1 : 0] = npcFaction.getTime();
-		if (questTemplate.getMentorType() == QuestMentorType.MENTOR) {
-			owner.getCommonData().setMentorFlagTime((int) (System.currentTimeMillis() / 1000) + 60 * 60 * 24); // TODO 1
-																												// day
+		this.timeLimit[npcFaction.isMentor()? 1: 0] = npcFaction.getTime();
+		if (questTemplate.getMentorType() == QuestMentorType.MENTOR){
+			owner.getCommonData().setMentorFlagTime((int)(System.currentTimeMillis()/1000)+60*60*24); //TODO 1 day
 			PacketSendUtility.broadcastPacket(owner, new SM_TITLE_INFO(owner, true), false);
 			PacketSendUtility.sendPacket(owner, new SM_TITLE_INFO(true));
 		}
 	}
 
 	/**
-	 *
+	 * 
 	 */
 	public void sendDailyQuest() {
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i<2 ; i++){
 			NpcFaction faction = activeNpcFaction[i];
-			if (faction == null || !faction.isActive() || (this.timeLimit[i] > System.currentTimeMillis() / 1000)) {
+			if (faction == null || !faction.isActive())
 				continue;
-			}
+			if (this.timeLimit[i] > System.currentTimeMillis()/1000)
+				continue;
 			int questId = 0;
-			switch (faction.getState()) {
-			case COMPLETE:
-				if (faction.getTime() > System.currentTimeMillis() / 1000) {
+			switch(faction.getState()){
+				case COMPLETE:
+					if (faction.getTime() > System.currentTimeMillis()/1000)
+						continue;
+					break;
+				case START:
 					continue;
-				}
-				break;
-			case START:
-				continue;
-			case NOTING:
-				if (faction.getTime() > System.currentTimeMillis() / 1000) {
-					questId = faction.getQuestId();
-				}
-				break;
+				case NOTING:
+					if (faction.getTime() > System.currentTimeMillis()/1000)
+						questId = faction.getQuestId();
+					break;
 			}
-
-			if (questId == 0) {
+			
+			if (questId == 0){
 				List<QuestTemplate> quests = DataManager.QUEST_DATA.getQuestsByNpcFaction(faction.getId(), owner);
-				if (quests.isEmpty()) {
+				if (quests.isEmpty())
 					continue;
-				}
 				questId = quests.get(Rnd.get(quests.size())).getId();
 				faction.setQuestId(questId);
 				faction.setTime(getNextTime());
@@ -235,28 +226,25 @@ public class NpcFactions {
 		}
 	}
 
-	public void onLevelUp() {
-		for (int i = 0; i < 2; i++) {
+	public void onLevelUp(){
+		for (int i = 0; i<2 ; i++){
 			NpcFaction faction = activeNpcFaction[i];
-			if (faction == null || !faction.isActive()) {
+			if (faction == null || !faction.isActive())
 				continue;
-			}
 			NpcFactionTemplate npcFactionTemplate = DataManager.NPC_FACTIONS_DATA.getNpcFactionById(faction.getId());
-			if (npcFactionTemplate.getMaxLevel() < owner.getLevel()) {
+			if (npcFactionTemplate.getMaxLevel() < owner.getLevel()){
 				faction.setActive(false);
 				activeNpcFaction[i] = null;
-				switch (faction.getState()) {
-				case START:
-					QuestService.abandonQuest(owner, faction.getQuestId());
+				switch(faction.getState()){
+					case START:
+						QuestService.abandonQuest(owner, faction.getQuestId());
 				}
-				PacketSendUtility.sendPacket(owner,
-						SM_SYSTEM_MESSAGE.STR_FACTION_LEAVE_BY_LEVEL_LIMIT(npcFactionTemplate.getNameId()));
+				PacketSendUtility.sendPacket(owner, SM_SYSTEM_MESSAGE.STR_FACTION_LEAVE_BY_LEVEL_LIMIT(npcFactionTemplate.getNameId()));
 				faction.setState(ENpcFactionQuestState.NOTING);
 			}
 		}
 	}
-
-	private int getNextTime() {
+	private int getNextTime(){
 		Calendar repeatDate = Calendar.getInstance(); // current date
 		repeatDate.set(Calendar.AM_PM, Calendar.AM);
 		repeatDate.set(Calendar.HOUR, 9);
@@ -265,6 +253,6 @@ public class NpcFactions {
 		if (repeatDate.getTime().getTime() < System.currentTimeMillis()) {
 			repeatDate.add(Calendar.HOUR, 24); // can repeat next day
 		}
-		return (int) (repeatDate.getTimeInMillis() / 1000);
+		return (int) (repeatDate.getTimeInMillis()/1000);
 	}
 }

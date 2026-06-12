@@ -37,7 +37,7 @@ public class CraftConfig {
 	 */
 	@Property(key = "gameserver.craft.max.expert.skills", defaultValue = "2")
 	public static int MAX_EXPERT_CRAFTING_SKILLS;
-
+	
 	/**
 	 * Maximum number of master skills a player can have
 	 */

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.smfnew.com>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -53,20 +53,19 @@ public class CM_DELETE_ITEM extends AionClientPacket {
 		if (item != null) {
 			if (!item.getItemTemplate().isBreakable() && !isEquipable(item)) {
 				PacketSendUtility.sendPacket(player,
-						SM_SYSTEM_MESSAGE.STR_UNBREAKABLE_ITEM(new DescriptionId(item.getNameID())));
-			} else {
+					SM_SYSTEM_MESSAGE.STR_UNBREAKABLE_ITEM(new DescriptionId(item.getNameID())));
+			}
+			else {
 				inventory.delete(item, ItemDeleteType.DISCARD);
 			}
 		}
 	}
-
-	// We should allow the destruction/drop of equip-able items etc from surveys
-	// even though they are masked as indestructable / unbreakable
-	public boolean isEquipable(Item item) {
-		if (item.getEquipmentType() == EquipType.ARMOR || item.getEquipmentType() == EquipType.WEAPON) {
+	
+	// We should allow the destruction/drop of equip-able items etc from surveys even though they are masked as indestructable / unbreakable
+	public boolean isEquipable(Item item){
+		if(item.getEquipmentType() == EquipType.ARMOR || item.getEquipmentType() == EquipType.WEAPON){
 			return true;
-		} else {
+		}else
 			return false;
-		}
 	}
 }

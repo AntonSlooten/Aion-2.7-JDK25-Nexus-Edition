@@ -30,9 +30,8 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 import java.util.Collection;
 
 /**
- * Here will be placed some common AI2 actions. These methods have access to
- * AI2's owner
- *
+ * Here will be placed some common AI2 actions. These methods have access to AI2's owner
+ * 
  * @author ATracer
  */
 public class AI2Actions {
@@ -64,7 +63,7 @@ public class AI2Actions {
 	public static void useSkill(AbstractAI ai2, int skillId) {
 		ai2.getOwner().getController().useSkill(skillId);
 	}
-
+	
 	/**
 	 * Effect will be created and applied to target with 100% success
 	 */
@@ -85,13 +84,11 @@ public class AI2Actions {
 	}
 
 	public static void handleUseItemFinish(AbstractAI ai2, Player player) {
-		ai2.getPosition().getWorldMapInstance().getInstanceHandler().handleUseItemFinish(player,
-				((Npc) ai2.getOwner()).getNpcId());
+		ai2.getPosition().getWorldMapInstance().getInstanceHandler().handleUseItemFinish(player, ((Npc) ai2.getOwner()).getNpcId());
 	}
 
 	public static void handleUseItemFinishNpc(AbstractAI ai2, Player player) {
-		ai2.getPosition().getWorldMapInstance().getInstanceHandler().handleUseItemFinish(player,
-				((Npc) ai2.getOwner()));
+		ai2.getPosition().getWorldMapInstance().getInstanceHandler().handleUseItemFinish(player, ((Npc) ai2.getOwner()));
 	}
 
 	public static void fireNpcKillInstanceEvent(AbstractAI ai2, Player player) {
@@ -101,18 +98,18 @@ public class AI2Actions {
 	public static void registerDrop(AbstractAI ai2, Player player, Collection<Player> registeredPlayers) {
 		DropRegistrationService.getInstance().registerDrop((Npc) ai2.getOwner(), player, registeredPlayers);
 	}
-
-	public static void scheduleRespawn(NpcAI2 ai2) {
+	
+	public static void scheduleRespawn(NpcAI2 ai2){
 		ai2.getOwner().getController().scheduleRespawn();
 	}
 
 	public static SelectDialogResult selectDialog(AbstractAI ai2, Player player, int questId, int dialogId) {
 		QuestEnv env = new QuestEnv(ai2.getOwner(), player, questId, dialogId);
-		boolean result = QuestEngine.getInstance().onDialog(env);
+		boolean result =  QuestEngine.getInstance().onDialog(env);
 		return new SelectDialogResult(result, env);
 	}
-
-	public static final class SelectDialogResult {
+	
+	public static final class SelectDialogResult{
 		private final boolean success;
 		private final QuestEnv env;
 
@@ -120,23 +117,20 @@ public class AI2Actions {
 			this.success = success;
 			this.env = env;
 		}
-
 		public boolean isSuccess() {
 			return success;
 		}
-
 		public QuestEnv getEnv() {
 			return env;
 		}
-
+		
 	}
 
 	/**
-	 * Add RequestResponseHandler to player with senderId equal to objectId of AI
-	 * owner
+	 * Add RequestResponseHandler to player with senderId equal to objectId of AI owner
 	 */
 	public static void addRequest(AbstractAI ai2, Player player, int requestId, AI2Request request,
-			Object... requestParams) {
+		Object... requestParams) {
 		addRequest(ai2, player, requestId, ai2.getObjectId(), request, requestParams);
 	}
 
@@ -144,21 +138,20 @@ public class AI2Actions {
 	 * Add RequestResponseHandler to player
 	 */
 	public static void addRequest(AbstractAI ai2, Player player, int requestId, int senderId, final AI2Request request,
-			Object... requestParams) {
+		Object... requestParams) {
 
-		boolean requested = player.getResponseRequester().putRequest(requestId,
-				new RequestResponseHandler(ai2.getOwner()) {
+		boolean requested = player.getResponseRequester().putRequest(requestId, new RequestResponseHandler(ai2.getOwner()) {
 
-					@Override
-					public void denyRequest(Creature requester, Player responder) {
-						request.denyRequest(requester, responder);
-					}
+			@Override
+			public void denyRequest(Creature requester, Player responder) {
+				request.denyRequest(requester, responder);
+			}
 
-					@Override
-					public void acceptRequest(Creature requester, Player responder) {
-						request.acceptRequest(requester, responder);
-					}
-				});
+			@Override
+			public void acceptRequest(Creature requester, Player responder) {
+				request.acceptRequest(requester, responder);
+			}
+		});
 		if (requested) {
 			PacketSendUtility.sendPacket(player, new SM_QUESTION_WINDOW(requestId, senderId, requestParams));
 		}

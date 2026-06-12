@@ -39,7 +39,7 @@ public class AdditionStat extends Stat2 {
 
 	@Override
 	public final void addToBonus(int bonus) {
-		this.bonus += (int) (bonusRate * bonus);
+		this.bonus += bonusRate * bonus;
 	}
 
 	@Override
@@ -47,4 +47,5 @@ public class AdditionStat extends Stat2 {
 		return (100 + delta) / 100f;
 	}
 
+	
 }

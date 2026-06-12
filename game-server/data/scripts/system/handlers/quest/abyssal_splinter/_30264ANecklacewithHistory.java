@@ -33,7 +33,8 @@ public class _30264ANecklacewithHistory extends QuestHandler {
 		int targetId = env.getTargetId();
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			return false;
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203706) { // Charna
 				return sendQuestEndDialog(env);
 			}

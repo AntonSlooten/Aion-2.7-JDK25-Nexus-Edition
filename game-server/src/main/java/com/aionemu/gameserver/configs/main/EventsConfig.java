@@ -49,10 +49,10 @@ public class EventsConfig {
 	 */
 	@Property(key = "gameserver.event.item", defaultValue = "141000001")
 	public static int EVENT_ITEM;
-
+	
 	@Property(key = "gameserver.events.givejuice", defaultValue = "160009017")
 	public static int EVENT_GIVEJUICE;
-
+	
 	@Property(key = "gameserver.events.givecake", defaultValue = "160010073")
 	public static int EVENT_GIVECAKE;
 
@@ -61,9 +61,9 @@ public class EventsConfig {
 
 	@Property(key = "gameserver.event.service.enable", defaultValue = "false")
 	public static boolean ENABLE_EVENT_SERVICE;
-
+	
 	/**
-	 * TvT Event configuration
+	 *TvT Event configuration
 	 */
 	@Property(key = "gameserver.tvtevent.enable", defaultValue = "true")
 	public static boolean TVT_ENABLE;
@@ -71,12 +71,12 @@ public class EventsConfig {
 	public static int TVT_MIN_PLAYERS;
 	@Property(key = "gameserver.tvtevent.skill.use", defaultValue = "9833")
 	public static int TVT_SKILL_USE;
-
-	@Property(key = "gameserver.tvtevent.winner.reward", defaultValue = "188051136")
-	public static int TVT_WINNER_REWARD;
-	@Property(key = "gameserver.tvtevent.winner.dublereward", defaultValue = "188051135")
-	public static int TVT_WINNER_DOUBLEREWARD;
-	@Property(key = "gameserver.tvtevent.winner.number", defaultValue = "1")
-	public static int TVT_WINNER_NUMBER;
+        
+        @Property(key = "gameserver.tvtevent.winner.reward", defaultValue = "188051136")
+        public static int TVT_WINNER_REWARD;
+        @Property(key = "gameserver.tvtevent.winner.dublereward", defaultValue = "188051135")
+        public static int TVT_WINNER_DOUBLEREWARD;
+        @Property(key = "gameserver.tvtevent.winner.number", defaultValue = "1")
+        public static int TVT_WINNER_NUMBER;
 
 }

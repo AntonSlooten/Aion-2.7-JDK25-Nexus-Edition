@@ -56,7 +56,8 @@ public class GodStone extends ItemStone {
 		if (godstoneInfo != null) {
 			probability = godstoneInfo.getProbability();
 			probabilityLeft = godstoneInfo.getProbabilityleft();
-		} else {
+		}
+		else {
 			probability = 0;
 			probabilityLeft = 0;
 			log.warn("CHECKPOINT: Godstone info missing for item : " + itemId);
@@ -68,42 +69,37 @@ public class GodStone extends ItemStone {
 	 * @param player
 	 */
 	public void onEquip(final Player player) {
-		if (godstoneInfo == null || godItem == null) {
+		if (godstoneInfo == null || godItem == null)
 			return;
-		}
 
 		Item equippedItem = player.getEquipment().getEquippedItemByObjId(getItemObjId());
 		int equipmentSlot = equippedItem.getEquipmentSlot();
 		final int handProbability = equipmentSlot == ItemSlot.MAIN_HAND.getSlotIdMask() ? probability : probabilityLeft;
 		actionListener = new ActionObserver(ObserverType.ATTACK) {
 			int hitCount = 0;
-
 			@Override
 			public void attack(Creature creature) {
-				if (CustomConfig.DISABLE_GS_EFFECT) {
+				if(CustomConfig.DISABLE_GS_EFFECT) {
 					return;
 				}
-				if (hitCount > 0 && CustomConfig.GS_SECURISED_EFFECT) {
+				if(hitCount > 0 && CustomConfig.GS_SECURISED_EFFECT) {
 					// log.info("[GODSTONE] no anoth monster kill for another proc : "+ hitCount);
 					hitCount--;
 					return;
 				}
 				int round = Rnd.get(0, 1000);
 				if (handProbability > round) {
-					// set min monster kill number needed for an other godProc
+					//set min monster kill number needed for an other godProc  
 					hitCount = 1000 / handProbability;
-					// log.info("[GODSTONE] stone proc monster needed for another proc : "+
-					// hitCount);
-					// log.info("[DEBUG] Godstone attack successfull from " + player.getName() + "
-					// on " + creature.getName() + " with GS "
-					// + godstoneInfo.getSkillid() + " and score of " + round + " < " +
-					// handProbability);
+					//log.info("[GODSTONE] stone proc monster needed for another proc : "+ hitCount);
+					//log.info("[DEBUG] Godstone attack successfull from " + player.getName() + " on " + creature.getName() + " with GS " 
+					//		+ godstoneInfo.getSkillid() + " and score of " + round + " < " + handProbability);
 					Skill skill = SkillEngine.getInstance().getSkill(player, godstoneInfo.getSkillid(),
-							godstoneInfo.getSkilllvl(), player.getTarget(), godItem);
+						godstoneInfo.getSkilllvl(), player.getTarget(), godItem);
 					skill.setFirstTargetRangeCheck(false);
 					if (skill.canUseSkill()) {
 						Effect effect = new Effect(player, creature, skill.getSkillTemplate(), 1, 0, godItem);
-						effect.initialize();
+						effect.initialize();			
 						effect.applyEffect();
 						effect = null;
 					}
@@ -118,9 +114,8 @@ public class GodStone extends ItemStone {
 	 * @param player
 	 */
 	public void onUnEquip(Player player) {
-		if (actionListener != null) {
+		if (actionListener != null)
 			player.getObserveController().removeObserver(actionListener);
-		}
 
 	}
 }

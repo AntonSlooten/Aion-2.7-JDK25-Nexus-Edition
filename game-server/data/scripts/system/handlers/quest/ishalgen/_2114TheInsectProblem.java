@@ -56,41 +56,39 @@ public class _2114TheInsectProblem extends QuestHandler {
 		if (targetId == 203533) {
 			if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					return sendQuestDialog(env, 1011);
-				case STEP_TO_1:
-					if (QuestService.startQuest(env)) {
-						qs = player.getQuestStateList().getQuestState(questId);
-						qs.setQuestVar(1);
-						this.updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-				case STEP_TO_2:
-					if (QuestService.startQuest(env)) {
-						qs = player.getQuestStateList().getQuestState(questId);
-						qs.setQuestVar(11);
-						this.updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
+					case START_DIALOG:
+						return sendQuestDialog(env, 1011);
+					case STEP_TO_1:
+						if (QuestService.startQuest(env)) {
+							qs = player.getQuestStateList().getQuestState(questId);
+							qs.setQuestVar(1);
+							this.updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
+					case STEP_TO_2:
+						if (QuestService.startQuest(env)) {
+							qs = player.getQuestStateList().getQuestState(questId);
+							qs.setQuestVar(11);
+							this.updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
 				}
-			} else if (qs.getStatus() == QuestStatus.REWARD) {
+			}
+			else if (qs.getStatus() == QuestStatus.REWARD) {
 				int var = qs.getQuestVarById(0);
 				switch (env.getDialog()) {
-				case USE_OBJECT:
-					if (var == 10)
-						return sendQuestDialog(env, 5);
-					else if (var == 20)
-						return sendQuestDialog(env, 6);
-				case SELECT_NO_REWARD:
-					if (QuestService.finishQuest(env, var / 10 - 1)) {
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
+					case USE_OBJECT:
+						if (var == 10)
+							return sendQuestDialog(env, 5);
+						else if (var == 20)
+							return sendQuestDialog(env, 6);
+					case SELECT_NO_REWARD:
+						if (QuestService.finishQuest(env, var / 10 - 1)) {
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
 				}
 			}
 		}
@@ -112,29 +110,31 @@ public class _2114TheInsectProblem extends QuestHandler {
 		if (qs.getStatus() != QuestStatus.START)
 			return false;
 		switch (targetId) {
-		case 210734:
-			if (var >= 1 && var < 10) {
-				qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-				updateQuestStatus(env);
-				return true;
-			} else if (var == 10) {
-				qs.setStatus(QuestStatus.REWARD);
-				updateQuestStatus(env);
-				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-				return true;
-			}
-		case 210380:
-		case 210381:
-			if (var >= 11 && var < 20) {
-				qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
-				updateQuestStatus(env);
-				return true;
-			} else if (var == 20) {
-				qs.setStatus(QuestStatus.REWARD);
-				updateQuestStatus(env);
-				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-				return true;
-			}
+			case 210734:
+				if (var >= 1 && var < 10) {
+					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+					updateQuestStatus(env);
+					return true;
+				}
+				else if (var == 10) {
+					qs.setStatus(QuestStatus.REWARD);
+					updateQuestStatus(env);
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					return true;
+				}
+			case 210380:
+			case 210381:
+				if (var >= 11 && var < 20) {
+					qs.setQuestVarById(0, qs.getQuestVarById(0) + 1);
+					updateQuestStatus(env);
+					return true;
+				}
+				else if (var == 20) {
+					qs.setStatus(QuestStatus.REWARD);
+					updateQuestStatus(env);
+					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+					return true;
+				}
 		}
 		return false;
 	}

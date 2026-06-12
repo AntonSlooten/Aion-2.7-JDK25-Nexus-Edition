@@ -40,10 +40,15 @@ public class AttackEventHandler {
 		if (npcAI.isLogging()) {
 			AI2Logger.info(npcAI, "onAttack");
 		}
-
+		if (creature == null || creature.getLifeStats().isAlreadyDead()) {
+			return;
+		}
 		// TODO lock or better switch
-		if (creature == null || creature.getLifeStats().isAlreadyDead() || npcAI.isInState(AIState.RETURNING)
-				|| !npcAI.canThink()) {
+		if (npcAI.isInState(AIState.RETURNING)) {
+			// TODO add to aggrolist?
+			return;
+		}
+		if (!npcAI.canThink()) {
 			return;
 		}
 		if (npcAI.isInState(AIState.WALKING)) {
@@ -57,9 +62,8 @@ public class AttackEventHandler {
 			npcAI.setSubStateIfNot(AISubState.NONE);
 			npcAI.getOwner().setTarget(creature);
 			AttackManager.startAttacking(npcAI);
-			if (npcAI.poll(AIQuestion.CAN_SHOUT)) {
+			if (npcAI.poll(AIQuestion.CAN_SHOUT))
 				ShoutEventHandler.onAttackBegin(npcAI, (Creature) npcAI.getOwner().getTarget());
-			}
 		}
 	}
 
@@ -92,9 +96,8 @@ public class AttackEventHandler {
 		EmoteManager.emoteStopAttacking(npc);
 		npc.getLifeStats().startResting();
 		npc.getAggroList().clear();
-		if (npcAI.poll(AIQuestion.CAN_SHOUT)) {
+		if (npcAI.poll(AIQuestion.CAN_SHOUT))
 			ShoutEventHandler.onAttackEnd(npcAI);
-		}
 		npc.setTarget(null);
 		npc.setSkillNumber(0);
 	}

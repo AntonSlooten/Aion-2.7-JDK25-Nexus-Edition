@@ -59,7 +59,6 @@ public abstract class PlayerPasskeyDAO implements DAO {
 
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see com.aionemu.commons.database.dao.DAO#getClassName()
 	 */
 	@Override

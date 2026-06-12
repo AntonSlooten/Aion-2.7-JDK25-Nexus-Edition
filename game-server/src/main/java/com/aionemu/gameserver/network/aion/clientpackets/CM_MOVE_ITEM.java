@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.smfnew.com>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -41,9 +41,8 @@ public class CM_MOVE_ITEM extends AionClientPacket {
 	@Override
 	protected void readImpl() {
 		targetObjectId = readD();// empty
-		source = readSC(); // FROM (0 - player inventory, 1 - regular warehouse, 2 - account warehouse, 3 -
-							// legion
-							// warehouse)
+		source = readSC(); // FROM (0 - player inventory, 1 - regular warehouse, 2 - account warehouse, 3 - legion
+												// warehouse)
 		destination = readSC(); // TO
 		slot = readSH();
 	}

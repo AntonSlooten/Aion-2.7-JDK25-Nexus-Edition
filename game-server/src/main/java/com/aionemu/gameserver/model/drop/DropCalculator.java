@@ -20,12 +20,12 @@ import java.util.Set;
 
 import com.aionemu.gameserver.model.Race;
 
+
 /**
  * @author MrPoke
  *
  */
 public interface DropCalculator {
-	int dropCalculator(Set<DropItem> result, int index, float dropModifier, Race race, int npcId);
-
-	int dropCalculator(Set<DropItem> result, int index, float dropModifier, Race race);
+	 int dropCalculator(Set<DropItem> result, int index, float dropModifier, Race race, int npcId);
+	 int dropCalculator(Set<DropItem> result, int index, float dropModifier, Race race);
 }

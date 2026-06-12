@@ -40,7 +40,7 @@ public class LoggingConfig {
 
 	@Property(key = "gameserver.log.ingameshop", defaultValue = "false")
 	public static boolean LOG_INGAMESHOP;
-
+	
 	@Property(key = "gameserver.log.item", defaultValue = "true")
 	public static boolean LOG_ITEM;
 

@@ -60,42 +60,44 @@ public class _3936DecorationsOfSanctum extends QuestHandler {
 
 		if (qs == null)
 			return false;
-
+			
 		int var = qs.getQuestVarById(0);
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			// 1 - Report the result to Dairos.
-			case 203710:
-				switch (dialog) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1); // 1
-				case CHECK_COLLECTED_ITEMS:
-					long itemCount1 = player.getInventory().getItemCountByItemId(182206091);
-					long itemCount2 = player.getInventory().getItemCountByItemId(182206092);
-					long itemCount3 = player.getInventory().getItemCountByItemId(182206093);
-					long itemCount4 = player.getInventory().getItemCountByItemId(182206094);
-					if (itemCount1 >= 10 && itemCount2 >= 10 && itemCount3 >= 10 && itemCount4 >= 10) {
-						removeQuestItem(env, 182206091, 10);
-						removeQuestItem(env, 182206092, 10);
-						removeQuestItem(env, 182206093, 10);
-						removeQuestItem(env, 182206094, 10);
-						changeQuestStep(env, 1, 1, true);
-						return sendQuestDialog(env, 5);
-					} else
-						return sendQuestDialog(env, 10001);
-				}
-				break;
-			// No match
-			default:
-				return sendQuestStartDialog(env);
+				// 1 - Report the result to Dairos.
+				case 203710:
+					switch (dialog) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+							else if (var == 1)
+								return sendQuestDialog(env, 1352);
+						case STEP_TO_1:
+							return defaultCloseDialog(env, 0, 1); // 1
+						case CHECK_COLLECTED_ITEMS:
+							long itemCount1 = player.getInventory().getItemCountByItemId(182206091);
+							long itemCount2 = player.getInventory().getItemCountByItemId(182206092);
+							long itemCount3 = player.getInventory().getItemCountByItemId(182206093);
+							long itemCount4 = player.getInventory().getItemCountByItemId(182206094);
+							if (itemCount1 >= 10 && itemCount2 >= 10 && itemCount3 >= 10 && itemCount4 >= 10) {
+								removeQuestItem(env, 182206091, 10);
+								removeQuestItem(env, 182206092, 10);
+								removeQuestItem(env, 182206093, 10);
+								removeQuestItem(env, 182206094, 10);
+								changeQuestStep(env, 1, 1, true);
+								return sendQuestDialog(env, 5);
+							}
+							else
+								return sendQuestDialog(env, 10001);
+					}
+					break;
+				// No match
+				default:
+					return sendQuestStartDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203710)
 				return sendQuestEndDialog(env);
 		}

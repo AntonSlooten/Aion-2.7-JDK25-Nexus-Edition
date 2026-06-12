@@ -26,6 +26,7 @@ import com.aionemu.gameserver.controllers.observer.AttackShieldObserver;
 import com.aionemu.gameserver.model.Race;
 import com.aionemu.gameserver.skillengine.model.Effect;
 
+
 /**
  * @author ATracer modified by Wakizashi, Sippolo, kecimis
  */
@@ -46,12 +47,12 @@ public class ShieldEffect extends EffectTemplate {
 	@XmlAttribute
 	protected Race condrace = null;
 
+	
 	@Override
 	public void applyEffect(Effect effect) {
-		// check for condition race, skillId: 10317,10318
-		if (condrace != null && effect.getEffected().getRace() != condrace) {
+		//check for condition race, skillId: 10317,10318
+		if (condrace != null && effect.getEffected().getRace() != condrace)
 			return;
-		}
 
 		effect.addToEffectedController();
 	}
@@ -67,8 +68,8 @@ public class ShieldEffect extends EffectTemplate {
 		int valueWithDelta = value + delta * skillLvl;
 		int hitValueWithDelta = hitvalue + hitdelta * skillLvl;
 
-		AttackShieldObserver asObserver = new AttackShieldObserver(hitValueWithDelta, valueWithDelta, percent, effect,
-				hitType, this.getType(), this.hitTypeProb);
+		AttackShieldObserver asObserver = new AttackShieldObserver(hitValueWithDelta, valueWithDelta, percent,
+			effect, hitType, this.getType(), this.hitTypeProb);
 
 		effect.getEffected().getObserveController().addAttackCalcObserver(asObserver);
 		effect.setAttackShieldObserver(asObserver, position);
@@ -78,19 +79,20 @@ public class ShieldEffect extends EffectTemplate {
 	@Override
 	public void endEffect(Effect effect) {
 		AttackCalcObserver acObserver = effect.getAttackShieldObserver(position);
-		if (acObserver != null) {
+		if (acObserver != null)
 			effect.getEffected().getObserveController().removeAttackCalcObserver(acObserver);
-		}
 		effect.getEffected().getController().setIsUnderShield(false);
 	}
 
 	/**
-	 * shieldType 1:reflector 2: normal shield 8: protect
-	 *
+	 * shieldType
+	 * 1:reflector
+	 * 2: normal shield
+	 * 8: protect
 	 * @return
 	 */
 	public int getType() {
 		return 2;
 	}
-
+	
 }

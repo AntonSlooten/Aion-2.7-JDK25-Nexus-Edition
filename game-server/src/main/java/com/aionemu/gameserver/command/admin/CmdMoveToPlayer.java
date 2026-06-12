@@ -7,9 +7,11 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.Util;
 import com.aionemu.gameserver.world.World;
 
-public class CmdMoveToPlayer extends BaseCommand {
 
-	@Override
+public class CmdMoveToPlayer extends BaseCommand {
+	
+
+
 	public void execute(Player admin, String... params) {
 		if (params.length < 1) {
 			showHelp(admin);
@@ -28,7 +30,7 @@ public class CmdMoveToPlayer extends BaseCommand {
 		}
 
 		TeleportService.teleportTo(admin, player.getWorldId(), player.getInstanceId(), player.getX(), player.getY(),
-				player.getZ(), player.getHeading(), 0, true);
+			player.getZ(), player.getHeading(), 0, true);
 		PacketSendUtility.sendMessage(admin, "Teleported to player " + player.getName() + ".");
 	}
 

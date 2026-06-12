@@ -30,7 +30,7 @@ import java.nio.channels.SocketChannel;
  * <code>ConnectionFactory.create(SocketChannel socket)</code><br>
  * representing accepted socket, register it into one of ReadWrite <code>Dispatcher</code><br>
  * <code>Selector</code> as ready for io read operations.<br>
- *
+ * 
  * @author -Nemesiss-
  * @see com.aionemu.commons.network.Dispatcher
  * @see java.nio.channels.ServerSocketChannel
@@ -45,7 +45,7 @@ public class Acceptor {
 
 	/**
 	 * <code>ConnectionFactory</code> that will create new <code>AConnection</code>
-	 *
+	 * 
 	 * @see com.aionemu.commons.network.ConnectionFactory
 	 * @see com.aionemu.commons.network.AConnection
 	 */
@@ -53,17 +53,19 @@ public class Acceptor {
 
 	/**
 	 * <code>NioServer</code> that created this Acceptor.
-	 *
+	 * 
 	 * @see com.aionemu.commons.network.NioServer
 	 */
 	private final NioServer nioServer;
 
 	/**
 	 * Constructor that accept <code>ConnectionFactory</code> and <code>NioServer</code> as parameter<br>
-	 *
-	 * @param factory   <code>ConnectionFactory</code> that will be used to<br>
-	 * @param nioServer <code>NioServer</code> that created this Acceptor object<br>
-	 *                  creating new <code>AConnection</code> instances.
+	 * 
+	 * @param factory
+	 *          <code>ConnectionFactory</code> that will be used to<br>
+	 * @param nioServer
+	 *          <code>NioServer</code> that created this Acceptor object<br>
+	 *          creating new <code>AConnection</code> instances.
 	 * @see com.aionemu.commons.network.ConnectionFactory
 	 * @see com.aionemu.commons.network.NioServer
 	 * @see com.aionemu.commons.network.AConnection
@@ -79,9 +81,10 @@ public class Acceptor {
 	 * New instance of <code>AConnection</code> will be created by <code>ConnectionFactory</code>,<br>
 	 * socket representing accepted connection will be register into<br>
 	 * one of ReadWrite <code>Dispatchers</code> <code>Selector as ready for io read operations.<br>
-	 *
-	 * @param key <code>SelectionKey</code> representing <code>ServerSocketChannel</code> that is accepting<br>
-	 *            new socket connection.
+	 * 
+	 * @param key
+	 *          <code>SelectionKey</code> representing <code>ServerSocketChannel</code> that is accepting<br>
+	 *          new socket connection.
 	 * @throws IOException
 	 * @see com.aionemu.commons.network.Dispatcher
 	 * @see java.nio.channels.ServerSocketChannel
@@ -101,10 +104,10 @@ public class Acceptor {
 		Dispatcher dispatcher = nioServer.getReadWriteDispatcher();
 		AConnection con = factory.create(socketChannel, dispatcher);
 
-		if (con == null) {
-			return;
-		}
-
+    if (con == null) {
+      return;
+    }
+		
 		// register
 		dispatcher.register(socketChannel, SelectionKey.OP_READ, con);
 		// notify initialized :)

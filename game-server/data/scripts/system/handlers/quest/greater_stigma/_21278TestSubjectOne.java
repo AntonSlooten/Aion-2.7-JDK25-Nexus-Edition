@@ -51,40 +51,41 @@ public class _21278TestSubjectOne extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 799208) { // Garath
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				default: {
-					return sendQuestStartDialog(env);
-				}
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					default: {
+						return sendQuestStartDialog(env);
+					}
 				}
 			}
 		}
-
+		
 		if (qs == null)
 			return false;
 
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 799208) {
 				switch (dialog) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 2375);
-				}
-				case SELECT_REWARD: {
-					changeQuestStep(env, 0, 0, true);
-					return sendQuestDialog(env, 5);
-				}
+					case START_DIALOG: {
+						return sendQuestDialog(env, 2375);
+					}
+					case SELECT_REWARD: {
+						changeQuestStep(env, 0, 0, true);
+						return sendQuestDialog(env, 5);
+					}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799208) {
 				switch (dialog) {
-				case USE_OBJECT: {
-					return sendQuestDialog(env, 5);
-				}
-				default: {
-					return sendQuestEndDialog(env);
-				}
+					case USE_OBJECT: {
+						return sendQuestDialog(env, 5);
+					}
+					default: {
+						return sendQuestEndDialog(env);
+					}
 				}
 			}
 		}

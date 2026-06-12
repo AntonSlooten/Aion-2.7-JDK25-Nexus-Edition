@@ -32,12 +32,15 @@ import com.aionemu.gameserver.model.templates.npcshout.ShoutGroup;
 import com.aionemu.gameserver.model.templates.npcshout.ShoutList;
 
 /**
+ * @author Rolandas
+ */
+
+/**
  * <p>
  * Java class for anonymous complex type.
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
- *
+ * The following schema fragment specifies the expected content contained within this class.
+ * 
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
@@ -59,7 +62,7 @@ public class NpcShoutData {
 	protected List<ShoutGroup> shoutGroups;
 
 	@XmlTransient
-	private TIntObjectHashMap<FastMap<Integer, List<NpcShout>>> shoutsByWorldNpcs = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<FastMap<Integer, List<NpcShout>>> shoutsByWorldNpcs = new TIntObjectHashMap<FastMap<Integer, List<NpcShout>>>();
 
 	@XmlTransient
 	private int count = 0;
@@ -79,10 +82,11 @@ public class NpcShoutData {
 				this.count += shoutList.getNpcShouts().size();
 				for (int j = shoutList.getNpcIds().size() - 1; j >= 0; j--) {
 					int npcId = shoutList.getNpcIds().get(j);
-					List<NpcShout> shouts = new ArrayList<>(shoutList.getNpcShouts());
+					List<NpcShout> shouts = new ArrayList<NpcShout>(shoutList.getNpcShouts());
 					if (worldShouts.get(npcId) == null) {
 						worldShouts.put(npcId, shouts);
-					} else {
+					}
+					else {
 						worldShouts.get(npcId).addAll(shouts);
 					}
 					shoutList.getNpcIds().remove(j);
@@ -102,9 +106,8 @@ public class NpcShoutData {
 	}
 
 	/**
-	 * Get global npc shouts plus world specific shouts. Make sure to clean it after
-	 * the use.
-	 *
+	 * Get global npc shouts plus world specific shouts. Make sure to clean it after the use.
+	 * 
 	 * @return null if not found
 	 */
 	public List<NpcShout> getNpcShouts(int worldId, int npcId) {
@@ -112,78 +115,75 @@ public class NpcShoutData {
 
 		if (worldShouts == null || worldShouts.get(npcId) == null) {
 			worldShouts = shoutsByWorldNpcs.get(worldId);
-			if (worldShouts == null || worldShouts.get(npcId) == null) {
+			if (worldShouts == null || worldShouts.get(npcId) == null)
 				return null;
-			}
-			return new ArrayList<>(worldShouts.get(npcId));
+			return new ArrayList<NpcShout>(worldShouts.get(npcId));
 		}
 
-		List<NpcShout> npcShouts = new ArrayList<>(worldShouts.get(npcId));
+		List<NpcShout> npcShouts = new ArrayList<NpcShout>(worldShouts.get(npcId));
 		worldShouts = shoutsByWorldNpcs.get(worldId);
-		if (worldShouts == null || worldShouts.get(npcId) == null) {
+		if (worldShouts == null || worldShouts.get(npcId) == null)
 			return npcShouts;
-		}
 		npcShouts.addAll(worldShouts.get(npcId));
 
 		return npcShouts;
 	}
 
 	/**
-	 * Lightweight check for shouts, doesn't use memory as
-	 * {@link #getNpcShouts(int worldId, int npcId)})
+	 * Lightweight check for shouts, doesn't use memory as {@link #getNpcShouts(int worldId, int npcId)})
 	 */
 	public boolean hasAnyShout(int worldId, int npcId) {
 		FastMap<Integer, List<NpcShout>> worldShouts = shoutsByWorldNpcs.get(0);
 
 		if (worldShouts == null || worldShouts.get(npcId) == null) {
 			worldShouts = shoutsByWorldNpcs.get(worldId);
-			if (worldShouts == null || worldShouts.get(npcId) == null) {
+			if (worldShouts == null || worldShouts.get(npcId) == null)
 				return false;
-			}
 		}
 		return true;
 	}
 
 	/**
-	 * Lightweight check for shouts, doesn't use memory as
-	 * {@link #getNpcShouts(int worldId, int npcId, ShoutEventType type, String pattern, int skillNo)})
+	 * Lightweight check for shouts, doesn't use memory as {@link #getNpcShouts(int worldId, int npcId, ShoutEventType type, String pattern, int skillNo)})
 	 */
 	public boolean hasAnyShout(int worldId, int npcId, ShoutEventType type) {
 		List<NpcShout> shouts = getNpcShouts(worldId, npcId);
-		if (shouts == null) {
+		if (shouts == null)
 			return false;
-		}
 
 		for (NpcShout s : shouts) {
-			if (s.getWhen() == type) {
+			if (s.getWhen() == type)
 				return true;
-			}
 		}
 		return false;
 	}
 
 	/**
 	 * Gets shouts for npc
-	 *
-	 * @param worldId - npc World Id
-	 * @param npcId   - npc Id
-	 * @param type    - shout event type
-	 * @param pattern - specific pattern; if null, returns all
-	 * @param skillNo - specific skill number; if 0, returns all
+	 * 
+	 * @param worldId
+	 *          - npc World Id
+	 * @param npcId
+	 *          - npc Id
+	 * @param type
+	 *          - shout event type
+	 * @param pattern
+	 *          - specific pattern; if null, returns all
+	 * @param skillNo
+	 *          - specific skill number; if 0, returns all
 	 */
 	public List<NpcShout> getNpcShouts(int worldId, int npcId, ShoutEventType type, String pattern, int skillNo) {
 		List<NpcShout> shouts = getNpcShouts(worldId, npcId);
-		if (shouts == null) {
+		if (shouts == null)
 			return null;
-		}
 
-		List<NpcShout> result = new ArrayList<>();
+		List<NpcShout> result = new ArrayList<NpcShout>();
 		for (NpcShout s : shouts) {
 			if (s.getWhen() == type) {
-				if ((pattern != null && !pattern.equals(s.getPattern()))
-						|| (skillNo != 0 && skillNo != s.getSkillNo())) {
+				if (pattern != null && !pattern.equals(s.getPattern()))
 					continue;
-				}
+				if (skillNo != 0 && skillNo != s.getSkillNo())
+					continue;
 				result.add(s);
 			}
 		}

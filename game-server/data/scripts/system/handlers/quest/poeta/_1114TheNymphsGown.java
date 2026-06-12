@@ -65,10 +65,11 @@ public class _1114TheNymphsGown extends QuestHandler {
 					if (!giveQuestItem(env, 182200226, 1))
 						;
 					removeQuestItem(env, 182200214, 1); // Namus's Diary with double-click to start the
-														// quest
+																											// quest
 					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
 					return true;
-				} else
+				}
+				else
 					PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(0, 0));
 			}
 		}
@@ -87,94 +88,94 @@ public class _1114TheNymphsGown extends QuestHandler {
 					return sendQuestDialog(env, 6);
 				else
 					return sendQuestEndDialog(env);
-			} else if (targetId == 203058 && var == 3) // Asteros
+			}
+			else if (targetId == 203058 && var == 3) // Asteros
 				return sendQuestEndDialog(env);
-		} else if (qs.getStatus() != QuestStatus.START)
+		}
+		else if (qs.getStatus() != QuestStatus.START)
 			return false;
 
 		if (targetId == 203075) // Namus
 		{
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 0)
-					return sendQuestDialog(env, 1011);
-				else if (var == 2)
-					return sendQuestDialog(env, 1693);
-				else if (var == 3)
-					return sendQuestDialog(env, 2375);
+				case START_DIALOG:
+					if (var == 0)
+						return sendQuestDialog(env, 1011);
+					else if (var == 2)
+						return sendQuestDialog(env, 1693);
+					else if (var == 3)
+						return sendQuestDialog(env, 2375);
 
-			case SELECT_REWARD:
-				if (var == 2) {
-					qs.setQuestVarById(0, var + 2);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					removeQuestItem(env, 182200217, 1);
-					return sendQuestDialog(env, 6);
-				}
-				if (var == 3) {
-					qs.setQuestVarById(0, var + 1);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					removeQuestItem(env, 182200217, 1);
-					return sendQuestDialog(env, 6);
-				}
-			case STEP_TO_1:
-				if (var == 0) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					removeQuestItem(env, 182200226, 1);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			case STEP_TO_2:
-				if (var == 2) {
-					qs.setQuestVarById(0, var + 1);
-					updateQuestStatus(env);
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
-			}
-		} else if (targetId == 700008) { // Seirenia's clothes
-			switch (env.getDialog()) {
-			case USE_OBJECT:
-				if (var == 1) {
-					for (VisibleObject obj : player.getKnownList().getKnownObjects().values()) {
-						if (!(obj instanceof Npc))
-							continue;
-						if (((Npc) obj).getNpcId() != 203175) // Seirenia
-							continue;
-						((Npc) obj).getAggroList().addDamage(player, 50);
+				case SELECT_REWARD:
+					if (var == 2) {
+						qs.setQuestVarById(0, var + 2);
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						removeQuestItem(env, 182200217, 1);
+						return sendQuestDialog(env, 6);
 					}
-					// Nymph's Dress
-					if (!giveQuestItem(env, 182200217, 1))
-						; // wtf ?
-					qs.setQuestVarById(0, 2);
-					updateQuestStatus(env);
-				}
-				return true;
+					if (var == 3) {
+						qs.setQuestVarById(0, var + 1);
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						removeQuestItem(env, 182200217, 1);
+						return sendQuestDialog(env, 6);
+					}
+				case STEP_TO_1:
+					if (var == 0) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						removeQuestItem(env, 182200226, 1);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+				case STEP_TO_2:
+					if (var == 2) {
+						qs.setQuestVarById(0, var + 1);
+						updateQuestStatus(env);
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
+			}
+		}
+		else if (targetId == 700008) { // Seirenia's clothes
+			switch (env.getDialog()) {
+				case USE_OBJECT:
+					if (var == 1) {
+						for (VisibleObject obj : player.getKnownList().getKnownObjects().values()) {
+							if (!(obj instanceof Npc))
+								continue;
+							if (((Npc) obj).getNpcId() != 203175) // Seirenia
+								continue;
+							((Npc) obj).getAggroList().addDamage(player, 50);
+						}
+						// Nymph's Dress
+						if (!giveQuestItem(env, 182200217, 1))
+							; // wtf ?
+						qs.setQuestVarById(0, 2);
+						updateQuestStatus(env);
+					}
+					return true;
 			}
 		}
 		if (targetId == 203058) // Asteros
 		{
 			switch (env.getDialog()) {
-			case START_DIALOG:
-				if (var == 3)
-					return sendQuestDialog(env, 2034);
-			case STEP_TO_3:
-				if (var == 3) {
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					removeQuestItem(env, 182200217, 1);
-					return sendQuestDialog(env, 5);
-				}
-			case STEP_TO_2:
-				if (var == 3) {
-					PacketSendUtility.sendPacket(player,
-							new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					return true;
-				}
+				case START_DIALOG:
+					if (var == 3)
+						return sendQuestDialog(env, 2034);
+				case STEP_TO_3:
+					if (var == 3) {
+						qs.setStatus(QuestStatus.REWARD);
+						updateQuestStatus(env);
+						removeQuestItem(env, 182200217, 1);
+						return sendQuestDialog(env, 5);
+					}
+				case STEP_TO_2:
+					if (var == 3) {
+						PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						return true;
+					}
 			}
 		}
 		return false;
@@ -190,7 +191,7 @@ public class _1114TheNymphsGown extends QuestHandler {
 		if (id != 182200214)
 			return HandlerResult.UNKNOWN;
 		PacketSendUtility.broadcastPacket(player,
-				new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 20, 1, 0), true);
+			new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), itemObjId, id, 20, 1, 0), true);
 		if (qs == null || qs.getStatus() == QuestStatus.NONE)
 			sendQuestDialog(env, 4);
 		return HandlerResult.SUCCESS;

@@ -72,26 +72,26 @@ public class _1015FrillneckHunt extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 203129) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 8)
-						return sendQuestDialog(env, 1352);
-				case SELECT_ACTION_1012:
-					playQuestMovie(env, 27);
-					return sendQuestDialog(env, 1012);
-				case STEP_TO_1:
-				case STEP_TO_2:
-					if (var == 0 || var == 8) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+						else if (var == 8)
+							return sendQuestDialog(env, 1352);
+					case SELECT_ACTION_1012:
+						playQuestMovie(env, 27);
+						return sendQuestDialog(env, 1012);
+					case STEP_TO_1:
+					case STEP_TO_2:
+						if (var == 0 || var == 8) {
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+							return true;
+						}
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203129) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT)
 					return sendQuestDialog(env, 1693);
@@ -113,26 +113,26 @@ public class _1015FrillneckHunt extends QuestHandler {
 		if (env.getVisibleObject() instanceof Npc)
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		switch (targetId) {
-		case 210126:
-			if (var >= 1 && var <= 7) // kill 7 Rakeclaw Frillnecks
-			{
-				qs.setQuestVarById(0, var + 1);
-				updateQuestStatus(env);
-				return true;
-			}
-			break;
-		case 210200:
-		case 210201:
-			if (var >= 9 && var <= 20) // kill 12 Giant Rakeclaw Frillnecks after talking with Leto
-			{
-				if (var == 20)
-					qs.setStatus(QuestStatus.REWARD);
-				else
+			case 210126:
+				if (var >= 1 && var <= 7) // kill 7 Rakeclaw Frillnecks
+				{
 					qs.setQuestVarById(0, var + 1);
-				updateQuestStatus(env);
-				return true;
-			}
-			break;
+					updateQuestStatus(env);
+					return true;
+				}
+				break;
+			case 210200:
+			case 210201:
+				if (var >= 9 && var <= 20) // kill 12 Giant Rakeclaw Frillnecks after talking with Leto
+				{
+					if (var == 20)
+						qs.setStatus(QuestStatus.REWARD);
+					else
+						qs.setQuestVarById(0, var + 1);
+					updateQuestStatus(env);
+					return true;
+				}
+				break;
 		}
 		return false;
 	}

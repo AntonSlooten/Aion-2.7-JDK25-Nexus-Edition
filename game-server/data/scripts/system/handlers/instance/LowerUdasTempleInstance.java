@@ -31,48 +31,52 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_EMOTION;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.world.WorldMapInstance;
 
+
+
+
 /**
  * @author xTz
  */
 @InstanceID(300160000)
 public class LowerUdasTempleInstance extends GeneralInstanceHandler {
 
-	private Map<Integer, StaticDoor> doors;
-
+	private Map<Integer,StaticDoor> doors; 
+	
 	@Override
 	public void onInstanceCreate(WorldMapInstance instance) {
 		super.onInstanceCreate(instance);
 		doors = instance.getDoors();
 		int rnd = Rnd.get(1, 100);
-		if (rnd > 80) { // spawn named drop chests, 20% both, 30% epic, 50% fabled chest
+		if (rnd > 80) { //spawn named drop chests, 20% both, 30% epic, 50% fabled chest
 			spawn(216150, 455.984f, 1192.506f, 190.221f, (byte) 116);
 			spawn(216645, 435.664f, 1182.577f, 190.221f, (byte) 116);
-		} else if (rnd > 50) {
+		}
+		else if (rnd > 50) {
 			spawn(216150, 455.984f, 1192.506f, 190.221f, (byte) 116);
-		} else {
+		}
+		else {
 			spawn(216645, 435.664f, 1182.577f, 190.221f, (byte) 116);
 		}
 	}
-
 	@Override
 	public void onDie(Npc npc) {
-		switch (npc.getObjectTemplate().getTemplateId()) {
-		case 215795: // Debilkarim
-			openDoor(111);
+		switch(npc.getObjectTemplate().getTemplateId()) {
+			case 215795: //Debilkarim
+				openDoor(111);
 			break;
 		}
 	}
 
-	private void openDoor(int doorId) {
+	private void openDoor(int doorId){
 		StaticDoor door = doors.get(doorId);
 		if (door != null)
 			door.setOpen(true);
 	}
-
+	
 	@Override
 	public boolean onDie(final Player player, Creature lastAttacker) {
-		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.DIE, 0,
-				player.equals(lastAttacker) ? 0 : lastAttacker.getObjectId()), true);
+		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.DIE, 0, player.equals(lastAttacker) ? 0
+				: lastAttacker.getObjectId()), true);
 
 		PacketSendUtility.sendPacket(player, new SM_DIE(player.haveSelfRezEffect(), player.haveSelfRezItem(), 0, 8));
 		return true;

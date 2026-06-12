@@ -49,7 +49,7 @@ public class CM_GODSTONE_SOCKET extends AionClientPacket {
 		Player activePlayer = getConnection().getActivePlayer();
 
 		VisibleObject obj = activePlayer.getKnownList().getObject(npcObjectId);
-		if (obj != null && obj instanceof Npc && MathUtil.isInRange(activePlayer, obj, 7)) {
+		if(obj != null && obj instanceof Npc && MathUtil.isInRange(activePlayer, obj, 7)) {
 			ItemSocketService.socketGodstone(activePlayer, weaponId, stoneId);
 		}
 	}

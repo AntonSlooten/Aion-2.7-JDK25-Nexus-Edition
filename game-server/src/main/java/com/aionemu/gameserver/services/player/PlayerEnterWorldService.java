@@ -28,6 +28,7 @@ import com.aionemu.gameserver.model.account.CharacterBanInfo;
 import com.aionemu.gameserver.model.account.CharacterPasskey.ConnectType;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
 import com.aionemu.gameserver.model.gameobjects.Item;
+import com.aionemu.gameserver.model.gameobjects.PersistentState;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.model.gameobjects.player.emotion.Emotion;
@@ -38,6 +39,7 @@ import com.aionemu.gameserver.model.gameobjects.state.CreatureVisualState;
 import com.aionemu.gameserver.model.items.storage.IStorage;
 import com.aionemu.gameserver.model.items.storage.Storage;
 import com.aionemu.gameserver.model.items.storage.StorageType;
+import com.aionemu.gameserver.model.skill.PlayerSkillEntry;
 import com.aionemu.gameserver.model.team2.alliance.PlayerAllianceService;
 import com.aionemu.gameserver.model.team2.group.PlayerGroupService;
 import com.aionemu.gameserver.network.aion.AionConnection;
@@ -61,9 +63,9 @@ import com.aionemu.gameserver.utils.rates.Rates;
 import com.aionemu.gameserver.world.World;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import javolution.util.FastList;
 
 import org.slf4j.Logger;
@@ -75,11 +77,11 @@ import org.slf4j.LoggerFactory;
 public final class PlayerEnterWorldService {
 
 	private static final Logger log = LoggerFactory.getLogger(PlayerEnterWorldService.class);
-	// private static final String serverName = " " + GSConfig.SERVER_NAME + " ";
-	// private static final String serverIntro = "Please remember:";
-	// private static final String serverInfo;
-	// private static String alInfo;
-	private static final Set<Integer> pendingEnterWorld = ConcurrentHashMap.newKeySet();
+    //private static final String serverName = " " + GSConfig.SERVER_NAME + " ";
+	//private static final String serverIntro = "Please remember:";
+	//private static final String serverInfo;
+	//private static String alInfo;
+	private static final Set<Integer> pendingEnterWorld = new HashSet<Integer>();
 
 	/**
 	 * @param objectId
@@ -100,14 +102,16 @@ public final class PlayerEnterWorldService {
 			if (cbi.getEnd() > System.currentTimeMillis() / 1000) {
 				client.close(new SM_QUIT_RESPONSE(), false);
 				return;
-			} else {
+			}
+			else {
 				DAOManager.getDAO(PlayerPunishmentsDAO.class).unpunishPlayer(objectId, PunishmentType.CHARBAN);
 			}
 		}
 		// passkey check
 		if (GSConfig.PASSKEY_ENABLE && !client.getAccount().getCharacterPasskey().isPass()) {
 			showPasskey(objectId, client);
-		} else {
+		}
+		else {
 			validateAndEnterWorld(objectId, client);
 		}
 	}
@@ -119,14 +123,13 @@ public final class PlayerEnterWorldService {
 	private static void showPasskey(final int objectId, final AionConnection client) {
 		client.getAccount().getCharacterPasskey().setConnectType(ConnectType.ENTER);
 		client.getAccount().getCharacterPasskey().setObjectId(objectId);
-		boolean isExistPasskey = DAOManager.getDAO(PlayerPasskeyDAO.class)
-				.existCheckPlayerPasskey(client.getAccount().getId());
+		boolean isExistPasskey = DAOManager.getDAO(PlayerPasskeyDAO.class).existCheckPlayerPasskey(
+				client.getAccount().getId());
 
-		if (!isExistPasskey) {
+		if (!isExistPasskey)
 			client.sendPacket(new SM_CHARACTER_SELECT(0));
-		} else {
+		else
 			client.sendPacket(new SM_CHARACTER_SELECT(1));
-		}
 	}
 
 	/**
@@ -134,9 +137,12 @@ public final class PlayerEnterWorldService {
 	 * @param client
 	 */
 	private static void validateAndEnterWorld(final int objectId, final AionConnection client) {
-		if (!pendingEnterWorld.add(objectId)) {
-			log.warn("Skipping enter world " + objectId);
-			return;
+		synchronized (pendingEnterWorld) {
+			if (pendingEnterWorld.contains(objectId)) {
+				log.warn("Skipping enter world " + objectId);
+				return;
+			}
+			pendingEnterWorld.add(objectId);
 		}
 		int delay = 0;
 		// double checked enter world
@@ -144,40 +150,48 @@ public final class PlayerEnterWorldService {
 			delay = 15000;
 			log.warn("Postponed enter world " + objectId);
 		}
-		ThreadPoolManager.getInstance().schedule(() -> {
-			try {
-				Player player = World.getInstance().findPlayer(objectId);
-				if (player != null) {
-					AuditLogger.info(player, "Duplicate player in world");
-					client.close(new SM_QUIT_RESPONSE(), false);
-					return;
+		ThreadPoolManager.getInstance().schedule(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					Player player = World.getInstance().findPlayer(objectId);
+					if (player != null) {
+						AuditLogger.info(player, "Duplicate player in world");
+						client.close(new SM_QUIT_RESPONSE(), false);
+						return;
+					}
+					enterWorld(client, objectId);
 				}
-				enterWorld(client, objectId);
-			} catch (Throwable ex) {
-				log.error("Error during enter world " + objectId, ex);
-			} finally {
-				pendingEnterWorld.remove(objectId);
+				catch (Throwable ex) {
+					log.error("Error during enter world " + objectId, ex);
+				}
+				finally {
+					synchronized (pendingEnterWorld) {
+						pendingEnterWorld.remove(objectId);
+					}
+				}
 			}
+
 		}, delay);
 	}
-
-	private static void getBoostAPnewPlayer(Player player) {
-		long createDate = DAOManager.getDAO(PlayerDAO.class).getCreationTime(player.getObjectId());
+	
+	private static void getBoostAPnewPlayer(Player player){
+		long createDate =  DAOManager.getDAO(PlayerDAO.class).getCreationTime(player.getObjectId());
 		long newbieTime = CustomConfig.BOOST_AP_NEW_PLAYER_TIME * 24 * 60 * 60 * 1000; // millisecond
 		long creatSince = System.currentTimeMillis() - createDate;
 		float bonus = CustomConfig.BOOST_AP_NEW_PLAYER_RATIO;
 		long timeLeft = newbieTime - creatSince;
 
-		if (creatSince > newbieTime) {
+		if(creatSince > newbieTime){
 			return;
 		}
 
-		String message = TranslationService.NEW_PLAYER_BONUS_AP.toString(player, String.valueOf(bonus),
-				String.valueOf(timeLeft / 86400000));
+		String message = TranslationService.NEW_PLAYER_BONUS_AP.toString(player, String.valueOf(bonus), String.valueOf(timeLeft / 86400000));
 		PacketSendUtility.sendBrightYellowMessage(player, message);
 		player.setNewPlayer(true);
 	}
-
+	
 	/**
 	 * @param client
 	 * @param objectId
@@ -194,6 +208,7 @@ public final class PlayerEnterWorldService {
 
 		if (player != null && client.setActivePlayer(player)) {
 			player.setClientConnection(client);
+			
 
 			log.info("[MAC_AUDIT] Player " + player.getName() + " (account " + account.getName()
 					+ ") has entered world with " + client.getMacAddress() + " MAC.");
@@ -220,45 +235,45 @@ public final class PlayerEnterWorldService {
 					if (secondsOffline > 4 * 3600) {
 						double hours = secondsOffline / 3600d;
 						long maxRespose = player.getCommonData().getMaxReposteEnergy();
-						if (hours > 24) {
+						if (hours > 24)
 							hours = 24;
-						}
 						// 24 hours offline = 100% Reposte Energy
 						long addResposeEnergy = (long) ((hours / 24) * maxRespose);
 						pcd.addReposteEnergy(addResposeEnergy);
 					}
 				}
 				// if (((System.currentTimeMillis() / 1000) - lastOnline) > 300)
-				// player.getCommonData().setDp(0);
+				//	player.getCommonData().setDp(0);
 				/*
-				 * log.info("[DEBUG] CommonData getLastOnline "); if (secondsOffline > 300)
-				 * player.getCommonData().setDp(0); else{ int dp = player.getVarInt("dp");
-				 * log.info("[DEBUG] dp value : "+ dp); player.getCommonData().setDp(dp); }
-				 */
+				log.info("[DEBUG] CommonData getLastOnline ");
+				if (secondsOffline > 300)
+					player.getCommonData().setDp(0);
+				else{
+					int dp = player.getVarInt("dp");
+					log.info("[DEBUG] dp value : "+ dp);
+					player.getCommonData().setDp(dp);
+				}
+				*/
 			}
-
+			
 			client.sendPacket(new SM_SKILL_LIST(player));
 			AbyssSkillService.onEnterWorld(player);
 
-			if (player.getSkillCoolDowns() != null) {
+			if (player.getSkillCoolDowns() != null)
 				client.sendPacket(new SM_SKILL_COOLDOWN(player.getSkillCoolDowns()));
-			}
 
-			if (player.getItemCoolDowns() != null) {
+			if (player.getItemCoolDowns() != null)
 				client.sendPacket(new SM_ITEM_COOLDOWN(player.getItemCoolDowns()));
-			}
 
 			FastList<QuestState> questList = FastList.newInstance();
 			FastList<QuestState> completeQuestList = FastList.newInstance();
 			for (QuestState qs : player.getQuestStateList().getAllQuestState()) {
-				if (qs.getStatus() == QuestStatus.NONE) {
+				if (qs.getStatus() == QuestStatus.NONE)
 					continue;
-				}
-				if (qs.getStatus() == QuestStatus.COMPLETE) {
+				if (qs.getStatus() == QuestStatus.COMPLETE)
 					completeQuestList.add(qs);
-				} else {
+				else
 					questList.add(qs);
-				}
 			}
 			client.sendPacket(new SM_QUEST_COMPLETED_LIST(completeQuestList));
 			client.sendPacket(new SM_QUEST_LIST(questList));
@@ -268,13 +283,11 @@ public final class PlayerEnterWorldService {
 			byte[] uiSettings = player.getPlayerSettings().getUiSettings();
 			byte[] shortcuts = player.getPlayerSettings().getShortcuts();
 
-			if (uiSettings != null) {
+			if (uiSettings != null)
 				client.sendPacket(new SM_UI_SETTINGS(uiSettings, 0));
-			}
 
-			if (shortcuts != null) {
+			if (shortcuts != null)
 				client.sendPacket(new SM_UI_SETTINGS(shortcuts, 1));
-			}
 
 			sendItemInfos(client, player);
 			playerLoggedIn(player);
@@ -301,8 +314,8 @@ public final class PlayerEnterWorldService {
 
 			// Intro message
 			PacketSendUtility.sendWhiteMessage(player, " " + GSConfig.SERVER_NAME + " ");
-			// PacketSendUtility.sendYellowMessage(player, serverIntro);
-			// PacketSendUtility.sendBrightYellowMessage(player, serverInfo);
+			//PacketSendUtility.sendYellowMessage(player, serverIntro);
+			//PacketSendUtility.sendBrightYellowMessage(player, serverInfo);
 			if (GSConfig.SERVER_MOTD_DISPLAYREV) {
 				PacketSendUtility.sendYellowMessage(player, "-----------------------------");
 				PacketSendUtility.sendYellowMessage(player, "REV: " + GSConfig.SERVER_REV);
@@ -311,33 +324,25 @@ public final class PlayerEnterWorldService {
 				PacketSendUtility.sendYellowMessage(player, "-----------------------------");
 				PacketSendUtility.sendYellowMessage(player, GSConfig.SERVER_MOTD);
 			}
-
+			
 			player.setRates(Rates.getRatesFor(client.getAccount().getMembership()));
 			if (CustomConfig.PREMIUM_NOTIFY) {
 				showPremiumAccountInfo(client, account);
 			}
-
-			if (player.getRace().toString().contains(CustomConfig.FACTION_BONUS_TO)) {
+			
+			if(player.getRace().toString().contains(CustomConfig.FACTION_BONUS_TO)) {
 				PacketSendUtility.sendWhiteMessage(player, TranslationService.DFB_LOGIN_ANNOUNCE.toString(player));
-				PacketSendUtility.sendWhiteMessage(player, TranslationService.DFB_LOGIN_HUNTING.toString(player,
-						formatBonus(CustomConfig.FACTION_BONUS_HUNT)));
-				PacketSendUtility.sendWhiteMessage(player, TranslationService.DFB_LOGIN_QUEST.toString(player,
-						formatBonus(CustomConfig.FACTION_BONUS_QUEST)));
-				PacketSendUtility.sendWhiteMessage(player, TranslationService.DFB_LOGIN_CRAFT.toString(player,
-						formatBonus(CustomConfig.FACTION_BONUS_CRAFT)));
-				PacketSendUtility.sendWhiteMessage(player, TranslationService.DFB_LOGIN_GATHER.toString(player,
-						formatBonus(CustomConfig.FACTION_BONUS_GATHER)));
-				PacketSendUtility.sendWhiteMessage(player,
-						TranslationService.DFB_LOGIN_AP.toString(player, formatBonus(CustomConfig.FACTION_BONUS_AP)));
-				PacketSendUtility.sendWhiteMessage(player, TranslationService.DFB_LOGIN_ATTACK.toString(player,
-						formatBonus(CustomConfig.FACTION_BONUS_ATTACK)));
-				PacketSendUtility.sendWhiteMessage(player, TranslationService.DFB_LOGIN_DEFENSE.toString(player,
-						formatBonus(CustomConfig.FACTION_BONUS_DEFENSE)));
+				PacketSendUtility.sendWhiteMessage(player, TranslationService.DFB_LOGIN_HUNTING.toString(player, formatBonus(CustomConfig.FACTION_BONUS_HUNT)));
+				PacketSendUtility.sendWhiteMessage(player, TranslationService.DFB_LOGIN_QUEST.toString(player, formatBonus(CustomConfig.FACTION_BONUS_QUEST)));
+				PacketSendUtility.sendWhiteMessage(player, TranslationService.DFB_LOGIN_CRAFT.toString(player, formatBonus(CustomConfig.FACTION_BONUS_CRAFT)));
+				PacketSendUtility.sendWhiteMessage(player, TranslationService.DFB_LOGIN_GATHER.toString(player, formatBonus(CustomConfig.FACTION_BONUS_GATHER)));
+				PacketSendUtility.sendWhiteMessage(player, TranslationService.DFB_LOGIN_AP.toString(player, formatBonus(CustomConfig.FACTION_BONUS_AP)));
+				PacketSendUtility.sendWhiteMessage(player, TranslationService.DFB_LOGIN_ATTACK.toString(player, formatBonus(CustomConfig.FACTION_BONUS_ATTACK)));
+				PacketSendUtility.sendWhiteMessage(player, TranslationService.DFB_LOGIN_DEFENSE.toString(player, formatBonus(CustomConfig.FACTION_BONUS_DEFENSE)));
 			}
-
-			if (CustomConfig.BOOST_AP_NEW_PLAYER) {
+			
+			if(CustomConfig.BOOST_AP_NEW_PLAYER)
 				getBoostAPnewPlayer(player);
-			}
 
 			if (player.isGM()) {
 				if (AdminConfig.INVULNERABLE_GM_CONNECTION || AdminConfig.INVISIBLE_GM_CONNECTION
@@ -370,12 +375,25 @@ public final class PlayerEnterWorldService {
 						PacketSendUtility.broadcastPacket(player, new SM_PLAYER_STATE(player), true);
 						PacketSendUtility.sendMessage(player, ">> Connection in Vision mode <<");
 					}
-					if (AdminConfig.ADMIN_NO_CD_ON_CONNECTION) {
+					if(AdminConfig.ADMIN_NO_CD_ON_CONNECTION) {
 						player.setCoolDownZero(true);
 						PacketSendUtility.sendMessage(player, ">> Connection in No CD mode <<");
 					}
-
+					
 					PacketSendUtility.sendMessage(player, "=============================");
+				}
+			}
+
+			// Special skill for gm
+			if (player.getAccessLevel() >= AdminConfig.COMMAND_SPECIAL_SKILL) {
+				FastList<Integer> gmSkill = FastList.newInstance();
+				gmSkill.add(174); //GM's Armor
+				gmSkill.add(175); //GM's Tempest
+				gmSkill.add(1904); //Wrath of Developer
+				gmSkill.add(1911); //Frustration of Developer
+				for (FastList.Node<Integer> n = gmSkill.head(), end = gmSkill.tail(); (n = n.getNext()) != end;) {
+					PlayerSkillEntry skill = new PlayerSkillEntry(n.getValue(), true, 1, PersistentState.NOACTION);
+					player.getSkillList().addStigmaSkill(player, skill.getSkillId(), skill.getSkillLevel(), false);
 				}
 			}
 
@@ -385,24 +403,21 @@ public final class PlayerEnterWorldService {
 			// Alliance Packet after SetBindPoint
 			PlayerAllianceService.onPlayerLogin(player);
 
-			if (player.isInPrison()) {
-				// @author GoodT
-				// fix prisonbreak - if player log on different map as prison will be teleported
-				// back to prison
-				if (player.getWorldId() != 510010000 || player.getWorldId() == 520010000) {
+			if (player.isInPrison())
+			{
+				//@author GoodT
+				//fix prisonbreak - if player log on different map as prison will be teleported back to prison
+				if(player.getWorldId() != 510010000 || player.getWorldId() == 520010000)
 					TeleportService.teleportToPrison(player);
-				}
-
+				
 				PunishmentService.updatePrisonStatus(player);
 			}
 
-			if (player.isNotGatherable()) {
+			if (player.isNotGatherable())
 				PunishmentService.updateGatherableStatus(player);
-			}
 
-			if (player.isLegionMember()) {
+			if (player.isLegionMember())
 				LegionService.getInstance().onLogin(player);
-			}
 
 			PlayerGroupService.onPlayerLogin(player);
 			PetService.getInstance().onPlayerLogin(player);
@@ -419,35 +434,28 @@ public final class PlayerEnterWorldService {
 			 */
 			player.getLifeStats().updateCurrentStats();
 
-			if (HTMLConfig.ENABLE_HTML_WELCOME) {
+			if (HTMLConfig.ENABLE_HTML_WELCOME)
 				HTMLService.showHTML(player, HTMLCache.getInstance().getHTML("welcome.xhtml"));
-			}
 
 			player.getNpcFactions().sendDailyQuest();
 
-			if (HTMLConfig.ENABLE_GUIDES) {
+			if (HTMLConfig.ENABLE_GUIDES)
 				HTMLService.onPlayerLogin(player);
-			}
 
 			for (StorageType st : StorageType.values()) {
-				if (st == StorageType.LEGION_WAREHOUSE) {
+				if (st == StorageType.LEGION_WAREHOUSE)
 					continue;
-				}
 				IStorage storage = player.getStorage(st.getId());
 				if (storage != null) {
-					for (Item item : storage.getItemsWithKinah()) {
-						if (item.getExpireTime() > 0) {
+					for (Item item : storage.getItemsWithKinah())
+						if (item.getExpireTime() > 0)
 							ExpireTimerTask.getInstance().addTask(item, player);
-						}
-					}
 				}
 			}
 
-			for (Item item : player.getEquipment().getEquippedItems()) {
-				if (item.getExpireTime() > 0) {
+			for (Item item : player.getEquipment().getEquippedItems())
+				if (item.getExpireTime() > 0)
 					ExpireTimerTask.getInstance().addTask(item, player);
-				}
-			}
 
 			for (Motion motion : player.getMotions().getMotions().values()) {
 				if (motion.getExpireTime() != 0) {
@@ -467,40 +475,41 @@ public final class PlayerEnterWorldService {
 				}
 			}
 			// scheduler periodic update
-			player.getController().addTask(TaskId.PLAYER_UPDATE,
+			player.getController().addTask(
+					TaskId.PLAYER_UPDATE,
 					ThreadPoolManager.getInstance().scheduleAtFixedRate(new GeneralUpdateTask(player.getObjectId()),
-							PeriodicSaveConfig.PLAYER_GENERAL * 1000, PeriodicSaveConfig.PLAYER_GENERAL * 1000));
-			player.getController().addTask(TaskId.INVENTORY_UPDATE,
+					PeriodicSaveConfig.PLAYER_GENERAL * 1000, PeriodicSaveConfig.PLAYER_GENERAL * 1000));
+			player.getController().addTask(
+					TaskId.INVENTORY_UPDATE,
 					ThreadPoolManager.getInstance().scheduleAtFixedRate(new ItemUpdateTask(player.getObjectId()),
-							PeriodicSaveConfig.PLAYER_ITEMS * 1000, PeriodicSaveConfig.PLAYER_ITEMS * 1000));
+					PeriodicSaveConfig.PLAYER_ITEMS * 1000, PeriodicSaveConfig.PLAYER_ITEMS * 1000));
 
 			SurveyService.getInstance().showAvailable(player);
 
-			if (CustomConfig.ENABLE_REWARD_SERVICE) {
+			if (CustomConfig.ENABLE_REWARD_SERVICE)
 				RewardService.getInstance().verify(player);
-			}
 
-			if (EventsConfig.ENABLE_EVENT_SERVICE) {
+			if (EventsConfig.ENABLE_EVENT_SERVICE)
 				EventService.getInstance().onPlayerLogin(player);
-			}
 
 			PlayerTransferService.getInstance().onEnterWorld(player);
-
+			
 			player.setPartnerId(DAOManager.getDAO(WeddingDAO.class).loadPartnerId(player));
-			DAOManager.getDAO(PlayerRankDAO.class).loadCustomRank(player);
-			// DP restore
+			DAOManager.getDAO(PlayerRankDAO.class).loadCustomRank(player);;
+			//DP restore
 			if (playerAccData.getPlayerCommonData().getLastOnline() != null) {
 				final long lastOnline = playerAccData.getPlayerCommonData().getLastOnline().getTime();
 				final long secondsOffline = (System.currentTimeMillis() / 1000) - lastOnline / 1000;
-
-				if (secondsOffline > 300) {
+				
+				if (secondsOffline > 300)
 					player.getCommonData().setDp(0);
-				} else {
+				else{
 					final int dp = player.getVarInt("dp");
 					player.getCommonData().setDp(dp);
 				}
 			}
-		} else {
+		}
+		else {
 			log.info("[DEBUG] enter world" + objectId + ", Player: " + player);
 		}
 	}
@@ -526,8 +535,8 @@ public final class PlayerEnterWorldService {
 		Storage inventory = player.getInventory();
 		List<Item> equipedItems = player.getEquipment().getEquippedItems();
 		if (equipedItems.size() != 0) {
-			client.sendPacket(
-					new SM_INVENTORY_INFO(player.getEquipment().getEquippedItems(), npcExpands, questExpands, player));
+			client.sendPacket(new SM_INVENTORY_INFO(player.getEquipment().getEquippedItems(), npcExpands, questExpands,
+					player));
 		}
 
 		List<Item> unequipedItems = inventory.getItemsWithKinah();
@@ -535,12 +544,12 @@ public final class PlayerEnterWorldService {
 		if (itemsSize != 0) {
 			int index = 0;
 			while (index + 10 < itemsSize) {
-				client.sendPacket(new SM_INVENTORY_INFO(unequipedItems.subList(index, index + 10), npcExpands,
-						questExpands, player));
+				client.sendPacket(new SM_INVENTORY_INFO(unequipedItems.subList(index, index + 10), npcExpands, questExpands,
+						player));
 				index += 10;
 			}
-			client.sendPacket(
-					new SM_INVENTORY_INFO(unequipedItems.subList(index, itemsSize), npcExpands, questExpands, player));
+			client.sendPacket(new SM_INVENTORY_INFO(unequipedItems.subList(index, itemsSize), npcExpands, questExpands,
+					player));
 		}
 		client.sendPacket(new SM_INVENTORY_INFO());
 		client.sendPacket(new SM_STATS_INFO(player));
@@ -568,12 +577,12 @@ public final class PlayerEnterWorldService {
 		if (membership > 0) {
 			String accountType = "";
 			switch (account.getMembership()) {
-			case 1:
-				accountType = "premium";
-				break;
-			case 2:
-				accountType = "VIP";
-				break;
+				case 1:
+					accountType = "premium";
+					break;
+				case 2:
+					accountType = "VIP";
+					break;
 			}
 			client.sendPacket(new SM_MESSAGE(0, null, "Your account is " + accountType, ChatType.GOLDEN_YELLOW));
 		}
@@ -600,7 +609,8 @@ class GeneralUpdateTask implements Runnable {
 				DAOManager.getDAO(PlayerQuestListDAO.class).store(player);
 				DAOManager.getDAO(PlayerDAO.class).storePlayer(player);
 				DAOManager.getDAO(PlayerRankDAO.class).loadCustomRank(player);
-			} catch (Exception ex) {
+			}
+			catch (Exception ex) {
 				log.error("Exception during periodic saving of player " + player.getName(), ex);
 			}
 		}
@@ -625,7 +635,8 @@ class ItemUpdateTask implements Runnable {
 			try {
 				DAOManager.getDAO(InventoryDAO.class).store(player);
 				DAOManager.getDAO(ItemStoneListDAO.class).save(player);
-			} catch (Exception ex) {
+			}
+			catch (Exception ex) {
 				log.error("Exception during periodic saving of player items " + player.getName(), ex);
 			}
 		}

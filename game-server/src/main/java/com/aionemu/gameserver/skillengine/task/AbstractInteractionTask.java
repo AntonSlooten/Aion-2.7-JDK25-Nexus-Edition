@@ -40,16 +40,15 @@ public abstract class AbstractInteractionTask {
 	public AbstractInteractionTask(Player requestor, VisibleObject responder) {
 		// super();
 		this.requestor = requestor;
-		if (responder == null) {
+		if (responder == null)
 			this.responder = requestor;
-		} else {
+		else
 			this.responder = responder;
-		}
 	}
 
 	/**
 	 * Called on each interaction
-	 *
+	 * 
 	 * @return
 	 */
 	protected abstract boolean onInteraction();
@@ -79,14 +78,12 @@ public abstract class AbstractInteractionTask {
 
 			@Override
 			public void run() {
-				if (!validateParticipants()) {
+				if (!validateParticipants())
 					stop(true);
-				}
 
 				boolean stopTask = onInteraction();
-				if (stopTask) {
+				if (stopTask)
 					stop(false);
-				}
 			}
 
 		}, 1000, interval);
@@ -94,13 +91,11 @@ public abstract class AbstractInteractionTask {
 
 	/**
 	 * Stop current interaction
-	 *
-	 * @param b
+	 * @param b 
 	 */
 	public void stop(boolean participantNull) {
-		if (!participantNull) {
+		if (!participantNull)
 			onInteractionFinish();
-		}
 
 		if (task != null && !task.isCancelled()) {
 			task.cancel(false);
@@ -128,5 +123,9 @@ public abstract class AbstractInteractionTask {
 	 */
 	public boolean validateParticipants() {
 		return requestor != null;
+	}
+	
+	public void setInterval(int interval) {
+		this.interval = interval;
 	}
 }

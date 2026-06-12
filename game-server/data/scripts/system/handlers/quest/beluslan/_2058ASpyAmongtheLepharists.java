@@ -29,12 +29,10 @@ import com.aionemu.gameserver.services.teleport.TeleportService;
 import com.aionemu.gameserver.world.zone.ZoneName;
 
 /**
- * Meet with Tristran (204774). Talk with Stua (204809). Infiltrate the Port
- * through the Secret Port Entrance (700359). Don't blow your cover! Find the
- * Alquimia Entrance, break through to the Daevic Genesis Lab, and destroy the
- * Research Center Power Generator (700349) (1). Escape from the research center
- * and send a Signal Flare signal (182204317) to begin the attack. Report to
- * Tristran.
+ * Meet with Tristran (204774). Talk with Stua (204809). Infiltrate the Port through the Secret Port Entrance (700359).
+ * Don't blow your cover! Find the Alquimia Entrance, break through to the Daevic Genesis Lab, and destroy the Research
+ * Center Power Generator (700349) (1). Escape from the research center and send a Signal Flare signal (182204317) to
+ * begin the attack. Report to Tristran.
  * 
  * @author Hellboy aion4Free MetaWind
  * @reworked vlog
@@ -87,30 +85,33 @@ public class _2058ASpyAmongtheLepharists extends QuestHandler {
 				else
 					return sendQuestEndDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 204774) { // Tristran
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-				case STEP_TO_1: {
-					playQuestMovie(env, 249);
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-			} else if (targetId == 204809) { // Stua
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case STEP_TO_2:
-					if (var == 1) {
-						if ((!giveQuestItem(env, 110000008, 1)) || (!giveQuestItem(env, 182204317, 1)))
-							return false;
-						return defaultCloseDialog(env, 1, 2); // 2
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+					case STEP_TO_1: {
+						playQuestMovie(env, 249);
+						return defaultCloseDialog(env, 0, 1); // 1
 					}
 				}
-			} else if (targetId == 700359 && var == 2) { // Secret Port Entrance
+			}
+			else if (targetId == 204809) { // Stua
+				switch (env.getDialog()) {
+					case START_DIALOG:
+						if (var == 1)
+							return sendQuestDialog(env, 1352);
+					case STEP_TO_2:
+						if (var == 1) {
+							if ((!giveQuestItem(env, 110000008, 1)) || (!giveQuestItem(env, 182204317, 1)))
+								return false;
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+				}
+			}
+			else if (targetId == 700359 && var == 2) { // Secret Port Entrance
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					return useQuestObject(env, 2, 2, false, 0, 0, 0, 110000008, 1, 250, false); // movie + item
 				}

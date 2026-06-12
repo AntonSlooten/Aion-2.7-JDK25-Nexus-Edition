@@ -7,32 +7,29 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 
 public class CmdCustomRank extends BaseCommand {
 
-	@Override
 	public void execute(Player player, String... params) {
 		if (params.length < 2) {
-			PacketSendUtility.sendMessage(player, "Vous etes de rank [" + player.getCustomPlayerRank().getRank()
-					+ "] a " + player.getCustomPlayerRank().getPoints() + "/" + CustomPlayerRank.NB_PTS_BY_RANK);
+			PacketSendUtility.sendMessage(player, "Vous etes de rank ["+player.getCustomPlayerRank().getRank()+"] a "+player.getCustomPlayerRank().getPoints()+"/"+CustomPlayerRank.NB_PTS_BY_RANK);
 			return;
 		}
 
-		if (player.getAccessLevel() > 1) {
+		if(player.getAccessLevel() > 1){
 
 			Player target = AutoTarget(player, false);
-			if (target == null) {
+			if(target == null){
 				PacketSendUtility.sendMessage(player, "Invalid Target");
 				return;
 			}
-			if (params[0].equalsIgnoreCase("addPts")) {
+			if(params[0].equalsIgnoreCase("addPts"))
 				target.getCustomPlayerRank().addPts(Integer.parseInt(params[1]));
-			} else if (params[0].equalsIgnoreCase("setPts")) {
+			else if(params[0].equalsIgnoreCase("setPts"))
 				target.getCustomPlayerRank().setPts(Integer.parseInt(params[1]));
-			} else if (params[0].equalsIgnoreCase("setRank")) {
+			else if(params[0].equalsIgnoreCase("setRank"))
 				target.getCustomPlayerRank().setRank(Integer.parseInt(params[1]));
-			} else {
+			else
 				return;
-			}
 			PacketSendUtility.sendMessage(target, "Votre Rank a ete edite");
 		}
 	}
-
+	
 }

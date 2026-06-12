@@ -36,11 +36,10 @@ public class AbyssService {
 	 */
 	public static final boolean isOnPvpMap(Player player) {
 		for (int i : abyssMapList) {
-			if (i == player.getWorldId()) {
+			if (i == player.getWorldId())
 				return true;
-			} else {
+			else
 				continue;
-			}
 		}
 		return false;
 	}
@@ -49,25 +48,23 @@ public class AbyssService {
 	 * @param victim
 	 */
 	public static final void rankedKillAnnounce(final Player victim) {
-
+		
 		World.getInstance().doOnAllPlayers(new Visitor<Player>() {
 			@Override
 			public void visit(Player p) {
 				if (p != victim && victim.getWorldId() == p.getWorldId()) {
-					PacketSendUtility.sendPacket(p, SM_SYSTEM_MESSAGE.STR_ABYSS_ORDER_RANKER_DIE(victim,
-							AbyssRankEnum.getRankDescriptionId(victim)));
+					PacketSendUtility.sendPacket(p, SM_SYSTEM_MESSAGE.STR_ABYSS_ORDER_RANKER_DIE(victim, AbyssRankEnum.getRankDescriptionId(victim)));
 				}
 			}
 		});
 	}
-
+	
 	public static final void rankerSkillAnnounce(final Player player, final int nameId) {
 		World.getInstance().doOnAllPlayers(new Visitor<Player>() {
 			@Override
 			public void visit(Player p) {
 				if (p != player && player.getWorldType() == p.getWorldType() && !p.isInInstance()) {
-					PacketSendUtility.sendPacket(p,
-							SM_SYSTEM_MESSAGE.STR_SKILL_ABYSS_SKILL_IS_FIRED(player, new DescriptionId(nameId)));
+					PacketSendUtility.sendPacket(p, SM_SYSTEM_MESSAGE.STR_SKILL_ABYSS_SKILL_IS_FIRED(player, new DescriptionId(nameId)));
 				}
 			}
 		});

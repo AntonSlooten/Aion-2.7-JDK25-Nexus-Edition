@@ -24,6 +24,7 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.skillengine.model.Effect;
 import com.aionemu.gameserver.skillengine.model.HealType;
 
+
 /**
  * @author kecimis
  *
@@ -49,6 +50,6 @@ public class DPHealEffect extends HealOverTimeEffect {
 
 	@Override
 	protected int getMaxStatValue(Effect effect) {
-		return ((Player) effect.getEffected()).getGameStats().getMaxDp().getCurrent();
+		return ((Player)effect.getEffected()).getGameStats().getMaxDp().getCurrent();
 	}
 }

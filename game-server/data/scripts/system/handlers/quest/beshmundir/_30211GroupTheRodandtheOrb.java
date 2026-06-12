@@ -49,12 +49,13 @@ public class _30211GroupTheRodandtheOrb extends QuestHandler {
 
 		int targetId = env.getTargetId();
 		QuestDialog dialog = env.getDialog();
-
+			
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 798941) {
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
@@ -65,28 +66,29 @@ public class _30211GroupTheRodandtheOrb extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 730275: {
-				switch (dialog) {
-				case STEP_TO_1: {
-					removeQuestItem(env, 182209614, 1);
-					qs.setStatus(QuestStatus.REWARD);
-					updateQuestStatus(env);
-					return true;
-				}
+				case 730275: {
+					switch (dialog) {
+						case STEP_TO_1: {
+							removeQuestItem(env, 182209614, 1);
+							qs.setStatus(QuestStatus.REWARD);
+							updateQuestStatus(env);
+							return true;
+						}
+					}
 				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798941) {
 				switch (dialog) {
-				case USE_OBJECT: {
-					return sendQuestDialog(env, 10002);
-				}
-				case SELECT_REWARD: {
-					return sendQuestDialog(env, 5);
-				}
-				default:
-					return sendQuestEndDialog(env);
+					case USE_OBJECT: {
+						return sendQuestDialog(env, 10002);
+					}
+					case SELECT_REWARD: {
+						return sendQuestDialog(env, 5);
+					}
+					default:
+						return sendQuestEndDialog(env);
 				}
 			}
 		}

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -36,11 +36,11 @@ public class LsPacketHandler {
 	 */
 	private static final Logger log = LoggerFactory.getLogger(LsPacketHandler.class);
 
-	private static Map<State, Map<Integer, LsClientPacket>> packetPrototypes = new HashMap<>();
+	private static Map<State, Map<Integer, LsClientPacket>> packetPrototypes = new HashMap<State, Map<Integer, LsClientPacket>>();
 
 	/**
 	 * Reads one packet from given ByteBuffer
-	 *
+	 * 
 	 * @param data
 	 * @param client
 	 * @return GsClientPacket object from binary data
@@ -56,7 +56,7 @@ public class LsPacketHandler {
 		for (State state : states) {
 			Map<Integer, LsClientPacket> pm = packetPrototypes.get(state);
 			if (pm == null) {
-				pm = new HashMap<>();
+				pm = new HashMap<Integer, LsClientPacket>();
 				packetPrototypes.put(state, pm);
 			}
 			pm.put(packetPrototype.getOpcode(), packetPrototype);
@@ -85,7 +85,7 @@ public class LsPacketHandler {
 
 	/**
 	 * Logs unknown packet.
-	 *
+	 * 
 	 * @param state
 	 * @param id
 	 */

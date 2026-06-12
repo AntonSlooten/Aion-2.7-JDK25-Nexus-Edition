@@ -56,7 +56,8 @@ public class _1470HannetsVengeance extends QuestHandler {
 					return sendQuestDialog(env, 1011);
 				else
 					return sendQuestStartDialog(env);
-			} else if (qs.getStatus() == QuestStatus.REWARD) {
+			}
+			else if (qs.getStatus() == QuestStatus.REWARD) {
 				return sendQuestEndDialog(env);
 			}
 		}
@@ -75,12 +76,12 @@ public class _1470HannetsVengeance extends QuestHandler {
 		if (env.getVisibleObject() instanceof Npc)
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		switch (targetId) {
-		case 212846:
-			qs.setQuestVarById(0, var + 1);
-			updateQuestStatus(env);
-			qs.setStatus(QuestStatus.REWARD);
-			updateQuestStatus(env);
-			return true;
+			case 212846:
+				qs.setQuestVarById(0, var + 1);
+				updateQuestStatus(env);
+				qs.setStatus(QuestStatus.REWARD);
+				updateQuestStatus(env);
+				return true;
 		}
 		return false;
 	}

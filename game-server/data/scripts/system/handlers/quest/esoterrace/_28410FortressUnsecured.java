@@ -12,15 +12,18 @@ import com.aionemu.gameserver.world.zone.ZoneName;
  * @author Ritsu
  * 
  */
-public class _28410FortressUnsecured extends QuestHandler {
-	private final static int questId = 28410;
+public class _28410FortressUnsecured extends QuestHandler
+{
+	private final static int	questId	= 28410;
 
-	public _28410FortressUnsecured() {
+	public _28410FortressUnsecured()
+	{
 		super(questId);
 	}
 
 	@Override
-	public void register() {
+	public void register()
+	{
 		qe.registerQuestNpc(799587).addOnQuestStart(questId);
 		qe.registerQuestNpc(799587).addOnTalkEvent(questId);
 		qe.registerQuestNpc(799563).addOnTalkEvent(questId);
@@ -29,14 +32,15 @@ public class _28410FortressUnsecured extends QuestHandler {
 	}
 
 	@Override
-	public boolean onEnterZoneEvent(QuestEnv env, ZoneName zoneName) {
+	public boolean onEnterZoneEvent(QuestEnv env, ZoneName zoneName)
+	{
 		Player player = env.getPlayer();
 		if (player == null)
 			return false;
 		QuestState qs = player.getQuestStateList().getQuestState(questId);
-		if (zoneName != ZoneName.DRANA_PRODUCTION_LAB_300250000)
+		if(zoneName != ZoneName.DRANA_PRODUCTION_LAB_300250000)
 			return false;
-		if (qs == null || qs.getQuestVars().getQuestVars() != 1)
+		if(qs == null || qs.getQuestVars().getQuestVars() != 1)
 			return false;
 		if (qs.getStatus() != QuestStatus.START)
 			return false;
@@ -46,36 +50,45 @@ public class _28410FortressUnsecured extends QuestHandler {
 	}
 
 	@Override
-	public boolean onDialogEvent(QuestEnv env) {
+	public boolean onDialogEvent(QuestEnv env)
+	{
 		Player player = env.getPlayer();
 		int targetId = env.getTargetId();
 		QuestState qs = player.getQuestStateList().getQuestState(questId);
-
-		if (targetId == 799587) {
-			if (qs == null || qs.getStatus() == QuestStatus.NONE) {
-				if (env.getDialog() == QuestDialog.START_DIALOG)
+		
+		if(targetId == 799587)
+		{
+			if(qs == null || qs.getStatus() == QuestStatus.NONE)
+			{
+				if(env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 4762);
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (targetId == 799563) {
-			if (qs != null && qs.getStatus() == QuestStatus.START && qs.getQuestVarById(0) == 0) {
-				if (env.getDialog() == QuestDialog.START_DIALOG)
+		}
+		else if(targetId == 799563)
+		{
+			if(qs != null && qs.getStatus() == QuestStatus.START && qs.getQuestVarById(0) == 0)
+			{
+				if(env.getDialog() == QuestDialog.START_DIALOG)
 					return sendQuestDialog(env, 1011);
-				else if (env.getDialog() == QuestDialog.STEP_TO_1)
+				else if(env.getDialog() == QuestDialog.STEP_TO_1)
 					return defaultCloseDialog(env, 0, 1);
 				else
 					return sendQuestStartDialog(env);
 			}
-		} else if (targetId == 799558) {
-			if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
-				if (env.getDialog() == QuestDialog.USE_OBJECT)
+		}
+		else if(targetId == 799558)
+		{
+			if(qs != null && qs.getStatus() == QuestStatus.REWARD)
+			{
+				if(env.getDialog() == QuestDialog.USE_OBJECT)
 					return sendQuestDialog(env, 10002);
-				else if (env.getDialog() == QuestDialog.SELECT_REWARD)
+				else if(env.getDialog() == QuestDialog.SELECT_REWARD)
 					return sendQuestDialog(env, 5);
 				else
 					return sendQuestEndDialog(env);
-			}
+			}		
 		}
 		return false;
 	}

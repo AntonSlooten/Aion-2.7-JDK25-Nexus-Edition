@@ -24,6 +24,7 @@ import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.NpcObjectType;
 import com.aionemu.gameserver.skillengine.model.Effect;
 
+
 /**
  * @author kecimis
  *
@@ -31,7 +32,7 @@ import com.aionemu.gameserver.skillengine.model.Effect;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "SummonTotemEffect")
 public class SummonTotemEffect extends SummonServantEffect {
-
+	
 	@Override
 	public void applyEffect(Effect effect) {
 		Creature effector = effect.getEffector();

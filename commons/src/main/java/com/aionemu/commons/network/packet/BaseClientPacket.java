@@ -16,18 +16,19 @@
  */
 package com.aionemu.commons.network.packet;
 
+import java.nio.ByteBuffer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aionemu.commons.network.AConnection;
 
-import java.nio.ByteBuffer;
-
 /**
  * Base class for every Client Packet
- *
- * @param <T> AConnection - owner of this client packet.
+ * 
  * @author -Nemesiss-
+ * @param <T>
+ *          AConnection - owner of this client packet.
  */
 public abstract class BaseClientPacket<T extends AConnection> extends BasePacket implements Runnable {
 
@@ -46,9 +47,11 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * Constructs a new client packet with specified id and data buffer.
-	 *
-	 * @param buf    packet data container.
-	 * @param opcode packet opcode.
+	 * 
+	 * @param buf
+	 *          packet data container.
+	 * @param opcode
+	 *          packet opcode.
 	 */
 	public BaseClientPacket(ByteBuffer buf, int opcode) {
 		this(opcode);
@@ -57,8 +60,9 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * Constructs a new client packet with specified id. ByteBuffer must be later set with setBuffer method.
-	 *
-	 * @param opcode packet opcode.
+	 * 
+	 * @param opcode
+	 *          packet opcode.
 	 */
 	public BaseClientPacket(int opcode) {
 		super(PacketType.CLIENT, opcode);
@@ -66,7 +70,7 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * Attach ByteBuffer to this packet.
-	 *
+	 * 
 	 * @param buf
 	 */
 	public void setBuffer(ByteBuffer buf) {
@@ -75,7 +79,7 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * Attach client connection to this packet.
-	 *
+	 * 
 	 * @param client
 	 */
 	public void setConnection(T client) {
@@ -84,7 +88,7 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * This method reads data from a packet buffer. If the error occurred while reading data, the connection is closed.
-	 *
+	 * 
 	 * @return <code>true</code> if reading was successful, otherwise <code>false</code>
 	 */
 	public final boolean read() {
@@ -95,7 +99,8 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 				log.debug("Packet " + this + " not fully readed!");
 
 			return true;
-		} catch (Exception re) {
+		}
+		catch (Exception re) {
 			log.error("Reading failed for packet " + this, re);
 			return false;
 		}
@@ -115,13 +120,14 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * Read int from this packet buffer.
-	 *
+	 * 
 	 * @return int
 	 */
 	protected final int readD() {
 		try {
 			return buf.getInt();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Missing D for: " + this);
 		}
 		return 0;
@@ -129,13 +135,14 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * Read byte from this packet buffer.
-	 *
+	 * 
 	 * @return int
 	 */
 	protected final int readC() {
 		try {
 			return buf.get() & 0xFF;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Missing C for: " + this);
 		}
 		return 0;
@@ -143,13 +150,14 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * Read signed byte from this packet buffer.
-	 *
+	 * 
 	 * @return int
 	 */
 	protected final byte readSC() {
 		try {
 			return buf.get();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Missing C for: " + this);
 		}
 		return 0;
@@ -157,13 +165,14 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * Read signed short from this packet buffer.
-	 *
+	 * 
 	 * @return int
 	 */
 	protected final short readSH() {
 		try {
 			return buf.getShort();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Missing H for: " + this);
 		}
 		return 0;
@@ -172,7 +181,8 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 	protected final int readH() {
 		try {
 			return buf.getShort() & 0xFFFF;
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Missing H for: " + this);
 		}
 		return 0;
@@ -180,13 +190,14 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * Read double from this packet buffer.
-	 *
+	 * 
 	 * @return double
 	 */
 	protected final double readDF() {
 		try {
 			return buf.getDouble();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Missing DF for: " + this);
 		}
 		return 0;
@@ -194,13 +205,14 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * Read double from this packet buffer.
-	 *
+	 * 
 	 * @return double
 	 */
 	protected final float readF() {
 		try {
 			return buf.getFloat();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Missing F for: " + this);
 		}
 		return 0;
@@ -208,13 +220,14 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * Read long from this packet buffer.
-	 *
+	 * 
 	 * @return long
 	 */
 	protected final long readQ() {
 		try {
 			return buf.getLong();
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Missing Q for: " + this);
 		}
 		return 0;
@@ -222,7 +235,7 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * Read String from this packet buffer.
-	 *
+	 * 
 	 * @return String
 	 */
 	protected final String readS() {
@@ -231,7 +244,8 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 		try {
 			while ((ch = buf.getChar()) != 0)
 				sb.append(ch);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Missing S for: " + this);
 		}
 		return sb.toString();
@@ -239,7 +253,7 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 
 	/**
 	 * Read n bytes from this packet buffer, n = length.
-	 *
+	 * 
 	 * @param length
 	 * @return byte[]
 	 */
@@ -247,7 +261,8 @@ public abstract class BaseClientPacket<T extends AConnection> extends BasePacket
 		byte[] result = new byte[length];
 		try {
 			buf.get(result);
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			log.error("Missing byte[] for: " + this);
 		}
 		return result;

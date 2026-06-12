@@ -13,10 +13,10 @@ import java.util.concurrent.Future;
 public class KaluvaSpawnAI2 extends NpcAI2 {
 
 	private Future<?> task;
-
+	
 	@Override
 	protected void handleDied() {
-		if (task != null && !task.isDone()) {
+		if (task != null && !task.isDone()){
 			task.cancel(true);
 		}
 		checkKaluva();
@@ -31,7 +31,7 @@ public class KaluvaSpawnAI2 extends NpcAI2 {
 
 	@Override
 	protected void handleDespawned() {
-		if (task != null && !task.isDone()) {
+		if (task != null && !task.isDone()){
 			task.cancel(true);
 		}
 		super.handleDespawned();
@@ -64,24 +64,24 @@ public class KaluvaSpawnAI2 extends NpcAI2 {
 	private void hatchAdds() { // 4 different spawn-formations; See Powerwiki for more information
 		WorldPosition p = getPosition();
 		switch (Rnd.get(1, 4)) {
-		case 1:
-			spawn(281911, p.getX(), p.getY(), p.getZ(), p.getHeading());
-			spawn(281911, p.getX(), p.getY(), p.getZ(), p.getHeading());
-			break;
-		case 2:
-			for (int i = 0; i < 12; i++) {
+			case 1:
+				spawn(281911, p.getX(), p.getY(), p.getZ(), p.getHeading());
+				spawn(281911, p.getX(), p.getY(), p.getZ(), p.getHeading());
+				break;
+			case 2:
+				for (int i = 0; i < 12; i++) {
+					spawn(281912, p.getX(), p.getY(), p.getZ(), p.getHeading());
+				}
+				break;
+			case 3:
+				spawn(282057, p.getX(), p.getY(), p.getZ(), p.getHeading());
+				break;
+			case 4:
+				spawn(281911, p.getX(), p.getY(), p.getZ(), p.getHeading());
 				spawn(281912, p.getX(), p.getY(), p.getZ(), p.getHeading());
-			}
-			break;
-		case 3:
-			spawn(282057, p.getX(), p.getY(), p.getZ(), p.getHeading());
-			break;
-		case 4:
-			spawn(281911, p.getX(), p.getY(), p.getZ(), p.getHeading());
-			spawn(281912, p.getX(), p.getY(), p.getZ(), p.getHeading());
-			spawn(281912, p.getX(), p.getY(), p.getZ(), p.getHeading());
-			spawn(281912, p.getX(), p.getY(), p.getZ(), p.getHeading());
-			break;
+				spawn(281912, p.getX(), p.getY(), p.getZ(), p.getHeading());
+				spawn(281912, p.getX(), p.getY(), p.getZ(), p.getHeading());
+				break;
 		}
 	}
 

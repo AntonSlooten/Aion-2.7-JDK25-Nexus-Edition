@@ -33,17 +33,24 @@ public class TaskFromDB {
 
 	/**
 	 * Constructor
-	 *
-	 * @param id             : int
-	 * @param name           : String
-	 * @param type           : String
-	 * @param lastActivation : Timestamp
-	 * @param startTime      : String
-	 * @param delay          : int
-	 * @param param          : String
+	 * 
+	 * @param id
+	 *          : int
+	 * @param name
+	 *          : String
+	 * @param type
+	 *          : String
+	 * @param lastActivation
+	 *          : Timestamp
+	 * @param startTime
+	 *          : String
+	 * @param delay
+	 *          : int
+	 * @param param
+	 *          : String
 	 */
 	public TaskFromDB(int id, String name, String type, Timestamp lastActivation, String startTime, int delay,
-			String param) {
+		String param) {
 		this.id = id;
 		this.name = name;
 		this.type = type;
@@ -51,16 +58,15 @@ public class TaskFromDB {
 		this.startTime = startTime;
 		this.delay = delay;
 
-		if (param != null) {
+		if (param != null)
 			this.params = param.split(" ");
-		} else {
+		else
 			this.params = new String[0];
-		}
 	}
 
 	/**
 	 * Task's id
-	 *
+	 * 
 	 * @return int
 	 */
 	public int getId() {
@@ -69,7 +75,7 @@ public class TaskFromDB {
 
 	/**
 	 * Task's name
-	 *
+	 * 
 	 * @return String
 	 */
 	public String getName() {
@@ -78,7 +84,7 @@ public class TaskFromDB {
 
 	/**
 	 * Task's type : - FIXED_IN_TIME (HH:MM:SS)
-	 *
+	 * 
 	 * @return String
 	 */
 	public String getType() {
@@ -87,7 +93,7 @@ public class TaskFromDB {
 
 	/**
 	 * Task's last activation
-	 *
+	 * 
 	 * @return Timestamp
 	 */
 	public Timestamp getLastActivation() {
@@ -96,7 +102,7 @@ public class TaskFromDB {
 
 	/**
 	 * Task's starting time (HH:MM:SS format)
-	 *
+	 * 
 	 * @return String
 	 */
 	public String getStartTime() {
@@ -105,7 +111,7 @@ public class TaskFromDB {
 
 	/**
 	 * Task's delay
-	 *
+	 * 
 	 * @return int
 	 */
 	public int getDelay() {
@@ -114,7 +120,7 @@ public class TaskFromDB {
 
 	/**
 	 * Task's param(s)
-	 *
+	 * 
 	 * @return String[]
 	 */
 	public String[] getParams() {

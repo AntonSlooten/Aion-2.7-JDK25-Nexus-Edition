@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -181,7 +181,6 @@ public class BlowfishCipher {
 	 * @param blowfishKey
 	 *          Blowfish Key
 	 */
-	@SuppressWarnings("this-escape")
 	public BlowfishCipher(byte[] blowfishKey) {
 		pArray = new int[18];
 		sBoxes = new int[4][256];
@@ -194,7 +193,7 @@ public class BlowfishCipher {
 	 * @param blowfishKey
 	 *          new blowfish key
 	 */
-	public final void updateKey(byte[] blowfishKey) {
+	public void updateKey(byte[] blowfishKey) {
 		this.blowfishKey = blowfishKey;
 		System.arraycopy(SBOX_INIT_0, 0, sBoxes[0], 0, 256);
 		System.arraycopy(SBOX_INIT_1, 0, sBoxes[1], 0, 256);

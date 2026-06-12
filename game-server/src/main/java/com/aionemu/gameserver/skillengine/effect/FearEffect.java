@@ -52,7 +52,7 @@ public class FearEffect extends EffectTemplate {
 
 	@XmlAttribute
 	protected int resistchance = 100;
-
+	
 	@Override
 	public void applyEffect(Effect effect) {
 		effect.addToEffectedController();
@@ -74,26 +74,23 @@ public class FearEffect extends EffectTemplate {
 		PacketSendUtility.broadcastPacketAndReceive(effected, new SM_TARGET_IMMOBILIZE(effected));
 		effected.getController().stopMoving();
 
-		if (effected instanceof Npc) {
-			((NpcAI2) effected.getAi2()).setStateIfNot(AIState.FEAR);
-		}
+		if (effected instanceof Npc)
+			((NpcAI2)effected.getAi2()).setStateIfNot(AIState.FEAR);
 		if (GeoDataConfig.FEAR_ENABLE) {
-			ScheduledFuture<?> fearTask = ThreadPoolManager.getInstance()
-					.scheduleAtFixedRate(new FearTask(effector, effected), 0, 1000);
+			ScheduledFuture<?> fearTask = ThreadPoolManager.getInstance().scheduleAtFixedRate(
+				new FearTask(effector, effected), 0, 1000);
 			effect.setPeriodicTask(fearTask, position);
 		}
-
-		// resistchance of fear effect to damage, if value is lower than 100, fear can
-		// be interrupted bz damage
-		// example skillId: 540 Terrible howl
+		
+		//resistchance of fear effect to damage, if value is lower than 100, fear can be interrupted bz damage 
+		//example skillId: 540 Terrible howl
 		if (resistchance < 100) {
 			ActionObserver observer = new ActionObserver(ObserverType.ATTACKED) {
 
 				@Override
 				public void attacked(Creature creature) {
-					if (Rnd.get(0, 100) > resistchance) {
+					if (Rnd.get(0, 100) > resistchance)
 						effected.getEffectController().removeEffect(effect.getSkillId());
-					}
 				}
 			};
 			effected.getObserveController().addObserver(observer);
@@ -109,17 +106,15 @@ public class FearEffect extends EffectTemplate {
 		if (GeoDataConfig.FEAR_ENABLE) {
 			effect.getEffected().getMoveController().abortMove();// TODO impl stopMoving?
 		}
-		if (effect.getEffected() instanceof Npc) {
-			((NpcAI2) effect.getEffected().getAi2()).onCreatureEvent(AIEventType.ATTACK, effect.getEffector());
+		if (effect.getEffected() instanceof Npc){
+			((NpcAI2)effect.getEffected().getAi2()).onCreatureEvent(AIEventType.ATTACK, effect.getEffector());
 		}
-		PacketSendUtility.broadcastPacketAndReceive(effect.getEffected(),
-				new SM_TARGET_IMMOBILIZE(effect.getEffected()));
-
+		PacketSendUtility.broadcastPacketAndReceive(effect.getEffected(), new SM_TARGET_IMMOBILIZE(effect.getEffected()));
+		
 		if (resistchance < 100) {
 			ActionObserver observer = effect.getActionObserver(position);
-			if (observer != null) {
+			if (observer != null)
 				effect.getEffected().getObserveController().removeObserver(observer);
-			}
 		}
 	}
 
@@ -138,26 +133,25 @@ public class FearEffect extends EffectTemplate {
 			if (effected.getEffectController().isUnderFear()) {
 				float x = effected.getX();
 				float y = effected.getY();
-				if (!MathUtil.isNearCoordinates(effected, effector, 40)) {
+				if (!MathUtil.isNearCoordinates(effected, effector, 40))
 					return;
-				}
 				byte moveAwayHeading = PositionUtil.getMoveAwayHeading(effector, effected);
 				double radian = Math.toRadians(MathUtil.convertHeadingToDegree(moveAwayHeading));
 				float maxDistance = effected.getGameStats().getMovementSpeedFloat();
 				float x1 = (float) (Math.cos(radian) * maxDistance);
 				float y1 = (float) (Math.sin(radian) * maxDistance);
-				Vector3f closestCollision = GeoService.getInstance().getClosestCollision(effected, x + x1, y + y1,
-						effected.getZ(), true);
+				Vector3f closestCollision = GeoService.getInstance().getClosestCollision(effected, x+x1, y+y1, effected.getZ(), true);
 				if (effected.isFlying()) {
 					closestCollision.setZ(effected.getZ());
 				}
-				if (effected instanceof Npc) {
-					((Npc) effected).getMoveController().resetMove();
-					((Npc) effected).getMoveController().moveToPoint(closestCollision.getX(), closestCollision.getY(),
-							closestCollision.getZ());
-				} else {
+				if (effected instanceof Npc){
+					((Npc)effected).getMoveController().resetMove();
+					((Npc)effected).getMoveController().moveToPoint(closestCollision.getX(), closestCollision.getY(),
+					closestCollision.getZ());
+				}
+				else{
 					effected.getMoveController().setNewDirection(closestCollision.getX(), closestCollision.getY(),
-							closestCollision.getZ(), moveAwayHeading);
+						closestCollision.getZ(), moveAwayHeading);
 					effected.getMoveController().startMovingToDestination();
 				}
 			}

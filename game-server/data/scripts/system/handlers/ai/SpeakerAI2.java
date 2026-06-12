@@ -18,6 +18,7 @@ package ai;
 
 import com.aionemu.gameserver.ai2.AIName;
 
+
 /**
  * @author Rolandas
  *

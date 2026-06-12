@@ -26,7 +26,7 @@ public abstract class PlayerEffectsDAO implements DAO {
 
 	/**
 	 * Returns unique identifier for PlayerEffectsDAO
-	 *
+	 * 
 	 * @return unique identifier for PlayerEffectsDAO
 	 */
 	@Override

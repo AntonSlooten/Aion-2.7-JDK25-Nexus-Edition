@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-unique <aion-unique.smfnew.com>.
  *
  *  aion-unique is free software: you can redistribute it and/or modify
@@ -58,16 +58,14 @@ public class CM_ATTACK extends AionClientPacket {
 	@Override
 	protected void runImpl() {
 		Player player = getConnection().getActivePlayer();
-		if (player.getLifeStats().isAlreadyDead()) {
+		if (player.getLifeStats().isAlreadyDead())
 			return;
-		}
 
-		if (player.isProtectionActive()) {
+		if(player.isProtectionActive())
 			player.getController().stopProtectionActiveTask();
-		}
 
 		VisibleObject obj = player.getKnownList().getObject(targetObjectId);
-		if (obj != null && obj instanceof Creature) {
+		if(obj != null && obj instanceof Creature) {
 			player.getController().attackTarget((Creature) obj, time);
 		} else {
 			if (obj != null) {

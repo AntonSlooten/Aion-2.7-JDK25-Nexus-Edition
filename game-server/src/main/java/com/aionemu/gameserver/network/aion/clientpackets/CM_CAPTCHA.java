@@ -55,13 +55,13 @@ public class CM_CAPTCHA extends AionClientPacket {
 		type = readC();
 
 		switch (type) {
-		case 0x02:
-			count = readC();
-			word = readS();
-			break;
-		default:
-			log.warn("Unknown CAPTCHA packet type? 0x" + Integer.toHexString(type).toUpperCase());
-			break;
+			case 0x02:
+				count = readC();
+				word = readS();
+				break;
+			default:
+				log.warn("Unknown CAPTCHA packet type? 0x" + Integer.toHexString(type).toUpperCase());
+				break;
 		}
 	}
 
@@ -70,28 +70,30 @@ public class CM_CAPTCHA extends AionClientPacket {
 		Player player = getConnection().getActivePlayer();
 
 		switch (type) {
-		case 0x02:
-			if (player.getCaptchaWord().equalsIgnoreCase(word)) {
-				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400270));
-				PacketSendUtility.sendPacket(player, new SM_CAPTCHA(true, 0));
+			case 0x02:
+				if (player.getCaptchaWord().equalsIgnoreCase(word)) {
+					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400270));
+					PacketSendUtility.sendPacket(player, new SM_CAPTCHA(true, 0));
 
-				PunishmentService.setIsNotGatherable(player, 0, false, 0);
+					PunishmentService.setIsNotGatherable(player, 0, false, 0);
 
-				// fp bonus (like retail)
-				player.getLifeStats().increaseFp(TYPE.FP, GSConfig.CAPTCHA_BONUS_FP_TIME);
-			} else {
-				int banTime = GSConfig.CAPTCHA_EXTRACTION_BAN_TIME + (GSConfig.CAPTCHA_EXTRACTION_BAN_ADD_TIME * count);
-
-				if (count < 3) {
-					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400271, 3 - count));
-					PacketSendUtility.sendPacket(player, new SM_CAPTCHA(false, banTime));
-					PunishmentService.setIsNotGatherable(player, count, true, banTime * 1000L);
-				} else {
-					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400272));
-					PunishmentService.setIsNotGatherable(player, count, true, banTime * 1000L);
+					// fp bonus (like retail)
+					player.getLifeStats().increaseFp(TYPE.FP, GSConfig.CAPTCHA_BONUS_FP_TIME);
 				}
-			}
-			break;
+				else {
+					int banTime = GSConfig.CAPTCHA_EXTRACTION_BAN_TIME + (GSConfig.CAPTCHA_EXTRACTION_BAN_ADD_TIME * count);
+
+					if (count < 3) {
+						PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400271, 3 - count));
+						PacketSendUtility.sendPacket(player, new SM_CAPTCHA(false, banTime));
+						PunishmentService.setIsNotGatherable(player, count, true, banTime * 1000L);
+					}
+					else {
+						PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1400272));
+						PunishmentService.setIsNotGatherable(player, count, true, banTime * 1000L);
+					}
+				}
+				break;
 		}
 	}
 }

@@ -23,6 +23,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.ThreadPoolManager;
 
+
 /**
  * @author-Nemesiss-
  *
@@ -31,7 +32,7 @@ import com.aionemu.gameserver.utils.ThreadPoolManager;
 public class DeliveryManAI2 extends PostboxAI2 {
 	public static int EVENT_SET_CREATOR_ID = 1;
 
-	private static int SERVICE_TIME = 5 * 60 * 1000;
+	private static int SERVICE_TIME = 5*60*1000;
 	private static int SPAWN_ACTION_DELAY = 1500;
 
 	private int creatorId = -1;
@@ -52,7 +53,7 @@ public class DeliveryManAI2 extends PostboxAI2 {
 
 	@Override
 	protected void handleCustomEvent(int eventId, Object... args) {
-		if (eventId == EVENT_SET_CREATOR_ID)
+		if(eventId == EVENT_SET_CREATOR_ID)
 			creatorId = (Integer) args[0];
 	}
 

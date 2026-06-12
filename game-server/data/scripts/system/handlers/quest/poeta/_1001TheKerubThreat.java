@@ -94,51 +94,52 @@ public class _1001TheKerubThreat extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 203071) {
 				switch (env.getDialog()) {
-				case SELECT_ACTION_1012:
-					playQuestMovie(env, 15);
-					return false;
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 6)
-						return sendQuestDialog(env, 1352);
-					else if (var == 7)
-						return sendQuestDialog(env, 1693);
-					return false;
-				case STEP_TO_3:
-				case CHECK_COLLECTED_ITEMS:
-					if (var == 7) {
-						long itemCount = player.getInventory().getItemCountByItemId(182200001);
-						if (itemCount >= 5) {
-							if (env.getDialogId() == 34) {
-								return sendQuestDialog(env, 1694);
-							} else {
-								removeQuestItem(env, 182200001, itemCount);
-								qs.setQuestVarById(0, var + 1);
-								qs.setStatus(QuestStatus.REWARD);
-								updateQuestStatus(env);
-								PacketSendUtility.sendPacket(player,
-										new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-								return true;
+					case SELECT_ACTION_1012:
+						playQuestMovie(env, 15);
+						return false;
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+						else if (var == 6)
+							return sendQuestDialog(env, 1352);
+						else if (var == 7)
+							return sendQuestDialog(env, 1693);
+						return false;
+					case STEP_TO_3:
+					case CHECK_COLLECTED_ITEMS:
+						if (var == 7) {
+							long itemCount = player.getInventory().getItemCountByItemId(182200001);
+							if (itemCount >= 5) {
+								if (env.getDialogId() == 34) {
+									return sendQuestDialog(env, 1694);
+								}
+								else {
+									removeQuestItem(env, 182200001, itemCount);
+									qs.setQuestVarById(0, var + 1);
+									qs.setStatus(QuestStatus.REWARD);
+									updateQuestStatus(env);
+									PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+									return true;
+								}
 							}
-						} else
-							return sendQuestDialog(env, 1779);
-					}
-					return true;
-				case STEP_TO_1:
-				case STEP_TO_2:
-					if (var == 0 || var == 6) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-					}
-					return true;
-				default:
-					return false;
+							else
+								return sendQuestDialog(env, 1779);
+						}
+						return true;
+					case STEP_TO_1:
+					case STEP_TO_2:
+						if (var == 0 || var == 6) {
+							qs.setQuestVarById(0, var + 1);
+							updateQuestStatus(env);
+							PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+						}
+						return true;
+					default:
+						return false;
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203067) {
 				return sendQuestEndDialog(env);
 			}

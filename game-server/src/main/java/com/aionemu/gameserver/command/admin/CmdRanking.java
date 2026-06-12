@@ -5,10 +5,11 @@ import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.services.abyss.AbyssRankUpdateService;
 
 public class CmdRanking extends BaseCommand {
-
-	@Override
+	
+		
 	public void execute(Player admin, String... params) {
 		AbyssRankUpdateService.getInstance().performUpdate();
 	}
-
+	
 }
+

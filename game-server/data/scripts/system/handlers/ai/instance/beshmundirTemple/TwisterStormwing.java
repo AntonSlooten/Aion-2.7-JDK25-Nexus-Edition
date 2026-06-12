@@ -24,12 +24,13 @@ import ai.AggressiveNpcAI2;
 public class TwisterStormwing extends AggressiveNpcAI2 {
 	private Future<?> skillTask;
 
+
 	@Override
 	protected void handleSpawned() {
 		super.handleSpawned();
 		this.setStateIfNot(AIState.FOLLOWING);
 		Npc AO = getPosition().getWorldMapInstance().getNpc(216264);
-		if (AO.getLifeStats().isAlreadyDead() || AO.getTarget() == null) {
+		if(AO.getLifeStats().isAlreadyDead() || AO.getTarget() == null){
 			AI2Actions.deleteOwner(TwisterStormwing.this);
 			return;
 		}
@@ -48,8 +49,7 @@ public class TwisterStormwing extends AggressiveNpcAI2 {
 	@Override
 	protected void handleMoveArrived() {
 		super.handleMoveArrived();
-		SkillEngine.getInstance().getSkill(getOwner(), (getNpcId() == 281795 ? 18620 : 18619), 55, getTarget())
-				.useSkill();
+		SkillEngine.getInstance().getSkill(getOwner(), (getNpcId() == 281795 ? 18620 : 18619), 55, getTarget()).useSkill();
 		ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
 			public void run() {
@@ -59,10 +59,10 @@ public class TwisterStormwing extends AggressiveNpcAI2 {
 		AI2Actions.deleteOwner(TwisterStormwing.this);
 	}
 
-	private void selectNextMove() {
+	private void selectNextMove(){
 		List<Player> players = getClosePlayer(200);
 		Player player = (!players.isEmpty() ? players.get(Rnd.get(players.size())) : null);
-		if (player == null) {
+		if(player == null){
 			ThreadPoolManager.getInstance().schedule(new Runnable() {
 				@Override
 				public void run() {
@@ -77,18 +77,16 @@ public class TwisterStormwing extends AggressiveNpcAI2 {
 		getMoveController().moveToTargetObject();
 	}
 
-	private void doAttack() {
+	private void doAttack(){
 		List<Player> players = new ArrayList<Player>();
 		for (Player player : getPosition().getWorldMapInstance().getPlayersInside()) {
-			if (!player.getLifeStats().isAlreadyDead() && MathUtil.isIn3dRange(player, getOwner(), 2)
-					&& player != getTarget()) {
+			if (!player.getLifeStats().isAlreadyDead() && MathUtil.isIn3dRange(player, getOwner(), 2) && player != getTarget()) {
 				players.add(player);
 			}
 		}
-		if (players.size() != 0) {
+		if(players.size() != 0){
 			for (Player p : players) {
-				SkillEngine.getInstance().getSkill(getOwner(), (getNpcId() == 281795 ? 18620 : 18619), 55, p)
-						.useSkill();
+				SkillEngine.getInstance().getSkill(getOwner(), (getNpcId() == 281795 ? 18620 : 18619), 55, p).useSkill();
 			}
 			ThreadPoolManager.getInstance().schedule(new Runnable() {
 				@Override
@@ -102,7 +100,7 @@ public class TwisterStormwing extends AggressiveNpcAI2 {
 		scheduleAttack();
 	}
 
-	private void scheduleAttack() {
+	private void scheduleAttack(){
 		skillTask = ThreadPoolManager.getInstance().schedule(new Runnable() {
 			@Override
 			public void run() {
@@ -122,9 +120,9 @@ public class TwisterStormwing extends AggressiveNpcAI2 {
 	public boolean canThink() {
 		return false;
 	}
-
+	
 	@Override
-	public int modifyDamage(int damage) {
+	public int modifyDamage(int damage)	{
 		return 2;
 	}
 }

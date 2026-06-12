@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-lightning <aion-lightning.org>.
  * 
  * aion-lightning is free software: you can redistribute it and/or modify
@@ -18,7 +18,6 @@ package com.aionemu.loginserver.network.gameserver;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
-
 import com.aionemu.commons.network.AConnection;
 import com.aionemu.commons.network.ConnectionFactory;
 import com.aionemu.commons.network.Dispatcher;

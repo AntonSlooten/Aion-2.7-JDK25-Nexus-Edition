@@ -59,31 +59,30 @@ public class _1393NewFlightPath extends QuestHandler {
 		if (qs == null || qs.getStatus() == QuestStatus.NONE) {
 			if (targetId == 204041) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1011);
-				}
-				default:
-					return sendQuestStartDialog(env);
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1011);
+					}
+					default:
+						return sendQuestStartDialog(env);
 				}
 			}
 		}
 		if (qs == null)
 			return false;
-
+		
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 204041) {
 				switch (env.getDialog()) {
-				case START_DIALOG: {
-					return sendQuestDialog(env, 1003);
-				}
-				case STEP_TO_1: {
-					player.setState(CreatureState.FLIGHT_TELEPORT);
-					player.unsetState(CreatureState.ACTIVE);
-					player.setFlightTeleportId(17001);
-					PacketSendUtility.sendPacket(player,
-							new SM_EMOTION(player, EmotionType.START_FLYTELEPORT, 17001, 0));
-					return closeDialogWindow(env);
-				}
+					case START_DIALOG: {
+						return sendQuestDialog(env, 1003);
+					}
+					case STEP_TO_1: {
+						player.setState(CreatureState.FLIGHT_TELEPORT);
+						player.unsetState(CreatureState.ACTIVE);
+						player.setFlightTeleportId(17001);
+						PacketSendUtility.sendPacket(player, new SM_EMOTION(player, EmotionType.START_FLYTELEPORT, 17001, 0));
+						return closeDialogWindow(env);
+					}
 				}
 			}
 		}
@@ -91,17 +90,17 @@ public class _1393NewFlightPath extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204041) {
 				switch (env.getDialog()) {
-				case SELECT_REWARD: {
-					return sendQuestDialog(env, 5);
-				}
-				case SELECT_NO_REWARD: {
-					qs.setQuestVar(1);
-					qs.setStatus(QuestStatus.COMPLETE);
-					updateQuestStatus(env);
-					return true;
-				}
-				default:
-					return sendQuestEndDialog(env);
+					case SELECT_REWARD: {
+						return sendQuestDialog(env, 5);
+					}
+					case SELECT_NO_REWARD: {
+						qs.setQuestVar(1);
+						qs.setStatus(QuestStatus.COMPLETE);
+						updateQuestStatus(env);
+						return true;
+					}
+					default:
+						return sendQuestEndDialog(env);
 				}
 			}
 		}

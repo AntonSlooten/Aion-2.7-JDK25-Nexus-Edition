@@ -46,34 +46,31 @@ public class NpcEquippedGear implements Iterable<Entry<ItemSlot, ItemTemplate>> 
 	 * @return short
 	 */
 	public short getItemsMask() {
-		if (items == null) {
+		if (items == null)
 			init();
-		}
 		return mask;
 	}
 
 	@Override
 	public Iterator<Entry<ItemSlot, ItemTemplate>> iterator() {
-		if (items == null) {
+		if (items == null)
 			init();
-		}
 		return items.entrySet().iterator();
 	}
 
 	/**
-	 * Here NPC equipment mask is initialized. All NPC slot masks should be lower
-	 * than 65536
+	 * Here NPC equipment mask is initialized. All NPC slot masks should be lower than 65536
 	 */
 	public void init() {
 		synchronized (this) {
 			if (items == null) {
-				items = new TreeMap<>();
+				items = new TreeMap<ItemSlot, ItemTemplate>();
 				for (ItemTemplate item : v.items) {
 					ItemSlot[] itemSlots = ItemSlot.getSlotsFor(item.getItemSlot());
 					for (ItemSlot itemSlot : itemSlots) {
 						if (items.get(itemSlot) == null) {
 							items.put(itemSlot, item);
-							mask = (short) (mask | itemSlot.getSlotIdMask());
+							mask |= itemSlot.getSlotIdMask();
 							break;
 						}
 					}

@@ -16,8 +16,7 @@ import com.aionemu.gameserver.services.TranslationService;
  */
 
 public class CmdLocale extends BaseCommand {
-
-	@Override
+	
 	public void execute(final Player player, String... params) {
 		Logger log = LoggerFactory.getLogger(CmdLocale.class);
 		// 0 or one parameter needed
@@ -25,41 +24,45 @@ public class CmdLocale extends BaseCommand {
 			showHelp(player);
 			return;
 		}
-
-		if (params.length == 0) {
+		
+		if(params.length == 0) {
 			String message = TranslationService.LOCALE_SHOW_VALUE.toString(player, player.getCommonData().getLocale());
 			sendCommandMessage(player, message);
 			return;
 		}
-
+		
 		final int accountId = player.getPlayerAccount().getId();
 		final String playerLocale = params[0].toString();
-
-		if (playerLocale.contains("fr") || playerLocale.contains("en")) {
+		
+		if(playerLocale.contains("fr") || playerLocale.contains("en")) {
 			Connection con = null;
 			try {
-				con = DatabaseFactory.getConnection();
-				PreparedStatement stmt = con.prepareStatement("UPDATE account_locale SET locale=? WHERE account_id=?");
-
+				con  = DatabaseFactory.getConnection();
+				PreparedStatement stmt = con
+					.prepareStatement("UPDATE account_locale SET locale=? WHERE account_id=?");
+				
 				stmt.setString(1, playerLocale);
 				stmt.setInt(2, accountId);
 				stmt.execute();
 				stmt.close();
-
+				
 				player.getCommonData().setLocale(playerLocale);
-
+				
 				String message = TranslationService.LOCALE_UPDATED.toString(player);
 				sendCommandMessage(player, message);
 				return;
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				String message = TranslationService.GENERAL_ERROR_DB.toString(player);
 				sendCommandMessage(player, message);
 				log.error("Error updating player account locale : " + player.getObjectId() + " " + player.getName(), e);
 				return;
-			} finally {
+			}
+			finally {
 				DatabaseFactory.close(con);
 			}
-		} else {
+		}
+		else {
 			String message = TranslationService.LOCALE_ERR_UNKNOWN_TYPE.toString(player);
 			sendCommandMessage(player, message);
 			return;

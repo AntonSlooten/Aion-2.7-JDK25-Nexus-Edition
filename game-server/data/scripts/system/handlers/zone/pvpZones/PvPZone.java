@@ -32,6 +32,7 @@ import com.aionemu.gameserver.world.zone.ZoneInstance;
 import com.aionemu.gameserver.world.zone.ZoneName;
 import com.aionemu.gameserver.world.zone.handler.AdvencedZoneHandler;
 
+
 /**
  * @author MrPoke
  *
@@ -58,9 +59,8 @@ public abstract class PvPZone implements AdvencedZoneHandler {
 		if (summon != null)
 			summon.getController().release(UnsummonType.UNSPECIFIED);
 
-		PacketSendUtility.broadcastPacket(player,
-				new SM_EMOTION(player, EmotionType.DIE, 0, lastAttacker == null ? 0 : lastAttacker.getObjectId()),
-				true);
+		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.DIE, 0, lastAttacker == null ? 0
+			: lastAttacker.getObjectId()), true);
 		if (zone instanceof SiegeZoneInstance) {
 			((SiegeZoneInstance) zone).doOnAllPlayers(new Visitor<Player>() {
 
@@ -76,8 +76,7 @@ public abstract class PvPZone implements AdvencedZoneHandler {
 				public void run() {
 					PlayerReviveService.duelRevive(player);
 					doTeleport(player, zone.getZoneTemplate().getName());
-					PacketSendUtility.sendPacket(player,
-							SM_SYSTEM_MESSAGE.STR_MSG_PvPZONE_MY_DEATH_TO_B(lastAttacker.getName()));
+					PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_PvPZONE_MY_DEATH_TO_B(lastAttacker.getName()));
 				}
 			}, 5000);
 		}

@@ -51,7 +51,7 @@ public class FullBonus {
 
 	/**
 	 * Sets number of items in the set (when this bonus applies)
-	 *
+	 * 
 	 * @param number
 	 */
 	public void setNumberOfItems(int number) {

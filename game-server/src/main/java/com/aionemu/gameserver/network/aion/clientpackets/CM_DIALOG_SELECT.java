@@ -48,7 +48,7 @@ public class CM_DIALOG_SELECT extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_CM_REQUEST_DIALOG </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_DIALOG_SELECT(int opcode, State state, State... restStates) {
@@ -74,16 +74,13 @@ public class CM_DIALOG_SELECT extends AionClientPacket {
 	protected void runImpl() {
 		final Player player = getConnection().getActivePlayer();
 
-		if (player.isTrading()) {
+		if (player.isTrading())
 			return;
-		}
 
 		if (targetObjectId == 0 || targetObjectId == player.getObjectId()) {
-			if (QuestEngine.getInstance().onDialog(new QuestEnv(null, player, questId, dialogId))) {
+			if (QuestEngine.getInstance().onDialog(new QuestEnv(null, player, questId, dialogId)))
 				return;
-			}
-			// FIXME client sends unk1=1, targetObjectId=0, dialogId=2 (trader) => we miss
-			// some packet to close window
+			// FIXME client sends unk1=1, targetObjectId=0, dialogId=2 (trader) => we miss some packet to close window
 			ClassChangeService.changeClassToSelection(player, dialogId);
 			return;
 		}
@@ -94,7 +91,6 @@ public class CM_DIALOG_SELECT extends AionClientPacket {
 			Creature creature = (Creature) obj;
 			creature.getController().onDialogSelect(dialogId, player, questId, extendedRewardIndex);
 		}
-		// log.info("id: "+targetObjectId+" dialogId: " + dialogId +" unk1: " + unk1 + "
-		// questId: "+questId);
+		// log.info("id: "+targetObjectId+" dialogId: " + dialogId +" unk1: " + unk1 + " questId: "+questId);
 	}
 }

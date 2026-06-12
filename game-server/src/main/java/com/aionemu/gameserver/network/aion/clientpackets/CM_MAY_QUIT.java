@@ -33,7 +33,6 @@ public class CM_MAY_QUIT extends AionClientPacket {
 
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see com.aionemu.commons.network.packet.BaseClientPacket#readImpl()
 	 */
 	@Override
@@ -43,7 +42,6 @@ public class CM_MAY_QUIT extends AionClientPacket {
 
 	/*
 	 * (non-Javadoc)
-	 *
 	 * @see com.aionemu.commons.network.packet.BaseClientPacket#runImpl()
 	 */
 	@Override

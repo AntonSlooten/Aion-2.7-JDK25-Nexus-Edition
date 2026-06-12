@@ -57,44 +57,50 @@ public class _1636AFluteForTheFixing extends QuestHandler {
 			if (targetId == 204535) { // Maximus
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 203792: { // Utsida
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
-					} else if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					} else if (var == 2) {
-						return sendQuestDialog(env, 2034);
+				case 203792: { // Utsida
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+							else if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+							else if (var == 2) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 1, 2, false, 10000, 10001); // 2
+						}
+						case STEP_TO_4: {
+							return defaultCloseDialog(env, 2, 3, 182201785, 1, 0, 0); // 3
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 1, 2, false, 10000, 10001); // 2
-				}
-				case STEP_TO_4: {
-					return defaultCloseDialog(env, 2, 3, 182201785, 1, 0, 0); // 3
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204535) { // Maximus
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

@@ -33,7 +33,8 @@ public class EmpyreanArbiterAI2 extends NpcAI2 {
 	protected void handleDialogStart(Player player) {
 		if (player.getInventory().getFirstItemByItemId(186000124) != null) {
 			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 1011));
-		} else {
+		}
+		else {
 			// to do
 			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 0));
 		}
@@ -45,22 +46,18 @@ public class EmpyreanArbiterAI2 extends NpcAI2 {
 
 		if (dialogId == 10000 && player.getInventory().decreaseByItemId(186000124, 1)) {
 			switch (getNpcId()) {
-			case 799573:
-				TeleportService.teleportTo(player, 300300000, instanceId, 358.2547f, 349.26443f, 96.09108f, (byte) 59,
-						3000, true);
-				break;
-			case 205426:
-				TeleportService.teleportTo(player, 300300000, instanceId, 1260.15f, 812.34f, 358.6056f, (byte) 90, 3000,
-						true);
-				break;
-			case 205427:
-				TeleportService.teleportTo(player, 300300000, instanceId, 1616.0248f, 154.43837f, 126f, (byte) 10, 3000,
-						true);
-				break;
-			case 205428:
-				TeleportService.teleportTo(player, 300300000, instanceId, 1793.9233f, 796.92f, 469.36542f, (byte) 60,
-						3000, true);
-				break;
+				case 799573:
+					TeleportService.teleportTo(player, 300300000, instanceId, 358.2547f, 349.26443f, 96.09108f, (byte) 59, 3000, true);
+					break;
+				case 205426:
+					TeleportService.teleportTo(player, 300300000, instanceId, 1260.15f, 812.34f, 358.6056f, (byte) 90, 3000, true);
+					break;
+				case 205427:
+					TeleportService.teleportTo(player, 300300000, instanceId, 1616.0248f, 154.43837f, 126f, (byte) 10, 3000, true);
+					break;
+				case 205428:
+					TeleportService.teleportTo(player, 300300000, instanceId, 1793.9233f, 796.92f, 469.36542f, (byte) 60, 3000, true);
+					break;
 			}
 			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 0));
 		}

@@ -44,7 +44,7 @@ public class SM_UPDATE_PLAYER_APPEARANCE extends AionServerPacket {
 
 		short mask = 0;
 		for (Item item : items) {
-			mask |= (short) item.getEquipmentSlot();
+			mask |= item.getEquipmentSlot();
 		}
 
 		writeH(mask);

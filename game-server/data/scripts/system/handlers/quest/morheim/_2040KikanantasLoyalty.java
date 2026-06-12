@@ -71,86 +71,83 @@ public class _2040KikanantasLoyalty extends QuestHandler {
 			targetId = ((Npc) env.getVisibleObject()).getNpcId();
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 204388: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 3)
-						return sendQuestDialog(env, 2034);
-				case STEP_TO_1:
-					if (var == 0) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-				case STEP_TO_4:
-					if (var == 3) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-				}
-			}
-				break;
-			case 204345: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 4)
-						return sendQuestDialog(env, 2375);
-				case SET_REWARD:
-					if (var == 4) {
-						qs.setStatus(QuestStatus.REWARD);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
+				case 204388: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 0)
+								return sendQuestDialog(env, 1011);
+							else if (var == 3)
+								return sendQuestDialog(env, 2034);
+						case STEP_TO_1:
+							if (var == 0) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
+						case STEP_TO_4:
+							if (var == 3) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
 					}
 				}
-			}
-				break;
-			case 204414: {
-				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-					else if (var == 2)
-						return sendQuestDialog(env, 1693);
-				case SELECT_ACTION_1354:
-					playQuestMovie(env, 85);
 					break;
-				case STEP_TO_2:
-					if (var == 1) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-				case STEP_TO_3:
-					if (var == 2) {
-						qs.setQuestVarById(0, var + 1);
-						updateQuestStatus(env);
-						PacketSendUtility.sendPacket(player,
-								new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
-						return true;
-					}
-				case CHECK_COLLECTED_ITEMS:
-					if (var == 2) {
-						if (QuestService.collectItemCheck(env, false)) {
-							return sendQuestDialog(env, 10000);
-						} else
-							return sendQuestDialog(env, 10001);
+				case 204345: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 4)
+								return sendQuestDialog(env, 2375);
+						case SET_REWARD:
+							if (var == 4) {
+								qs.setStatus(QuestStatus.REWARD);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
 					}
 				}
+					break;
+				case 204414: {
+					switch (env.getDialog()) {
+						case START_DIALOG:
+							if (var == 1)
+								return sendQuestDialog(env, 1352);
+							else if (var == 2)
+								return sendQuestDialog(env, 1693);
+						case SELECT_ACTION_1354:
+							playQuestMovie(env, 85);
+							break;
+						case STEP_TO_2:
+							if (var == 1) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
+						case STEP_TO_3:
+							if (var == 2) {
+								qs.setQuestVarById(0, var + 1);
+								updateQuestStatus(env);
+								PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(env.getVisibleObject().getObjectId(), 10));
+								return true;
+							}
+						case CHECK_COLLECTED_ITEMS:
+							if (var == 2) {
+								if (QuestService.collectItemCheck(env, false)) {
+									return sendQuestDialog(env, 10000);
+								}
+								else
+									return sendQuestDialog(env, 10001);
+							}
+					}
+				}
+					break;
 			}
-				break;
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204304) {
 				if (env.getDialog() == QuestDialog.USE_OBJECT)
 					return sendQuestDialog(env, 10002);

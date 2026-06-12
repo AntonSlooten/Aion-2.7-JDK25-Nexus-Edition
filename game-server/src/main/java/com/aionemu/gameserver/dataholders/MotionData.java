@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.aionemu.gameserver.skillengine.model.MotionTime;
 
+
 /**
  * @author kecimis
  *
@@ -42,7 +43,7 @@ public class MotionData {
 	protected List<MotionTime> motionTimes;
 
 	@XmlTransient
-	private THashMap<String, MotionTime> motionTimesMap = new THashMap<>();
+	private THashMap<String, MotionTime> motionTimesMap = new THashMap<String, MotionTime>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (MotionTime motion : motionTimes) {
@@ -54,10 +55,9 @@ public class MotionData {
 	 * @return the motionTimeList
 	 */
 	public List<MotionTime> getMotionTimes() {
-		if (motionTimes == null) {
-			motionTimes = new ArrayList<>();
-		}
-
+		if (motionTimes == null)
+			motionTimes = new ArrayList<MotionTime>();
+		
 		return motionTimes;
 	}
 
@@ -66,10 +66,9 @@ public class MotionData {
 	}
 
 	public int size() {
-		if (motionTimes == null) {
+		if (motionTimes == null)
 			return 0;
-		}
-
+		
 		return motionTimes.size();
 	}
 }

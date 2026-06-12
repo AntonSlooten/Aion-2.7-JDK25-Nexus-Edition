@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
 
+
 import com.aionemu.gameserver.network.aion.AionConnection;
 import com.aionemu.gameserver.network.aion.AionServerPacket;
 import com.aionemu.gameserver.services.item.ItemPacketService.ItemDeleteType;
@@ -30,7 +31,7 @@ public class SM_DELETE_ITEM extends AionServerPacket {
 	public SM_DELETE_ITEM(int itemObjectId) {
 		this(itemObjectId, ItemDeleteType.UNKNOWN);
 	}
-
+	
 	public SM_DELETE_ITEM(int itemObjectId, ItemDeleteType deleteType) {
 		this.itemObjectId = itemObjectId;
 		this.deleteType = deleteType;

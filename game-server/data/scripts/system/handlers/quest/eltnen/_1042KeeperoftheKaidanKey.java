@@ -66,41 +66,44 @@ public class _1042KeeperoftheKaidanKey extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 203989) { // Tumblusen
 				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+					case START_DIALOG: {
+						if (var == 0) {
+							return sendQuestDialog(env, 1011);
+						}
+					}
+					case SELECT_ACTION_1012: {
+						playQuestMovie(env, 185);
+						return sendQuestDialog(env, 1012);
+					}
+					case STEP_TO_1: {
+						return defaultCloseDialog(env, 0, 1); // 1
 					}
 				}
-				case SELECT_ACTION_1012: {
-					playQuestMovie(env, 185);
-					return sendQuestDialog(env, 1012);
-				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-			} else if (targetId == 730342) { // Strong Document Box
+			}
+			else if (targetId == 730342) { // Strong Document Box
 				if (dialog == QuestDialog.USE_OBJECT) {
 					if (var == 1) {
 						return true; // loot;
 					}
 				}
-			} else if (targetId == 203901) { // Telemachus
+			}
+			else if (targetId == 203901) { // Telemachus
 				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 2) {
-						return sendQuestDialog(env, 1352);
+					case START_DIALOG: {
+						if (var == 2) {
+							return sendQuestDialog(env, 1352);
+						}
+					}
+					case CHECK_COLLECTED_ITEMS: {
+						return checkQuestItems(env, 2, 2, true, 5, 1438); // reward
+					}
+					case FINISH_DIALOG: {
+						return sendQuestSelectionDialog(env);
 					}
 				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 2, 2, true, 5, 1438); // reward
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203901) { // Telemachus
 				return sendQuestEndDialog(env);
 			}

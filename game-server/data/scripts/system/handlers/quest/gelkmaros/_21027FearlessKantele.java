@@ -52,15 +52,15 @@ public class _21027FearlessKantele extends QuestHandler {
 		if (qs.getStatus() == QuestStatus.START) {
 			if (env.getTargetId() == 799255) {
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-					else if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case CHECK_COLLECTED_ITEMS:
-					return checkQuestItems(env, 1, 2, true, 10000, 10001);
-				case STEP_TO_1:
-					return defaultCloseDialog(env, 0, 1);
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+						else if (var == 1)
+							return sendQuestDialog(env, 1352);
+					case CHECK_COLLECTED_ITEMS:
+						return checkQuestItems(env, 1, 2, true, 10000, 10001);
+					case STEP_TO_1:
+						return defaultCloseDialog(env, 0, 1);
 				}
 			}
 		}

@@ -34,10 +34,9 @@ public abstract class ActionModifier {
 	protected int delta;
 	@XmlAttribute(required = true)
 	protected int value;
-
 	/**
 	 * Applies modifier to original value
-	 *
+	 * 
 	 * @param effect
 	 * @param originalValue
 	 * @return int
@@ -46,7 +45,7 @@ public abstract class ActionModifier {
 
 	/**
 	 * Performs check of condition
-	 *
+	 * 
 	 * @param effect
 	 * @return true or false
 	 */

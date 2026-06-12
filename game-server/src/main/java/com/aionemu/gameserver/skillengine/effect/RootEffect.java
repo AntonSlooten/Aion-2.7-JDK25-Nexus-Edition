@@ -39,7 +39,7 @@ public class RootEffect extends EffectTemplate {
 
 	@XmlAttribute
 	protected int resistchance = 100;
-
+	
 	@Override
 	public void applyEffect(Effect effect) {
 		effect.addToEffectedController();
@@ -61,9 +61,8 @@ public class RootEffect extends EffectTemplate {
 
 			@Override
 			public void attacked(Creature creature) {
-				if (Rnd.get(0, 100) > resistchance) {
+				if (Rnd.get(0, 100) > resistchance)
 					effected.getEffectController().removeEffect(effect.getSkillId());
-				}
 			}
 		};
 		effected.getObserveController().addObserver(observer);
@@ -75,8 +74,7 @@ public class RootEffect extends EffectTemplate {
 	public void endEffect(Effect effect) {
 		effect.getEffected().getEffectController().unsetAbnormal(AbnormalState.ROOT.getId());
 		ActionObserver observer = effect.getActionObserver(position);
-		if (observer != null) {
+		if (observer != null)
 			effect.getEffected().getObserveController().removeObserver(observer);
-		}
 	}
 }

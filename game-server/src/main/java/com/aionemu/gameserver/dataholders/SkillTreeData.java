@@ -41,8 +41,8 @@ public class SkillTreeData {
 	@XmlElement(name = "skill")
 	private List<SkillLearnTemplate> skillTemplates;
 
-	private final TIntObjectHashMap<ArrayList<SkillLearnTemplate>> templates = new TIntObjectHashMap<>();
-	private final TIntObjectHashMap<ArrayList<SkillLearnTemplate>> templatesById = new TIntObjectHashMap<>();
+	private final TIntObjectHashMap<ArrayList<SkillLearnTemplate>> templates = new TIntObjectHashMap<ArrayList<SkillLearnTemplate>>();
+	private final TIntObjectHashMap<ArrayList<SkillLearnTemplate>> templatesById = new TIntObjectHashMap<ArrayList<SkillLearnTemplate>>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (SkillLearnTemplate template : skillTemplates) {
@@ -53,14 +53,13 @@ public class SkillTreeData {
 
 	private void addTemplate(SkillLearnTemplate template) {
 		Race race = template.getRace();
-		if (race == null) {
+		if (race == null)
 			race = Race.PC_ALL;
-		}
 
 		int hash = makeHash(template.getClassId().ordinal(), race.ordinal(), template.getMinLevel());
 		ArrayList<SkillLearnTemplate> value = templates.get(hash);
 		if (value == null) {
-			value = new ArrayList<>();
+			value = new ArrayList<SkillLearnTemplate>();
 			templates.put(hash, value);
 		}
 
@@ -68,7 +67,7 @@ public class SkillTreeData {
 
 		value = templatesById.get(template.getSkillId());
 		if (value == null) {
-			value = new ArrayList<>();
+			value = new ArrayList<SkillLearnTemplate>();
 			templatesById.put(template.getSkillId(), value);
 		}
 
@@ -83,53 +82,48 @@ public class SkillTreeData {
 	}
 
 	/**
-	 * Perform search for: - class specific skills (race = ALL) - class and race
-	 * specific skills - non-specific skills (race = ALL, class = ALL)
-	 *
+	 * Perform search for: - class specific skills (race = ALL) - class and race specific skills - non-specific skills
+	 * (race = ALL, class = ALL)
+	 * 
 	 * @param playerClass
 	 * @param level
 	 * @param race
 	 * @return SkillLearnTemplate[]
 	 */
 	public SkillLearnTemplate[] getTemplatesFor(PlayerClass playerClass, int level, Race race) {
-		List<SkillLearnTemplate> newSkills = new ArrayList<>();
+		List<SkillLearnTemplate> newSkills = new ArrayList<SkillLearnTemplate>();
 
-		List<SkillLearnTemplate> classRaceSpecificTemplates = templates
-				.get(makeHash(playerClass.ordinal(), race.ordinal(), level));
-		List<SkillLearnTemplate> classSpecificTemplates = templates
-				.get(makeHash(playerClass.ordinal(), Race.PC_ALL.ordinal(), level));
-		List<SkillLearnTemplate> generalTemplates = templates
-				.get(makeHash(PlayerClass.ALL.ordinal(), Race.PC_ALL.ordinal(), level));
+		List<SkillLearnTemplate> classRaceSpecificTemplates = templates.get(makeHash(playerClass.ordinal(), race.ordinal(),
+			level));
+		List<SkillLearnTemplate> classSpecificTemplates = templates.get(makeHash(playerClass.ordinal(),
+			Race.PC_ALL.ordinal(), level));
+		List<SkillLearnTemplate> generalTemplates = templates.get(makeHash(PlayerClass.ALL.ordinal(),
+			Race.PC_ALL.ordinal(), level));
 
-		if (classRaceSpecificTemplates != null) {
+		if (classRaceSpecificTemplates != null)
 			newSkills.addAll(classRaceSpecificTemplates);
-		}
-		if (classSpecificTemplates != null) {
+		if (classSpecificTemplates != null)
 			newSkills.addAll(classSpecificTemplates);
-		}
-		if (generalTemplates != null) {
+		if (generalTemplates != null)
 			newSkills.addAll(generalTemplates);
-		}
 
 		return newSkills.toArray(new SkillLearnTemplate[newSkills.size()]);
 	}
 
 	public SkillLearnTemplate[] getTemplatesForSkill(int skillId) {
-		List<SkillLearnTemplate> searchSkills = new ArrayList<>();
+		List<SkillLearnTemplate> searchSkills = new ArrayList<SkillLearnTemplate>();
 
 		List<SkillLearnTemplate> byId = templatesById.get(skillId);
-		if (byId != null) {
+		if (byId != null)
 			searchSkills.addAll(byId);
-		}
 
 		return searchSkills.toArray(new SkillLearnTemplate[searchSkills.size()]);
 	}
 
 	public int size() {
 		int size = 0;
-		for (Integer key : templates.keys()) {
+		for (Integer key : templates.keys())
 			size += templates.get(key).size();
-		}
 		return size;
 	}
 

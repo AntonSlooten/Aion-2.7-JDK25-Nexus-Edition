@@ -56,7 +56,7 @@ public class CM_SEND_MAIL extends AionClientPacket {
 		Player player = getConnection().getActivePlayer();
 		if (!player.isTrading() && kinahCount < 1000000000 && kinahCount > -1 && itemCount > -2) {
 			MailService.getInstance().sendMail(player, recipientName, title, message, itemObjId, itemCount, kinahCount,
-					express == 1 ? true : false);
+				express == 1 ? true : false);
 		}
 	}
 }

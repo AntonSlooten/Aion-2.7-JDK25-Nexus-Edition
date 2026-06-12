@@ -26,7 +26,7 @@ public abstract class PlayerSettingsDAO implements DAO {
 
 	/**
 	 * Returns unique identifier for PlayerUiSettingsDAO
-	 *
+	 * 
 	 * @return unique identifier for PlayerUiSettingsDAO
 	 */
 	@Override

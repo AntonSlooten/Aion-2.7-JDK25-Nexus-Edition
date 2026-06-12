@@ -87,7 +87,7 @@ public class NpcSkillList implements SkillList<Npc> {
 
 	private void initSkills() {
 		if (skills == null) {
-			skills = new ArrayList<>();
+			skills = new ArrayList<NpcSkillEntry>();
 		}
 	}
 

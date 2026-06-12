@@ -62,12 +62,14 @@ public class _48000SummonsFromTheWardens extends QuestHandler {
 			if (targetId == 799845) { // Deryk
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 10002);
-				} else if (dialog == QuestDialog.SELECT_REWARD) {
+				}
+				else if (dialog == QuestDialog.SELECT_REWARD) {
 					changeQuestStep(env, 0, 0, true);
 					return sendQuestDialog(env, 5);
 				}
 			}
-		} else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs != null && qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 799845) { // Deryk
 				return sendQuestEndDialog(env);
 			}

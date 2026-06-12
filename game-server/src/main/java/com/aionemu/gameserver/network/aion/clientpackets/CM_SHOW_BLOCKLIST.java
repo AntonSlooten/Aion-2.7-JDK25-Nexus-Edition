@@ -22,7 +22,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_BLOCK_LIST;
 
 /**
  * Send when the client requests the blocklist
- *
+ * 
  * @author Ben
  */
 public class CM_SHOW_BLOCKLIST extends AionClientPacket {

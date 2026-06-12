@@ -36,28 +36,26 @@ public class WrithingCocoonAI2 extends NpcAI2 {
 		if (dialogId == 1012 && player.getInventory().decreaseByItemId(185000088, 1)) {
 			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 0));
 			switch (getNpcId()) {
-			case 730232:
-				Npc npc = getPosition().getWorldMapInstance().getNpc(730233);
-				if (npc != null) {
-					npc.getController().onDelete();
-				}
-				spawn(799500, getPosition().getX(), getPosition().getY(), getPosition().getZ(),
-						getPosition().getHeading());
-				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(390510)); // Will you accompany me? Tell me
-																						// if you will.
-				break;
-			case 730233:
-				Npc npc1 = getPosition().getWorldMapInstance().getNpc(730232);
-				if (npc1 != null) {
-					npc1.getController().onDelete();
-				}
-				spawn(799501, getPosition().getX(), getPosition().getY(), getPosition().getZ(),
-						getPosition().getHeading());
-				PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(390511)); // Let me know if you need my help.
-				break;
+				case 730232:
+					Npc npc = getPosition().getWorldMapInstance().getNpc(730233);
+					if (npc != null) {
+						npc.getController().onDelete();
+					}
+					spawn(799500, getPosition().getX(), getPosition().getY(), getPosition().getZ(), getPosition().getHeading());
+					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(390510)); //Will you accompany me? Tell me if you will.
+					break;
+				case 730233:
+					Npc npc1 = getPosition().getWorldMapInstance().getNpc(730232);
+					if (npc1 != null) {
+						npc1.getController().onDelete();
+					}
+					spawn(799501, getPosition().getX(), getPosition().getY(), getPosition().getZ(), getPosition().getHeading());
+					PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(390511)); //Let me know if you need my help.
+					break;
 			}
 			AI2Actions.deleteOwner(this);
-		} else if (dialogId == 1012) {
+		}
+		else if (dialogId == 1012) {
 			PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 1097));
 		}
 		return true;

@@ -58,9 +58,8 @@ public class TradeListTemplate {
 	 * @return List<TradeTab>
 	 */
 	public List<TradeTab> getTradeTablist() {
-		if (tradeTablist == null) {
-			tradeTablist = new ArrayList<>();
-		}
+		if (tradeTablist == null)
+			tradeTablist = new ArrayList<TradeTab>();
 		return this.tradeTablist;
 	}
 
@@ -94,9 +93,8 @@ public class TradeListTemplate {
 	 * <p>
 	 * Java class for anonymous complex type.
 	 * <p>
-	 * The following schema fragment specifies the expected content contained within
-	 * this class.
-	 *
+	 * The following schema fragment specifies the expected content contained within this class.
+	 * 
 	 * <pre>
 	 * &lt;complexType>
 	 *   &lt;complexContent>

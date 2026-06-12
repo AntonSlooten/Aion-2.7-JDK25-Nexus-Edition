@@ -39,17 +39,18 @@ public class Door2AI2 extends ActionItemNpcAI2 {
 		QuestState qsneedelyos = player.getQuestStateList().getQuestState(30211);
 		player.getActionItemNpc().setCondition(1, 0, getTalkDelay());
 		if (player.getRace() == Race.ELYOS) {
-			if (qsneedelyos != null && qsneedelyos.getStatus() != QuestStatus.NONE) {// TODO: Only one player in group
-																						// has to // have this quest
+			if (qsneedelyos != null && qsneedelyos.getStatus() != QuestStatus.NONE) {// TODO: Only one player in group has to																																		// have this quest
 				super.handleUseItemStart(player);
-			} else {
+			}
+			else {
 				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 27));
 			}
-		} else {
-			if (qsneedasmo != null && qsneedasmo.getStatus() != QuestStatus.NONE) { // TODO: Only one player in group
-																					// has to // have this quest
+		}
+		else {
+			if (qsneedasmo != null && qsneedasmo.getStatus() != QuestStatus.NONE) { // TODO: Only one player in group has to																																			// have this quest
 				super.handleUseItemStart(player);
-			} else {
+			}
+			else {
 				PacketSendUtility.sendPacket(player, new SM_DIALOG_WINDOW(getObjectId(), 27));
 			}
 		}

@@ -41,9 +41,9 @@ public class SetQuestStatusOperation extends QuestOperation {
 
 	/*
 	 * (non-Javadoc)
-	 *
-	 * @see com.aionemu.gameserver.questEngine.handlers.models.xmlQuest.operations.
-	 * QuestOperation#doOperate(com.aionemu.gameserver .questEngine.model.QuestEnv)
+	 * @see
+	 * com.aionemu.gameserver.questEngine.handlers.models.xmlQuest.operations.QuestOperation#doOperate(com.aionemu.gameserver
+	 * .questEngine.model.QuestEnv)
 	 */
 	@Override
 	public void doOperate(QuestEnv env) {
@@ -52,11 +52,10 @@ public class SetQuestStatusOperation extends QuestOperation {
 		QuestState qs = player.getQuestStateList().getQuestState(questId);
 		if (qs != null) {
 			qs.setStatus(status);
-			PacketSendUtility.sendPacket(player,
-					new SM_QUEST_ACTION(questId, qs.getStatus(), qs.getQuestVars().getQuestVars()));
-			if (qs.getStatus() == QuestStatus.COMPLETE) {
+			PacketSendUtility.sendPacket(player, new SM_QUEST_ACTION(questId, qs.getStatus(), qs.getQuestVars()
+				.getQuestVars()));
+			if (qs.getStatus() == QuestStatus.COMPLETE)
 				player.getController().updateNearbyQuests();
-			}
 		}
 	}
 }

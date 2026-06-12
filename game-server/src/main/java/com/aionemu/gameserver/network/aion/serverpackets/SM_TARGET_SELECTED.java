@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -15,6 +15,7 @@
  *  along with aion-emu.  If not, see <http://www.gnu.org/licenses/>.
  */
 package com.aionemu.gameserver.network.aion.serverpackets;
+
 
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -39,16 +40,16 @@ public class SM_TARGET_SELECTED extends AionServerPacket {
 			this.level = ((Creature) player.getTarget()).getLevel();
 			this.maxHp = ((Creature) player.getTarget()).getLifeStats().getMaxHp();
 			this.currentHp = ((Creature) player.getTarget()).getLifeStats().getCurrentHp();
-		} else {
+		}
+		else {
 			// TODO: check various gather on retail
 			this.level = 1;
 			this.maxHp = 1;
 			this.currentHp = 1;
 		}
 
-		if (player.getTarget() != null) {
+		if (player.getTarget() != null)
 			targetObjId = player.getTarget().getObjectId();
-		}
 	}
 
 	/**

@@ -29,15 +29,17 @@ import com.aionemu.gameserver.model.templates.walker.WalkerTemplate;
 import com.aionemu.gameserver.services.teleport.TeleportService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
+
+
 /*Syntax : //fixpath <route id> <jump height> | <cancel>*/
 
-public class CmdFixPath extends BaseCommand {
+public class CmdFixPath  extends BaseCommand {
 
 	static volatile boolean canceled = false;
 	static volatile boolean isRunning = false;
 	static Player runner = null;
 
-	@Override
+
 	public void execute(final Player admin, String... params) {
 		if (params == null || params.length < 1) {
 			PacketSendUtility.sendMessage(admin, "Syntax : //fixpath <route id> <jump height> | <cancel>");
@@ -59,14 +61,17 @@ public class CmdFixPath extends BaseCommand {
 					canceled = true;
 				}
 				return;
-			} else if (params.length < 2) {
+			}
+			else if (params.length < 2) {
 				PacketSendUtility.sendMessage(admin, "Syntax : //fixpath <route id> <jump height> | <cancel>");
 				return;
-			} else {
+			}
+			else {
 				routeId = params[0];
 				jumpHeight = Float.parseFloat(params[1]);
 			}
-		} catch (NumberFormatException e) {
+		}
+		catch (NumberFormatException e) {
 			PacketSendUtility.sendMessage(admin, "Only numbers please!!!");
 		}
 
@@ -90,7 +95,7 @@ public class CmdFixPath extends BaseCommand {
 				admin.setInvul(true);
 
 				float zDelta = 0;
-				HashMap<Integer, Float> corrections = new HashMap<>();
+				HashMap<Integer, Float> corrections = new HashMap<Integer, Float>();
 
 				try {
 					int i = 1;
@@ -104,12 +109,10 @@ public class CmdFixPath extends BaseCommand {
 							PacketSendUtility.sendMessage(admin, "Skipping zero coordinate...");
 							continue;
 						}
-						if (zDelta == 0) {
+						if (zDelta == 0)
 							zDelta = z - step.getZ() + height;
-						}
 						PacketSendUtility.sendMessage(admin, "Teleporting to step " + i + "...");
-						TeleportService.teleportTo(admin, admin.getWorldId(), step.getX(), step.getY(),
-								step.getZ() + zDelta, 0);
+						TeleportService.teleportTo(admin, admin.getWorldId(), step.getX(), step.getY(), step.getZ() + zDelta, 0);
 						admin.getController().stopProtectionActiveTask();
 						PacketSendUtility.sendMessage(admin, "Waiting to get Z...");
 						Thread.sleep(5000);
@@ -123,10 +126,10 @@ public class CmdFixPath extends BaseCommand {
 					WalkerTemplate newTemplate = new WalkerTemplate(template.getRouteId());
 
 					i = 1;
-					ArrayList<RouteStep> newSteps = new ArrayList<>();
+					ArrayList<RouteStep> newSteps = new ArrayList<RouteStep>();
 
-					int lastStep = template.isReversed() ? (template.getRouteSteps().size() + 2) / 2
-							: template.getRouteSteps().size();
+					int lastStep = template.isReversed() ? (template.getRouteSteps().size() + 2) / 2 
+																							 : template.getRouteSteps().size();
 					for (int s = 0; s < lastStep; s++) {
 						RouteStep step = template.getRouteSteps().get(s);
 						RouteStep fixedStep = new RouteStep(step.getX(), step.getY(), corrections.get(i), 0);
@@ -135,25 +138,26 @@ public class CmdFixPath extends BaseCommand {
 					}
 
 					newTemplate.setRouteSteps(newSteps);
-					if (template.isReversed()) {
+					if (template.isReversed())
 						newTemplate.setIsReversed(true);
-					}
 					newTemplate.setPool(template.getPool());
 					data.AddTemplate(newTemplate);
 					data.saveData(template.getRouteId());
 
 					PacketSendUtility.sendMessage(admin, "Done.");
-				} catch (Exception e) {
-				} finally {
+				}
+				catch (Exception e) {
+				}
+				finally {
 					runner = null;
 					isRunning = false;
 					canceled = false;
-					if (!wasInvul) {
+					if (!wasInvul)
 						admin.setInvul(false);
-					}
 				}
 			}
 		}, 5000);
 	}
 
+	
 }

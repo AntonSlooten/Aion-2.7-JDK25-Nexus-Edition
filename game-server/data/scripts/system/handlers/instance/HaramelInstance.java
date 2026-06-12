@@ -36,28 +36,30 @@ public class HaramelInstance extends GeneralInstanceHandler {
 			return;
 		}
 		switch (npc.getNpcId()) {
-		case 216922:
-			npc.getController().onDelete();
-			spawn(700852, 224.598f, 331.143f, 141.892f, (byte) 90);
-			PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(0, 457));
-			switch (player.getPlayerClass()) {
-			case GLADIATOR:
-			case TEMPLAR:
-				spawn(700829, 224.137f, 268.608f, 144.898f, (byte) 90); // chest warrior
-				break;
-			case ASSASSIN:
-			case RANGER:
-				spawn(700830, 224.137f, 268.608f, 144.898f, (byte) 90); // chest scout
-				break;
-			case SORCERER:
-			case SPIRIT_MASTER:
-				spawn(700831, 224.137f, 268.608f, 144.898f, (byte) 90); // chest mage
-				break;
-			case CLERIC:
-			case CHANTER:
-				spawn(700832, 224.137f, 268.608f, 144.898f, (byte) 90); // chest cleric
-				break;
-			}
+			case 216922:
+				npc.getController().onDelete();
+				spawn(700852, 224.598f, 331.143f, 141.892f, (byte) 90);
+				PacketSendUtility.sendPacket(player, new SM_PLAY_MOVIE(0, 457));
+				switch (player.getPlayerClass()) {
+					case GLADIATOR:
+					case TEMPLAR:
+						spawn(700829, 224.137f, 268.608f, 144.898f, (byte) 90); // chest warrior
+						break;
+					case ASSASSIN:
+					case RANGER:
+						spawn(700830, 224.137f, 268.608f, 144.898f, (byte) 90); // chest scout
+						break;
+					case SORCERER:
+					case SPIRIT_MASTER:
+						spawn(700831, 224.137f, 268.608f, 144.898f, (byte) 90); // chest mage
+						break;
+					case CLERIC:
+					case CHANTER:
+						spawn(700832, 224.137f, 268.608f, 144.898f, (byte) 90); // chest cleric
+						break;
+				default:
+					break;
+				}
 		}
 	}
 

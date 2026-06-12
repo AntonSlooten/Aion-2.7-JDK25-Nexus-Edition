@@ -97,7 +97,7 @@ public class NpcTemplate extends VisibleObjectTemplate {
 	private int talk_delay;
 	@XmlTransient
 	private NpcDrop npcDrop;
-
+	
 	@Override
 	public int getTemplateId() {
 		return npcId;
@@ -155,9 +155,7 @@ public class NpcTemplate extends VisibleObjectTemplate {
 
 	public String getAi() {
 		// TODO: npc_template repars
-		return (!"noaction".equals(ai) && level > 1 && getAbyssNpcType().equals(AbyssNpcType.TELEPORTER))
-				? "siege_teleporter"
-				: ai;
+		return (!"noaction".equals(ai) && level > 1 && getAbyssNpcType().equals(AbyssNpcType.TELEPORTER)) ? "siege_teleporter" : ai;
 	}
 
 	@Override
@@ -165,12 +163,13 @@ public class NpcTemplate extends VisibleObjectTemplate {
 		return "Npc Template id: " + npcId + " name: " + name;
 	}
 
+	
 	@XmlID
 	@XmlAttribute(name = "npc_id", required = true)
 	private void setXmlUid(String uid) {
 		/*
-		 * This method is used only by JAXB unmarshaller. I couldn't set annotations at
-		 * field, because ID must be a string.
+		 * This method is used only by JAXB unmarshaller. I couldn't set
+		 * annotations at field, because ID must be a string.
 		 */
 		npcId = Integer.parseInt(uid);
 	}
@@ -186,11 +185,10 @@ public class NpcTemplate extends VisibleObjectTemplate {
 	public int getAggroRange() {
 		return aggrorange;
 	}
-
+	
 	public int getShoutRange() {
-		if (aggrorange < 10) {
+		if (aggrorange < 10)
 			return 10;
-		}
 		return aggrorange;
 	}
 

@@ -22,16 +22,15 @@ import com.aionemu.gameserver.services.siegeservice.FortressSiege;
 
 /**
  * @author ATracer, Source
- * @deprecated This should be removed after removing
- *             {@link com.aionemu.gameserver.services.SiegeService2#SIEGE_BOSS_AI_NAME}
+ * @deprecated This should be removed after removing {@link com.aionemu.gameserver.services.SiegeService2#SIEGE_BOSS_AI_NAME}
  */
 @Deprecated
-@SuppressWarnings("deprecation")
 @AIName(FortressSiege.SIEGE_BOSS_AI_NAME)
 public class SiegeProtectorNpcAI2 extends SiegeNpcAI2 {
 
 	@Override
-	protected void handleBackHome() {
+	protected void handleBackHome() 
+	{
 		super.handleBackHome();
 		getOwner().getLifeStats().cancelRestoreTask();
 	}
@@ -39,7 +38,7 @@ public class SiegeProtectorNpcAI2 extends SiegeNpcAI2 {
 	@Override
 	protected void handleAttack(Creature creature) {
 		super.handleAttack(creature);
-		if (getOwner().getLifeStats().getCurrentHp() > getOwner().getLifeStats().getMaxHp()) {
+		if(getOwner().getLifeStats().getCurrentHp() > getOwner().getLifeStats().getMaxHp()){
 			getOwner().getLifeStats().setCurrentHp(getOwner().getLifeStats().getMaxHp());
 		}
 	}

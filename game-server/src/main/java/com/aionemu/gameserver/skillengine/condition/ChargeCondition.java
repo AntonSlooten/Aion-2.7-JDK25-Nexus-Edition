@@ -36,7 +36,7 @@ public class ChargeCondition extends Condition {
 
 	@XmlAttribute(name = "level")
 	private int level;
-
+	
 	@Override
 	public boolean validate(Stat2 env, IStatFunction statFunction) {
 		StatOwner owner = statFunction.getOwner();

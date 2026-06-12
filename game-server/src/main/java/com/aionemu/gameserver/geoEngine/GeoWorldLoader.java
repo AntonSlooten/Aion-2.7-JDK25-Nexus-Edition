@@ -11,7 +11,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, 
  * MA  02110-1301, USA.
  *
  * http://www.gnu.org/copyleft/gpl.html
@@ -38,6 +38,7 @@ import com.aionemu.gameserver.geoEngine.scene.Node;
 import com.aionemu.gameserver.geoEngine.scene.Spatial;
 import com.aionemu.gameserver.geoEngine.scene.VertexBuffer;
 
+
 /**
  * @author Mr. Poke
  */
@@ -53,7 +54,7 @@ public class GeoWorldLoader {
 
 	@SuppressWarnings("resource")
 	public static Map<String, Spatial> loadMeshs(String fileName) throws IOException {
-		Map<String, Spatial> geoms = new HashMap<>();
+		Map<String, Spatial> geoms = new HashMap<String, Spatial>();
 		File geoFile = new File(fileName);
 		FileChannel roChannel = null;
 		MappedByteBuffer geo = null;
@@ -69,7 +70,7 @@ public class GeoWorldLoader {
 			Node node = new Node(DEBUG ? name : null);
 			for (int c = 0; c < modelCount; c++) {
 				Mesh m = new Mesh();
-				int vectorCount = (geo.getShort()) * 3;
+				int vectorCount = ((int)geo.getShort()) * 3;
 				FloatBuffer vertices = FloatBuffer.allocate(vectorCount);
 				for (int x = 0; x < vectorCount; x++) {
 					vertices.put(geo.getFloat());
@@ -83,9 +84,8 @@ public class GeoWorldLoader {
 				m.setBuffer(VertexBuffer.Type.Index, 3, indexes);
 				m.createCollisionData();
 				Geometry geom = new Geometry(null, m);
-				if (modelCount == 1) {
+				if (modelCount == 1)
 					geoms.put(name, geom);
-				}
 				node.attachChild(geom);
 			}
 			if (!node.getChildren().isEmpty()) {
@@ -94,7 +94,7 @@ public class GeoWorldLoader {
 		}
 		return geoms;
 	}
-
+	
 	@SuppressWarnings("resource")
 	public static boolean loadWorld(int worldId, Map<String, Spatial> models, GeoMap map) throws IOException {
 		File geoFile = new File(GEO_DIR + worldId + ".geo");
@@ -103,14 +103,13 @@ public class GeoWorldLoader {
 		roChannel = new RandomAccessFile(geoFile, "r").getChannel();
 		geo = roChannel.map(FileChannel.MapMode.READ_ONLY, 0, (int) roChannel.size()).load();
 		geo.order(ByteOrder.LITTLE_ENDIAN);
-		if (geo.get() == 0) {
+		if (geo.get() == 0)
 			map.setTerrainData(new short[] { geo.getShort() });
-		} else {
+		else {
 			int size = geo.getInt();
 			short[] terrainData = new short[size];
-			for (int i = 0; i < size; i++) {
+			for (int i = 0; i < size; i++)
 				terrainData[i] = geo.getShort();
-			}
 			map.setTerrainData(terrainData);
 		}
 		while (geo.hasRemaining()) {
@@ -120,9 +119,8 @@ public class GeoWorldLoader {
 			String name = new String(nameByte);
 			Vector3f loc = new Vector3f(geo.getFloat(), geo.getFloat(), geo.getFloat());
 			float[] matrix = new float[9];
-			for (int i = 0; i < 9; i++) {
+			for (int i = 0; i < 9; i++)
 				matrix[i] = geo.getFloat();
-			}
 			float scale = geo.getFloat();
 			Matrix3f matrix3f = new Matrix3f();
 			matrix3f.set(matrix);
@@ -131,7 +129,8 @@ public class GeoWorldLoader {
 				Spatial nodeClone = null;
 				try {
 					nodeClone = node.clone();
-				} catch (CloneNotSupportedException e) {
+				}
+				catch (CloneNotSupportedException e) {
 					e.printStackTrace();
 				}
 				nodeClone.setTransform(matrix3f, loc, scale);

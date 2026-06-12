@@ -47,21 +47,20 @@ public class SkillLearnAction extends AbstractItemAction {
 	@Override
 	public boolean canAct(Player player, Item parentItem, Item targetItem) {
 		// 1. check player level
-		if (player.getCommonData().getLevel() < level) {
+		if (player.getCommonData().getLevel() < level)
 			return false;
-		}
 
 		PlayerClass pc = player.getCommonData().getPlayerClass();
-		if (!validateClass(pc)) {
+		if (!validateClass(pc))
 			return false;
-		}
 
 		// 4. check player race and Race.PC_ALL
 		Race race = parentItem.getItemTemplate().getRace();
-		// 5. check whether this skill is already learned
-		if ((player.getRace() != race && race != Race.PC_ALL) || player.getSkillList().isSkillPresent(skillid)) {
+		if (player.getRace() != race && race != Race.PC_ALL)
 			return false;
-		}
+		// 5. check whether this skill is already learned
+		if (player.getSkillList().isSkillPresent(skillid))
+			return false;
 
 		return true;
 	}
@@ -70,11 +69,10 @@ public class SkillLearnAction extends AbstractItemAction {
 	public void act(Player player, Item parentItem, Item targetItem) {
 		// item animation and message
 		ItemTemplate itemTemplate = parentItem.getItemTemplate();
-		// PacketSendUtility.sendPacket(player,
-		// SM_SYSTEM_MESSAGE.USE_ITEM(itemTemplate.getDescription()));
+		// PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.USE_ITEM(itemTemplate.getDescription()));
 		player.getController().cancelUseItem();
-		PacketSendUtility.broadcastPacket(player, new SM_ITEM_USAGE_ANIMATION(player.getObjectId(),
-				parentItem.getObjectId(), itemTemplate.getTemplateId()), true);
+		PacketSendUtility.broadcastPacket(player,
+			new SM_ITEM_USAGE_ANIMATION(player.getObjectId(), parentItem.getObjectId(), itemTemplate.getTemplateId()), true);
 
 		// add skill
 		SkillLearnService.learnSkillBook(player, skillid);
@@ -87,13 +85,11 @@ public class SkillLearnAction extends AbstractItemAction {
 	private boolean validateClass(PlayerClass pc) {
 		boolean result = false;
 		// 2. check if current class is second class and book is for starting class
-		if (!pc.isStartingClass() && PlayerClass.getStartingClassFor(pc).ordinal() == playerClass.ordinal()) {
+		if (!pc.isStartingClass() && PlayerClass.getStartingClassFor(pc).ordinal() == playerClass.ordinal())
 			result = true;
-		}
 		// 3. check player class and SkillClass.ALL
-		if (pc == playerClass || playerClass == PlayerClass.ALL) {
+		if (pc == playerClass || playerClass == PlayerClass.ALL)
 			result = true;
-		}
 
 		return result;
 	}

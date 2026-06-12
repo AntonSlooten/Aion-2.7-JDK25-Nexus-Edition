@@ -31,7 +31,7 @@ public class CM_SHOW_DIALOG extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_SHOW_DIALOG </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_SHOW_DIALOG(int opcode, State state, State... restStates) {
@@ -46,10 +46,9 @@ public class CM_SHOW_DIALOG extends AionClientPacket {
 	@Override
 	protected void runImpl() {
 		Player player = getConnection().getActivePlayer();
-		if (player.isTrading()) {
+		if (player.isTrading())
 			return;
-		}
-
+		
 		VisibleObject obj = player.getKnownList().getObject(targetObjectId);
 
 		if (obj instanceof Npc) {

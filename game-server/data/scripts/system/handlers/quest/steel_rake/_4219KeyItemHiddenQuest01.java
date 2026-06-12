@@ -31,7 +31,6 @@ public class _4219KeyItemHiddenQuest01 extends QuestHandler {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see com.aionemu.gameserver.questEngine.handlers.QuestHandler#register()
 	 */
 	@Override

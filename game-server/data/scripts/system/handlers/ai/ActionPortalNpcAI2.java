@@ -41,18 +41,14 @@ public class ActionPortalNpcAI2 extends PortalDialogAI2 {
 
 	protected void handleUseItemStart(final Player player) {
 		final ActionItemNpc actionItem = player.getActionItemNpc();
-		PacketSendUtility.sendPacket(player, new SM_USE_OBJECT(player.getObjectId(), getObjectId(),
-				actionItem.getTalkDelay(), actionItem.getStartCondition()));
-		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.START_QUESTLOOT, 0, getObjectId()),
-				true);
+		PacketSendUtility.sendPacket(player,new SM_USE_OBJECT(player.getObjectId(), getObjectId(), actionItem.getTalkDelay(), actionItem.getStartCondition()));
+		PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.START_QUESTLOOT, 0, getObjectId()), true);
 		player.getController().addTask(TaskId.ACTION_ITEM_NPC, ThreadPoolManager.getInstance().schedule(new Runnable() {
 
 			@Override
 			public void run() {
-				PacketSendUtility.broadcastPacket(player,
-						new SM_EMOTION(player, EmotionType.END_QUESTLOOT, 0, getObjectId()), true);
-				PacketSendUtility.sendPacket(player, new SM_USE_OBJECT(player.getObjectId(), getObjectId(),
-						actionItem.getTalkDelay(), actionItem.getEndCondition()));
+				PacketSendUtility.broadcastPacket(player, new SM_EMOTION(player, EmotionType.END_QUESTLOOT, 0, getObjectId()), true);
+				PacketSendUtility.sendPacket(player, new SM_USE_OBJECT(player.getObjectId(), getObjectId(), actionItem.getTalkDelay(), actionItem.getEndCondition()));
 				handleUseItemFinish(player);
 			}
 		}, actionItem.getTalkDelay()));

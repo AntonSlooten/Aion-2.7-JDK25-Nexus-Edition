@@ -23,23 +23,23 @@ import com.aionemu.gameserver.model.items.ItemSlot;
 import com.aionemu.gameserver.network.aion.iteminfo.ItemInfoBlob.ItemBlobType;
 
 /**
- * This blob is sent for clothes. It keeps info about slots that cloth can be
- * equipped to.
+ * This blob is sent for clothes. It keeps info about slots that cloth can be equipped to.
  *
  * @author -Nemesiss-
  *
  */
-public class ClothesInfoBlobEntry extends ItemBlobEntry {
+public class ClothesInfoBlobEntry extends ItemBlobEntry{
 
 	ClothesInfoBlobEntry() {
 		super(ItemBlobType.SLOTS_CLOTHES);
 	}
 
 	@Override
-	public void writeThisBlob(ByteBuffer buf) {
+	public
+	void writeThisBlob(ByteBuffer buf) {
 		Item item = parent.item;
 
 		writeD(buf, ItemSlot.getSlotsFor(item.getItemTemplate().getItemSlot())[0].getSlotIdMask());
-		writeD(buf, 0);// TODO! secondary slot?
+		writeD(buf, 0);//TODO! secondary slot?
 	}
 }

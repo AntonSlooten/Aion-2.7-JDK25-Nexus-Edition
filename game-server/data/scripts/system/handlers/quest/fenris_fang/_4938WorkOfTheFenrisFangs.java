@@ -55,144 +55,167 @@ public class _4938WorkOfTheFenrisFangs extends QuestHandler {
 			if (targetId == 204053) { // Kvasir
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 798367: { // Riikaard
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 798367: { // Riikaard
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+					default:
+						break;
 					}
+					break;
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-				break;
-			}
-			case 798368: { // Herosir
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
+				case 798368: { // Herosir
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+					default:
+						break;
 					}
+					break;
 				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				}
-				break;
-			}
-			case 798369: { // Gellner
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 2) {
-						return sendQuestDialog(env, 1693);
+				case 798369: { // Gellner
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 2) {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case STEP_TO_3: {
+							return defaultCloseDialog(env, 2, 3); // 3
+						}
+					default:
+						break;
 					}
+					break;
 				}
-				case STEP_TO_3: {
-					return defaultCloseDialog(env, 2, 3); // 3
-				}
-				}
-				break;
-			}
-			case 798370: { // Natorp
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 3) {
-						return sendQuestDialog(env, 2034);
+				case 798370: { // Natorp
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 3) {
+								return sendQuestDialog(env, 2034);
+							}
+						}
+						case STEP_TO_4: {
+							return defaultCloseDialog(env, 3, 4); // 4
+						}
+					default:
+						break;
 					}
+					break;
 				}
-				case STEP_TO_4: {
-					return defaultCloseDialog(env, 3, 4); // 4
-				}
-				}
-				break;
-			}
-			case 798371: { // Needham
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 4) {
-						return sendQuestDialog(env, 2375);
+				case 798371: { // Needham
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 4) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case STEP_TO_5: {
+							return defaultCloseDialog(env, 4, 5); // 5
+						}
+					default:
+						break;
 					}
+					break;
 				}
-				case STEP_TO_5: {
-					return defaultCloseDialog(env, 4, 5); // 5
-				}
-				}
-				break;
-			}
-			case 798372: { // Landsberg
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 5) {
-						return sendQuestDialog(env, 2716);
+				case 798372: { // Landsberg
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 5) {
+								return sendQuestDialog(env, 2716);
+							}
+						}
+						case STEP_TO_6: {
+							return defaultCloseDialog(env, 5, 6); // 6
+						}
+					default:
+						break;
 					}
+					break;
 				}
-				case STEP_TO_6: {
-					return defaultCloseDialog(env, 5, 6); // 6
-				}
-				}
-				break;
-			}
-			case 798373: { // Levinard
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 6) {
-						return sendQuestDialog(env, 3057);
+				case 798373: { // Levinard
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 6) {
+								return sendQuestDialog(env, 3057);
+							}
+						}
+						case STEP_TO_7: {
+							return defaultCloseDialog(env, 6, 7); // 7
+						}
+					default:
+						break;
 					}
+					break;
 				}
-				case STEP_TO_7: {
-					return defaultCloseDialog(env, 6, 7); // 7
-				}
-				}
-				break;
-			}
-			case 798374: { // Lonergan
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 7) {
-						return sendQuestDialog(env, 3398);
+				case 798374: { // Lonergan
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 7) {
+								return sendQuestDialog(env, 3398);
+							}
+						}
+						case STEP_TO_8: {
+							return defaultCloseDialog(env, 7, 8); // 8
+						}
+					default:
+						break;
 					}
+					break;
 				}
-				case STEP_TO_8: {
-					return defaultCloseDialog(env, 7, 8); // 8
-				}
-				}
-				break;
-			}
-			case 204075: { // Balder
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 8) {
-						return sendQuestDialog(env, 3739);
+				case 204075: { // Balder
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 8) {
+								return sendQuestDialog(env, 3739);
+							}
+						}
+						case SET_REWARD: {
+							if (player.getInventory().getItemCountByItemId(186000084) >= 1) {
+								removeQuestItem(env, 186000084, 1);
+								return defaultCloseDialog(env, 8, 8, true, false, 0);
+							}
+							else {
+								return sendQuestDialog(env, 3825);
+							}
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
+					default:
+						break;
 					}
+					break;
 				}
-				case SET_REWARD: {
-					if (player.getInventory().getItemCountByItemId(186000084) >= 1) {
-						removeQuestItem(env, 186000084, 1);
-						return defaultCloseDialog(env, 8, 8, true, false, 0);
-					} else {
-						return sendQuestDialog(env, 3825);
-					}
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-				break;
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 204053) { // Kvasir
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

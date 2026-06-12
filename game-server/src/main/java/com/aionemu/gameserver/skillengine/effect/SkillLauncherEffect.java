@@ -40,7 +40,7 @@ public class SkillLauncherEffect extends EffectTemplate {
 		// TODO figure out what value does
 		SkillTemplate template = DataManager.SKILL_DATA.getSkillTemplate(skillId);
 		Effect e = new Effect(effect.getEffector(), effect.getEffected(), template, template.getLvl(),
-				template.getEffectsDuration());
+			template.getEffectsDuration());
 		e.initialize();
 		e.applyEffect();
 	}

@@ -39,7 +39,6 @@ public final class TeamEffectUpdater extends AbstractIterativePeriodicTaskManage
 
 	public TeamEffectUpdater() {
 		super(500);
-		registerStartupHook();
 	}
 
 	@Override

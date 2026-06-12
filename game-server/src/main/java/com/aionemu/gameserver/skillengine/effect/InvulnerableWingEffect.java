@@ -33,9 +33,8 @@ public class InvulnerableWingEffect extends EffectTemplate {
 	@Override
 	public void calculate(Effect effect) {
 		// Only for players
-		if (effect.getEffected() instanceof Player) {
+		if (effect.getEffected() instanceof Player)
 			super.calculate(effect, null, null);
-		}
 	}
 
 	@Override

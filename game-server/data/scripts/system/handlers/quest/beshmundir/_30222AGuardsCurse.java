@@ -53,26 +53,29 @@ public class _30222AGuardsCurse extends QuestHandler {
 			if (targetId == 798979) { // Gelon
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			if (targetId == 798979) { // Gelon
 				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
+					case START_DIALOG: {
+						if (var == 1) {
+							return sendQuestDialog(env, 1352);
+						}
+					}
+					case SELECT_REWARD: {
+						changeQuestStep(env, 1, 1, true); // reward
+						return sendQuestDialog(env, 5);
 					}
 				}
-				case SELECT_REWARD: {
-					changeQuestStep(env, 1, 1, true); // reward
-					return sendQuestDialog(env, 5);
-				}
-				}
 			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798979) { // Gelon
 				return sendQuestEndDialog(env);
 			}
@@ -90,17 +93,16 @@ public class _30222AGuardsCurse extends QuestHandler {
 			switch (targetId) {
 			// case 216739: { // Warrior Monument
 			// Npc npc = (Npc) env.getVisibleObject();
-			// QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 216239,
-			// npc.getX(), npc.getY(),
+			// QuestService.addNewSpawn(player.getWorldId(), player.getInstanceId(), 216239, npc.getX(), npc.getY(),
 			// npc.getZ(), npc.getHeading());
 			// return true;
 			// }
-			case 216239: { // Ahbana the Wicked (normal mode)
-				return defaultOnKillEvent(env, 216239, 0, 1); // 1
-			}
-			case 216158: { // Ahbana the Wicked (hard mode)
-				return defaultOnKillEvent(env, 216239, 0, 1); // 1
-			}
+				case 216239: { // Ahbana the Wicked (normal mode)
+					return defaultOnKillEvent(env, 216239, 0, 1); // 1
+				}
+				case 216158: { // Ahbana the Wicked (hard mode)
+					return defaultOnKillEvent(env, 216239, 0, 1); // 1
+				}
 			}
 		}
 		return false;

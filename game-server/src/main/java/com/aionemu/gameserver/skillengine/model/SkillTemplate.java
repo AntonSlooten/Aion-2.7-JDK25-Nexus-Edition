@@ -38,8 +38,8 @@ import com.aionemu.gameserver.skillengine.properties.Properties;
  * @author ATracer modified by Wakizashi
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "skillTemplate", propOrder = { "properties", "startconditions", "useconditions",
-		"useequipmentconditions", "effects", "actions", "periodicActions", "motion" })
+@XmlType(name = "skillTemplate", propOrder = { "properties", "startconditions", "useconditions", "useequipmentconditions", "effects", "actions",
+	"periodicActions", "motion" })
 public class SkillTemplate {
 
 	protected Properties properties;
@@ -101,7 +101,7 @@ public class SkillTemplate {
 	@XmlAttribute(name = "avatar")
 	protected boolean isAvatar;
 	@XmlAttribute(name = "ground")
-	protected boolean isGroundSkill;// TODO remove!
+	protected boolean isGroundSkill;//TODO remove!
 	@XmlAttribute(name = "unpottable")
 	protected boolean isUndispellableByPotions;
 	@XmlAttribute(name = "ammospeed")
@@ -112,10 +112,9 @@ public class SkillTemplate {
 	protected AttackStatus counterSkill = null;
 	@XmlAttribute(name = "noremoveatdie")
 	protected boolean noRemoveAtDie = false;
-
+	
 	@XmlTransient
 	protected HashMap<Integer, Integer> effectIds = null;
-
 	/**
 	 * @return the Properties
 	 */
@@ -125,7 +124,7 @@ public class SkillTemplate {
 
 	/**
 	 * Gets the value of the startconditions property.
-	 *
+	 * 
 	 * @return possible object is {@link Conditions }
 	 */
 	public Conditions getStartconditions() {
@@ -134,7 +133,7 @@ public class SkillTemplate {
 
 	/**
 	 * Gets the value of the useconditions property.
-	 *
+	 * 
 	 * @return possible object is {@link Conditions }
 	 */
 	public Conditions getUseconditions() {
@@ -143,7 +142,7 @@ public class SkillTemplate {
 
 	/**
 	 * Gets the value of the useequipmentconditions property.
-	 *
+	 * 
 	 * @return possible object is {@link Conditions }
 	 */
 	public Conditions getUseEquipmentconditions() {
@@ -152,7 +151,7 @@ public class SkillTemplate {
 
 	/**
 	 * Gets the value of the effects property.
-	 *
+	 * 
 	 * @return possible object is {@link Effects }
 	 */
 	public Effects getEffects() {
@@ -161,7 +160,7 @@ public class SkillTemplate {
 
 	/**
 	 * Gets the value of the actions property.
-	 *
+	 * 
 	 * @return possible object is {@link Actions }
 	 */
 	public Actions getActions() {
@@ -170,22 +169,20 @@ public class SkillTemplate {
 
 	/**
 	 * Gets the value of the periodicActions property.
-	 *
+	 * 
 	 * @return possible object is {@link PeriodicActions }
 	 */
 	public PeriodicActions getPeriodicActions() {
 		return periodicActions;
 	}
-
 	/**
 	 * Gets the value of the motion property.
-	 *
+	 * 
 	 * @return possible object is {@link Motion }
 	 */
 	public Motion getMotion() {
 		return motion;
 	}
-
 	/**
 	 * Gets the value of the skillId property.
 	 */
@@ -195,7 +192,7 @@ public class SkillTemplate {
 
 	/**
 	 * Gets the value of the name property.
-	 *
+	 * 
 	 * @return possible object is {@link String }
 	 */
 	public String getName() {
@@ -225,7 +222,7 @@ public class SkillTemplate {
 
 	/**
 	 * Gets the value of the type property.
-	 *
+	 * 
 	 * @return possible object is {@link SkillType }
 	 */
 	public SkillType getType() {
@@ -292,7 +289,7 @@ public class SkillTemplate {
 	public boolean isProvoked() {
 		return activationAttribute == ActivationAttribute.PROVOKED;
 	}
-
+	
 	public boolean isMaintain() {
 		return activationAttribute == ActivationAttribute.MAINTAIN;
 	}
@@ -306,8 +303,7 @@ public class SkillTemplate {
 	 * @return EffectTemplate
 	 */
 	public EffectTemplate getEffectTemplate(int position) {
-		return effects != null && effects.getEffects().size() >= position ? effects.getEffects().get(position - 1)
-				: null;
+		return effects != null && effects.getEffects().size() >= position ? effects.getEffects().get(position - 1) : null;
 
 	}
 
@@ -388,23 +384,23 @@ public class SkillTemplate {
 	public boolean hasItemHealFpEffect() {
 		return getEffects() != null && getEffects().isItemHealFp();
 	}
-
+	
 	public int getCooldownId() {
 		return (cooldownId > 0) ? cooldownId : skillId;
 	}
-
+	
 	public boolean isAvatar() {
 		return isAvatar;
 	}
-
+	
 	public boolean isGroundSkill() {
 		return isGroundSkill;
 	}
-
+	
 	public AttackStatus getCounterSkill() {
 		return counterSkill;
 	}
-
+	
 	public boolean isUndispellableByPotions() {
 		return isUndispellableByPotions;
 	}
@@ -416,7 +412,7 @@ public class SkillTemplate {
 	public int getConflictId() {
 		return conflictId;
 	}
-
+	
 	public boolean isNoRemoveAtDie() {
 		return noRemoveAtDie;
 	}
@@ -429,9 +425,8 @@ public class SkillTemplate {
 		if (this.getEffects() != null && this.getEffects().getEffects() != null) {
 			for (EffectTemplate et : this.getEffects().getEffects()) {
 				if (et.getEffectid() != 0) {
-					if (effectIds == null) {
-						effectIds = new HashMap<>();
-					}
+					if (effectIds == null)
+						effectIds = new HashMap<Integer, Integer>();
 
 					effectIds.put(et.getEffectid(), et.getBasicLvl());
 				}

@@ -55,8 +55,8 @@ public class LeagueEnteredEvent implements Predicate<LeagueMember>, TeamEvent {
 	@Override
 	public boolean apply(LeagueMember member) {
 		PlayerAlliance alliance = member.getObject();
-		alliance.sendPacket(new SM_ALLIANCE_INFO(alliance, SM_ALLIANCE_INFO.LEAGUE_ENTERED,
-				league.getLeaderObject().getLeader().getName()));
+		alliance.sendPacket(new SM_ALLIANCE_INFO(alliance, SM_ALLIANCE_INFO.LEAGUE_ENTERED, league.getLeaderObject()
+			.getLeader().getName()));
 		alliance.sendPacket(new SM_SHOW_BRAND(0, 0));
 		return true;
 	}

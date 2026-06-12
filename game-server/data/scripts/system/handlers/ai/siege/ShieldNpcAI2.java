@@ -34,7 +34,7 @@ public class ShieldNpcAI2 extends SiegeNpcAI2 {
 		sendShieldPacket(false);
 		super.handleDespawned();
 	}
-
+	
 	@Override
 	protected void handleDied() {
 		sendShieldPacket(false);

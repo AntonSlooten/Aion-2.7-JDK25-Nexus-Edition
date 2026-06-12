@@ -40,16 +40,14 @@ public class GatherableData {
 	private List<GatherableTemplate> gatherables;
 
 	/** A map containing all npc templates */
-	private TIntObjectHashMap<GatherableTemplate> gatherableData = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<GatherableTemplate> gatherableData = new TIntObjectHashMap<GatherableTemplate>();
 
 	void afterUnmarshal(Unmarshaller u, Object parent) {
 		for (GatherableTemplate gatherable : gatherables) {
-			if (gatherable.getMaterials() != null) {
+			if (gatherable.getMaterials() != null)
 				Collections.sort(gatherable.getMaterials().getMaterial());
-			}
-			if (gatherable.getExtraMaterials() != null) {
+			if (gatherable.getExtraMaterials() != null)
 				Collections.sort(gatherable.getExtraMaterials().getMaterial());
-			}
 			gatherableData.put(gatherable.getTemplateId(), gatherable);
 		}
 		gatherables = null;
@@ -61,10 +59,10 @@ public class GatherableData {
 
 	/**
 	 * /** Returns an {@link GatherableTemplate} object with given id.
-	 *
-	 * @param id id of GatherableTemplate
-	 * @return GatherableTemplate object containing data about Gatherable with that
-	 *         id.
+	 * 
+	 * @param id
+	 *          id of GatherableTemplate
+	 * @return GatherableTemplate object containing data about Gatherable with that id.
 	 */
 	public GatherableTemplate getGatherableTemplate(int id) {
 		return gatherableData.get(id);

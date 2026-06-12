@@ -16,10 +16,6 @@
  */
 package com.aionemu.commons.scripting.impl;
 
-import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.aionemu.commons.scripting.CompilationResult;
 import com.aionemu.commons.scripting.ScriptCompiler;
 import com.aionemu.commons.scripting.ScriptContext;
@@ -27,6 +23,9 @@ import com.aionemu.commons.scripting.classlistener.AggregatedClassListener;
 import com.aionemu.commons.scripting.classlistener.ClassListener;
 import com.aionemu.commons.scripting.classlistener.OnClassLoadUnloadListener;
 import com.aionemu.commons.scripting.classlistener.ScheduledTaskClassListener;
+import org.apache.commons.io.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Collection;
@@ -35,7 +34,7 @@ import java.util.Set;
 
 /**
  * This class is actual implementation of {@link com.aionemu.commons.scripting.ScriptContext}
- *
+ * 
  * @author SoulKeeper
  */
 public class ScriptContextImpl implements ScriptContext {
@@ -82,10 +81,13 @@ public class ScriptContextImpl implements ScriptContext {
 
 	/**
 	 * Creates new scriptcontext with given root file
-	 *
-	 * @param root file that represents root directory of this script context
-	 * @throws NullPointerException     if root is null
-	 * @throws IllegalArgumentException if root directory doesn't exists or is not a directory
+	 * 
+	 * @param root
+	 *          file that represents root directory of this script context
+	 * @throws NullPointerException
+	 *           if root is null
+	 * @throws IllegalArgumentException
+	 *           if root directory doesn't exists or is not a directory
 	 */
 	public ScriptContextImpl(File root) {
 		this(root, null);
@@ -93,11 +95,15 @@ public class ScriptContextImpl implements ScriptContext {
 
 	/**
 	 * Creates new ScriptContext with given file as root and another ScriptContext as parent
-	 *
-	 * @param root   file that represents root directory of this script context
-	 * @param parent parent ScriptContex. It's classes and libraries will be accessible for this script context
-	 * @throws NullPointerException     if root is null
-	 * @throws IllegalArgumentException if root directory doesn't exists or is not a directory
+	 * 
+	 * @param root
+	 *          file that represents root directory of this script context
+	 * @param parent
+	 *          parent ScriptContex. It's classes and libraries will be accessible for this script context
+	 * @throws NullPointerException
+	 *           if root is null
+	 * @throws IllegalArgumentException
+	 *           if root directory doesn't exists or is not a directory
 	 */
 	public ScriptContextImpl(File root, ScriptContext parent) {
 		if (root == null) {
@@ -242,7 +248,7 @@ public class ScriptContextImpl implements ScriptContext {
 
 			if (childScriptContexts.contains(context)) {
 				log.error("Double child definition, root: " + root.getAbsolutePath() + ", child: "
-						+ context.getRoot().getAbsolutePath());
+					+ context.getRoot().getAbsolutePath());
 				return;
 			}
 
@@ -298,22 +304,24 @@ public class ScriptContextImpl implements ScriptContext {
 
 	/**
 	 * Creates new instance of ScriptCompiler that should be used with this ScriptContext
-	 *
-	 * @return instance of ScriptCompiler
-	 * @throws RuntimeException if failed to create instance
 	 */
-	protected ScriptCompiler instantiateCompiler() {
-		ClassLoader classLoader = getClass().getClassLoader();
+	protected ScriptCompiler instantiateCompiler() throws RuntimeException {
+		ClassLoader cl = getClass().getClassLoader();
 		if (getParentScriptContext() != null) {
-			classLoader = getParentScriptContext().getCompilationResult().getClassLoader();
+			cl = getParentScriptContext().getCompilationResult().getClassLoader();
 		}
 
+		ScriptCompiler sc;
 		try {
-			Class<?> compilerClass = Class.forName(getCompilerClassName(), true, classLoader);
-			return (ScriptCompiler) compilerClass.getDeclaredConstructor().newInstance();
-		} catch (ReflectiveOperationException e) {
-			throw new IllegalStateException("Can't create instance of compiler: " + getCompilerClassName(), e);
+			// PERBAIKAN: Java 9+ getDeclaredConstructor().newInstance()
+			sc = (ScriptCompiler) Class.forName(getCompilerClassName(), true, cl).getDeclaredConstructor().newInstance();
 		}
+		catch (Exception e) {
+			log.error("Can't create instance of compiler");
+			throw new RuntimeException(e);
+		}
+
+		return sc;
 	}
 
 	/**
@@ -347,7 +355,10 @@ public class ScriptContextImpl implements ScriptContext {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void close() {
-		shutdown();
+	public void finalize() throws Throwable {
+		if (compilationResult != null) {
+			log.error("Finalization of initialized ScriptContext. Forcing context shutdown.");
+			shutdown();
+		}
 	}
 }

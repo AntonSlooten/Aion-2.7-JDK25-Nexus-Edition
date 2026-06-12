@@ -41,29 +41,29 @@ import java.nio.ShortBuffer;
  */
 public class IndexShortBuffer extends IndexBuffer {
 
-	private ShortBuffer buf;
+    private ShortBuffer buf;
 
-	public IndexShortBuffer(ShortBuffer buffer) {
-		this.buf = buffer;
-	}
+    public IndexShortBuffer(ShortBuffer buffer) {
+        this.buf = buffer;
+    }
 
-	@Override
-	public int get(int i) {
-		return buf.get(i) & 0x0000FFFF;
-	}
+    @Override
+    public int get(int i) {
+        return buf.get(i) & 0x0000FFFF;
+    }
 
-	@Override
-	public void put(int i, int value) {
-		buf.put(i, (short) value);
-	}
+    @Override
+    public void put(int i, int value) {
+        buf.put(i, (short) value);
+    }
 
-	@Override
-	public int size() {
-		return buf.limit();
-	}
+    @Override
+    public int size() {
+        return buf.limit();
+    }
 
-	@Override
-	public Buffer getBuffer() {
-		return buf;
-	}
+    @Override
+    public Buffer getBuffer() {
+        return buf;
+    }
 }

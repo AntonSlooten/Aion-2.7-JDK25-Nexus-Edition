@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -22,7 +22,7 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_CHARACTER_LIST;
 
 /**
  * In this packets aion client is requesting character list.
- *
+ * 
  * @author -Nemesiss-
  */
 public class CM_CHARACTER_LIST extends AionClientPacket {
@@ -34,7 +34,7 @@ public class CM_CHARACTER_LIST extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_CHARACTER_LIST </tt> packet.
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_CHARACTER_LIST(int opcode, State state, State... restStates) {

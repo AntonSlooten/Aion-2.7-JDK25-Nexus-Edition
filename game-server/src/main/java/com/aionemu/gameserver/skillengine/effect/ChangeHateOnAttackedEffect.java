@@ -35,7 +35,7 @@ import com.aionemu.gameserver.skillengine.model.Effect;
 public class ChangeHateOnAttackedEffect extends EffectTemplate {
 
 	@XmlAttribute
-	protected int value1;// delta
+	protected int value1;//delta
 	@XmlAttribute
 	protected int value2;
 
@@ -55,9 +55,8 @@ public class ChangeHateOnAttackedEffect extends EffectTemplate {
 
 			@Override
 			public void attacked(Creature creature) {
-				if (creature instanceof Npc) {
-					creature.getAggroList().addHate(effect.getEffected(), finalValue);
-				}
+				if (creature instanceof Npc)
+					((Npc) creature).getAggroList().addHate(effect.getEffected(), finalValue);
 			}
 		};
 
@@ -69,8 +68,7 @@ public class ChangeHateOnAttackedEffect extends EffectTemplate {
 	public void endEffect(Effect effect) {
 		super.endEffect(effect);
 		ActionObserver observer = effect.getActionObserver(position);
-		if (observer != null) {
+		if (observer != null)
 			effect.getEffected().getObserveController().removeObserver(observer);
-		}
 	}
 }

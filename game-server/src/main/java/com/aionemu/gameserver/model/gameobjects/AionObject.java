@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -17,21 +17,22 @@
 
 package com.aionemu.gameserver.model.gameobjects;
 
+
 import com.google.common.base.Function;
 
 import javax.annotation.Nullable;
 
 /**
- * This is the base class for all "in-game" objects, that player can interact
- * with, such as: npcs, monsters, players, items.<br>
+ * This is the base class for all "in-game" objects, that player can interact with, such as: npcs, monsters, players,
+ * items.<br>
  * <br>
  * Each AionObject is uniquely identified by objectId.
- *
+ * 
  * @author -Nemesiss-, SoulKeeper
  */
 public abstract class AionObject {
 
-	public static Function<AionObject, Integer> OBJECT_TO_ID_TRANSFORMER = new Function<>() {
+	public static Function<AionObject, Integer> OBJECT_TO_ID_TRANSFORMER = new Function<AionObject, Integer>() {
 		@Override
 		public Integer apply(@Nullable AionObject input) {
 			return input != null ? input.getObjectId() : null;
@@ -49,7 +50,7 @@ public abstract class AionObject {
 
 	/**
 	 * Returns unique ObjectId of AionObject
-	 *
+	 * 
 	 * @return Int ObjectId
 	 */
 	public Integer getObjectId() {
@@ -59,7 +60,7 @@ public abstract class AionObject {
 	/**
 	 * Returns name of the object.<br>
 	 * Unique for players, common for NPCs, items, etc
-	 *
+	 * 
 	 * @return name of the object
 	 */
 	public abstract String getName();

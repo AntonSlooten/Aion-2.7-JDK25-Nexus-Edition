@@ -28,7 +28,7 @@ import javolution.util.FastList;
  */
 public class InstanceReward<T extends InstancePlayerReward> {
 
-	protected FastList<T> instanceRewards = new FastList<>();
+	protected FastList<T> instanceRewards = new FastList<T>();
 	private InstanceScoreType instanceScoreType = InstanceScoreType.START_PROGRESS;
 	protected Integer mapId;
 	protected int instanceId;
@@ -91,7 +91,7 @@ public class InstanceReward<T extends InstancePlayerReward> {
 	}
 
 	public FastList<InstancePlayerReward> getPlayersInsideByRace(Race race) {
-		FastList<InstancePlayerReward> playerRewards = new FastList<>();
+		FastList<InstancePlayerReward> playerRewards = new FastList<InstancePlayerReward>();
 		for (InstancePlayerReward instanceReward : instanceRewards) {
 			Player player = instanceReward.getPlayer();
 			if (player != null && player.isOnline() && player.getInstanceId() == instanceId) {
@@ -119,7 +119,7 @@ public class InstanceReward<T extends InstancePlayerReward> {
 		instanceRewards.clear();
 	}
 
-	protected InstanceReward<?> getInstanceReward() {
+	protected InstanceReward<?> getInstanceReward()  {
 		return this;
 	}
 }

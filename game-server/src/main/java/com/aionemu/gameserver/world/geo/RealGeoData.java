@@ -41,7 +41,7 @@ public class RealGeoData implements GeoData {
 
 	private static final Logger log = LoggerFactory.getLogger(RealGeoData.class);
 
-	private TIntObjectHashMap<GeoMap> geoMaps = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<GeoMap> geoMaps = new TIntObjectHashMap<GeoMap>();
 
 	@Override
 	public void loadGeoMaps() {
@@ -58,7 +58,7 @@ public class RealGeoData implements GeoData {
 	protected void loadWorldMaps(Map<String, Spatial> models) {
 		log.info("Loading geo maps..");
 		Util.printProgressBarHeader(DataManager.WORLD_MAPS_DATA.size());
-		List<Integer> mapsWithErrors = new ArrayList<>();
+		List<Integer> mapsWithErrors = new ArrayList<Integer>();
 
 		for (WorldMapTemplate map : DataManager.WORLD_MAPS_DATA) {
 			GeoMap geoMap = new GeoMap(Integer.toString(map.getMapId()), map.getWorldSize());
@@ -66,7 +66,8 @@ public class RealGeoData implements GeoData {
 				if (GeoWorldLoader.loadWorld(map.getMapId(), models, geoMap)) {
 					geoMaps.put(map.getMapId(), geoMap);
 				}
-			} catch (Throwable t) {
+			}
+			catch (Throwable t) {
 				mapsWithErrors.add(map.getMapId());
 				geoMaps.put(map.getMapId(), DummyGeoData.DUMMY_MAP);
 			}
@@ -88,7 +89,8 @@ public class RealGeoData implements GeoData {
 		Map<String, Spatial> models = null;
 		try {
 			models = GeoWorldLoader.loadMeshs("data/geo/meshs.geo");
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			throw new IllegalStateException("Problem loading meshes", e);
 		}
 		return models;

@@ -40,19 +40,21 @@ public class RoahInstance extends GeneralInstanceHandler {
 	private boolean isStartTimer = false;
 	private long startTime;
 	private boolean isInstanceDestroyed = false;
-
+	
 	@Override
 	public void onInstanceCreate(WorldMapInstance instance) {
 		super.onInstanceCreate(instance);
 		spawnRings();
 	}
-
+	
 	private void spawnRings() {
-		FlyRing f1 = new FlyRing(new FlyRingTemplate("ROAH_WING_1", mapId, new Point3D(501.77, 409.53, 94.12),
-				new Point3D(503.93, 409.65, 98.9), new Point3D(506.26, 409.7, 94.15), 10), instanceId);
+		FlyRing f1 = new FlyRing(new FlyRingTemplate("ROAH_WING_1", mapId,
+				new Point3D(501.77, 409.53, 94.12),
+				new Point3D(503.93, 409.65, 98.9),
+				new Point3D(506.26, 409.7, 94.15), 10), instanceId);
 		f1.spawn();
 	}
-
+	
 	@Override
 	public boolean onPassFlyingRing(Player player, String flyingRing) {
 		if (flyingRing.equals("ROAH_WING_1")) {
@@ -74,7 +76,7 @@ public class RoahInstance extends GeneralInstanceHandler {
 		}
 		return false;
 	}
-
+	
 	@Override
 	public void onEnterInstance(Player player) {
 		if (isStartTimer) {
@@ -84,7 +86,7 @@ public class RoahInstance extends GeneralInstanceHandler {
 			}
 		}
 	}
-
+	
 	private List<Npc> getNpcs(int npcId) {
 		if (!isInstanceDestroyed) {
 			return instance.getNpcs(npcId);
@@ -97,7 +99,7 @@ public class RoahInstance extends GeneralInstanceHandler {
 			npc.getController().onDelete();
 		}
 	}
-
+	
 	@Override
 	public void onLeaveInstance(Player player) {
 		Storage bag = player.getInventory();
@@ -105,7 +107,7 @@ public class RoahInstance extends GeneralInstanceHandler {
 		bag.decreaseByItemId(185000037, bag.getItemCountByItemId(185000037));
 		bag.decreaseByItemId(185000038, bag.getItemCountByItemId(185000038));
 	}
-
+	
 	@Override
 	public void onInstanceDestroy() {
 		isInstanceDestroyed = true;

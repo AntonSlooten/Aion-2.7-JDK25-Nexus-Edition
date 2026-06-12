@@ -54,42 +54,45 @@ public class _3965TotheGalleriaofGrandeur extends QuestHandler {
 			if (targetId == 798311) { // Senarinrinerk
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 1011);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env, 182206120, 2);
 				}
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			switch (targetId) {
-			case 798391: { // Andu
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1352);
+				case 798391: { // Andu
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1, 0, 0, 182206120, 1); // 1
+						}
+					}
+					break;
+				}
+				case 798390: { // Palentine
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case SELECT_REWARD: {
+							changeQuestStep(env, 1, 1, true);
+							removeQuestItem(env, 182206120, 1);
+							return sendQuestDialog(env, 5);
+						}
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1, 0, 0, 182206120, 1); // 1
-				}
-				}
-				break;
 			}
-			case 798390: { // Palentine
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 2375);
-					}
-				}
-				case SELECT_REWARD: {
-					changeQuestStep(env, 1, 1, true);
-					removeQuestItem(env, 182206120, 1);
-					return sendQuestDialog(env, 5);
-				}
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 798390) { // Palentine
 				return sendQuestEndDialog(env);
 			}

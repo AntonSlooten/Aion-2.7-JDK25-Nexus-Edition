@@ -28,10 +28,9 @@ import com.aionemu.gameserver.questEngine.model.QuestStatus;
 import com.aionemu.gameserver.world.zone.ZoneName;
 
 /**
- * Talk with Chieftain Akagitan (204787). Talk with Delris (204784). Find
- * Glaciont the Hardy (213730). Kill all the Ice Petrahulks: Glaciont the Hardy
- * (213730) (1), Frostfist (213788) (1), Iceback (213789) (1), Chillblow
- * (213790) (1), Snowfury (213791) (1). Talk with Chieftain Akagitan.
+ * Talk with Chieftain Akagitan (204787). Talk with Delris (204784). Find Glaciont the Hardy (213730). Kill all the Ice
+ * Petrahulks: Glaciont the Hardy (213730) (1), Frostfist (213788) (1), Iceback (213789) (1), Chillblow (213790) (1),
+ * Snowfury (213791) (1). Talk with Chieftain Akagitan.
  * 
  * @author VladimirZ
  * @reworked vlog
@@ -89,32 +88,34 @@ public class _2057GlacionttheHardy extends QuestHandler {
 				else
 					return sendQuestEndDialog(env);
 			}
-		} else if (qs.getStatus() == QuestStatus.START) {
+		}
+		else if (qs.getStatus() == QuestStatus.START) {
 			if (targetId == 204787) { // Chieftain Akagitan
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 0)
-						return sendQuestDialog(env, 1011);
-				case SELECT_ACTION_1012: {
-					playQuestMovie(env, 246);
-					return sendQuestDialog(env, 1012);
+					case START_DIALOG:
+						if (var == 0)
+							return sendQuestDialog(env, 1011);
+					case SELECT_ACTION_1012: {
+						playQuestMovie(env, 246);
+						return sendQuestDialog(env, 1012);
+					}
+					case STEP_TO_1: {
+						return defaultCloseDialog(env, 0, 1); // 1
+					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-			} else if (targetId == 204784) { // Delris
+			}
+			else if (targetId == 204784) { // Delris
 				switch (env.getDialog()) {
-				case START_DIALOG:
-					if (var == 1)
-						return sendQuestDialog(env, 1352);
-				case SELECT_ACTION_1354: {
-					playQuestMovie(env, 247);
-					return sendQuestDialog(env, 1354);
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2, 182204316, 1, 0, 0); // 2
-				}
+					case START_DIALOG:
+						if (var == 1)
+							return sendQuestDialog(env, 1352);
+					case SELECT_ACTION_1354: {
+						playQuestMovie(env, 247);
+						return sendQuestDialog(env, 1354);
+					}
+					case STEP_TO_2: {
+						return defaultCloseDialog(env, 1, 2, 182204316, 1, 0, 0); // 2
+					}
 				}
 			}
 		}
@@ -128,8 +129,9 @@ public class _2057GlacionttheHardy extends QuestHandler {
 		if (qs != null && qs.getStatus() == QuestStatus.START) {
 			int var = qs.getQuestVarById(0);
 			int targetId = env.getTargetId();
-			if ((targetId == 213730 || targetId == 213788 || targetId == 213789 || targetId == 213790
-					|| targetId == 213791) && var == 3 && qs.getStatus() == QuestStatus.START) {
+			if ((targetId == 213730 || targetId == 213788 ||
+					targetId == 213789 || targetId == 213790 ||
+					targetId == 213791) && var == 3 && qs.getStatus() == QuestStatus.START) {
 				int var1 = qs.getQuestVarById(1);
 				int var2 = qs.getQuestVarById(2);
 				int var3 = qs.getQuestVarById(3);
@@ -137,27 +139,27 @@ public class _2057GlacionttheHardy extends QuestHandler {
 				int var5 = qs.getQuestVarById(5);
 				boolean killed = false;
 
-				if (targetId == 213730 && var1 == 0)// Glaciont the Hardy
+				if (targetId == 213730 && var1 == 0)//Glaciont the Hardy
 				{
 					qs.setQuestVarById(1, 1);
 					updateQuestStatus(env);
 					killed = true;
-				} else if (targetId == 213788 && var2 == 0)// Frostfist
+				} else if (targetId == 213788 && var2 == 0)//Frostfist
 				{
 					qs.setQuestVarById(2, 1);
 					updateQuestStatus(env);
 					killed = true;
-				} else if (targetId == 213789 && var3 == 0)// Iceback
+				} else if (targetId == 213789 && var3 == 0)//Iceback
 				{
 					qs.setQuestVarById(3, 1);
 					updateQuestStatus(env);
 					killed = true;
-				} else if (targetId == 213790 && var4 == 0)// Chillblow
+				} else if (targetId == 213790 && var4 == 0)//Chillblow
 				{
 					qs.setQuestVarById(4, 1);
 					updateQuestStatus(env);
 					killed = true;
-				} else if (targetId == 213791 && var5 == 0)// Snowfury
+				} else if (targetId == 213791 && var5 == 0)//Snowfury
 				{
 					qs.setQuestVarById(5, 1);
 					updateQuestStatus(env);

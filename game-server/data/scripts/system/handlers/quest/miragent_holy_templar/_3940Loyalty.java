@@ -24,15 +24,12 @@ import com.aionemu.gameserver.questEngine.model.QuestState;
 import com.aionemu.gameserver.questEngine.model.QuestStatus;
 
 /**
- * Quest starter: Lavirintos (203701). Collect the amulets (600) from Calydon
- * Chasers and Calydon Shamans and take them Lavirintos. Defeat Great Protectors
- * in the Eye of Reshanta (300): Aether's Defender (251002), Fire's Defender
- * (251021), Ancient Defender (251018), Nature's Defender (251039), Light's
- * Defender (251033), Shadow's Defender (251036). Talk with Lavirintos. Go to
- * the Dredgion and kill a Dredgion Captains (1): Captain Adhati (214823),
- * Captain Mituna (216850). Talk with Lavirintos. Fill yourself with Divine
- * Power and take Divine Hoat Stone (186000082) to High Priest Jucleas (203752)
- * for the final blessing ritual. Talk with Lavirintos.
+ * Quest starter: Lavirintos (203701). Collect the amulets (600) from Calydon Chasers and Calydon Shamans and take them 
+ * Lavirintos. Defeat Great Protectors in the Eye of Reshanta (300): Aether's Defender (251002), Fire's Defender (251021),
+ * Ancient Defender (251018), Nature's Defender (251039), Light's Defender (251033), Shadow's Defender (251036). Talk
+ * with Lavirintos. Go to the Dredgion and kill a Dredgion Captains (1): Captain Adhati (214823), Captain Mituna (216850).
+ * Talk with Lavirintos. Fill yourself with Divine Power and take Divine Hoat Stone (186000082) to High Priest Jucleas
+ * (203752) for the final blessing ritual. Talk with Lavirintos.
  * 
  * @author vlog, bobobear
  */
@@ -67,77 +64,83 @@ public class _3940Loyalty extends QuestHandler {
 			if (targetId == 203701) { // Lavirintos
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 4762);
-				} else {
+				}
+				else {
 					return sendQuestStartDialog(env);
 				}
 			}
 		}
-
+		
 		if (qs == null)
 			return false;
 
 		int var = qs.getQuestVars().getQuestVars();
-
+		
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203701: { // Lavirintos
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
-					} else if (var == 306) {
-						return sendQuestDialog(env, 1693);
-					} else if (var == 4) {
-						return sendQuestDialog(env, 2375);
+				case 203701: { // Lavirintos
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+							else if (var == 306) {
+								return sendQuestDialog(env, 1693);
+							}
+							else if (var == 4) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 0, 6, false, 10000, 10001); // 1
+						}
+						case FINISH_DIALOG: {
+							return defaultCloseDialog(env, 0, 0);
+						}
+						case STEP_TO_3: {
+							qs.setQuestVar(3); // 3
+							updateQuestStatus(env);
+							return sendQuestSelectionDialog(env);
+						}
+						case STEP_TO_5: {
+							return defaultCloseDialog(env, 4, 5); // 5
+						}
 					}
+					break;
 				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 0, 6, false, 10000, 10001); // 1
-				}
-				case FINISH_DIALOG: {
-					return defaultCloseDialog(env, 0, 0);
-				}
-				case STEP_TO_3: {
-					qs.setQuestVar(3); // 3
-					updateQuestStatus(env);
-					return sendQuestSelectionDialog(env);
-				}
-				case STEP_TO_5: {
-					return defaultCloseDialog(env, 4, 5); // 5
-				}
-				}
-				break;
-			}
-			case 203752: { // Jucleas
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 5) {
-						return sendQuestDialog(env, 2716);
+				case 203752: { // Jucleas
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 5) {
+								return sendQuestDialog(env, 2716);
+							}
+						}
+						case SELECT_ACTION_2718: {
+							if (player.getCommonData().getDp() >= 4000) {
+								return checkItemExistence(env, 5, 5, false, 186000083, 1, true, 2718, 2887, 0, 0);
+							}
+							else {
+								return sendQuestDialog(env, 2802);
+							}
+						}
+						case SET_REWARD: {
+							player.getCommonData().setDp(0);
+							return defaultCloseDialog(env, 5, 5, true, false); // reward
+						}
+						case FINISH_DIALOG: {
+							return defaultCloseDialog(env, 5, 5);
+						}
 					}
+					break;
 				}
-				case SELECT_ACTION_2718: {
-					if (player.getCommonData().getDp() >= 4000) {
-						return checkItemExistence(env, 5, 5, false, 186000083, 1, true, 2718, 2887, 0, 0);
-					} else {
-						return sendQuestDialog(env, 2802);
-					}
-				}
-				case SET_REWARD: {
-					player.getCommonData().setDp(0);
-					return defaultCloseDialog(env, 5, 5, true, false); // reward
-				}
-				case FINISH_DIALOG: {
-					return defaultCloseDialog(env, 5, 5);
-				}
-				}
-				break;
 			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203701) { // Lavirintos
 				if (dialog == QuestDialog.START_DIALOG) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}
@@ -161,7 +164,8 @@ public class _3940Loyalty extends QuestHandler {
 						return true;
 					}
 				}
-			} else if (var == 3) {
+			}
+			else if (var == 3) {
 				int[] npcids = { 214823, 216850 };
 				return defaultOnKillEvent(env, npcids, 3, 4); // 4
 			}

@@ -56,38 +56,41 @@ public class _2006HitThemWhereitHurts extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 203540: { // Mijou
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
-					} else if (var == 1) {
-						return sendQuestDialog(env, 1352);
+				case 203540: { // Mijou
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+							else if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 1, 1, true, 1438, 1353); // reward
+						}
+						case FINISH_DIALOG: {
+							return sendQuestSelectionDialog(env);
+						}
+					}
+					break;
+				}
+				case 700095: { // Mau Grain Sack
+					if (var == 1) {
+						return true; // give loot
 					}
 				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 1, 1, true, 1438, 1353); // reward
-				}
-				case FINISH_DIALOG: {
-					return sendQuestSelectionDialog(env);
-				}
-				}
-				break;
 			}
-			case 700095: { // Mau Grain Sack
-				if (var == 1) {
-					return true; // give loot
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 203516) { // Ulgorn
 				if (dialog == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 1693);
-				} else {
+				}
+				else {
 					return sendQuestEndDialog(env);
 				}
 			}

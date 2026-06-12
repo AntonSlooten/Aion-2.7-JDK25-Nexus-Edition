@@ -41,7 +41,7 @@ public class PetitionService {
 
 	private static Logger log = LoggerFactory.getLogger(PetitionService.class);
 
-	private static SortedMap<Integer, Petition> registeredPetitions = new TreeMap<>();
+	private static SortedMap<Integer, Petition> registeredPetitions = new TreeMap<Integer, Petition>();
 
 	public static final PetitionService getInstance() {
 		return SingletonHolder.instance;
@@ -61,17 +61,14 @@ public class PetitionService {
 	}
 
 	public void deletePetition(int playerObjId) {
-		Set<Petition> petitions = new HashSet<>();
+		Set<Petition> petitions = new HashSet<Petition>();
 		for (Petition p : registeredPetitions.values()) {
-			if (p.getPlayerObjId() == playerObjId) {
+			if (p.getPlayerObjId() == playerObjId)
 				petitions.add(p);
-			}
 		}
-		for (Petition p : petitions) {
-			if (registeredPetitions.containsKey(p.getPetitionId())) {
+		for (Petition p : petitions)
+			if(registeredPetitions.containsKey(p.getPetitionId()))
 				registeredPetitions.remove(p.getPetitionId());
-			}
-		}
 
 		DAOManager.getDAO(PetitionDAO.class).deletePetition(playerObjId);
 		if (playerObjId > 0 && World.getInstance().findPlayer(playerObjId) != null) {
@@ -93,7 +90,7 @@ public class PetitionService {
 	}
 
 	public synchronized Petition registerPetition(Player sender, int typeId, String title, String contentText,
-			String additionalData) {
+		String additionalData) {
 		int id = DAOManager.getDAO(PetitionDAO.class).getNextAvailableId();
 		Petition ptt = new Petition(id, sender.getObjectId(), typeId, title, contentText, additionalData, 0);
 		DAOManager.getDAO(PetitionDAO.class).insertPetition(ptt);
@@ -105,9 +102,8 @@ public class PetitionService {
 	private void rebroadcastPlayerData() {
 		for (Petition p : registeredPetitions.values()) {
 			Player player = World.getInstance().findPlayer(p.getPlayerObjId());
-			if (player != null) {
+			if (player != null)
 				PacketSendUtility.sendPacket(player, new SM_PETITION(p));
-			}
 		}
 	}
 
@@ -116,8 +112,8 @@ public class PetitionService {
 		while (players.hasNext()) {
 			Player p = players.next();
 			if (p.getAccessLevel() > 0) {
-				PacketSendUtility.sendBrightYellowMessageOnCenter(p,
-						"New Support Petition from: " + sender.getName() + " (#" + petitionId + ")");
+				PacketSendUtility
+					.sendBrightYellowMessageOnCenter(p, "New Support Petition from: " + sender.getName() + " (#" + petitionId + ")");
 			}
 		}
 	}
@@ -129,18 +125,16 @@ public class PetitionService {
 	public boolean hasRegisteredPetition(int playerObjId) {
 		boolean result = false;
 		for (Petition p : registeredPetitions.values()) {
-			if (p.getPlayerObjId() == playerObjId) {
+			if (p.getPlayerObjId() == playerObjId)
 				result = true;
-			}
 		}
 		return result;
 	}
 
 	public Petition getPetition(int playerObjId) {
 		for (Petition p : registeredPetitions.values()) {
-			if (p.getPlayerObjId() == playerObjId) {
+			if (p.getPlayerObjId() == playerObjId)
 				return p;
-			}
 		}
 		return null;
 	}
@@ -152,9 +146,8 @@ public class PetitionService {
 	public int getWaitingPlayers(int playerObjId) {
 		int counter = 0;
 		for (Petition p : registeredPetitions.values()) {
-			if (p.getPlayerObjId() == playerObjId) {
+			if (p.getPlayerObjId() == playerObjId)
 				break;
-			}
 			counter++;
 		}
 		return counter;
@@ -165,9 +158,8 @@ public class PetitionService {
 		int timeBetweenPetition = 30;
 		int result = timeBetweenPetition;
 		for (Petition p : registeredPetitions.values()) {
-			if (p.getPlayerObjId() == playerObjId) {
+			if (p.getPlayerObjId() == playerObjId)
 				break;
-			}
 			result += timePerPetition;
 			result += timeBetweenPetition;
 		}
@@ -175,9 +167,8 @@ public class PetitionService {
 	}
 
 	public void onPlayerLogin(Player player) {
-		if (hasRegisteredPetition(player)) {
+		if (hasRegisteredPetition(player))
 			PacketSendUtility.sendPacket(player, new SM_PETITION(getPetition(player.getObjectId())));
-		}
 	}
 
 	@SuppressWarnings("synthetic-access")

@@ -25,7 +25,7 @@ import com.aionemu.gameserver.spawnengine.VisibleObjectSpawner;
  * @author antness thx to Guapo for sniffing
  */
 public class CM_READ_EXPRESS_MAIL extends AionClientPacket {
-
+	
 	private int action;
 
 	public CM_READ_EXPRESS_MAIL(int opcode, State state, State... restStates) {
@@ -39,29 +39,28 @@ public class CM_READ_EXPRESS_MAIL extends AionClientPacket {
 
 	@Override
 	protected void runImpl() {
-
+		
 		final Player player = getConnection().getActivePlayer();
 		boolean haveUnreadExpress = player.getMailbox().haveUnreadExpress();
 		switch (this.action) {
-		case 0:
-			// window is closed
-			if (player.getPostman() != null && !haveUnreadExpress) {
-				player.getPostman().getController().onDelete();
-				player.setPostman(null);
-			}
-			break;
-		case 1:
-			// spawn postman
-			if (player.getPostman() != null) {
-				player.getPostman().getController().onDelete();
-				player.setPostman(null);
-			}
-			if (haveUnreadExpress) {
-				VisibleObjectSpawner.spawnPostman(player);
-			}
-			break;
+			case 0:
+				// window is closed
+				if (player.getPostman() != null && !haveUnreadExpress) {
+					player.getPostman().getController().onDelete();
+					player.setPostman(null);
+				}
+				break;
+			case 1:
+				// spawn postman
+				if (player.getPostman() != null) {
+					player.getPostman().getController().onDelete();
+					player.setPostman(null);
+				}
+				if (haveUnreadExpress) {
+					VisibleObjectSpawner.spawnPostman(player);
+				}
+				break;
 		}
-		// PacketSendUtility.sendPacket(player, new
-		// SM_MAIL_SERVICE(player.getMailbox()));
+		// PacketSendUtility.sendPacket(player, new SM_MAIL_SERVICE(player.getMailbox()));
 	}
 }

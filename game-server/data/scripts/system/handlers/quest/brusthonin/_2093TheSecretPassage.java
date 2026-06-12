@@ -32,8 +32,7 @@ import com.aionemu.gameserver.questEngine.model.QuestStatus;
  * Talk with Cayron (205198).<br>
  * Find Book of Brohum (730174).<br>
  * Talk with Cayron.<br>
- * Go to Old Nahor Castle and find the key to the secret passage (182209012 need
- * to add) in Old Wooden Box (700395).<br>
+ * Go to Old Nahor Castle and find the key to the secret passage (182209012 need to add) in Old Wooden Box (700395).<br>
  * Report back to Surt.
  * 
  * @author Hellboy Aion4Free
@@ -73,111 +72,114 @@ public class _2093TheSecretPassage extends QuestHandler {
 
 		if (qs.getStatus() == QuestStatus.START) {
 			switch (targetId) {
-			case 205150: { // Surt
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 0) {
-						return sendQuestDialog(env, 1011);
+				case 205150: { // Surt
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 0) {
+								return sendQuestDialog(env, 1011);
+							}
+						}
+						case SELECT_ACTION_1012: {
+							playQuestMovie(env, 397);
+							return sendQuestDialog(env, 1012);
+						}
+						case STEP_TO_1: {
+							return defaultCloseDialog(env, 0, 1); // 1
+						}
+					}
+					break;
+				}
+				case 205159: { // Neligor
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 1) {
+								return sendQuestDialog(env, 1352);
+							}
+						}
+						case STEP_TO_2: {
+							return defaultCloseDialog(env, 1, 2); // 2
+						}
+					}
+					break;
+				}
+				case 205164: { // BuBu Khaaan
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 2) {
+								return sendQuestDialog(env, 1693);
+							}
+						}
+						case STEP_TO_3: {
+							return defaultCloseDialog(env, 2, 3); // 3
+						}
+					}
+					break;
+				}
+				case 205197: { // BuBu Chan
+					switch (dialog) {
+						case START_DIALOG: {
+							if (var == 3) {
+								return sendQuestDialog(env, 2034);
+							}
+							if (var == 4) {
+								return sendQuestDialog(env, 2375);
+							}
+						}
+						case STEP_TO_4: {
+							return defaultCloseDialog(env, 3, 4); // 4
+						}
+						case STEP_TO_5: {
+							return defaultCloseDialog(env, 4, 4);
+						}
+						case CHECK_COLLECTED_ITEMS: {
+							return checkQuestItems(env, 4, 5, false, 10000, 10001);
+						}
+					}
+					break;
+				}
+				case 205198: { // Cayron
+					switch (env.getDialog()) {
+						case START_DIALOG: {
+							if (var == 5) {
+								return sendQuestDialog(env, 2716);
+							}
+							else if (var == 7) {
+								return sendQuestDialog(env, 3398);
+							}
+						}
+						case SELECT_ACTION_3399: {
+							playQuestMovie(env, 398);
+							removeQuestItem(env, 182209011, 1);
+							return sendQuestDialog(env, 3399);
+						}
+						case STEP_TO_6: {
+							return defaultCloseDialog(env, 5, 6); // 6
+						}
+						case STEP_TO_8: {
+							return defaultCloseDialog(env, 7, 8); // 8
+						}
+					}
+					break;
+				}
+				case 730174: { // Brohum
+					if (dialog == QuestDialog.USE_OBJECT && var == 6) {
+						return true; // loot
+					}
+					break;
+				}
+				case 700395: { // Old Wooden Box
+					if (dialog == QuestDialog.USE_OBJECT && var == 8) {
+						return true; // loot
 					}
 				}
-				case SELECT_ACTION_1012: {
-					playQuestMovie(env, 397);
-					return sendQuestDialog(env, 1012);
-				}
-				case STEP_TO_1: {
-					return defaultCloseDialog(env, 0, 1); // 1
-				}
-				}
-				break;
 			}
-			case 205159: { // Neligor
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 1) {
-						return sendQuestDialog(env, 1352);
-					}
-				}
-				case STEP_TO_2: {
-					return defaultCloseDialog(env, 1, 2); // 2
-				}
-				}
-				break;
-			}
-			case 205164: { // BuBu Khaaan
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 2) {
-						return sendQuestDialog(env, 1693);
-					}
-				}
-				case STEP_TO_3: {
-					return defaultCloseDialog(env, 2, 3); // 3
-				}
-				}
-				break;
-			}
-			case 205197: { // BuBu Chan
-				switch (dialog) {
-				case START_DIALOG: {
-					if (var == 3) {
-						return sendQuestDialog(env, 2034);
-					}
-					if (var == 4) {
-						return sendQuestDialog(env, 2375);
-					}
-				}
-				case STEP_TO_4: {
-					return defaultCloseDialog(env, 3, 4); // 4
-				}
-				case STEP_TO_5: {
-					return defaultCloseDialog(env, 4, 4);
-				}
-				case CHECK_COLLECTED_ITEMS: {
-					return checkQuestItems(env, 4, 5, false, 10000, 10001);
-				}
-				}
-				break;
-			}
-			case 205198: { // Cayron
-				switch (env.getDialog()) {
-				case START_DIALOG: {
-					if (var == 5) {
-						return sendQuestDialog(env, 2716);
-					} else if (var == 7) {
-						return sendQuestDialog(env, 3398);
-					}
-				}
-				case SELECT_ACTION_3399: {
-					playQuestMovie(env, 398);
-					removeQuestItem(env, 182209011, 1);
-					return sendQuestDialog(env, 3399);
-				}
-				case STEP_TO_6: {
-					return defaultCloseDialog(env, 5, 6); // 6
-				}
-				case STEP_TO_8: {
-					return defaultCloseDialog(env, 7, 8); // 8
-				}
-				}
-				break;
-			}
-			case 730174: { // Brohum
-				if (dialog == QuestDialog.USE_OBJECT && var == 6) {
-					return true; // loot
-				}
-				break;
-			}
-			case 700395: { // Old Wooden Box
-				if (dialog == QuestDialog.USE_OBJECT && var == 8) {
-					return true; // loot
-				}
-			}
-			}
-		} else if (qs.getStatus() == QuestStatus.REWARD) {
+		}
+		else if (qs.getStatus() == QuestStatus.REWARD) {
 			if (targetId == 205150) { // Surt
 				if (env.getDialog() == QuestDialog.USE_OBJECT) {
 					return sendQuestDialog(env, 10002);
-				} else {
+				}
+				else {
 					removeQuestItem(env, 182209012, 1);
 					return sendQuestEndDialog(env);
 				}
@@ -194,7 +196,8 @@ public class _2093TheSecretPassage extends QuestHandler {
 			int var = qs.getQuestVarById(0);
 			if (var == 6) {
 				return defaultOnGetItemEvent(env, 6, 7, false); // 7
-			} else if (var == 8) {
+			}
+			else if (var == 8) {
 				return defaultOnGetItemEvent(env, 8, 8, true); // reward
 			}
 		}

@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -36,7 +36,7 @@ import com.aionemu.gameserver.world.World;
 
 /**
  * Packet that reads Whisper chat messages.<br>
- *
+ * 
  * @author SoulKeeper
  */
 public class CM_CHAT_MESSAGE_WHISPER extends AionClientPacket {
@@ -58,7 +58,7 @@ public class CM_CHAT_MESSAGE_WHISPER extends AionClientPacket {
 
 	/**
 	 * Constructs new client packet instance.
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_CHAT_MESSAGE_WHISPER(int opcode, State state, State... restStates) {
@@ -85,29 +85,26 @@ public class CM_CHAT_MESSAGE_WHISPER extends AionClientPacket {
 		Player sender = getConnection().getActivePlayer();
 		Player receiver = World.getInstance().findPlayer(formatname);
 
-		if (LoggingConfig.LOG_CHAT) {
-			log.info(
-					String.format("[MESSAGE] [%s] Whisper To: %s, Message: %s", sender.getName(), formatname, message));
-		}
+		if (LoggingConfig.LOG_CHAT)
+			log.info(String.format("[MESSAGE] [%s] Whisper To: %s, Message: %s", sender.getName(), formatname, message));
 
-		if (receiver == null) {
+		if (receiver == null)
 			sendPacket(SM_SYSTEM_MESSAGE.STR_NO_SUCH_USER(formatname));
-		} else if (receiver.getCommonData().getGmConfig(GmConfig.GM_WHISPER_OFF)
-				&& receiver.getAccessLevel() > sender.getAccessLevel()) {
+		else if (receiver.getCommonData().getGmConfig(GmConfig.GM_WHISPER_OFF) && receiver.getAccessLevel() > sender.getAccessLevel()) {
 			PacketSendUtility.sendMessage(sender, "You can't talk with this gm.");
 			return;
-		} else if (sender.getLevel() < CustomConfig.LEVEL_TO_WHISPER) {
+		}
+		else if (sender.getLevel() < CustomConfig.LEVEL_TO_WHISPER)
 			sendPacket(SM_SYSTEM_MESSAGE.STR_CANT_WHISPER_LEVEL(String.valueOf(CustomConfig.LEVEL_TO_WHISPER)));
-		} else if (receiver.getBlockList().contains(sender.getObjectId())) {
+		else if (receiver.getBlockList().contains(sender.getObjectId()))
 			sendPacket(SM_SYSTEM_MESSAGE.STR_YOU_EXCLUDED(receiver.getName()));
-		} else if ((!CustomConfig.SPEAKING_BETWEEN_FACTIONS)
-				&& (sender.getRace().getRaceId() != receiver.getRace().getRaceId()) && (sender.getAccessLevel() == 0)
-				&& (receiver.getAccessLevel() == 0)) {
+		else if ((!CustomConfig.SPEAKING_BETWEEN_FACTIONS)
+			&& (sender.getRace().getRaceId() != receiver.getRace().getRaceId())
+			&& (sender.getAccessLevel() == 0) && (receiver.getAccessLevel() == 0))
 			sendPacket(SM_SYSTEM_MESSAGE.STR_NO_SUCH_USER(formatname));
-		} else {
-			if (RestrictionsManager.canChat(sender)) {
+		else {
+			if (RestrictionsManager.canChat(sender))
 				PacketSendUtility.sendPacket(receiver, new SM_MESSAGE(sender, message, ChatType.WHISPER));
-			}
 		}
 	}
 }

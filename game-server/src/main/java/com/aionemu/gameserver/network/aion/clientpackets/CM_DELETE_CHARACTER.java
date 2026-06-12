@@ -1,4 +1,4 @@
-/*
+/**
  * This file is part of aion-emu <aion-emu.com>.
  *
  *  aion-emu is free software: you can redistribute it and/or modify
@@ -31,7 +31,7 @@ import com.aionemu.gameserver.services.player.PlayerService;
 
 /**
  * In this packets aion client is requesting deletion of character.
- *
+ * 
  * @author -Nemesiss-
  */
 public class CM_DELETE_CHARACTER extends AionClientPacket {
@@ -48,7 +48,7 @@ public class CM_DELETE_CHARACTER extends AionClientPacket {
 
 	/**
 	 * Constructs new instance of <tt>CM_DELETE_CHARACTER </tt> packet
-	 *
+	 * 
 	 * @param opcode
 	 */
 	public CM_DELETE_CHARACTER(int opcode, State state, State... restStates) {
@@ -76,19 +76,20 @@ public class CM_DELETE_CHARACTER extends AionClientPacket {
 			if (GSConfig.PASSKEY_ENABLE && !client.getAccount().getCharacterPasskey().isPass()) {
 				client.getAccount().getCharacterPasskey().setConnectType(ConnectType.DELETE);
 				client.getAccount().getCharacterPasskey().setObjectId(chaOid);
-				boolean isExistPasskey = DAOManager.getDAO(PlayerPasskeyDAO.class)
-						.existCheckPlayerPasskey(client.getAccount().getId());
+				boolean isExistPasskey = DAOManager.getDAO(PlayerPasskeyDAO.class).existCheckPlayerPasskey(
+					client.getAccount().getId());
 
-				if (!isExistPasskey) {
+				if (!isExistPasskey)
 					client.sendPacket(new SM_CHARACTER_SELECT(0));
-				} else {
+				else
 					client.sendPacket(new SM_CHARACTER_SELECT(1));
-				}
-			} else {
+			}
+			else {
 				PlayerService.deletePlayer(playerAccData);
 				client.sendPacket(new SM_DELETE_CHARACTER(chaOid, playerAccData.getDeletionTimeInSeconds()));
 			}
-		} else {
+		}
+		else {
 			client.sendPacket(SM_SYSTEM_MESSAGE.STR_GUILD_DISPERSE_STAYMODE_CANCEL_1);
 		}
 	}

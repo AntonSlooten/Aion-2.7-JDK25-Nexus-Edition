@@ -16,7 +16,7 @@
  */
 package ai;
 
-
+import static ch.lambdaj.Lambda.maxFrom;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -58,7 +58,7 @@ public class ChestAI2 extends ActionItemNpcAI2 {
 
 	@Override
 	protected void handleUseItemFinish(Player player) {
-		if (isOpen) {
+		if(isOpen){
 			return;
 		}
 		if (analyzeOpening(player)) {
@@ -69,19 +69,21 @@ public class ChestAI2 extends ActionItemNpcAI2 {
 					if (MathUtil.isIn3dRange(member, getOwner(), GroupConfig.GROUP_MAX_DISTANCE))
 						players.add(member);
 				}
-			} else if (player.isInAlliance2()) {
+			}
+			else if (player.isInAlliance2()) {
 				for (Player member : player.getPlayerAlliance2().getOnlineMembers()) {
 					if (MathUtil.isIn3dRange(member, getOwner(), GroupConfig.GROUP_MAX_DISTANCE))
 						players.add(member);
 				}
-			} else
+			}
+			else
 				players.add(player);
-
-int maxLevel = players.stream().mapToInt(Player::getLevel).max().orElse(player.getLevel());
-			DropRegistrationService.getInstance().registerDrop(getOwner(), player, maxLevel, players);
+			
+			DropRegistrationService.getInstance().registerDrop(getOwner(), player, maxFrom(players).getLevel(), players);
 			AI2Actions.dieSilently(this, player);
 			DropService.getInstance().requestDropList(player, getObjectId());
-		} else {
+		}
+		else {
 			PacketSendUtility.sendPacket(player, new SM_SYSTEM_MESSAGE(1111301));
 		}
 	}
@@ -106,7 +108,8 @@ int maxLevel = players.stream().mapToInt(Player::getLevel).max().orElse(player.g
 				}
 				i++;
 				continue;
-			} else {
+			}
+			else {
 				return false;
 			}
 		}

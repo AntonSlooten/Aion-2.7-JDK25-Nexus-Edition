@@ -32,7 +32,7 @@ import com.aionemu.gameserver.world.World;
 
 /**
  * Received when a player searches using the social search panel
- *
+ * 
  * @author Ben
  */
 public class CM_PLAYER_SEARCH extends AionClientPacket {
@@ -40,7 +40,7 @@ public class CM_PLAYER_SEARCH extends AionClientPacket {
 	/**
 	 * The max number of players to return as results
 	 */
-	public static final int MAX_RESULTS = 110; // 2.5
+	public static final int MAX_RESULTS = 110; //2.5
 
 	private String name;
 	private int region;
@@ -79,7 +79,7 @@ public class CM_PLAYER_SEARCH extends AionClientPacket {
 
 		Iterator<Player> it = World.getInstance().getPlayersIterator();
 
-		List<Player> matches = new ArrayList<>(MAX_RESULTS);
+		List<Player> matches = new ArrayList<Player>(MAX_RESULTS);
 
 		if (activePlayer.getLevel() < CustomConfig.LEVEL_TO_SEARCH) {
 			sendPacket(SM_SYSTEM_MESSAGE.STR_CANT_WHO_LEVEL(String.valueOf(CustomConfig.LEVEL_TO_SEARCH)));
@@ -87,27 +87,29 @@ public class CM_PLAYER_SEARCH extends AionClientPacket {
 		}
 		while (it.hasNext() && matches.size() < MAX_RESULTS) {
 			Player player = it.next();
-			if (!player.isSpawned()) {
+			if (!player.isSpawned())
 				continue;
-			} else if (player.getFriendList().getStatus() == Status.OFFLINE) {
+			else if (player.getFriendList().getStatus() == Status.OFFLINE)
 				continue;
-			} else if (player.isGM() && !CustomConfig.SEARCH_GM_LIST) {
+			else if (player.isGM() && !CustomConfig.SEARCH_GM_LIST){
 				continue;
-			} else if (lfgOnly == 1 && !player.isLookingForGroup()) {
+			}
+			else if (lfgOnly == 1 && !player.isLookingForGroup())
 				continue;
-			} else if (!name.isEmpty() && !player.getName().toLowerCase().contains(name.toLowerCase())) {
+			else if (!name.isEmpty() && !player.getName().toLowerCase().contains(name.toLowerCase()))
 				continue;
-			} else if (minLevel != 0xFF && player.getLevel() < minLevel) {
+			else if (minLevel != 0xFF && player.getLevel() < minLevel)
 				continue;
-			} else if (maxLevel != 0xFF && player.getLevel() > maxLevel) {
+			else if (maxLevel != 0xFF && player.getLevel() > maxLevel)
 				continue;
-			} else if (classMask > 0 && (player.getPlayerClass().getMask() & classMask) == 0) {
+			else if (classMask > 0 && (player.getPlayerClass().getMask() & classMask) == 0)
 				continue;
-			} else if (region > 0 && player.getActiveRegion().getMapId() != region) {
+			else if (region > 0 && player.getActiveRegion().getMapId() != region)
 				continue;
-			} else if ((player.getRace() != activePlayer.getRace()) && !CustomConfig.FACTIONS_SEARCH_MODE) {
+			else if ((player.getRace() != activePlayer.getRace())
+				&& (CustomConfig.FACTIONS_SEARCH_MODE == false))
 				continue;
-			} else
+			else
 			// This player matches criteria
 			{
 				matches.add(player);
