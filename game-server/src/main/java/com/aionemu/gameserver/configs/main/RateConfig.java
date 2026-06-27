@@ -269,4 +269,15 @@ public class RateConfig {
 	@Property(key = "gameserver.rate.nerf.drop.stuff", defaultValue = "2")
 	public static int NERF_STUFF_DROP_MOB;
 
+	/**
+	 * Rates which affect gathering and node harvest - Regular (1), Premium (2), VIP (3)
+	 * ----------------------------
+	 * Gathering Rates:
+	 * ----------------------------
+	 * Changes how many items are gathered from a shining vortex, or a harvestable plant*
+	 * */
+
+	@Property(key = "gameserver.rate.gather.count", defaultValue = "1")
+	public static int GATHER_COUNT;
+
 }

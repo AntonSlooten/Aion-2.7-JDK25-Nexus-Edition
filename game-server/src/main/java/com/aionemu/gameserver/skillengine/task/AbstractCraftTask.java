@@ -16,6 +16,8 @@
  */
 package com.aionemu.gameserver.skillengine.task;
 
+import java.util.Random;
+
 import com.aionemu.commons.utils.Rnd;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -29,6 +31,9 @@ public abstract class AbstractCraftTask extends AbstractInteractionTask {
 	protected int currentSuccessValue;
 	protected int currentFailureValue;
 	protected int skillLvlDiff;
+	private final Random rng = new Random();
+	private final float maxSuccessAmount = 60f;
+    private final float maxFailureAmount = 60f;
 
 	/**
 	 * @param requestor
@@ -38,15 +43,15 @@ public abstract class AbstractCraftTask extends AbstractInteractionTask {
 	 */
 	public AbstractCraftTask(Player requestor, VisibleObject responder, int skillLvlDiff) {
 		super(requestor, responder);
-		this.skillLvlDiff = skillLvlDiff;
+		this.skillLvlDiff = Math.abs(skillLvlDiff);
 	}
 
 	@Override
 	protected boolean onInteraction() {
-		if (currentSuccessValue == completeValue) {
+		if (currentSuccessValue >= completeValue) {
 			return onSuccessFinish();
 		}
-		if (currentFailureValue == completeValue) {
+		if (currentFailureValue >= completeValue) {
 			onFailureFinish();
 			return true;
 		}
@@ -58,25 +63,44 @@ public abstract class AbstractCraftTask extends AbstractInteractionTask {
 	}
 
 	/**
-	 * Perform interaction calculation
+	 * Perform interaction calculation.
+	 * If the skill level is greater than 40, lets just give it to them immediately. This costs about 3.5 Second of time. 
+	 * At skillLvlDiff of 0 you have about a 50% chance of success per interation, and that drops linearly to 0 at skillLvlDiff of 40
+	 * There is also a "maxSuccessAmount" which is the maximum value that can be added during the interation. 
+	 * The max amount is multiplied by a random value between your chance of success and 1 to add some random effect to the gathering mechanism.
+	 * The fail rate has the same thing, but has a higher chance for a lower maxFailureAmmount, by means of a widening band of RNG (1-successRate)
+	 * Generally speaking it makes it hard to fail, but the gathering time reduces signficantly as you get better.
+	 * 
+	 * The end result here respects peoples time, and allows some skill levels to make a difference. 
 	 */
 	private void analyzeInteraction() {
-		// TODO better random
-		// if(Rnd.nextBoolean())
-		int multi = Math.max(0, 33 - skillLvlDiff * 5);
-		if (Rnd.get(100) > multi) {
-			currentSuccessValue += Rnd.get(completeValue / (multi + 1) / 2, completeValue);
+
+		if(Math.abs(skillLvlDiff) >= 40 )
+		{
+			currentSuccessValue += completeValue;
+			return;
+		}
+		double successRate = successMap(skillLvlDiff);
+		if(rng.nextDouble() <= successRate) {
+			currentSuccessValue += maxSuccessAmount * rng.nextDouble(successRate, 1);
+			currentSuccessValue = Math.min(currentSuccessValue, completeValue);
 		}
 		else {
-			currentFailureValue += Rnd.get(completeValue / (multi + 1) / 2, completeValue);
+			currentFailureValue += maxFailureAmount * rng.nextDouble((1-successRate), 1);
+			currentFailureValue = Math.min(currentFailureValue, completeValue);
 		}
 
-		if (currentSuccessValue >= completeValue) {
-			currentSuccessValue = completeValue;
-		}
-		else if (currentFailureValue >= completeValue) {
-			currentFailureValue = completeValue;
-		}
+	}
+	/**
+	 * Maps the chance of success for each "interaction, and linearly extrapolates it between 50 -> 100%
+	 * @param skillDifference
+	 * @return % chance of success
+	 */
+	static double successMap(double skillDifference) {
+
+		double slope = (1 - 0.5) / (40 - 0);
+		return 0.5 + slope * (skillDifference - 0);
+
 	}
 
 	protected abstract void sendInteractionUpdate();

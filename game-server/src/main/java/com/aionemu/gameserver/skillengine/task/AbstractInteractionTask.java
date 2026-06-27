@@ -28,7 +28,7 @@ import com.aionemu.gameserver.utils.ThreadPoolManager;
 public abstract class AbstractInteractionTask {
 
 	private Future<?> task;
-	private int interval = 2500;
+	protected int interval = 2500;
 
 	protected Player requestor;
 	protected VisibleObject responder;
