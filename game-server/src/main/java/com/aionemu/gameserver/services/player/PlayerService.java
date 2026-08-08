@@ -66,6 +66,7 @@ import com.aionemu.gameserver.model.account.Account;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
 import com.aionemu.gameserver.model.gameobjects.Item;
 import com.aionemu.gameserver.model.gameobjects.PersistentState;
+import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.Equipment;
 import com.aionemu.gameserver.model.gameobjects.player.MacroList;
 import com.aionemu.gameserver.model.gameobjects.player.Mailbox;
@@ -180,6 +181,24 @@ public class PlayerService {
 		if (player != null)
 			return player;
 
+		player = loadPlayer(playerObjId, account, false);
+
+		if (CacheConfig.CACHE_PLAYERS)
+			playerCache.put(playerObjId, player);
+
+		return player;
+	}
+
+	/**
+	 * Loads one of the account's own characters as a connectionless {@link BotPlayer}, for use as a
+	 * companion bot. Never touches {@link #playerCache} - a bot instance must never be handed back to a
+	 * later real login of the same character.
+	 */
+	public static Player getBotPlayer(int playerObjId, Account account) {
+		return loadPlayer(playerObjId, account, true);
+	}
+
+	private static Player loadPlayer(int playerObjId, Account account, boolean bot) {
 		/**
 		 * Player common data and appearance should be already loaded in account
 		 */
@@ -188,7 +207,8 @@ public class PlayerService {
 		PlayerCommonData pcd = playerAccountData.getPlayerCommonData();
 		PlayerAppearance appearance = playerAccountData.getAppereance();
 
-		player = new Player(new PlayerController(), pcd, appearance, account);
+		Player player = bot ? new BotPlayer(new PlayerController(), pcd, appearance, account)
+			: new Player(new PlayerController(), pcd, appearance, account);
 
 		LegionMember legionMember = LegionService.getInstance().getLegionMember(player.getObjectId());
 		if (legionMember != null)
@@ -274,9 +294,6 @@ public class PlayerService {
 		
 		// analyze current instance
 		InstanceService.onPlayerLogin(player);
-		
-		if (CacheConfig.CACHE_PLAYERS)
-			playerCache.put(playerObjId, player);
 
 		return player;
 	}

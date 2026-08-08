@@ -67,7 +67,18 @@ public class AggroList {
 		/**
 		 * For now we add hate equal to each damage received Additionally there will be broadcast of extra hate
 		 */
-		ai.addHate(damage);
+		// A resisted/missed/grazed hit still deals real (0) damage here, but MUST still register at
+		// least 1 hate: GeneralNpcAI2.chooseAttackIntention() - invoked synchronously from this same
+		// call via the ATTACK event fired below, on literally the FIRST attack that transitions the Npc
+		// into FIGHT - immediately returns FINISH_ATTACK whenever getMostHated() is null, and
+		// getMostHated() requires hate > 0 to consider an aggro entry at all (a zero-hate entry is
+		// indistinguishable from "nothing here yet"). Without this, an opening hit that happens to deal
+		// zero net damage makes the Npc "give up" instantly - before ever swinging back - clearing its
+		// aggro and starting NpcLifeStats' 25%-per-tick "resting" regen while still visibly under attack.
+		// Far likelier with a large level gap (steep miss/resist chance) and/or several simultaneous
+		// attackers (more chances for whichever hit lands first to be the unlucky one) - confirmed live
+		// with a level 6 companion bot's opening hit on a much higher-level target.
+		ai.addHate(Math.max(damage, 1));
 
 		// TODO move out to controller
 		owner.getAi2().onCreatureEvent(AIEventType.ATTACK, creature);

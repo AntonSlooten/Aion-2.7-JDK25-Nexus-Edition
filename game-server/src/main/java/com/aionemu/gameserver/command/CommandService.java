@@ -150,6 +150,7 @@ public class CommandService {
 		/* ### PLAYER ### */
 		commands.put("answer", new CmdAnswer());
 		commands.put("buff", new CmdBuff());
+		commands.put("companion", new CmdCompanion());
 		commands.put("commands", new CmdCommands());
 		commands.put("delitem", new CmdDelItem());
 		commands.put("enchant", new CmdEnchant());

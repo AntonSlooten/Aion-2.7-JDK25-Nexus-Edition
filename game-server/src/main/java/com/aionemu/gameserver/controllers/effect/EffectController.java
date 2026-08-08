@@ -578,6 +578,15 @@ public class EffectController {
 		return false;
 	}
 
+	/**
+	 * Number of currently active toggle-type effects (Chanter mantras and similar stances - see the
+	 * 3-slot eviction rule in addEffect() above). Lets callers avoid triggering that eviction on purpose
+	 * (e.g. deciding whether adding one more toggle is worthwhile) without needing direct map access.
+	 */
+	public int getNoshowEffectCount() {
+		return noshowEffects.size();
+	}
+
 	public boolean isPassivePresentBySkillId(int skillId) {
 		for (Effect effect : passiveEffectMap.values()) {
 			if (effect.getSkillId() == skillId)

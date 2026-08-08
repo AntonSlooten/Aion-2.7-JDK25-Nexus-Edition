@@ -207,6 +207,19 @@ public class Effects {
 	}
 
 	/**
+	 * True for a skill that removes debuffs from its (friendly) target - as opposed to DispelBuffEffect,
+	 * which strips buffs from an enemy and is a completely different, hostile use case.
+	 */
+	public boolean isCleanse() {
+		for (EffectTemplate template : getEffects()) {
+			if ((template instanceof DispelDebuffEffect) || (template instanceof DispelDebuffPhysicalEffect)
+				|| (template instanceof DispelDebuffMentalEffect))
+				return true;
+		}
+		return false;
+	}
+
+	/**
 	 * @return
 	 */
 	public boolean isItemHealFp() {

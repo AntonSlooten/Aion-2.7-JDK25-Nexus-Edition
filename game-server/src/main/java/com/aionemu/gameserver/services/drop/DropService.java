@@ -16,6 +16,9 @@
  */
 package com.aionemu.gameserver.services.drop;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.aionemu.commons.objects.filter.ObjectFilter;
 import com.aionemu.gameserver.configs.main.DropConfig;
 import com.aionemu.gameserver.model.DescriptionId;
@@ -26,6 +29,7 @@ import com.aionemu.gameserver.model.gameobjects.DropNpc;
 import com.aionemu.gameserver.model.gameobjects.Item;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
+import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.InRoll;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.state.CreatureState;
@@ -230,19 +234,36 @@ public class DropService {
 				boolean containDropItem = lootGrouRules.containDropItem(requestedItem);
 				if (lootGrouRules.getItemsToBeDistributed().isEmpty() || containDropItem) {
 					dropNpc.setCurrentIndex(requestedItem.getIndex());
+					// Bots are connectionless and never send a CM_GROUP_LOOT response, so left alone they'd
+					// just sit in dropNpc.getPlayerStatus() (and therefore block distributeLoot()'s
+					// getPlayerStatus().isEmpty() check for everyone else in range) for the full 17-32s
+					// timeout on every single roll-eligible drop. Collected here rather than resolved
+					// inline so every real player's status entry is registered first - resolving a bot's
+					// roll can trigger distributeLoot() immediately, which must not fire before the rest
+					// of this loop has finished adding everyone else.
+					List<BotPlayer> botsToAutoSkip = new ArrayList<BotPlayer>();
 					for (Player member : dropNpc.getInRangePlayers()) {
 						Player finalPlayer = World.getInstance().findPlayer(member.getObjectId());
 						if (finalPlayer != null && finalPlayer.isOnline()) {
 							dropNpc.addPlayerStatus(finalPlayer);
 							finalPlayer.setInRoll(new InRoll(npcId, itemId, requestedItem.getIndex(), dropNpc.getDistributionId()));
-							PacketSendUtility.sendPacket(finalPlayer, new SM_GROUP_LOOT(finalPlayer.getCurrentTeamId(), 0, itemId,
-								npcId, dropNpc.getDistributionId(), 1, requestedItem.getIndex()));
+							if (finalPlayer instanceof BotPlayer)
+								botsToAutoSkip.add((BotPlayer) finalPlayer);
+							else
+								PacketSendUtility.sendPacket(finalPlayer, new SM_GROUP_LOOT(finalPlayer.getCurrentTeamId(), 0, itemId,
+									npcId, dropNpc.getDistributionId(), 1, requestedItem.getIndex()));
 						}
 					}
 					lootGrouRules.setPlayersInRoll(dropNpc.getInRangePlayers(), dropNpc.getDistributionId() == 2 ? 17000
 						: 32000, requestedItem.getIndex(), npcId);
 					if (!containDropItem) {
 						lootGrouRules.addItemToBeDistributed(requestedItem);
+					}
+					for (BotPlayer bot : botsToAutoSkip) {
+						if (dropNpc.getDistributionId() == 3)
+							DropDistributionService.getInstance().handleBid(bot, 0, itemId, npcId, requestedItem.getIndex());
+						else
+							DropDistributionService.getInstance().handleRoll(bot, 0, itemId, npcId, requestedItem.getIndex());
 					}
 					return false;
 				}

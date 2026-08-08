@@ -22,6 +22,7 @@ import java.util.List;
 import com.aionemu.gameserver.configs.main.CustomConfig;
 import com.aionemu.gameserver.configs.main.GroupConfig;
 import com.aionemu.gameserver.model.gameobjects.Npc;
+import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.RewardType;
 import com.aionemu.gameserver.model.gameobjects.player.XPCape;
@@ -32,7 +33,9 @@ import com.aionemu.gameserver.questEngine.model.QuestEnv;
 import com.aionemu.gameserver.services.abyss.AbyssPointsService;
 import com.aionemu.gameserver.services.drop.DropRegistrationService;
 import com.aionemu.gameserver.utils.MathUtil;
+import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.stats.StatFunctions;
+import com.aionemu.gameserver.world.World;
 import com.google.common.base.Predicate;
 
 /**
@@ -81,7 +84,9 @@ public class PlayerTeamDistributionService {
 			// Exp reward
 			long reward = (long) (expReward * bonus * member.getLevel()) / (filteredStats.partyLvlSum * 100);
 
-			// Players 10 levels below highest member get 0 exp.
+			// Players 10 levels below highest member get 0 exp. Deliberately the same rule for bots as
+			// for real players - an earlier bot-specific tighter threshold was tried and then backed out
+			// ("this is probably fairer... this is basically the regular game").
 			if (filteredStats.highestLevel - member.getLevel() >= 10)
 				reward = 0;
 			else if (filteredStats.mentorCount > 0) {
@@ -91,6 +96,7 @@ public class PlayerTeamDistributionService {
 			}
 
 			member.getCommonData().addExp(reward, RewardType.GROUP_HUNTING, owner.getObjectTemplate().getNameId());
+			notifyBotXpGain(member, reward);
 
 			// DP reward
 			int currentDp = member.getCommonData().getDp();
@@ -167,10 +173,11 @@ public class PlayerTeamDistributionService {
 			// Exp reward
 			long reward = (expReward * member.getLevel()) / partyLvlSum;
 
-			// Players 10 levels below highest member get 0 exp.
+			// Players 10 levels below highest member get 0 exp - same rule for bots as real players.
 			if (highestLevel - member.getLevel() >= 10)
 				reward = 0;
 			member.getCommonData().addExp(reward, RewardType.GROUP_HUNTING, owner.getObjectTemplate().getNameId());
+			notifyBotXpGain(member, reward);
 
 			// DP reward
 			int currentDp = member.getCommonData().getDp();
@@ -199,6 +206,31 @@ public class PlayerTeamDistributionService {
 				return true;
 		}
 		return false;
+	}
+
+	/**
+	 * A bot has no client, so there's no XP bar for its host to actually watch fill up - "did my
+	 * companion just get XP from that kill?" was otherwise unanswerable without checking the
+	 * database. Sends the host a plain chat line whenever their bot's group-kill share is actually
+	 * nonzero (silent when the level-gap cutoff above zeroed it, to avoid spamming a message on every
+	 * single kill once a bot outgrows the level gap).
+	 *
+	 * `reward` here is the PRE-rate-multiplier value computed in doReward() above - the real amount a
+	 * player sees in their own "You have gained N XP" system message is computed later, inside
+	 * PlayerCommonData.addExp() via RewardType.GROUP_HUNTING.calcReward() (player.getRates().
+	 * getGroupXpRate() * a BOOST_GROUP_HUNTING_XP_RATE stat multiplier - see RewardType.java). Re-running
+	 * that same calc here so this message matches what the host's own kill message shows, rather than
+	 * silently under-reporting by the server's rate multiplier - confirmed live via a 5x rate: raw=1488,
+	 * actual=7440.
+	 */
+	private static void notifyBotXpGain(Player member, long reward) {
+		if (reward <= 0 || !member.isBot() || !(member instanceof BotPlayer))
+			return;
+		Player host = World.getInstance().findPlayer(((BotPlayer) member).getHostObjectId());
+		if (host != null) {
+			long actualReward = RewardType.GROUP_HUNTING.calcReward(member, reward);
+			PacketSendUtility.sendMessage(host, member.getName() + " gained " + actualReward + " experience.");
+		}
 	}
 
 	public static class PlayerGroupRewardStats implements Predicate<Player> {

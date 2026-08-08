@@ -85,7 +85,10 @@ public class Config {
 
 			ConfigurableProcessor.process(CacheConfig.class, mainProps);
 			log.info("Loading: " + main + "/cache.properties");
-			
+
+			ConfigurableProcessor.process(CompanionConfig.class, mainProps);
+			log.info("Loading: " + main + "/companion.properties");
+
 			ConfigurableProcessor.process(CraftConfig.class, mainProps);
 			log.info("Loading: " + main + "/craft.properties");
 

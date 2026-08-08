@@ -40,6 +40,8 @@ import com.aionemu.gameserver.controllers.attack.AggroList;
 import com.aionemu.gameserver.controllers.attack.AttackStatus;
 import com.aionemu.gameserver.controllers.attack.PlayerAggroList;
 import com.aionemu.gameserver.controllers.effect.PlayerEffectController;
+import com.aionemu.gameserver.controllers.movement.MoveController;
+import com.aionemu.gameserver.controllers.movement.NpcMoveController;
 import com.aionemu.gameserver.controllers.movement.PlayerMoveController;
 import com.aionemu.gameserver.custom.CustomPlayerRank;
 import com.aionemu.gameserver.dao.PlayerVarsDAO;
@@ -246,6 +248,12 @@ public class Player extends Creature {
 	private int subtractedSupplementId;
 
 	/**
+	 * Companion bots summoned by this player (see {@link BotPlayer}/CompanionService). Bots still gain
+	 * experience and keep whatever gear/cooldowns they had when summoned.
+	 */
+	private ArrayList<Player> activeBots = new ArrayList<Player>();
+
+	/**
 	 * event engine
 	 */
 	private int eventTeamId = -1;
@@ -259,7 +267,6 @@ public class Player extends Creature {
 		super(0, null, null, null, null);
 		this.playerCommonData = plCommonData;
 	}
-
 	public Player(PlayerController controller, PlayerCommonData plCommonData, PlayerAppearance appereance, Account account) {
 		super(plCommonData.getPlayerObjId(), controller, null, plCommonData, plCommonData.getPosition());
 		this.playerCommonData = plCommonData;
@@ -2221,5 +2228,22 @@ public class Player extends Creature {
 	public void setNewPlayer(boolean newPlayer) {
 		this.newPlayer = newPlayer;
 	}
-	
+	public ArrayList<Player> getBots() {
+		return activeBots;
+	}
+
+	public boolean isBot() {
+		return false;
+	}
+
+	public void addBot(BotPlayer bot) {
+		if (bot.getPlayerAccount().getId() != this.getPlayerAccount().getId())
+			throw new IllegalArgumentException("Cannot add bot " + bot.getName() + ": account mismatch");
+		activeBots.add(bot);
+	}
+
+	public void removeBot(BotPlayer bot) {
+		activeBots.remove(bot);
+	}
+
 }

@@ -38,6 +38,7 @@ import com.aionemu.gameserver.model.templates.teleport.TelelocationTemplate;
 import com.aionemu.gameserver.model.templates.teleport.TeleportLocation;
 import com.aionemu.gameserver.model.templates.teleport.TeleportType;
 import com.aionemu.gameserver.model.templates.teleport.TeleporterTemplate;
+import com.aionemu.gameserver.services.player.CompanionService;
 import com.aionemu.gameserver.model.templates.world.WorldMapTemplate;
 import com.aionemu.gameserver.network.aion.serverpackets.*;
 import com.aionemu.gameserver.questEngine.model.QuestState;
@@ -419,6 +420,7 @@ public class TeleportService {
 		}
 		player.getController().startProtectionActiveTask();
 		player.setIsTeleporting(false);
+		CompanionService.relocateBots(player);
 	}
 
 	/**

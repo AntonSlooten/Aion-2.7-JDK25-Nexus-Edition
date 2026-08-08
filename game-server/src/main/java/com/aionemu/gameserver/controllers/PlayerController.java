@@ -47,6 +47,7 @@ import com.aionemu.gameserver.restrictions.RestrictionsManager;
 import com.aionemu.gameserver.services.*;
 import com.aionemu.gameserver.services.abyss.AbyssService;
 import com.aionemu.gameserver.services.instance.InstanceService;
+import com.aionemu.gameserver.services.player.CompanionService;
 import com.aionemu.gameserver.services.item.ItemService;
 import com.aionemu.gameserver.skillengine.SkillEngine;
 import com.aionemu.gameserver.skillengine.model.Skill.SkillMethod;
@@ -712,6 +713,7 @@ public class PlayerController extends CreatureController<Player> {
 		player.setFlightDistance(0);
 		player.setState(CreatureState.ACTIVE);
 		updateZone();
+		CompanionService.relocateBots(player);
 	}
 
 	@Override

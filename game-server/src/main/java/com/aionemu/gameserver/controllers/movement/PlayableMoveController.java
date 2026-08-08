@@ -65,7 +65,7 @@ public abstract class PlayableMoveController<T extends Creature> extends Creatur
 		return owner.getEffectController().isUnderFear();
 	}
 
-	private void sendForcedMovePacket() {
+	protected void sendForcedMovePacket() {
 		PacketSendUtility.broadcastPacketAndReceive(owner, new SM_MOVE(owner));
 		sendMovePacket = false;
 	}

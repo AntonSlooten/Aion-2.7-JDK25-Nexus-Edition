@@ -23,7 +23,8 @@ public enum AiNames {
 
 	GENERAL_NPC("general"),
 	DUMMY_NPC("dummy"),
-	AGGRESSIVE_NPC("aggressive");
+	AGGRESSIVE_NPC("aggressive"),
+	PLAYER_BOT("playerbot");
 
 	private final String name;
 

@@ -101,6 +101,12 @@ public class SimpleAttackManager {
 		Npc npc = npcAI.getOwner();
 		Creature target = (Creature) npc.getTarget();
 		if (target != null && !target.getLifeStats().isAlreadyDead()) {
+			if (npcAI.isLogging()) {
+				AI2Logger.info(npcAI, "canSee check: targetActive=" + target.isInState(com.aionemu.gameserver.model.gameobjects.state.CreatureState.ACTIVE)
+					+ " targetLooting=" + target.isInState(com.aionemu.gameserver.model.gameobjects.state.CreatureState.LOOTING)
+					+ " targetVisualState=" + target.getVisualState() + " npcSeeState=" + npc.getSeeState()
+					+ " canSee=" + npc.canSee(target));
+			}
 			if (!npc.canSee(target)) {
 				npcAI.onGeneralEvent(AIEventType.TARGET_GIVEUP);
 				return;
@@ -113,6 +119,10 @@ public class SimpleAttackManager {
 			npcAI.onGeneralEvent(AIEventType.TARGET_TOOFAR);
 		}
 		else {
+			if (npcAI.isLogging()) {
+				AI2Logger.info(npcAI, "attackAction: giving up, target=" + target
+					+ (target != null ? " targetDead=" + target.getLifeStats().isAlreadyDead() : ""));
+			}
 			npcAI.onGeneralEvent(AIEventType.TARGET_GIVEUP);
 		}
 	}

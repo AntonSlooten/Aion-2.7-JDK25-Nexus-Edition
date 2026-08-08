@@ -142,6 +142,8 @@ public class PlayerLeaveWorldService {
 		if (player.isLegionMember())
 			LegionService.getInstance().onLogout(player);
 
+		CompanionService.dismissAllBots(player);
+
 		PlayerGroupService.onPlayerLogout(player);
 		PlayerAllianceService.onPlayerLogout(player);
 

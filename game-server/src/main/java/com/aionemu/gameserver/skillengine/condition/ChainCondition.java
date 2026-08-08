@@ -58,4 +58,22 @@ public class ChainCondition extends Condition {
 		return true;
 	}
 
+	/**
+	 * Read-only accessors added so external callers (companion bot AI - see PlayerBotSkillSelector's
+	 * chain-continuation logic) can inspect a skill's combo linkage without re-implementing this
+	 * class's own validate() logic. category/precategory/time otherwise stay package-private XML-bound
+	 * fields with no behavior change.
+	 */
+	public String getCategory() {
+		return category;
+	}
+
+	public String getPrecategory() {
+		return precategory;
+	}
+
+	public int getTime() {
+		return time;
+	}
+
 }

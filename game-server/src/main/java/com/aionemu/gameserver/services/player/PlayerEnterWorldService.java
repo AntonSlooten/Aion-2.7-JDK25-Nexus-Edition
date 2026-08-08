@@ -17,9 +17,14 @@
 package com.aionemu.gameserver.services.player;
 
 import com.aionemu.commons.database.dao.DAOManager;
+import com.aionemu.gameserver.ai2.AI2Engine;
+import com.aionemu.gameserver.ai2.AiNames;
+import com.aionemu.gameserver.ai2.playerbot.PlayerBotAI;
+import com.aionemu.gameserver.ai2.playerbot.PlayerBotAITaskManager;
 import com.aionemu.gameserver.cache.HTMLCache;
 import com.aionemu.gameserver.configs.administration.AdminConfig;
 import com.aionemu.gameserver.configs.main.*;
+import com.aionemu.gameserver.controllers.PlayerController;
 import com.aionemu.gameserver.dao.*;
 import com.aionemu.gameserver.model.ChatType;
 import com.aionemu.gameserver.model.TaskId;
@@ -27,14 +32,18 @@ import com.aionemu.gameserver.model.account.Account;
 import com.aionemu.gameserver.model.account.CharacterBanInfo;
 import com.aionemu.gameserver.model.account.CharacterPasskey.ConnectType;
 import com.aionemu.gameserver.model.account.PlayerAccountData;
+import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Item;
 import com.aionemu.gameserver.model.gameobjects.PersistentState;
+import com.aionemu.gameserver.model.gameobjects.VisibleObject;
+import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.PlayerCommonData;
 import com.aionemu.gameserver.model.gameobjects.player.emotion.Emotion;
 import com.aionemu.gameserver.model.gameobjects.player.motion.Motion;
 import com.aionemu.gameserver.model.gameobjects.player.title.Title;
 import com.aionemu.gameserver.model.gameobjects.state.CreatureSeeState;
+import com.aionemu.gameserver.model.gameobjects.state.CreatureState;
 import com.aionemu.gameserver.model.gameobjects.state.CreatureVisualState;
 import com.aionemu.gameserver.model.items.storage.IStorage;
 import com.aionemu.gameserver.model.items.storage.Storage;
@@ -403,97 +412,31 @@ public final class PlayerEnterWorldService {
 			// Alliance Packet after SetBindPoint
 			PlayerAllianceService.onPlayerLogin(player);
 
+			initPlayerServices(player);
+
 			if (player.isInPrison())
 			{
 				//@author GoodT
 				//fix prisonbreak - if player log on different map as prison will be teleported back to prison
 				if(player.getWorldId() != 510010000 || player.getWorldId() == 520010000)
 					TeleportService.teleportToPrison(player);
-				
+
 				PunishmentService.updatePrisonStatus(player);
 			}
 
-			if (player.isNotGatherable())
-				PunishmentService.updateGatherableStatus(player);
-
-			if (player.isLegionMember())
-				LegionService.getInstance().onLogin(player);
-
-			PlayerGroupService.onPlayerLogin(player);
-			PetService.getInstance().onPlayerLogin(player);
-			MailService.getInstance().onPlayerLogin(player);
-			BrokerService.getInstance().onPlayerLogin(player);
-			PetitionService.getInstance().onPlayerLogin(player);
-			SiegeService.getInstance().onPlayerLogin(player);
-			AutoGroupService2.getInstance().onPlayerLogin(player);
-			ClassChangeService.showClassChangeDialog(player);
-
 			GMService.getInstance().onPlayerLogin(player);
-			/**
-			 * Trigger restore services on login.
-			 */
-			player.getLifeStats().updateCurrentStats();
 
 			if (HTMLConfig.ENABLE_HTML_WELCOME)
 				HTMLService.showHTML(player, HTMLCache.getInstance().getHTML("welcome.xhtml"));
 
-			player.getNpcFactions().sendDailyQuest();
-
 			if (HTMLConfig.ENABLE_GUIDES)
 				HTMLService.onPlayerLogin(player);
-
-			for (StorageType st : StorageType.values()) {
-				if (st == StorageType.LEGION_WAREHOUSE)
-					continue;
-				IStorage storage = player.getStorage(st.getId());
-				if (storage != null) {
-					for (Item item : storage.getItemsWithKinah())
-						if (item.getExpireTime() > 0)
-							ExpireTimerTask.getInstance().addTask(item, player);
-				}
-			}
-
-			for (Item item : player.getEquipment().getEquippedItems())
-				if (item.getExpireTime() > 0)
-					ExpireTimerTask.getInstance().addTask(item, player);
-
-			for (Motion motion : player.getMotions().getMotions().values()) {
-				if (motion.getExpireTime() != 0) {
-					ExpireTimerTask.getInstance().addTask(motion, player);
-				}
-			}
-
-			for (Emotion emotion : player.getEmotions().getEmotions()) {
-				if (emotion.getExpireTime() != 0) {
-					ExpireTimerTask.getInstance().addTask(emotion, player);
-				}
-			}
-
-			for (Title title : player.getTitleList().getTitles()) {
-				if (title.getExpireTime() != 0) {
-					ExpireTimerTask.getInstance().addTask(title, player);
-				}
-			}
-			// scheduler periodic update
-			player.getController().addTask(
-					TaskId.PLAYER_UPDATE,
-					ThreadPoolManager.getInstance().scheduleAtFixedRate(new GeneralUpdateTask(player.getObjectId()),
-					PeriodicSaveConfig.PLAYER_GENERAL * 1000, PeriodicSaveConfig.PLAYER_GENERAL * 1000));
-			player.getController().addTask(
-					TaskId.INVENTORY_UPDATE,
-					ThreadPoolManager.getInstance().scheduleAtFixedRate(new ItemUpdateTask(player.getObjectId()),
-					PeriodicSaveConfig.PLAYER_ITEMS * 1000, PeriodicSaveConfig.PLAYER_ITEMS * 1000));
 
 			SurveyService.getInstance().showAvailable(player);
 
 			if (CustomConfig.ENABLE_REWARD_SERVICE)
 				RewardService.getInstance().verify(player);
 
-			if (EventsConfig.ENABLE_EVENT_SERVICE)
-				EventService.getInstance().onPlayerLogin(player);
-
-			PlayerTransferService.getInstance().onEnterWorld(player);
-			
 			player.setPartnerId(DAOManager.getDAO(WeddingDAO.class).loadPartnerId(player));
 			DAOManager.getDAO(PlayerRankDAO.class).loadCustomRank(player);;
 			//DP restore
@@ -572,6 +515,128 @@ public final class PlayerEnterWorldService {
 		player.setOnlineTime();
 	}
 
+	/**
+	 * Connection-independent side effects shared by both a real client login ({@link #enterWorld}) and a
+	 * companion bot spawn ({@link #botEnterWorld}) - service registration, expiry timers and periodic
+	 * save tasks that don't depend on there being a live packet stream.
+	 */
+	private static void initPlayerServices(Player player) {
+		if (player.isNotGatherable())
+			PunishmentService.updateGatherableStatus(player);
+
+		if (player.isLegionMember())
+			LegionService.getInstance().onLogin(player);
+
+		PlayerGroupService.onPlayerLogin(player);
+		PetService.getInstance().onPlayerLogin(player);
+		MailService.getInstance().onPlayerLogin(player);
+		BrokerService.getInstance().onPlayerLogin(player);
+		PetitionService.getInstance().onPlayerLogin(player);
+		SiegeService.getInstance().onPlayerLogin(player);
+		AutoGroupService2.getInstance().onPlayerLogin(player);
+		ClassChangeService.showClassChangeDialog(player);
+
+		/**
+		 * Trigger restore services on login.
+		 */
+		player.getLifeStats().updateCurrentStats();
+
+		player.getNpcFactions().sendDailyQuest();
+
+		for (StorageType st : StorageType.values()) {
+			if (st == StorageType.LEGION_WAREHOUSE)
+				continue;
+			IStorage storage = player.getStorage(st.getId());
+			if (storage != null) {
+				for (Item item : storage.getItemsWithKinah())
+					if (item.getExpireTime() > 0)
+						ExpireTimerTask.getInstance().addTask(item, player);
+			}
+		}
+
+		for (Item item : player.getEquipment().getEquippedItems())
+			if (item.getExpireTime() > 0)
+				ExpireTimerTask.getInstance().addTask(item, player);
+
+		for (Motion motion : player.getMotions().getMotions().values()) {
+			if (motion.getExpireTime() != 0) {
+				ExpireTimerTask.getInstance().addTask(motion, player);
+			}
+		}
+
+		for (Emotion emotion : player.getEmotions().getEmotions()) {
+			if (emotion.getExpireTime() != 0) {
+				ExpireTimerTask.getInstance().addTask(emotion, player);
+			}
+		}
+
+		for (Title title : player.getTitleList().getTitles()) {
+			if (title.getExpireTime() != 0) {
+				ExpireTimerTask.getInstance().addTask(title, player);
+			}
+		}
+		// scheduler periodic update
+		player.getController().addTask(
+				TaskId.PLAYER_UPDATE,
+				ThreadPoolManager.getInstance().scheduleAtFixedRate(new GeneralUpdateTask(player.getObjectId()),
+				PeriodicSaveConfig.PLAYER_GENERAL * 1000, PeriodicSaveConfig.PLAYER_GENERAL * 1000));
+		player.getController().addTask(
+				TaskId.INVENTORY_UPDATE,
+				ThreadPoolManager.getInstance().scheduleAtFixedRate(new ItemUpdateTask(player.getObjectId()),
+				PeriodicSaveConfig.PLAYER_ITEMS * 1000, PeriodicSaveConfig.PLAYER_ITEMS * 1000));
+
+		if (EventsConfig.ENABLE_EVENT_SERVICE)
+			EventService.getInstance().onPlayerLogin(player);
+
+		PlayerTransferService.getInstance().onEnterWorld(player);
+	}
+
+	/**
+	 * Spawns one of the host's own account characters as a companion bot at the host's position, then
+	 * hands it off to {@link com.aionemu.gameserver.ai2.playerbot.PlayerBotAI} and
+	 * {@link CompanionService} for AI ticking and grouping. See {@link BotPlayer}/{@link PlayerService#getBotPlayer}
+	 * for how the bot is loaded.
+	 */
+	public static void botEnterWorld(BotPlayer bot, Player host) {
+		World world = World.getInstance();
+		world.storeObject(bot);
+		world.setPosition(bot, host.getWorldId(), host.getInstanceId(), host.getX(), host.getY(), host.getZ(), host.getHeading());
+		world.spawn(bot);
+
+		// world.spawn() -> PlayerController.onBeforeSpawn() sets CreatureVisualState.BLINKING (60s
+		// zone-entry protection - Creature.canSee() requires target.getVisualState() <= observer's
+		// getSeeState(), and BLINKING(64) always fails that). A real player clears it almost instantly
+		// on their first CM_MOVE/CM_USE_SKILL packet (PlayerController.stopProtectionActiveTask(), called
+		// from those client packet handlers); a bot never sends those packets, so without this it stayed
+		// blinking - and therefore permanently unseeable by any Npc it fought - for the full 60s after
+		// every spawn. Confirmed live via //ai2 log: SimpleAttackManager.attackAction()'s canSee() check
+		// failing (targetVisualState=64, npcSeeState=0) caused immediate TARGET_GIVEUP on every attack
+		// cycle whenever the bot engaged before that timer ran out, clearing the Npc's aggro and
+		// triggering NpcLifeStats' 25%-per-tick "resting" regen mid-fight.
+		bot.getController().stopProtectionActiveTask();
+
+		bot.getCommonData().setOnline(true);
+		DAOManager.getDAO(PlayerDAO.class).onlinePlayer(bot, true);
+		bot.onLoggedIn(); // deliberately skip setOnlineTime() - bots don't accrue play-time stats
+
+		StigmaService.onPlayerLogin(bot);
+		AbyssSkillService.onEnterWorld(bot);
+		// A bot is always one of the HOST's own alt characters on the host's own account (see
+		// PlayerService.getBotPlayer()'s javadoc), so it should earn XP/drop/AP at the same rate tier
+		// the host's account actually has - not always "Regular" (the lowest tier) regardless of
+		// whether the host is Premium/VIP. Confirmed live: a level-23 host and level-21 bot split a
+		// group kill roughly 9:1 instead of the ~52:48 the level-weighted group formula alone predicts.
+		Byte membership = host.getClientConnection() != null ? host.getClientConnection().getAccount().getMembership() : null;
+		bot.setRates(Rates.getRatesFor(membership != null ? membership : (byte) 0));
+
+		initPlayerServices(bot);
+
+		AI2Engine.getInstance().setupAI(AiNames.PLAYER_BOT.getName(), bot);
+		PlayerBotAITaskManager.getInstance().addBot((PlayerBotAI) bot.getAi2());
+
+		CompanionService.groupBot(host, bot);
+	}
+
 	private static void showPremiumAccountInfo(AionConnection client, Account account) {
 		byte membership = account.getMembership();
 		if (membership > 0) {
@@ -643,3 +708,4 @@ class ItemUpdateTask implements Runnable {
 	}
 
 }
+
