@@ -45,6 +45,13 @@ public class MpUseAction extends Action {
 	@Override
 	public void act(Skill skill) {
 		Creature effector = skill.getEffector();
+		if (effector instanceof Player && ((Player) effector).isBot()) {
+			// A bot has no client to buy/carry mana potions and no owner watching its MP bar to manage
+			// it, so gating casts on it would just mean the bot silently stops healing/buffing/nuking
+			// mid-fight for a resource nobody can refill. Mirrors BotPlayer's existing FP-drain exemption
+			// (setUnderNoFPConsum()). Requested live: "they should also have inifinite mana."
+			return;
+		}
 		if(((Player) effector).isInvul() && ((Player) effector).isGM()) {
 			// No MP reducing only if effector is GM and is Invulnerable
 			return;

@@ -154,7 +154,19 @@ public class BotMoveController extends PlayerMoveController {
 		float newZ = (targetDestZ - z) * distFraction + z;
 		heading = (byte) (Math.toDegrees(Math.atan2(newY - y, newX - x)) / 3);
 
-		World.getInstance().updatePosition(owner, newX, newY, newZ, heading, false);
+		// updateKnownList=true: a real player's own movement (via CM_MOVE) keeps refreshing and
+		// reciprocally registering itself into nearby NPCs' known-lists (KnownList.add() is mutual - the
+		// side that runs the scan adds the OTHER side to both). A bot's movement never did that here,
+		// which was harmless for anything already known by the TIME it arrived, but for a stationary
+		// "general"-AI mob whose own known-list only ever refreshes on spawn/region-activation or when
+		// IT walks, a bot that showed up afterward was NEVER added at all - AggroList.getMostHated()
+		// zeroes out any attacker's hate the instant it isn't "known" (getKnownList().knowns()), so the
+		// mob's own chooseAttackIntention() saw no valid target and gave up instantly, every single hit,
+		// permanently. KnownList.doUpdate() has its own 1s internal throttle regardless of call
+		// frequency, so flipping this to true is safe to call on every movement tick. Confirmed live,
+		// traced end to end: "the currently targeted mob is suffering from the issue. Just will not
+		// target me... it never turns to attack any of my bots."
+		World.getInstance().updatePosition(owner, newX, newY, newZ, heading, true);
 
 		// Unlike a real player's client (which drives its own visible movement) or an NPC (whose
 		// NpcMoveController does this same broadcast), a bot has no client - without this, other

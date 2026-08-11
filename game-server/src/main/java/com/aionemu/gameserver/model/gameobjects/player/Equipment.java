@@ -33,6 +33,7 @@ import com.aionemu.gameserver.model.gameobjects.state.CreatureState;
 import com.aionemu.gameserver.model.items.ItemSlot;
 import com.aionemu.gameserver.model.stats.listeners.ItemEquipmentListener;
 import com.aionemu.gameserver.model.templates.item.ArmorType;
+import com.aionemu.gameserver.model.templates.item.EquipType;
 import com.aionemu.gameserver.model.templates.item.ItemTemplate;
 import com.aionemu.gameserver.model.templates.item.WeaponType;
 import com.aionemu.gameserver.model.templates.itemset.ItemSetTemplate;
@@ -65,6 +66,20 @@ public class Equipment {
 	private Set<Integer> markedFreeSlots = new HashSet<Integer>();
 	private PersistentState persistentState = PersistentState.UPDATED;
 
+	/**
+	 * Why the most recent equipItem()/equipItemToSecondarySlot() call returned null, if it did. Most of
+	 * these rejection paths only ever notified the equipping Player directly (PacketSendUtility.sendPacket
+	 * (owner, ...)) - fine for a real player, useless for a companion bot, which has no client to show it
+	 * to. This lets a caller (CmdCompanion) surface the real reason to the bot's host instead of a bare
+	 * "can't equip". Requested live: "I still get 'bam can't equip frozen sword'... let me check the
+	 * level of the item" (which turned out not to be it).
+	 */
+	private String lastEquipFailureReason;
+
+	public String getLastEquipFailureReason() {
+		return lastEquipFailureReason;
+	}
+
 	private static final int[] ARMOR_SLOTS = new int[] { ItemSlot.BOOTS.getSlotIdMask(), ItemSlot.GLOVES.getSlotIdMask(),
 		ItemSlot.PANTS.getSlotIdMask(), ItemSlot.SHOULDER.getSlotIdMask(), ItemSlot.TORSO.getSlotIdMask() };
 
@@ -78,10 +93,13 @@ public class Equipment {
 	 * @return item or null in case of failure
 	 */
 	public Item equipItem(int itemUniqueId, int slot) {
+		lastEquipFailureReason = null;
 		Item item = owner.getInventory().getItemByObjId(itemUniqueId);
 
-		if (item == null)
+		if (item == null) {
+			lastEquipFailureReason = "doesn't have that item";
 			return null;
+		}
 
 		ItemTemplate itemTemplate = item.getItemTemplate();
 
@@ -91,20 +109,28 @@ public class Equipment {
 				owner,
 				SM_SYSTEM_MESSAGE.STR_CANNOT_USE_ITEM_TOO_LOW_LEVEL_MUST_BE_THIS_LEVEL(item.getNameID(),
 					itemTemplate.getLevel()));
+			lastEquipFailureReason = "requires level " + itemTemplate.getLevel();
 			return null;
 		}
-		
+
 		if (owner.getAccessLevel() == 0) {
 			if ((itemTemplate.getRace() == Race.ASMODIANS || itemTemplate.getRace() == Race.ELYOS) && itemTemplate.getRace() != owner.getRace()) {
 				PacketSendUtility.sendPacket(owner, SM_SYSTEM_MESSAGE.STR_CANNOT_USE_ITEM_INVALID_RACE);
+				lastEquipFailureReason = "is the wrong race";
 				return null;
 			}
-	
+
 			int requiredLevel = item.getItemTemplate().getRequiredLevel(owner.getCommonData().getPlayerClass());
-			if (requiredLevel == -1 || requiredLevel > owner.getLevel())
+			if (requiredLevel == -1) {
+				lastEquipFailureReason = owner.getCommonData().getPlayerClass() + " can't use this item";
 				return null;
+			}
+			if (requiredLevel > owner.getLevel()) {
+				lastEquipFailureReason = "requires level " + requiredLevel + " as " + owner.getCommonData().getPlayerClass();
+				return null;
+			}
 		}
-		
+
 		int itemSlotToEquip = 0;
 
 		synchronized (equipment) {
@@ -121,7 +147,7 @@ public class Equipment {
 						return null;
 					break;
 			}
-			
+
 			// check whether there is already item in specified slot
 			int itemSlotMask = 0;
 			switch (item.getEquipmentType()) {
@@ -133,8 +159,10 @@ public class Equipment {
 					break;
 			}
 
-			if (!StigmaService.notifyEquipAction(owner, item, slot))
+			if (!StigmaService.notifyEquipAction(owner, item, slot)) {
+				lastEquipFailureReason = "stigma slot rejected";
 				return null;
+			}
 			// find correct slot
 			ItemSlot[] possibleSlots = ItemSlot.getSlotsFor(itemSlotMask);
 			for (int i = 0; i < possibleSlots.length; i++) {
@@ -151,15 +179,118 @@ public class Equipment {
 				itemSlotToEquip = possibleSlots[0].getSlotIdMask();
 		}
 
-		if (itemSlotToEquip == 0)
+		if (itemSlotToEquip == 0) {
+			lastEquipFailureReason = "no valid equip slot for this item";
 			return null;
-		
+		}
+
+		return equipOrRequestSoulbind(item, itemTemplate, itemSlotToEquip);
+	}
+
+	/**
+	 * A Bind-on-Equip item normally routes through {@link #soulBindItem} to ask the client "do you want
+	 * to soulbind this?" before equipping. A companion bot has no client to answer that dialog with, so
+	 * the request would sit unresolved forever and the item would never actually get equipped - the host
+	 * would just see the equip silently fail with no explanation. Since there's no one to ask and the
+	 * host already chose to hand this item to their own bot, bind it immediately instead. Requested
+	 * live: "how are 'soul bound' items handled?... if I equip them on a companion."
+	 */
+	private Item equipOrRequestSoulbind(Item item, ItemTemplate itemTemplate, int itemSlotToEquip) {
 		if (itemTemplate.isSoulBound() && !item.isSoulBound()) {
+			if (owner.isBot()) {
+				item.setSoulBound(true);
+				ItemPacketService.updateItemAfterInfoChange(owner, item);
+				return equip(itemSlotToEquip, item);
+			}
 			soulBindItem(owner, item, itemSlotToEquip);
 			return null;
 		}
-		
 		return equip(itemSlotToEquip, item);
+	}
+
+	/**
+	 * Forces the item into the second slot of its combo pair (SUB_HAND, EARRINGS_RIGHT or RING_RIGHT)
+	 * instead of the default first-free-else-first-slot resolution {@link #equipItem(int, int)} uses.
+	 * Exists because that default always ends up clobbering the *first* slot of a pair once both are
+	 * occupied, with no way to deliberately target the second - a real gap once a companion bot already
+	 * has one ring/earring/weapon equipped and its host wants to gear up the other slot without
+	 * unequipping first. Works uniformly for every {@link ItemSlot#isCombo()} pair since they all share
+	 * the same "index 0 = primary, index 1 = secondary" ordering from {@link ItemSlot#getSlotsFor(int)}.
+	 * Requested live: "the equipother has to take into account rings, earrings, and weapons... if there
+	 * is a general way to do this, just do that."
+	 *
+	 * @return item or null in case of failure (including when the item isn't a combo-slot item at all)
+	 */
+	public Item equipItemToSecondarySlot(int itemUniqueId) {
+		lastEquipFailureReason = null;
+		Item item = owner.getInventory().getItemByObjId(itemUniqueId);
+
+		if (item == null) {
+			lastEquipFailureReason = "doesn't have that item";
+			return null;
+		}
+
+		ItemTemplate itemTemplate = item.getItemTemplate();
+
+		if (itemTemplate.getLevel() > owner.getCommonData().getLevel()) {
+			PacketSendUtility.sendPacket(
+				owner,
+				SM_SYSTEM_MESSAGE.STR_CANNOT_USE_ITEM_TOO_LOW_LEVEL_MUST_BE_THIS_LEVEL(item.getNameID(),
+					itemTemplate.getLevel()));
+			lastEquipFailureReason = "requires level " + itemTemplate.getLevel();
+			return null;
+		}
+
+		if (owner.getAccessLevel() == 0) {
+			if ((itemTemplate.getRace() == Race.ASMODIANS || itemTemplate.getRace() == Race.ELYOS) && itemTemplate.getRace() != owner.getRace()) {
+				PacketSendUtility.sendPacket(owner, SM_SYSTEM_MESSAGE.STR_CANNOT_USE_ITEM_INVALID_RACE);
+				lastEquipFailureReason = "is the wrong race";
+				return null;
+			}
+
+			int requiredLevel = item.getItemTemplate().getRequiredLevel(owner.getCommonData().getPlayerClass());
+			if (requiredLevel == -1) {
+				lastEquipFailureReason = owner.getCommonData().getPlayerClass() + " can't use this item";
+				return null;
+			}
+			if (requiredLevel > owner.getLevel()) {
+				lastEquipFailureReason = "requires level " + requiredLevel + " as " + owner.getCommonData().getPlayerClass();
+				return null;
+			}
+		}
+
+		int itemSlotMask = item.getEquipmentType() == EquipType.STIGMA ? 0 : itemTemplate.getItemSlot();
+		ItemSlot[] possibleSlots = ItemSlot.getSlotsFor(itemSlotMask);
+		if (possibleSlots.length < 2) {
+			lastEquipFailureReason = "doesn't have an alternate equip slot";
+			return null; // not a combo-slot item - equip() is the only valid path for it
+		}
+
+		int itemSlotToEquip;
+
+		synchronized (equipment) {
+			markedFreeSlots.clear();
+
+			switch (item.getEquipmentType()) {
+				case ARMOR:
+					if (!validateEquippedArmor(item, true))
+						return null;
+					break;
+				case WEAPON:
+					if (!validateEquippedWeapon(item, true))
+						return null;
+					break;
+			}
+
+			if (!StigmaService.notifyEquipAction(owner, item, itemSlotMask)) {
+				lastEquipFailureReason = "stigma slot rejected";
+				return null;
+			}
+
+			itemSlotToEquip = possibleSlots[1].getSlotIdMask();
+		}
+
+		return equipOrRequestSoulbind(item, itemTemplate, itemSlotToEquip);
 	}
 
 	/**
@@ -313,8 +444,10 @@ public class Equipment {
 		// check present skill
 		int[] requiredSkills = item.getItemTemplate().getWeaponType().getRequiredSkills();
 
-		if (!checkAvaialbeEquipSkills(requiredSkills))
+		if (!checkAvaialbeEquipSkills(requiredSkills)) {
+			lastEquipFailureReason = "lacks the weapon skill for this";
 			return false;
+		}
 
 		Item itemInMainHand = equipment.get(ItemSlot.MAIN_HAND.getSlotIdMask());
 		Item itemInSubHand = equipment.get(ItemSlot.SUB_HAND.getSlotIdMask());
@@ -382,7 +515,10 @@ public class Equipment {
 		}
 
 		// check agains = required slots - 1(equipping item)
-		return owner.getInventory().getFreeSlots() >= requiredSlots - 1;
+		boolean hasSpace = owner.getInventory().getFreeSlots() >= requiredSlots - 1;
+		if (!hasSpace)
+			lastEquipFailureReason = "needs a free inventory slot to swap out the current weapon";
+		return hasSpace;
 	}
 
 	/**
@@ -420,22 +556,28 @@ public class Equipment {
 
 		// check present skill
 		int[] requiredSkills = armorType.getRequiredSkills();
-		if (!checkAvaialbeEquipSkills(requiredSkills))
+		if (!checkAvaialbeEquipSkills(requiredSkills)) {
+			lastEquipFailureReason = "lacks the armor skill for this";
 			return false;
+		}
 
 		Item itemInMainHand = equipment.get(ItemSlot.MAIN_HAND.getSlotIdMask());
 		switch (item.getItemTemplate().getArmorType()) {
 			case ARROW:
 				if (itemInMainHand == null || itemInMainHand.getItemTemplate().getWeaponType() != WeaponType.BOW) {
-					if (validateOnly)
+					if (validateOnly) {
+						lastEquipFailureReason = "needs a bow equipped first";
 						return false;
+					}
 				}
 				break;
 			case SHIELD:
 				if (itemInMainHand != null && itemInMainHand.getItemTemplate().getWeaponType().getRequiredSlots() == 2) {
 					if (validateOnly) {
-						if (owner.getInventory().isFull())
+						if (owner.getInventory().isFull()) {
+							lastEquipFailureReason = "needs a free inventory slot to swap out the two-handed weapon";
 							return false;
+						}
 						markedFreeSlots.add(ItemSlot.MAIN_HAND.getSlotIdMask());
 					}
 					else {
@@ -727,6 +869,13 @@ public class Equipment {
 	}
 
 	public void useArrow() {
+		// A bot has no client to buy/carry replacement arrows and no owner watching its quiver to
+		// restock it, so a Ranger bot would eventually just stop firing entirely once it ran out - same
+		// reasoning as the existing MP/FP exemptions (MpUseAction, BotPlayer.setUnderNoFPConsum()).
+		// Requested live: "make it do the bow attacks do not use arrow, same as no mana reduction."
+		if (owner.isBot())
+			return;
+
 		Item arrow = equipment.get(ItemSlot.SUB_HAND.getSlotIdMask());
 
 		if (arrow == null || !arrow.getItemTemplate().isArmor()

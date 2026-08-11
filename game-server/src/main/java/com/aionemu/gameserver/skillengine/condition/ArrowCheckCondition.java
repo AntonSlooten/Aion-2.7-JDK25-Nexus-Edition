@@ -27,6 +27,13 @@ public class ArrowCheckCondition extends Condition {
 	public boolean validate(Skill skill) {
 		if (skill.getEffector() instanceof Player) {
 			Player player = (Player)skill.getEffector();
+			if (player.isBot())
+				// A bot has no client to buy/carry arrows and no owner restocking its quiver, so a
+				// Ranger bot with no arrow equipped would otherwise fail every single bow skill outright
+				// (not just skip the now-exempted per-shot consumption in Equipment.useArrow()) - this is
+				// the earlier gate that decides whether the skill can even be attempted at all. Requested
+				// live: "make it do the bow attacks do not use arrow, same as no mana reduction."
+				return true;
 			if (player.getEquipment().isArrowEquipped())
 				return true;
 

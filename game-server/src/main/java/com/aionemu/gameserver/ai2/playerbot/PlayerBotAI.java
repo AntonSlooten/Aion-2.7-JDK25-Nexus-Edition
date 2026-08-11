@@ -120,10 +120,26 @@ public class PlayerBotAI extends AITemplate {
 	 * keep topping up FP here.
 	 */
 	private void syncFlight(BotPlayer bot, Player host) {
-		if (host.isFlying() && !bot.isInFlyingState()) {
+		// isFlying() (Creature's - Player does NOT override it; the only "flying"-named member on Player
+		// itself is the unrelated, dead isFlying field behind setFlyingMode()/isInFlyingMode(), which
+		// nothing in the engine ever calls) covers BOTH full hover-flight (CreatureState.FLYING) and
+		// gliding (CreatureState.GLIDING - jump + wings, the way a player normally gets airborne before
+		// optionally pressing the separate hover toggle). isInFlyingState() alone only covers the former,
+		// which is why a host who was gliding rather than hovering was never detected as airborne at all
+		// - confirmed live via diagnostic logging: host FLYING=false read continuously while genuinely
+		// airborne.
+		boolean hostAirborne = host.isFlying();
+		// Host FP is confirmed draining live while flying, which only happens via FlyController.
+		// startFly()'s triggerFpReduce() call - i.e. CreatureState.FLYING almost certainly WAS set on
+		// SOME Player object. Logging identity + currentFp alongside the state read to check whether
+		// resolveHost() (World.findPlayer(hostObjectId)) is even returning that same object.
+		log.info("[bot {}] syncFlight check: host={}@{} FLYING={} GLIDING={} isFlying={} currentFp={} | bot isInFlyingState={}",
+			bot.getObjectId(), host.getName(), System.identityHashCode(host), host.isInState(CreatureState.FLYING),
+			host.isInState(CreatureState.GLIDING), hostAirborne, host.getLifeStats().getCurrentFp(), bot.isInFlyingState());
+		if (hostAirborne && !bot.isInFlyingState()) {
 			bot.getFlyController().startFly();
 		}
-		else if (!host.isFlying() && bot.isInFlyingState()) {
+		else if (!hostAirborne && bot.isInFlyingState()) {
 			bot.getFlyController().endFly();
 		}
 	}
@@ -209,10 +225,13 @@ public class PlayerBotAI extends AITemplate {
 			syncCombatStance(bot, engageTarget);
 
 			if (engageTarget != null) {
-				// Close to the bot's own effective weapon/attack range - short for melee (so they
-				// actually get in swinging distance), naturally long for ranged/casters (so they don't
-				// get walked into melee range they never needed).
-				float attackRange = bot.getGameStats().getAttackRange().getCurrent() / 1000f;
+				// Close to the bot's own effective engage range - short for melee-only kits (so they
+				// actually get in swinging distance), the range of its best ranged skill for casters/
+				// healers instead of the raw (melee-short) weapon range every weapon type in this engine
+				// otherwise reports, so they don't get walked into melee range they never needed.
+				// Requested live: "if the host is a melee character, the mages will stay close and in
+				// turn get close to the enemy."
+				float attackRange = PlayerBotSkillSelector.effectiveEngageRange(bot);
 				boolean inRange = MathUtil.isIn3dRange(bot, engageTarget, attackRange);
 				log.info("[bot {}] engage check: mainHandWeapon={}, attackRange={}, dist={}, inRange={}",
 					getObjectId(), bot.getEquipment().getMainHandWeapon(), attackRange,

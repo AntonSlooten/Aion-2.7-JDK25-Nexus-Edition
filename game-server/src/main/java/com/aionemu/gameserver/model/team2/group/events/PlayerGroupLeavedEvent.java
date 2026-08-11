@@ -17,6 +17,7 @@
 package com.aionemu.gameserver.model.team2.group.events;
 
 import com.aionemu.gameserver.dataholders.DataManager;
+import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.team2.common.events.PlayerLeavedEvent;
 import com.aionemu.gameserver.model.team2.common.legacy.GroupEvent;
@@ -28,8 +29,10 @@ import com.aionemu.gameserver.network.aion.serverpackets.SM_GROUP_MEMBER_INFO;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_LEAVE_GROUP_MEMBER;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.services.instance.InstanceService;
+import com.aionemu.gameserver.services.player.CompanionService;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 import com.aionemu.gameserver.utils.ThreadPoolManager;
+import com.aionemu.gameserver.world.World;
 
 /**
  * @author ATracer
@@ -79,6 +82,23 @@ public class PlayerGroupLeavedEvent extends PlayerLeavedEvent<PlayerGroupMember,
 			case DISBAND:
 				PacketSendUtility.sendPacket(leavedPlayer, SM_SYSTEM_MESSAGE.STR_PARTY_IS_DISPERSED);
 				break;
+		}
+
+		if (leavedPlayer instanceof BotPlayer) {
+			// A companion bot left ungrouped (whether the host just kicked/left it, or - the case that
+			// prompted this - a quest script force-disbands the whole group) is dead weight: PlayerBotAI
+			// only needs the host's object id to keep following/fighting, so it keeps wandering around
+			// looking normal while silently losing every group-dependent benefit (kill-XP sharing,
+			// party-wide buff/heal targeting, the free-for-all loot setting). Dismissing it here, the
+			// same way .companion dismiss does, means it never gets a chance to become an orphaned husk.
+			// Skips the instance-exit scheduling below entirely - moot for an already-despawned bot, and
+			// that Runnable running 10s later against a deleted object would be asking for trouble.
+			// Requested live: "there are quests that cause groups to disband. What happens to the bot
+			// when a group is disbanded?"
+			Player host = World.getInstance().findPlayer(((BotPlayer) leavedPlayer).getHostObjectId());
+			if (host != null)
+				CompanionService.dismissBot(host, (BotPlayer) leavedPlayer);
+			return;
 		}
 
 		if (leavedPlayer.isInInstance()) {

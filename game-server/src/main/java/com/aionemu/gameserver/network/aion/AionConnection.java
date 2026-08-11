@@ -64,6 +64,15 @@ public class AionConnection extends AConnection {
 		NetworkConfig.PACKET_PROCESSOR_THREAD_SPAWN_THRESHOLD, NetworkConfig.PACKET_PROCESSOR_THREAD_KILL_THRESHOLD,
 		new ExecuteWrapper());
 
+	/** For periodic health logging (DebugService) - see PacketProcessor.getQueueSize()/getThreadCount(). */
+	public static int getPacketQueueSize() {
+		return packetProcessor.getQueueSize();
+	}
+
+	public static int getPacketProcessorThreadCount() {
+		return packetProcessor.getThreadCount();
+	}
+
 	/**
 	 * Possible states of AionConnection
 	 */

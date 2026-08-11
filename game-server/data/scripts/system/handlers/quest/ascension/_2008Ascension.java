@@ -25,7 +25,9 @@ import com.aionemu.gameserver.model.EmotionType;
 import com.aionemu.gameserver.model.PlayerClass;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
+import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.player.QuestStateList;
 import com.aionemu.gameserver.model.gameobjects.state.CreatureState;
 import com.aionemu.gameserver.network.aion.SystemMessageId;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ASCENSION_MORPH;
@@ -156,6 +158,7 @@ public class _2008Ascension extends QuestHandler {
 							return false;
 						}
 					case STEP_TO_1:
+						syncCardStepToBots(player, 0, 1, 0);
 						return defaultCloseDialog(env, 0, 1); // 1
 					case STEP_TO_5:
 						if (var == 4) {
@@ -217,6 +220,7 @@ public class _2008Ascension extends QuestHandler {
 								if (giveQuestItem(env, 182203009, 1))
 									return true;
 
+							syncCardStepToBots(player, 1, 2, 182203009);
 							return defaultCloseDialog(env, 1, 2); // 2
 						}
 				}
@@ -231,6 +235,7 @@ public class _2008Ascension extends QuestHandler {
 							if (player.getInventory().getItemCountByItemId(182203010) == 0)
 								if (!giveQuestItem(env, 182203010, 1))
 									return true;
+							syncCardStepToBots(player, 2, 3, 182203010);
 							return defaultCloseDialog(env, 2, 3); // 3
 						}
 				}
@@ -246,6 +251,7 @@ public class _2008Ascension extends QuestHandler {
 								if (!giveQuestItem(env, 182203011, 1))
 									return true;
 
+							syncCardStepToBots(player, 3, 4, 182203011);
 							return defaultCloseDialog(env, 3, 4); // 4
 						}
 				}
@@ -340,6 +346,41 @@ public class _2008Ascension extends QuestHandler {
 		qs.setQuestVar(6);
 		updateQuestStatus(env);
 		return true;
+	}
+
+	/**
+	 * Mirrors the host's own card hand-off onto every companion bot the instant the host receives it -
+	 * talking to three different NPCs and turning over a card each time is pure fetch/dialogue with no
+	 * combat or decision involved, so there's no reason to walk each bot through it individually. Stops
+	 * dead at var 4 (all three cards collected, ready to enter the instance): everything from there on -
+	 * the instanced fight and, ultimately, picking a class - stays something the account owner does in
+	 * person, one character at a time. Requested live: "on each quest state the bot basically gets the
+	 * cards too - though for step 2 and above you will be required to log into each character
+	 * individually and choose a class."
+	 */
+	private void syncCardStepToBots(Player host, int fromVar, int toVar, int itemId) {
+		if (host.isBot())
+			return;
+		for (Player member : host.getBots()) {
+			if (!(member instanceof BotPlayer))
+				continue;
+			BotPlayer bot = (BotPlayer) member;
+			QuestStateList botQsl = bot.getQuestStateList();
+			QuestState botQs = botQsl.getQuestState(questId);
+			if (botQs == null) {
+				if (fromVar != 0)
+					continue; // never started - only join in at the very first card
+				botQs = new QuestState(questId, QuestStatus.START, 0, 0, 0, null, null, null);
+				botQsl.addQuest(questId, botQs);
+			}
+			if (botQs.getStatus() != QuestStatus.START || botQs.getQuestVarById(0) != fromVar)
+				continue;
+			QuestEnv botEnv = new QuestEnv(null, bot, questId, 0);
+			if (itemId != 0 && !giveQuestItem(botEnv, itemId, 1))
+				continue;
+			botQs.setQuestVar(toVar);
+			updateQuestStatus(botEnv);
+		}
 	}
 
 	private boolean setPlayerClass(QuestEnv env, QuestState qs, PlayerClass playerClass) {

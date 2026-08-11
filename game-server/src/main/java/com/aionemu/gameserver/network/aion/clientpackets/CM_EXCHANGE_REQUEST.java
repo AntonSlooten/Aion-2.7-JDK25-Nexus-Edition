@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aionemu.gameserver.model.gameobjects.Creature;
+import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.DeniedStatus;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.RequestResponseHandler;
@@ -80,6 +81,13 @@ public class CM_EXCHANGE_REQUEST extends AionClientPacket {
 			 * check if trade partner exists or is he/she a player.
 			 */
 			if (targetPlayer != null) {
+				if (targetPlayer instanceof BotPlayer && ((BotPlayer) targetPlayer).getHostObjectId() == activePlayer.getObjectId()) {
+					// A companion bot never sees this dialog itself - it has no client to accept with -
+					// so its own host's trade request bypasses the confirmation handshake and goes
+					// straight through, with the bot auto-agreeing on the other end.
+					ExchangeService.getInstance().registerBotExchange(activePlayer, (BotPlayer) targetPlayer);
+					return;
+				}
 				if (targetPlayer.getPlayerSettings().isInDeniedStatus(DeniedStatus.TRADE)) {
 					sendPacket(SM_SYSTEM_MESSAGE.STR_MSG_REJECTED_TRADE(targetPlayer.getName()));
 					return;

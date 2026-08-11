@@ -420,7 +420,20 @@ public class TeleportService {
 		}
 		player.getController().startProtectionActiveTask();
 		player.setIsTeleporting(false);
-		CompanionService.relocateBots(player);
+		// Solo instances (PortalTemplate.getPlayerSize() outside {6,12} - see PortalService.
+		// analyzePortation()) deliberately exclude grouped party members: each real player enters via
+		// their OWN separate portal interaction and lands in an instance keyed by their own objectId,
+		// so nobody else can follow. A bot sends no client packets and never goes through that path
+		// itself - the only way it could end up there is by getting physically relocated here, which
+		// would silently defeat the entire point of "solo". WorldMapInstance.getSoloPlayerObj() is set
+		// only for solo-keyed instances (InstanceService.registerPlayerWithInstance(), never for the
+		// group/alliance registration paths), making it the correct signal to skip on - a bot bound for
+		// a solo instance is simply left behind, same as a real party member would be. Requested live:
+		// "will [a bot go along too] given the teleport fix... The solo instances are whole new areas...
+		// will the bot behave as expected there?"
+		if (player.getPosition().getWorldMapInstance().getSoloPlayerObj() == null) {
+			CompanionService.relocateBots(player);
+		}
 	}
 
 	/**

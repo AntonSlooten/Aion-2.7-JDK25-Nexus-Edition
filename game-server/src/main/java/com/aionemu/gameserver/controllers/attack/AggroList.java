@@ -17,11 +17,13 @@
 package com.aionemu.gameserver.controllers.attack;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import javolution.util.FastMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.aionemu.commons.callbacks.Callback;
 import com.aionemu.commons.callbacks.CallbackResult;
@@ -43,6 +45,8 @@ import com.aionemu.gameserver.world.knownlist.Visitor;
 @SuppressWarnings("rawtypes")
 public class AggroList {
 
+	private static final Logger log = LoggerFactory.getLogger(AggroList.class);
+
 	protected final Creature owner;
 
 	private FastMap<Integer, AggroInfo> aggroList = new FastMap<Integer, AggroInfo>().shared();
@@ -59,8 +63,21 @@ public class AggroList {
 	 */
 	@ObjectCallback(AddDamageValueCallback.class)
 	public void addDamage(Creature creature, int damage) {
-		if (!isAware(creature))
+		if (!isAware(creature)) {
+			// Diagnostic for "monster gets hit but doesn't recognize/retaliate against the attacker" -
+			// this is the VERY FIRST gate on the whole aggro path: if isAware() is false, damage still
+			// lands (reduceHp() runs regardless, in CreatureController.onAttack()) but NOTHING here
+			// happens - no hate, no AIEventType.ATTACK, no state change. isAware() requires EITHER
+			// creature.isEnemy(owner) OR a tribe-hostile relation; logging both inputs plus damage dealt
+			// to see which one is failing. Requested live: "it did not recognize the attacker, and
+			// regenned quickly."
+			if (owner instanceof Npc && creature != null)
+				log.info("[aggro] npc={} objId={} templateId={} NOT AWARE of attacker={} dmg={} - isEnemy={} ownerTribe={} attackerTribe={} hostileTribes={}",
+					owner.getName(), owner.getObjectId(), ((Npc) owner).getNpcId(), creature.getName(), damage,
+					creature.isEnemy(owner), owner.getTribe(), creature.getTribe(),
+					DataManager.TRIBE_RELATIONS_DATA.isHostileRelation(owner.getTribe(), creature.getTribe()));
 			return;
+		}
 
 		AggroInfo ai = getAggroInfo(creature);
 		ai.addDamage(damage);
@@ -215,8 +232,24 @@ public class AggroList {
 			// aggroList will never contain anything but creatures
 			Creature attacker = (Creature) ai.getAttacker();
 
-			if (attacker.getLifeStats().isAlreadyDead() || !owner.getKnownList().knowns(attacker))
+			boolean dead = attacker.getLifeStats().isAlreadyDead();
+			boolean known = owner.getKnownList().knowns(attacker);
+			if (dead || !known) {
+				// Diagnostic for "monster stops fighting back and stays that way until it dies" - this is
+				// the exact gate that zeroes an attacker's hate out of getMostHated() consideration.
+				// Logging region-activity state alongside knowns() to confirm/deny whether
+				// NpcKnownList.doUpdate()'s region-active gate (which wipes the whole known-list instead
+				// of just skipping a refresh when the region isn't considered active) is why a companion
+				// bot's presence never registers. Requested live, confirmed deterministic and persistent
+				// rather than a one-off timing miss.
+				if (owner instanceof com.aionemu.gameserver.model.gameobjects.Npc && !dead)
+					org.slf4j.LoggerFactory.getLogger(AggroList.class).info(
+						"[knownlist] npc={} objId={} attacker={} known={} npcRegionActive={} attackerRegionActive={}",
+						owner.getName(), owner.getObjectId(), attacker.getName(), known,
+						owner.getActiveRegion() != null ? owner.getActiveRegion().isMapRegionActive() : "null-region",
+						attacker.getActiveRegion() != null ? attacker.getActiveRegion().isMapRegionActive() : "null-region");
 				ai.setHate(0);
+			}
 
 			if (ai.getHate() > maxHate) {
 				mostHated = attacker;
@@ -340,8 +373,16 @@ public class AggroList {
 
 			Creature master = ((Creature) ai.getAttacker()).getMaster();
 
+			// A single non-Player-mastered attacker in the raw aggro list (another hostile creature that
+			// also happened to tag this same target, a stray trap/effect - anything whose damage doesn't
+			// ultimately trace back to a Player) used to abort this ENTIRE method and hand back an empty
+			// list, silently wiping every legitimate player's and bot's earned credit for the kill, not
+			// just excluding the one foreign entry. That made kill rewards/loot rights fail intermittently
+			// depending on what else happened to have hit the same target that fight, not on anything the
+			// player or their companions did. Requested live: "if my companions kill it... no one can loot
+			// it," then "hmm but not always" once a few different kills were compared.
 			if (!(master instanceof Player))
-				return Collections.emptyList();
+				continue;
 
 			Player player = (Player) master;
 

@@ -70,6 +70,7 @@ import com.aionemu.gameserver.utils.audit.AuditLogger;
 import com.aionemu.gameserver.utils.audit.GMService;
 import com.aionemu.gameserver.utils.rates.Rates;
 import com.aionemu.gameserver.world.World;
+import com.aionemu.gameserver.world.geo.GeoService;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -221,6 +222,7 @@ public final class PlayerEnterWorldService {
 
 			log.info("[MAC_AUDIT] Player " + player.getName() + " (account " + account.getName()
 					+ ") has entered world with " + client.getMacAddress() + " MAC.");
+			correctBuriedPosition(player);
 			World.getInstance().storeObject(player);
 			SerialKillerService.getInstance().onLogin(player);
 			StigmaService.onPlayerLogin(player);
@@ -457,6 +459,32 @@ public final class PlayerEnterWorldService {
 		}
 	}
 
+	/**
+	 * A player's saved Z can end up below the real ground (e.g. a server crash mid-fall) - logging back
+	 * in at that stored position then means falling straight through the map with nothing solid ever
+	 * under them. GeoService.getZ(worldId, x, y) is the right tool here rather than GeoService.getZ(
+	 * VisibleObject) / getZ(worldId, x, y, z, ...): those only raycast within ~100 units of the
+	 * PLAYER'S OWN (possibly already-buried) z, so if the true ground is further away than that they'd
+	 * silently miss it and return the same bad value. getZ(worldId, x, y) instead always raycasts
+	 * straight down from a fixed height of 4000 (GeoMap.getZ(float,float)), so it finds the real surface
+	 * (ground, bridge, platform, whatever's actually there) regardless of how deep the stored position
+	 * is. Only corrects when the stored Z is clearly BELOW that surface (a small tolerance to avoid
+	 * nudging players who are legitimately standing exactly on it) - never touches anyone who's
+	 * legitimately elevated above it. Requested live: "on login a character is always ontop of the
+	 * ground... I had a crash and all the characters were buried in the ground and thus fell through
+	 * the map."
+	 */
+	private static void correctBuriedPosition(Player player) {
+		if (!GeoDataConfig.GEO_ENABLE)
+			return;
+		float groundZ = GeoService.getInstance().getZ(player.getWorldId(), player.getX(), player.getY());
+		if (groundZ > 0 && player.getZ() < groundZ - 2f) {
+			log.warn("Player " + player.getName() + " logged in buried at z=" + player.getZ() + " (ground z="
+				+ groundZ + ") - correcting position.");
+			player.getPosition().setXYZH(player.getX(), player.getY(), groundZ + 0.5f, player.getHeading());
+		}
+	}
+
 	private static String formatBonus(float bonus) {
 		bonus = (bonus - 1) * 100;
 		return Math.round(bonus) + "%";
@@ -628,6 +656,16 @@ public final class PlayerEnterWorldService {
 		// group kill roughly 9:1 instead of the ~52:48 the level-weighted group formula alone predicts.
 		Byte membership = host.getClientConnection() != null ? host.getClientConnection().getAccount().getMembership() : null;
 		bot.setRates(Rates.getRatesFor(membership != null ? membership : (byte) 0));
+
+		// A real player's cube/warehouse expansions only get re-applied to Storage.limit inside
+		// sendItemInfos() (below), which needs a live AionConnection to push SM_INVENTORY_INFO/etc to -
+		// a bot has none, so botEnterWorld() never went through it and Storage.limit stayed stuck at the
+		// raw un-expanded default, regardless of how many expansions this character actually owns when
+		// played for real. getFreeSlots() could then read far below the character's true capacity,
+		// silently blocking any equip that needs to displace an existing item. Requested live: "Bam has
+		// like 14 free inventory slots" while an equip swap was being rejected for lack of space.
+		bot.getInventory().setLimit(StorageType.CUBE.getLimit() + (bot.getQuestExpands() + bot.getNpcExpands()) * 9);
+		bot.getWarehouse().setLimit(StorageType.REGULAR_WAREHOUSE.getLimit() + bot.getWarehouseSize() * 8);
 
 		initPlayerServices(bot);
 

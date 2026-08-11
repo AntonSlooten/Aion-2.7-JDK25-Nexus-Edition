@@ -289,6 +289,15 @@ public class Npc extends Creature {
 	@Override
 	public void setTarget(VisibleObject creature) {
 		if (getTarget() != creature) {
+			// Diagnostic for "monster stops fighting back and stays that way until it dies" - pairs with
+			// AbstractAI.setStateIfNot()'s [aistate] logging to catch exactly what clears an Npc's target
+			// (this is the ONLY place it actually changes) right after AttackEventHandler.onAttack() sets
+			// it. Requested live, confirmed deterministic rather than a timing race.
+			StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+			String caller = trace.length > 2 ? trace[2].getClassName() + "." + trace[2].getMethodName() : "?";
+			org.slf4j.LoggerFactory.getLogger(Npc.class).info("[aistate] npc={} objId={} target {} -> {} from {}",
+				getName(), getObjectId(), getTarget() != null ? getTarget().getName() : "null",
+				creature != null ? creature.getName() : "null", caller);
 			super.setTarget(creature);
 			super.clearAttackedCount();
 			getGameStats().renewLastChangeTargetTime();

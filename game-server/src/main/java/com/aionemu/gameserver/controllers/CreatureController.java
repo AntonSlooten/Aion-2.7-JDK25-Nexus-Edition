@@ -179,7 +179,19 @@ public abstract class CreatureController<T extends Creature> extends VisibleObje
 	/**
 	 * Perform tasks when Creature was attacked //TODO may be pass only Skill object - but need to add properties in it
 	 */
-	public void onAttack(final Creature creature, int skillId, TYPE type, int damage, boolean notifyAttack, LOG log) {		
+	public void onAttack(final Creature creature, int skillId, TYPE type, int damage, boolean notifyAttack, LOG log) {
+		// Diagnostic for "attacked but no damage message, doesn't recognize the attacker, can't loot" -
+		// DamageEffect.applyEffect() calls this UNCONDITIONALLY whenever a damage skill effect actually
+		// runs (hit or miss), so this is ground truth for whether an attack even reached this far at all.
+		// If a "silent" attack the user sees in-game never produces a line here, the skill/effect never
+		// executed against this target in the first place - a target-resolution or skill-execution
+		// problem, not an aggro-registration one. If it DOES show up here, the problem is downstream
+		// (AggroList.isAware(), the CREATURE_ATTACKED state gate, etc.) Requested live: "no messages
+		// saying 'Blahh did x damage'... If I kill the creature, I can't loot it."
+		if (getOwner() instanceof Npc)
+			CreatureController.log.info("[onAttack] npc={} objId={} templateId={} attacker={} skillId={} damage={} notifyAttack={}",
+				getOwner().getName(), getOwner().getObjectId(), ((Npc) getOwner()).getNpcId(),
+				creature != null ? creature.getName() : "null", skillId, damage, notifyAttack);
 		// Reduce the damage to exactly what is required to ensure death.
 		// - Important that we don't include 7k worth of damage when the
 		// creature only has 100 hp remaining. (For AggroList dmg count.)

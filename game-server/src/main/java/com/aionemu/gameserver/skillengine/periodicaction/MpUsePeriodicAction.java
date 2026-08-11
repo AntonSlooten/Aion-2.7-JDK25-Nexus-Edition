@@ -19,6 +19,7 @@ package com.aionemu.gameserver.skillengine.periodicaction;
 import javax.xml.bind.annotation.XmlAttribute;
 
 import com.aionemu.gameserver.model.gameobjects.Creature;
+import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.skillengine.model.Effect;
 
 /**
@@ -32,6 +33,11 @@ public class MpUsePeriodicAction extends PeriodicAction {
 	@Override
 	public void act(Effect effect) {
 		Creature effected = effect.getEffected();
+		if (effected instanceof Player && ((Player) effected).isBot())
+			// Otherwise a bot's own upkeep-cost toggle (e.g. a Chanter buff) would silently self-cancel
+			// the moment its unmanaged MP bar ran dry - see MpUseAction's bot exemption for the same
+			// reasoning.
+			return;
 		int maxMp = effected.getGameStats().getMaxMp().getCurrent();
 		int requiredMp = (int) (maxMp * (value / 100f));
 		if (effected.getLifeStats().getCurrentMp() < requiredMp) {

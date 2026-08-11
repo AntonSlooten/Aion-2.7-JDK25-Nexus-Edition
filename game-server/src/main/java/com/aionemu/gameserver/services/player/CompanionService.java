@@ -17,7 +17,10 @@
 package com.aionemu.gameserver.services.player;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.aionemu.gameserver.ai2.playerbot.PlayerBotAI;
 import com.aionemu.gameserver.ai2.playerbot.PlayerBotAITaskManager;
@@ -39,6 +42,9 @@ public class CompanionService {
 
 	private CompanionService() {
 	}
+
+	/** Object ids of bots currently mid-teardown in dismissBot() - see the guard at its top. */
+	private static final Set<Integer> dismissing = Collections.synchronizedSet(new HashSet<Integer>());
 
 	/**
 	 * Adds a companion bot to the host's group, creating one if the host isn't already in one. Bypasses
@@ -81,19 +87,39 @@ public class CompanionService {
 		PlayerGroupService.changeGroupRules(group, freeForAll);
 	}
 
+	/**
+	 * PlayerGroupLeavedEvent.handleEvent() calls this right back, synchronously, when it sees the
+	 * player leaving its team is a BotPlayer - which fires on EVERY call here, since the very first
+	 * thing this method does is remove the bot from its group. Without the guard below, that made this
+	 * method re-enter itself for every single dismissal and run the ENTIRE teardown twice: despawn the
+	 * same world entity twice, delete the same controller twice, double-save to the DB. The client got
+	 * a second "remove this entity" for something it had already freed after the first pass - a
+	 * textbook double-free, and the most likely explanation for a client-side Access Violation crash
+	 * (CryEntitySystem.dll, write to 0xCDCDCDCD - MSVC's freed-memory poison pattern) seen live right
+	 * after a burst of bot dismissals during a host's own logout. Requested live: "This did not exist
+	 * until we added bots... <something> happens to my character which removes it from the world, THEN
+	 * the game crashes."
+	 */
 	public static void dismissBot(Player host, BotPlayer bot) {
-		if (bot.getPlayerGroup2() != null)
-			PlayerGroupService.removePlayer(bot);
+		if (!dismissing.add(bot.getObjectId()))
+			return;
+		try {
+			if (bot.getPlayerGroup2() != null)
+				PlayerGroupService.removePlayer(bot);
 
-		if (bot.getAi2() instanceof PlayerBotAI)
-			PlayerBotAITaskManager.getInstance().removeBot((PlayerBotAI) bot.getAi2());
+			if (bot.getAi2() instanceof PlayerBotAI)
+				PlayerBotAITaskManager.getInstance().removeBot((PlayerBotAI) bot.getAi2());
 
-		bot.getMoveController().abortMove();
-		World.getInstance().despawn(bot);
-		bot.getController().delete();
-		PlayerService.storePlayer(bot);
+			bot.getMoveController().abortMove();
+			World.getInstance().despawn(bot);
+			bot.getController().delete();
+			PlayerService.storePlayer(bot);
 
-		host.removeBot(bot);
+			host.removeBot(bot);
+		}
+		finally {
+			dismissing.remove(bot.getObjectId());
+		}
 	}
 
 	public static void dismissAllBots(Player host) {

@@ -43,6 +43,7 @@ import com.aionemu.gameserver.model.drop.DropItem;
 import com.aionemu.gameserver.model.gameobjects.DropNpc;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
+import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.player.QuestStateList;
 import com.aionemu.gameserver.model.gameobjects.player.RewardType;
@@ -113,20 +114,181 @@ public final class QuestService {
 		if (template.getCategory() == QuestCategory.MISSION && qs.getCompleteCount() != 0) {
 			return false; // prevent repeatable reward because of wrong quest handling
 		}
-		if (!template.getExtendedRewards().isEmpty()) {
-			if (qs.getCompleteCount() == template.getMaxRepeatCount() - 1) { // This is the last time
-				return giveRewardAndFinish(env, template, true, 0);
-			}
+		boolean success;
+		if (!template.getExtendedRewards().isEmpty() && qs.getCompleteCount() == template.getMaxRepeatCount() - 1) {
+			// This is the last time
+			success = giveRewardAndFinish(env, template, true, 0, false);
 		}
-		if (!template.getRewards().isEmpty() || !template.getBonus().isEmpty()) {
-			return giveRewardAndFinish(env, template, false, reward);
+		else if (!template.getRewards().isEmpty() || !template.getBonus().isEmpty()) {
+			success = giveRewardAndFinish(env, template, false, reward, false);
 		}
 		else {
-			return setFinishingState(env, template, reward);
+			success = setFinishingState(env, template, reward);
+		}
+		if (success) {
+			syncQuestCompletionToBots(env, template, reward);
+		}
+		return success;
+	}
+
+	/**
+	 * Mirrors a "generic" quest's completion onto every grouped bot that's eligible and hasn't already
+	 * completed it, granting the SAME reward (items/kinah/exp/title/AP) rather than just experience -
+	 * requested live: "the bot probably wants to be granted the kinah, items and AP from the quest, as
+	 * there are times they are reasonable for a leveling character." A bot never actually progresses
+	 * through the quest's steps (collecting items, talking to NPCs along the way) - that's deliberately
+	 * not tracked at all; the bot's own QuestState is materialized directly into REWARD status right
+	 * before reusing giveRewardAndFinish()/setFinishingState() below to grant it, exactly as if it had
+	 * just reached the turn-in step itself. Reusing those methods (rather than hand-rolling the grant
+	 * logic) means class-specific selectable rewards (template.isUseClassReward()) automatically
+	 * resolve against the BOT'S OWN class, not the host's - those methods read env.getPlayer(), and the
+	 * env constructed below points at the bot.
+	 *
+	 * Deliberately excluded, per explicit request: class-restricted quests (getClassPermitted()
+	 * non-empty - tied to a specific character's build, not something a differently-classed companion
+	 * should "complete" as a side effect) and crafting quests (getCombineSkill() != null - tied to the
+	 * bot's own crafting skill progression, which this doesn't touch). Also restricted to
+	 * QuestCategory.QUEST (ordinary player-accepted quests) - MISSION/EVENT/TASK/FACTION quests are
+	 * driven by different acceptance paths this feature isn't scoped to handle.
+	 *
+	 * The anti-double-dip rule requested live ("if they have done it already, lets not give them extra
+	 * exp") is Player.isCompleteQuest() - a bot's completion history is permanent and per-character, so
+	 * cycling which alt is currently "host" can never re-earn the same one-time reward twice.
+	 */
+	private static void syncQuestCompletionToBots(QuestEnv hostEnv, QuestTemplate template, int reward) {
+		Player host = hostEnv.getPlayer();
+		if (host.isBot())
+			return;
+		int id = template.getId();
+		if (host.getBots().isEmpty())
+			return;
+		if (template.getCategory() != QuestCategory.QUEST && template.getCategory() != QuestCategory.MISSION
+			&& template.getCategory() != QuestCategory.IMPORTANT) {
+			log.info("[questsyncdbg] quest={} skipped: category={}", id, template.getCategory());
+			return;
+		}
+		// "Ascension" (1006 Elyos / 2008 Asmodian, both MISSION category, minlevel 9) is the actual
+		// second-class-selection quest - its handler calls ClassChangeService.setClass() directly off
+		// whichever dialog option the HOST clicked. Syncing it would silently reassign a bot's class to
+		// whatever the host happened to pick, which the bot's own account owner never chose - the one
+		// thing that must never be shared here, unlike ordinary MISSION-category story quests. Requested
+		// live: "the only one that should really be avoided at all cost is the actual class selection
+		// quest - destiny or whatever it's called - that only triggers at level 9."
+		if (id == 1006 || id == 2008) {
+			log.info("[questsyncdbg] quest={} skipped: class-ascension quest, never synced", id);
+			return;
+		}
+		if (!template.getClassPermitted().isEmpty() || template.getCombineSkill() != null) {
+			log.info("[questsyncdbg] quest={} skipped: classPermitted={} combineSkill={}", id,
+				template.getClassPermitted(), template.getCombineSkill());
+			return;
+		}
+
+		for (Player member : host.getBots()) {
+			if (!(member instanceof BotPlayer))
+				continue;
+			BotPlayer bot = (BotPlayer) member;
+			if (bot.isCompleteQuest(id)) {
+				log.info("[questsyncdbg] quest={} bot={} skipped: already complete", id, bot.getName());
+				continue;
+			}
+			if (template.getRacePermitted() != null && template.getRacePermitted() != Race.PC_ALL
+				&& template.getRacePermitted() != bot.getRace()) {
+				log.info("[questsyncdbg] quest={} bot={} skipped: race {} != {}", id, bot.getName(), bot.getRace(),
+					template.getRacePermitted());
+				continue;
+			}
+			if (template.getMinlevelPermitted() != 99 && bot.getLevel() < template.getMinlevelPermitted()) {
+				log.info("[questsyncdbg] quest={} bot={} skipped: level {} < min {}", id, bot.getName(), bot.getLevel(),
+					template.getMinlevelPermitted());
+				continue;
+			}
+			if (template.getMaxlevelPermitted() != 0 && bot.getLevel() > template.getMaxlevelPermitted()) {
+				log.info("[questsyncdbg] quest={} bot={} skipped: level {} > max {}", id, bot.getName(), bot.getLevel(),
+					template.getMaxlevelPermitted());
+				continue;
+			}
+			if (template.getGenderPermitted() != null && template.getGenderPermitted() != bot.getGender()) {
+				log.info("[questsyncdbg] quest={} bot={} skipped: gender {} != {}", id, bot.getName(), bot.getGender(),
+					template.getGenderPermitted());
+				continue;
+			}
+
+			try {
+				QuestStateList botQsl = bot.getQuestStateList();
+				QuestState botQs = botQsl.getQuestState(id);
+				if (botQs == null) {
+					botQs = new QuestState(id, QuestStatus.REWARD, 0, 0, 0, null, null, null);
+					botQsl.addQuest(id, botQs);
+				}
+				else {
+					botQs.setStatus(QuestStatus.REWARD);
+				}
+
+				// A reward the HOST picked from a list (a class-appropriate weapon choice, etc.) can't be
+				// synced sight-unseen - the host's chosen dialogId/extendedRewardIndex only means anything
+				// in the context of the host's OWN class and the option THEY looked at, and there's no
+				// dialog for the bot to answer this with itself (no client). Leaving the bot at REWARD
+				// status until they're played directly was tried first, but turned out to be a bigger
+				// practical annoyance than it solved: "logging out and in to get the rewards is a touch
+				// bit PITA... let's just give each bot all the rewards, then the host can sort it out
+				// later." So for a selectable-reward quest, giveRewardAndFinish() below is told to add
+				// EVERY item from whichever list applies (the bot's own class's list, if the quest uses
+				// isUseClassReward(), else the plain shared list) instead of picking the one index the
+				// host happened to choose - inventory clutter is a smaller problem than a wrong-class item
+				// or a stuck quest.
+				boolean giveAllSelectable = hasSelectableReward(template);
+				int botReward = resolveRewardIndexForBot(id, reward, bot);
+
+				QuestEnv botEnv = new QuestEnv(hostEnv.getVisibleObject(), bot, id, hostEnv.getDialogId());
+				botEnv.setExtendedRewardIndex(hostEnv.getExtendedRewardIndex());
+
+				boolean botSuccess;
+				if (!template.getExtendedRewards().isEmpty() && botQs.getCompleteCount() == template.getMaxRepeatCount() - 1) {
+					botSuccess = giveRewardAndFinish(botEnv, template, true, 0, giveAllSelectable);
+				}
+				else if (!template.getRewards().isEmpty() || !template.getBonus().isEmpty()) {
+					botSuccess = giveRewardAndFinish(botEnv, template, false, botReward, giveAllSelectable);
+				}
+				else {
+					botSuccess = setFinishingState(botEnv, template, botReward);
+				}
+				log.info("[questsyncdbg] quest={} bot={} grant success={} finalStatus={}", id, bot.getName(), botSuccess,
+					botQs.getStatus());
+			}
+			catch (Exception e) {
+				// A quest handler side effect (HTML dialog, follow-up spawn, etc.) can assume a real
+				// client connection a bot doesn't have - never let that take down the host's own
+				// completion (already succeeded before this method was even called) or block syncing to
+				// the REST of the group's bots. Confirmed live: HTMLService.sendData() NPEs on
+				// player.getClientConnection() for a bot - caught internally there, but this catch is the
+				// safety net for anything that ISN'T as careful.
+				log.error("[questsyncdbg] quest=" + id + " bot=" + bot.getName() + " sync threw", e);
+			}
 		}
 	}
 
-	private static boolean giveRewardAndFinish(QuestEnv env, QuestTemplate template, boolean extended, int reward) {
+	/**
+	 * True if this quest's reward isn't a single fixed grant - either a per-class list
+	 * (isUseClassReward(), e.g. "Ascension"-adjacent class-appropriate weapon quests) or a plain
+	 * pick-one-of-several list (Rewards.getSelectableRewardItem()) on either its normal or extended
+	 * reward tier. Either way the actual item only gets decided by a dialogId/extendedRewardIndex a
+	 * real client sends - see syncQuestCompletionToBots()'s REWARD-status deferral just above.
+	 */
+	private static boolean hasSelectableReward(QuestTemplate template) {
+		if (template.isUseClassReward())
+			return true;
+		for (Rewards r : template.getRewards())
+			if (!r.getSelectableRewardItem().isEmpty())
+				return true;
+		for (Rewards r : template.getExtendedRewards())
+			if (!r.getSelectableRewardItem().isEmpty())
+				return true;
+		return false;
+	}
+
+	private static boolean giveRewardAndFinish(QuestEnv env, QuestTemplate template, boolean extended, int reward,
+		boolean giveAllSelectable) {
 		Player player = env.getPlayer();
 		int id = env.getQuestId();
 		List<QuestItems> questItems = new ArrayList<QuestItems>();
@@ -139,7 +301,21 @@ public final class QuestService {
 		}
 		questItems.addAll(rewards.getRewardItem());
 		int dialogId = env.getDialogId();
-		if (dialogId != 18 && dialogId != 0 && !extended) {
+		if (giveAllSelectable) {
+			// Bot-sync path: no dialog exists to pick just one, so grant the whole relevant list instead
+			// of the single index env.getDialogId()/getExtendedRewardIndex() would otherwise select -
+			// see syncQuestCompletionToBots() for why. isUseClassReward() quests get the bot's OWN class's
+			// list (never another class's), everything else gets the plain shared list as-is.
+			if (template.isUseClassReward()) {
+				List<QuestItems> classSelectableReward = getClassSelectableReward(template, player.getCommonData().getPlayerClass());
+				if (classSelectableReward != null)
+					questItems.addAll(classSelectableReward);
+			}
+			else {
+				questItems.addAll(rewards.getSelectableRewardItem());
+			}
+		}
+		else if (dialogId != 18 && dialogId != 0 && !extended) {
 			if (template.isUseClassReward()) {
 				QuestItems classRewardItem = null;
 				PlayerClass playerClass = player.getCommonData().getPlayerClass();
@@ -226,7 +402,15 @@ public final class QuestService {
 				questItems.add(additional);
 		}
 
-		if (ItemService.addQuestItems(player, questItems)) {
+		// Reward items always get added, even over the normal inventory cap, rather than blocking
+		// completion on free slots - requested live: "if it was a reward from a quest it just added it
+		// to the inventory and you just had more stuff in there than slots and you had to get rid of a
+		// bunch in order for it to work... I suspect this [blocking] is from a really early version [of
+		// this server fork]." This applies to every player, not just bots (see ItemService.
+		// addQuestItems()'s ignoreInventorySpace parameter) - bots specifically needed this regardless
+		// since a companion's cube isn't something the host actively manages, but the block itself
+		// wasn't standard/desired behavior for anyone.
+		if (ItemService.addQuestItems(player, questItems, true)) {
 			if (rewards.getGold() != null) {
 				player.getInventory().increaseKinah((long) (player.getRates().getQuestKinahRate() * rewards.getGold()),
 					ItemUpdateType.INC_KINAH_QUEST);
@@ -303,6 +487,66 @@ public final class QuestService {
 			log.error("Wrong selectable reward index " + selRewIndex + " for quest " + id);
 		}
 		return null;
+	}
+
+	/** The per-class selectable-reward list for whichever class is passed in - mirrors the same
+	 * class->accessor mapping giveRewardAndFinish()'s dialogId-indexed branch uses above, just without
+	 * picking a single index out of it. */
+	private static List<QuestItems> getClassSelectableReward(QuestTemplate template, PlayerClass playerClass) {
+		switch (playerClass) {
+			case ASSASSIN:
+				return template.getAssassinSelectableReward();
+			case CHANTER:
+				return template.getChanterSelectableReward();
+			case CLERIC:
+				return template.getPriestSelectableReward();
+			case GLADIATOR:
+				return template.getFighterSelectableReward();
+			case RANGER:
+				return template.getRangerSelectableReward();
+			case SORCERER:
+				return template.getWizardSelectableReward();
+			case SPIRIT_MASTER:
+				return template.getElementalistSelectableReward();
+			case TEMPLAR:
+				return template.getKnightSelectableReward();
+			default:
+				return null;
+		}
+	}
+
+	/**
+	 * Quests 2009 ("A Ceremony in Pandaemonium", Asmodian) and 1007 ("A Ceremony in Sanctum", Elyos) -
+	 * the immediate post-ascension follow-up quest where you pick a class-appropriate weapon/accessory -
+	 * don't use isUseClassReward() at all. Instead they lay the reward out as four separate <rewards>
+	 * blocks in quest_data.xml, one per starting archetype (0=Warrior, 1=Scout, 2=Mage, 3=Priest), and
+	 * their handler script picks which index to grant by hardcoding a different literal at each of the
+	 * four archetype-specific NPCs - baking in an implicit assumption that whoever completes the quest
+	 * IS that archetype. syncQuestCompletionToBots() forwards that same hardcoded index to every bot
+	 * regardless of the bot's own class, so a run completed by e.g. a Mage-archetype host was handing
+	 * literally every companion bot the Mage-archetype reward block. Confirmed live: "It looks like
+	 * everyone got the spiritmasters reward as that was the character I completed it on." This
+	 * recomputes the correct block per bot from PlayerClass.getStartingClassFor(), matching the exact
+	 * WARRIOR/SCOUT/MAGE/PRIEST -> 0/1/2/3 mapping both quests' own handlers use. Scoped to just these
+	 * two ids rather than any quest with multiple <rewards> blocks - other quests use multiple blocks
+	 * for unrelated reasons (e.g. per-repeat-count tiers), where reinterpreting the index as an
+	 * archetype pick would be wrong.
+	 */
+	private static int resolveRewardIndexForBot(int questId, int hostReward, BotPlayer bot) {
+		if (questId != 2009 && questId != 1007)
+			return hostReward;
+		switch (PlayerClass.getStartingClassFor(bot.getCommonData().getPlayerClass())) {
+			case WARRIOR:
+				return 0;
+			case SCOUT:
+				return 1;
+			case MAGE:
+				return 2;
+			case PRIEST:
+				return 3;
+			default:
+				return hostReward;
+		}
 	}
 
 	private static Timestamp countNextRepeatTime(Player player, QuestTemplate template) {

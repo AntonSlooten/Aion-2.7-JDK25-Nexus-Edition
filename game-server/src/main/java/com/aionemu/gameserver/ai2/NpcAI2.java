@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aionemu.gameserver.ai2.handler.ActivateEventHandler;
+import com.aionemu.gameserver.ai2.handler.AttackEventHandler;
 import com.aionemu.gameserver.ai2.handler.DiedEventHandler;
 import com.aionemu.gameserver.ai2.handler.ShoutEventHandler;
 import com.aionemu.gameserver.ai2.handler.SpawnEventHandler;
@@ -156,6 +157,22 @@ public class NpcAI2 extends AITemplate {
 	@Override
 	protected void handleDied() {
 		DiedEventHandler.onSimpleDie(this);
+	}
+
+	/**
+	 * NpcAI2 (registered as AIName "npc" - the AI EVERY standard monster uses, aggressive or passive)
+	 * never overrode this before, silently falling through to AITemplate's empty no-op - meaning
+	 * AttackEventHandler.onAttack(), the ONE place that sets AIState.FIGHT and calls AttackManager.
+	 * startAttacking() to make an npc actually fight back, was never reachable for any monster in this
+	 * codebase. Aggressive mobs mostly masked this by separately auto-aggroing on sight (handleCreatureSee,
+	 * proximity-based) before they'd ever need this event, but a passive/non-aggressive mob - which by
+	 * design ONLY starts fighting once actually hit - had no other trigger at all: it would take damage
+	 * forever and simply never retaliate. Confirmed live: "it just sat there... did not target my bot or
+	 * whomever was the target."
+	 */
+	@Override
+	protected void handleAttack(Creature creature) {
+		AttackEventHandler.onAttack(this, creature);
 	}
 
 	@Override

@@ -11,3 +11,5 @@ login-server/target/
 .vscode/settings.json
 .vscode/launch.json
 chat-server/.classpath
+*org.eclipse.jdt.core.prefs
+*.classpath

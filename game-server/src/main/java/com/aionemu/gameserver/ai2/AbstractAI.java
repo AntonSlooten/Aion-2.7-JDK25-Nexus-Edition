@@ -50,10 +50,15 @@ import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * @author ATracer
  */
 public abstract class AbstractAI implements AI2 {
+
+	private static final Logger log = LoggerFactory.getLogger(AbstractAI.class);
 
 	private Creature owner;
 	private AIState currentState;
@@ -160,6 +165,19 @@ public abstract class AbstractAI implements AI2 {
 		if (this.isLogging()) {
 			AI2Logger.info(this, "Setting AI state to " + newState);
 		}
+		// Diagnostic for "monster stops fighting back and stays that way until it dies" - tracing every
+		// state transition for an Npc, with the calling class, to catch whatever resets it out of FIGHT
+		// right after AttackEventHandler.onAttack() puts it there. Requested live, following confirmation
+		// this reproduces deterministically (not a timing race): "if the issue presents itself it will
+		// continue to present itself until the creature is dead."
+		if (owner instanceof com.aionemu.gameserver.model.gameobjects.Npc) {
+			StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+			String caller = trace.length > 3 ? trace[3].getClassName() + "." + trace[3].getMethodName() : "?";
+			org.slf4j.LoggerFactory.getLogger(AbstractAI.class).info(
+				"[aistate] npc={} objId={} state {} -> {} (target={}) from {}",
+				owner.getName(), owner.getObjectId(), currentState, newState,
+				owner.getTarget() != null ? owner.getTarget().getName() : "null", caller);
+		}
 		this.currentState = newState;
 		return true;
 	}
@@ -195,6 +213,19 @@ public abstract class AbstractAI implements AI2 {
 		}
 		if (canHandleEvent(event)) {
 			handleCreatureEvent(event, creature);
+		}
+		else if ((event == AIEventType.CREATURE_ATTACKED || event == AIEventType.CREATURE_ATTACKING) && owner instanceof Npc) {
+			// Diagnostic for "monster gets hit but doesn't recognize/retaliate against the attacker" -
+			// canHandleEvent() silently drops CREATURE_ATTACKED/CREATURE_ATTACKING whenever the NPC isn't
+			// currently in IDLE or WALKING state (isNonFightningState()) - a monster mid-RETURNING (giving
+			// up a previous chase and walking home) or already in some other non-idle state ignores a
+			// fresh attacker entirely until it settles back into IDLE, at which point it just sits there
+			// regenerating normally on whatever HP it has left, which reads as "recognized nothing, then
+			// healed up fast" from the damage dealt in the meantime. Requested live: "it did not
+			// recognize the attacker, and regenned quickly."
+			log.info("[aggro] npc={} objId={} templateId={} ignored {} from attacker={} - AI state={} (not IDLE/WALKING)",
+				owner.getName(), owner.getObjectId(), ((Npc) owner).getNpcId(), event,
+				creature != null ? creature.getName() : "null", currentState);
 		}
 	}
 
@@ -385,8 +416,19 @@ public abstract class AbstractAI implements AI2 {
 	void handleCreatureEvent(AIEventType event, Creature creature) {
 		switch (event) {
 			case ATTACK:
-				if (DataManager.TRIBE_RELATIONS_DATA.isFriendlyRelation(getOwner().getTribe(), creature.getTribe()))
+				if (DataManager.TRIBE_RELATIONS_DATA.isFriendlyRelation(getOwner().getTribe(), creature.getTribe())) {
+					// Diagnostic for "monster gets hit but doesn't recognize/retaliate against the
+					// attacker" - this is the ONE unconditional (not fighting-state-gated) early-out on
+					// the ATTACK event path: a tribe relation lookup that returns friendly wipes out the
+					// hit entirely, before handleAttack()/AttackEventHandler.onAttack() ever runs, no
+					// matter how much damage landed. Requested live: "it did not recognize the attacker,
+					// and regenned quickly."
+					if (owner instanceof Npc)
+						log.info("[aggro] npc={} objId={} templateId={} ignored ATTACK from attacker={} - tribe {} vs {} is friendly",
+							owner.getName(), owner.getObjectId(), ((Npc) owner).getNpcId(), creature.getName(),
+							getOwner().getTribe(), creature.getTribe());
 					return;
+				}
 				handleAttack(creature);
 				logEvent(event);
 				break;

@@ -142,6 +142,19 @@ public class PlayerLeaveWorldService {
 		if (player.isLegionMember())
 			LegionService.getInstance().onLogout(player);
 
+		// Cutting the connection here, before dismissAllBots()/onPlayerLogout() run, rather than at its
+		// original spot after them, is deliberate: dismissing several bots in a tight loop fires a
+		// SM_GROUP_MEMBER_INFO "X left the group" at every remaining member for EACH one - including the
+		// host's own still-open connection, which would otherwise receive a rapid burst of them at the
+		// exact moment its own client is separately mid-transition out of the world. PacketSendUtility.
+		// sendPacket() already no-ops on a null connection (the same mechanism that makes packets to a
+		// bot itself safe), so clearing this first means those packets never get sent at all instead of
+		// racing the client's own logout teardown. Requested live, after repeated client crashes
+		// following the exact sequence "several bots dismissed, then log out": "my player is removed
+		// from the game before it crashes... the game expecting a 'host' character that is suddenly not
+		// there."
+		player.setClientConnection(null);
+
 		CompanionService.dismissAllBots(player);
 
 		PlayerGroupService.onPlayerLogout(player);
@@ -152,7 +165,6 @@ public class PlayerLeaveWorldService {
 		player.getController().delete();
 		player.getCommonData().setOnline(false);
 		player.getCommonData().setLastOnline(new Timestamp(System.currentTimeMillis()));
-		player.setClientConnection(null);
 
 		DAOManager.getDAO(PlayerDAO.class).onlinePlayer(player, false);
 

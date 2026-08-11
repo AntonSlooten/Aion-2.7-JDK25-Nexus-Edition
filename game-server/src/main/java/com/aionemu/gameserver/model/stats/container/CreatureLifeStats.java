@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aionemu.gameserver.model.gameobjects.Creature;
+import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS.LOG;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS.TYPE;
@@ -195,6 +196,18 @@ public abstract class CreatureLifeStats<T extends Creature> {
 
 		if (hpIncreased) {
 			onIncreaseHp(type, value, skillId, log);
+			// Diagnostic for "monster's HP rises rapidly despite taking DoT damage" - this is the ONE
+			// unified entry point for ALL Hp increases (natural regen, heal skills, drain-life-style
+			// effects) regardless of source, so logging every increase on an Npc here will show exactly
+			// what's healing it: a specific skillId (a nearby support/healer-type mob casting on it?), or
+			// TYPE.NATURAL_HP (the passive regen task, if that's somehow active despite triggerRestoreTask()
+			// having no normal Npc call path). Requested live: "if a character cast a DOT attack, it
+			// continued to take damage, but its health rose rapidly to counter it."
+			if (getOwner() instanceof com.aionemu.gameserver.model.gameobjects.Npc)
+				CreatureLifeStats.log.info("[heal] npc={} objId={} templateId={} +{} HP (type={} skillId={}) now {}/{}",
+					getOwner().getName(), getOwner().getObjectId(),
+					((com.aionemu.gameserver.model.gameobjects.Npc) getOwner()).getNpcId(), value, type, skillId,
+					currentHp, getMaxHp());
 		}
 		return currentHp;
 	}
@@ -238,7 +251,33 @@ public abstract class CreatureLifeStats<T extends Creature> {
 	 * Restores HP with value set as HP_RESTORE_TICK
 	 */
 	public final void restoreHp() {
-		increaseHp(TYPE.NATURAL_HP, getOwner().getGameStats().getHpRegenRate().getCurrent());
+		// NpcGameStats.getHpRegenRate() falls back to maxHp/4 (25% of max HP) as its BASE value whenever
+		// NPC template/stat data doesn't otherwise set StatEnum.REGEN_HP, and this task fires
+		// unconditionally every 6s (LifeStatsRestoreService.DEFAULT_DELAY) - confirmed live via the
+		// [heal] logging below, on a monster taking steady DoT damage the entire time, an exact 25%-every-
+		// 6s regen more than doubled the incoming DPS and the fight never progressed. getLastAttackedTimeDelta()
+		// (relies on AttackEventHandler.onAttack()'s renewLastAttackedTime(), which only fires once
+		// NpcAI2.handleAttack() was wired up to it) is used rather than just checking whether the aggro
+		// list is CURRENTLY empty - confirmed live that the aggro list can read empty at the exact instant
+		// of a regen tick even on a monster being hit every 3s, apparently a narrow timing gap around each
+		// hit, so a decaying time-based signal (the same kind AttackManager.targetTooFar() already uses
+		// elsewhere for "is this fight still relevant") is the reliable one. Requested live: "if a
+		// character cast a DOT attack, it continued to take damage, but its health rose rapidly to
+		// counter it."
+		if (getOwner() instanceof Npc && ((Npc) getOwner()).getGameStats().getLastAttackedTimeDelta() < 10)
+			return;
+
+		int amount = getOwner().getGameStats().getHpRegenRate().getCurrent();
+		int before = currentHp;
+		increaseHp(TYPE.NATURAL_HP, amount);
+		if (getOwner() instanceof Npc) {
+			Npc npc = (Npc) getOwner();
+			if (!npc.getAggroList().getList().isEmpty()) {
+				log.info("[regen] npc={} objId={} templateId={} restored {} HP ({} -> {} / max {}) while aggro'd on {} attacker(s)",
+					npc.getName(), npc.getObjectId(), npc.getNpcId(), amount, before, currentHp, getMaxHp(),
+					npc.getAggroList().getList().size());
+			}
+		}
 	}
 
 	/**

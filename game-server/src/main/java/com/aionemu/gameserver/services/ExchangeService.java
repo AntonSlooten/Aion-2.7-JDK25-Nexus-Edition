@@ -27,6 +27,7 @@ import com.aionemu.commons.database.dao.DAOManager;
 import com.aionemu.gameserver.configs.main.LoggingConfig;
 import com.aionemu.gameserver.dao.InventoryDAO;
 import com.aionemu.gameserver.model.gameobjects.Item;
+import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.items.storage.Storage;
 import com.aionemu.gameserver.model.trade.Exchange;
@@ -84,6 +85,21 @@ public class ExchangeService {
 
 		PacketSendUtility.sendPacket(player2, new SM_EXCHANGE_REQUEST(player1.getName()));
 		PacketSendUtility.sendPacket(player1, new SM_EXCHANGE_REQUEST(player2.getName()));
+	}
+
+	/**
+	 * A companion bot has no client to answer the normal exchange-request confirmation dialog with, so
+	 * the host's trade request skips that handshake entirely and registers the exchange directly. The
+	 * bot's own lock/confirm isn't fired here - locking and confirming immediately, before the host has
+	 * even opened the window or added an item, sent SM_EXCHANGE_CONFIRMATION packets before the client
+	 * had anything to relate them to and left the host's own final "OK" with nothing left to trigger.
+	 * Instead lockExchange()/confirmExchange() below mirror the bot's side onto whichever action the
+	 * HOST just took, so the client is always mid-interaction (and therefore definitely ready) when it
+	 * receives the partner's matching state. Requested live: "I agree with trading", then later: "the
+	 * last step - clicking 'OK' when the trade is to be completed is still missing."
+	 */
+	public void registerBotExchange(Player host, BotPlayer bot) {
+		registerExchange(host, bot);
 	}
 
 	/**
@@ -229,6 +245,7 @@ public class ExchangeService {
 			exchange.lock();
 			Player currentParter = getCurrentParter(activePlayer);
 			PacketSendUtility.sendPacket(currentParter, new SM_EXCHANGE_CONFIRMATION(3));
+			mirrorBotPartnerState(activePlayer, currentParter, false);
 		}
 	}
 
@@ -258,9 +275,41 @@ public class ExchangeService {
 
 		Player currentPartner = getCurrentParter(activePlayer);
 		PacketSendUtility.sendPacket(currentPartner, new SM_EXCHANGE_CONFIRMATION(2));
+		mirrorBotPartnerState(activePlayer, currentPartner, true);
 
 		if (getCurrentExchange(currentPartner).isConfirmed()) {
 			performTrade(activePlayer, currentPartner);
+		}
+	}
+
+	/**
+	 * Mirrors the host's own lock/confirm action onto their bot's side of the same exchange, the instant
+	 * the host performs it - the bot always agrees, it just never initiates anything itself. Sets the
+	 * Exchange flag directly rather than recursing into lockExchange()/confirmExchange() for the bot:
+	 * recursing into confirmExchange() would run this method's own isConfirmed()-and-performTrade() check
+	 * a second time, and by the time that second check ran performTrade() would already have cleaned up
+	 * both Exchange map entries, so it would NPE on a now-null Exchange instead of no-op'ing.
+	 *
+	 * Crucially this also has to notify the HOST's own client, not just flip the server-side flag: a
+	 * real partner locking/confirming sends the SAME confirmation packet back to you, and it's that
+	 * packet the client's UI waits on to let you take the next step. Without it the host's own "Lock"
+	 * and "OK" clicks land server-side (the flags above prove the host's own state changes fine) but the
+	 * client never learns the bot's side changed too, so nothing outwardly happens - which is exactly
+	 * what was reported: "it appears the bot never does the 'lock' and 'ok' now."
+	 */
+	private void mirrorBotPartnerState(Player activePlayer, Player partner, boolean confirm) {
+		if (!(partner instanceof BotPlayer) || ((BotPlayer) partner).getHostObjectId() != activePlayer.getObjectId())
+			return;
+		Exchange botExchange = getCurrentExchange(partner);
+		if (botExchange == null)
+			return;
+		if (confirm) {
+			botExchange.confirm();
+			PacketSendUtility.sendPacket(activePlayer, new SM_EXCHANGE_CONFIRMATION(2));
+		}
+		else {
+			botExchange.lock();
+			PacketSendUtility.sendPacket(activePlayer, new SM_EXCHANGE_CONFIRMATION(3));
 		}
 	}
 

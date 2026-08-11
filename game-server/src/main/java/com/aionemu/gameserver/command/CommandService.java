@@ -151,6 +151,7 @@ public class CommandService {
 		commands.put("answer", new CmdAnswer());
 		commands.put("buff", new CmdBuff());
 		commands.put("companion", new CmdCompanion());
+		commandAlias.put("c", commands.get("companion")); // .c is shorthand for .companion, requested live: "you end up typing it a bit"
 		commands.put("commands", new CmdCommands());
 		commands.put("delitem", new CmdDelItem());
 		commands.put("enchant", new CmdEnchant());

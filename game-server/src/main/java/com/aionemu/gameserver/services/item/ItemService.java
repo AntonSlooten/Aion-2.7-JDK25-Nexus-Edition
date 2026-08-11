@@ -177,6 +177,23 @@ public class ItemService {
 	}
 
 	public static boolean addQuestItems(Player player, List<QuestItems> questItems) {
+		return addQuestItems(player, questItems, false);
+	}
+
+	/**
+	 * @param ignoreInventorySpace
+	 *          Skip the free-slot check and just add the items regardless, letting the inventory go
+	 *          over its normal cap rather than blocking the grant entirely. QuestService.
+	 *          giveRewardAndFinish() (the final quest-completion reward grant) always passes true here,
+	 *          for every player, bot or not - blocking completion on free cube space wasn't standard/
+	 *          desired behavior for this server, just an early-version quirk. Requested live: "if it was
+	 *          a reward from a quest it just added it to the inventory and you just had more stuff in
+	 *          there than slots and you had to get rid of a bunch in order for it to work... I suspect
+	 *          this is from a really early version." Other addQuestItems() callers (mid-quest item
+	 *          hand-offs, work orders) are untouched and still use the false/blocking default via the
+	 *          2-arg overload above - this is scoped to the final reward grant specifically.
+	 */
+	public static boolean addQuestItems(Player player, List<QuestItems> questItems, boolean ignoreInventorySpace) {
 		int needSlot = 0;
 		for (QuestItems qi : questItems) {
 			if (qi.getItemId() != ItemId.KINAH.value() && qi.getCount() != 0) {
@@ -187,7 +204,7 @@ public class ItemService {
 				needSlot += count;
 			}
 		}
-		if (needSlot > player.getInventory().getFreeSlots()) {
+		if (!ignoreInventorySpace && needSlot > player.getInventory().getFreeSlots()) {
 			PacketSendUtility.sendPacket(player, SM_SYSTEM_MESSAGE.STR_MSG_FULL_INVENTORY);
 			return false;
 		}

@@ -31,7 +31,6 @@ import com.aionemu.gameserver.utils.audit.AuditLogger;
  */
 public class FlyController {
 
-	@SuppressWarnings("unused")
 	private static final Logger log = LoggerFactory.getLogger(FlyController.class);
 
 	private static final long FLY_REUSE_TIME = 10000;
@@ -87,12 +86,22 @@ public class FlyController {
 	 * This method is called to start flying (called by CM_EMOTION when pageUp or pressed fly button)
 	 */
 	public void startFly() {
-		if (player.getFlyReuseTime() > System.currentTimeMillis()){
+		// The reuse-time guard below exists to stop a real client from click-spamming the fly button -
+		// meaningless for a bot, which only ever calls this because PlayerBotAI.syncFlight() just saw
+		// its host start flying. Without this exemption, a bot that had landed (to loot, fight, etc.)
+		// within the last 10s of its host re-taking off would silently fail to re-enter CreatureState.
+		// FLYING here - the AuditLogger line below, not an actual state change - while the unconditional
+		// host-following position updates kept dragging it up to the host's altitude regardless. Visually
+		// that's a bot repeatedly snapping toward the host's position without ever being flagged as
+		// flying: exactly "teleport and fall". Confirmed live.
+		if (!player.isBot() && player.getFlyReuseTime() > System.currentTimeMillis()){
 			AuditLogger.info(player, "No Flight Cooldown Hack. Reuse time: "+((player.getFlyReuseTime()-System.currentTimeMillis())/1000));
 			return;
 		}
 		player.setFlyReuseTime(System.currentTimeMillis() + FLY_REUSE_TIME);
 		player.setState(CreatureState.FLYING);
+		log.info("startFly(): {}@{} now FLYING={}", player.getName(), System.identityHashCode(player),
+			player.isInState(CreatureState.FLYING));
 		player.setFlyState(1);
 		player.getLifeStats().triggerFpReduce();
 		//TODO remove it?

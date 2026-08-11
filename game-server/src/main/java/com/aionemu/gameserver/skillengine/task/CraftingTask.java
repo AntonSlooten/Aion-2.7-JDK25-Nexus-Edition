@@ -129,6 +129,9 @@ public class CraftingTask extends AbstractCraftTask {
 		if(recipeTemplate.getSkillid() == 40009) {
 			currentSuccessValue = 99;
 		}
+		/**
+		 * Check logic here. It seems a touch wrong to check crit before actually doing anything.
+		 */
 		checkCrit();
 		if (critCount < maxCritCount && Rnd.get(100) < CraftConfig.CRAFT_CRIT_RATE) {
 			critCount++;

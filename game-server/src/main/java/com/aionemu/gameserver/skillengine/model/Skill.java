@@ -157,12 +157,21 @@ public class Skill {
 	 * @return True if the skill can be used
 	 */
 	public boolean canUseSkill() {
+		// Diagnostic for "bot's specific skills all fail, only the generic weapon-swing fallback works" -
+		// pinpointing exactly which gate inside canUseSkill() is rejecting every cast for this bot,
+		// instead of guessing further. Requested live re: a Ranger bot never firing any bow skill.
+		boolean botDiag = effector instanceof Player && ((Player) effector).isBot();
+
 		Properties properties = skillTemplate.getProperties();
 		if (properties != null && !properties.validate(this)) {
+			if (botDiag)
+				log.info("[skilldiag] bot={} skillId={} rejected: properties.validate() failed", effector.getName(), getSkillId());
 			return false;
 		}
 
 		if (!preCastCheck()){
+			if (botDiag)
+				log.info("[skilldiag] bot={} skillId={} rejected: preCastCheck() (startconditions) failed", effector.getName(), getSkillId());
 			return false;
 		}
 
@@ -172,6 +181,8 @@ public class Skill {
 				long time = ((Player) effector).getLastCounterSkill(skillTemplate.getCounterSkill());
 				if ((time + 5000) < System.currentTimeMillis()) {
 					log.debug("chain skill failed, too late");
+					if (botDiag)
+						log.info("[skilldiag] bot={} skillId={} rejected: counter-skill window expired", effector.getName(), getSkillId());
 					return false;
 				}
 			}
@@ -185,8 +196,13 @@ public class Skill {
 				effected = effector;
 
 			if (effector instanceof Player) {
-				if (!RestrictionsManager.canAffectBySkill((Player) effector, effected))
+				if (!RestrictionsManager.canAffectBySkill((Player) effector, effected)) {
+					if (botDiag)
+						log.info("[skilldiag] bot={} skillId={} RestrictionsManager.canAffectBySkill() rejected target={} (protectionActive={})",
+							effector.getName(), getSkillId(), effected.getName(),
+							effected instanceof Player && ((Player) effected).isProtectionActive());
 					effectedIter.remove();
+				}
 			}
 			else {
 				if (effector.getEffectController().isAbnormalState(AbnormalState.CANT_ATTACK_STATE))
@@ -199,6 +215,9 @@ public class Skill {
 		if (targetType == 0 && effectedList.size() == 0 && firstTargetAttribute != FirstTargetAttribute.ME
 			&& targetRangeAttribute != TargetRangeAttribute.AREA) {
 			log.debug("targettype failed");
+			if (botDiag)
+				log.info("[skilldiag] bot={} skillId={} rejected: effectedList empty after restrictions (targetType={} firstTargetAttribute={} targetRangeAttribute={})",
+					effector.getName(), getSkillId(), targetType, firstTargetAttribute, targetRangeAttribute);
 			return false;
 		}
 		return true;

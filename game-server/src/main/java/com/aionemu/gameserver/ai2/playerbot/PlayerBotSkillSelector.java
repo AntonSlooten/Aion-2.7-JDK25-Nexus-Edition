@@ -67,26 +67,35 @@ public class PlayerBotSkillSelector {
 		PlayerSkillEntry[] skills = bot.getSkillList().getAllSkills();
 		List<Player> group = livingGroupMembers(bot, host);
 
+		// Each of these tiers only returns early on an ACTUAL successful cast - falling through to the
+		// next tier (and eventually the ATTACK cascade below) whenever cast() fails, rather than
+		// propagating that failure straight out of the whole method. A failed heal/cleanse/buff used to
+		// abort the entire tick, which meant a bot whose buffs kept failing (whatever the underlying
+		// reason - resources, range, a chain precondition the selector can't see into) never even
+		// attempted to attack: it would just cycle through markSkillFailed()'s 4s blacklist on one buff
+		// after another forever. Mirrors the fall-through already used for the ATTACK/CHANT loop further
+		// down, for the exact same reason. Confirmed live: a Ranger bot stuck retrying buffs
+		// indefinitely, "doesn't appear to actually use his bow to attack."
 		CastPlan heal = planHeal(bot, skills, group, host);
-		if (heal != null)
-			return cast(bot, heal.entry, heal.target, "HEAL");
+		if (heal != null && cast(bot, heal.entry, heal.target, "HEAL"))
+			return true;
 
 		CastPlan cleanse = planCleanse(bot, skills, group);
-		if (cleanse != null)
-			return cast(bot, cleanse.entry, cleanse.target, "CLEANSE");
+		if (cleanse != null && cast(bot, cleanse.entry, cleanse.target, "CLEANSE"))
+			return true;
 
 		if (!isHostInCombat(bot, host)) {
 			Player deadAlly = findDeadGroupMember(bot, host);
 			if (deadAlly != null) {
 				PlayerSkillEntry res = findResurrectSkill(bot, skills);
-				if (res != null)
-					return cast(bot, res, deadAlly, "RES");
+				if (res != null && cast(bot, res, deadAlly, "RES"))
+					return true;
 			}
 		}
 
 		CastPlan buff = planBuff(bot, skills, group);
-		if (buff != null)
-			return cast(bot, buff.entry, buff.target, "BUFF");
+		if (buff != null && cast(bot, buff.entry, buff.target, "BUFF"))
+			return true;
 
 		VisibleObject combatTarget = host.getTarget();
 		if (combatTarget instanceof Creature && !((Creature) combatTarget).getLifeStats().isAlreadyDead()
@@ -112,10 +121,24 @@ public class PlayerBotSkillSelector {
 			// ever be tried - confirmed live (a Gladiator's best-ranked skill failed silently every ~4s
 			// for minutes on end). Falling through to the next-best candidate in the SAME tick means an
 			// opener that's actually castable still gets used immediately.
+			// Rank order is by skill level alone (rankedUsableSkills), not range - a Cleric's short-range
+			// nuke can easily out-rank her actual heal-range attack spell, and trying it first while
+			// she's standing at proper casting distance would fail on range, cost her a cast() ->
+			// markSkillFailed() 4s blacklist for nothing, and only THEN fall through to the skill she
+			// should have used immediately. Skipping anything that can't reach from here means close-
+			// range skills get used opportunistically (whenever she genuinely happens to already be in
+			// range for some other reason) rather than actively attempted and eating a wasted cooldown
+			// every time she's holding proper distance, which is the normal case now that
+			// effectiveEngageRange() keeps her back with the mages. Requested live: "the cleric has
+			// close range skills, but most are long range + healing. she probably wants to remain far
+			// away with the mages in general... the mages also have close range skills that probably
+			// want to be ignored unless they are close for some reason."
 			List<PlayerSkillEntry> attacks = rankedUsableSkills(bot, skills, SkillSubType.ATTACK);
 			if (attacks.isEmpty())
 				attacks = rankedUsableSkills(bot, skills, SkillSubType.CHANT);
 			for (PlayerSkillEntry attack : attacks) {
+				if (!reachesTarget(bot, combatTarget, attack.getSkillTemplate()))
+					continue;
 				if (cast(bot, attack, (Creature) combatTarget, "ATTACK"))
 					return true;
 			}
@@ -125,6 +148,26 @@ public class PlayerBotSkillSelector {
 			// once after a single cast is normal, not exceptional. Fall back to a basic weapon swing,
 			// the same self-throttled (by real attack speed) path real players use via CM_ATTACK, so
 			// the bot keeps contributing instead of standing idle until the whole chain clears.
+			//
+			// BUT: attackTarget() is a melee-range action - Creature's own attack handling closes the
+			// distance to use it regardless of how far away PlayerBotAI chose to stand, which would drag
+			// a bot whose kit is normally ranged (a Cleric, a Sorcerer/Spirit Master - detected here
+			// class-agnostically via effectiveEngageRange(), not a hardcoded class list, matching this
+			// file's existing design) right up next to the enemy just to throw one weak swing while its
+			// real skills cool down. If the bot has ANY skill that reaches past its own weapon and it
+			// isn't already standing in that weapon's range, hold position and let the next tick retry a
+			// real skill instead - a melee-only bot (weaponRange == engageRange) is unaffected and keeps
+			// swinging exactly as before. Requested live: "the cleric has a melee attack, but probably
+			// wants to stay out of direct fighting... if the host is a melee character, the mages will
+			// stay close and in turn get close to the enemy."
+			float weaponRange = bot.getGameStats().getAttackRange().getCurrent() / 1000f;
+			float engageRange = effectiveEngageRange(bot);
+			if (engageRange > weaponRange && !MathUtil.isIn3dRange(bot, combatTarget, weaponRange + 1f)) {
+				log.info("[bot {}] no usable ATTACK/CHANT skill and kit reaches past weapon range ({} > {}) - holding at range instead of closing to melee",
+					bot.getObjectId(), engageRange, weaponRange);
+				return false;
+			}
+
 			bot.setTarget(combatTarget);
 			log.info("[bot {}] no usable ATTACK/CHANT skill, falling back to attackTarget (dist to target={})",
 				bot.getObjectId(), MathUtil.getDistance(bot, combatTarget));
@@ -264,7 +307,51 @@ public class PlayerBotSkillSelector {
 		return null;
 	}
 
+	/**
+	 * The farthest the bot can meaningfully act from right now: its own weapon's basic attack range, or
+	 * further if any ATTACK/HEAL/CHANT skill in its kit reaches beyond that (SkillTemplate's own
+	 * first_target_range property - the same value {@link #isInSkillRange} validates casts against).
+	 * Checked across the bot's WHOLE kit, not just currently off-cooldown skills, so a caster/healer
+	 * bot holds its real casting distance even on a tick where its only ranged option happens to be
+	 * cooling down, rather than closing to melee and re-opening the gap next tick. Fully class-agnostic
+	 * (no PlayerClass check) - a bot with no ranged skills at all just gets its weapon's own range back
+	 * unchanged, matching this file's existing design of never hardcoding "this class behaves like X".
+	 * Used both by PlayerBotAI to decide how close it needs to walk to engage, and by the melee-fallback
+	 * check just above to tell "this bot's kit is genuinely melee-only" apart from "this bot's real
+	 * skills are just on cooldown right now". Requested live: "the cleric has a melee attack, but
+	 * probably wants to stay out of direct fighting... if the host is a melee character, the mages will
+	 * stay close."
+	 */
+	public static float effectiveEngageRange(BotPlayer bot) {
+		float weaponRange = bot.getGameStats().getAttackRange().getCurrent() / 1000f;
+		float best = weaponRange;
+		for (PlayerSkillEntry entry : bot.getSkillList().getAllSkills()) {
+			SkillTemplate template = entry.getSkillTemplate();
+			SkillSubType subType = template.getSubType();
+			if (subType != SkillSubType.ATTACK && subType != SkillSubType.HEAL && subType != SkillSubType.CHANT)
+				continue;
+			Properties properties = template.getProperties();
+			if (properties == null)
+				continue;
+			int range = properties.getFirstTargetRange();
+			if (range > best)
+				best = range;
+		}
+		return best;
+	}
+
 	private static boolean isInSkillRange(BotPlayer bot, Player target, SkillTemplate template) {
+		Properties properties = template.getProperties();
+		int range = properties != null ? properties.getFirstTargetRange() : 0;
+		return range <= 0 || MathUtil.isIn3dRange(bot, target, range);
+	}
+
+	/**
+	 * Same range check as {@link #isInSkillRange}, generalized to any VisibleObject rather than just a
+	 * Player ally - the ATTACK-cascade's combat target is a Creature (the enemy), not necessarily a
+	 * Player, so isInSkillRange's signature doesn't fit there directly.
+	 */
+	private static boolean reachesTarget(BotPlayer bot, VisibleObject target, SkillTemplate template) {
 		Properties properties = template.getProperties();
 		int range = properties != null ? properties.getFirstTargetRange() : 0;
 		return range <= 0 || MathUtil.isIn3dRange(bot, target, range);

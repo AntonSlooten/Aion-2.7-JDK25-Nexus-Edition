@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import com.aionemu.gameserver.configs.administration.AdminConfig;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
+import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.DeniedStatus;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.AionClientPacket;
@@ -64,8 +65,15 @@ public class CM_VIEW_PLAYER_DETAILS extends AionClientPacket {
 		
 		if (obj instanceof Player) {
 			Player target = (Player) obj;
-			
-			if (!target.getPlayerSettings().isInDeniedStatus(DeniedStatus.VIEW_DETAILS) || player.getAccessLevel() >= AdminConfig.ADMIN_VIEW_DETAILS)
+
+			// A host inspecting their own companion bot always sees its gear, regardless of the
+			// bot's (inherited/default) privacy flag - the bot has no client to have set that
+			// preference itself, and the host needs this view live to judge what to equip via
+			// .companion equip/equipother. Requested live: "a consistent /inspect of a companion
+			// will show what they are wearing."
+			boolean isOwnBot = target instanceof BotPlayer && ((BotPlayer) target).getHostObjectId() == player.getObjectId();
+
+			if (isOwnBot || !target.getPlayerSettings().isInDeniedStatus(DeniedStatus.VIEW_DETAILS) || player.getAccessLevel() >= AdminConfig.ADMIN_VIEW_DETAILS)
 				sendPacket(new SM_VIEW_PLAYER_DETAILS(target.getEquipment().getEquippedItemsWithoutStigma(), target));
 			else {
 				sendPacket(SM_SYSTEM_MESSAGE.STR_MSG_REJECTED_WATCH(target.getName()));

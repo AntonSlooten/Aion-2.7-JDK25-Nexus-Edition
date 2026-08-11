@@ -46,16 +46,28 @@ public class PlayerBotAITaskManager extends AbstractPeriodicTaskManager {
 
 	@Override
 	public void run() {
-		for (FastMap.Entry<Integer, PlayerBotAI> e = bots.head(), end = bots.tail(); (e = e.getNext()) != end;) {
-			try {
-				e.getValue().think();
+		// The per-bot try/catch below only protects individual think() calls. It does NOT cover the
+		// loop machinery itself (bots.head()/tail()/getNext()) - if the shared FastMap gets structurally
+		// mutated by addBot()/removeBot() on another thread while this iterates (entirely possible: a
+		// bot getting summoned/dismissed doesn't pause AI ticking), anything escaping THAT would still
+		// go uncaught out of run(), and scheduleAtFixedRate silently and PERMANENTLY cancels this whole
+		// periodic task the instant that happens - every bot's movement, skills, and flight-following
+		// just stop dead with zero warnings anywhere. Confirmed live: all 3 bots' logging (think(),
+		// syncFlight, buffs) stopped in the same instant mid-session while every other periodic task
+		// (DebugService's snapshot) kept ticking fine - the exact signature of this class of bug, not a
+		// per-bot think() failure (those already log a warning and don't explain a total silent stop).
+		try {
+			for (FastMap.Entry<Integer, PlayerBotAI> e = bots.head(), end = bots.tail(); (e = e.getNext()) != end;) {
+				try {
+					e.getValue().think();
+				}
+				catch (Throwable ex) {
+					log.warn("[PlayerBotAITaskManager] think() failed for bot " + e.getKey(), ex);
+				}
 			}
-			catch (Throwable ex) {
-				// Must catch Throwable, not just RuntimeException: scheduleAtFixedRate silently and
-				// PERMANENTLY cancels this whole periodic task if anything escapes run() uncaught -
-				// which would look exactly like "bot AI just stops forever" with zero other symptoms.
-				log.warn("[PlayerBotAITaskManager] think() failed for bot " + e.getKey(), ex);
-			}
+		}
+		catch (Throwable ex) {
+			log.warn("[PlayerBotAITaskManager] run() failed", ex);
 		}
 	}
 

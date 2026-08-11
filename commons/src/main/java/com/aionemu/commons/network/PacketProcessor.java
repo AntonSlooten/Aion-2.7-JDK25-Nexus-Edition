@@ -194,7 +194,7 @@ public class PacketProcessor<T extends AConnection> {
 
 	/**
 	 * Add packet to execution queue and execute it as soon as possible on another Thread.
-	 * 
+	 *
 	 * @param packet
 	 *          that will be executed.
 	 */
@@ -203,6 +203,39 @@ public class PacketProcessor<T extends AConnection> {
 		try {
 			packets.add(packet);
 			notEmpty.signal();
+		}
+		finally {
+			lock.unlock();
+		}
+	}
+
+	/**
+	 * Number of packets currently queued, waiting for a worker thread to become available. Diagnostic
+	 * for the intermittent "nothing responds for a while, then catches up" reports - see
+	 * getThreadCount()'s doc for why min==max threads (the game-server's actual config) leaves this
+	 * queue with zero automatic relief valve.
+	 */
+	public final int getQueueSize() {
+		lock.lock();
+		try {
+			return packets.size();
+		}
+		finally {
+			lock.unlock();
+		}
+	}
+
+	/**
+	 * Current worker thread count. With minThreads == maxThreads (the game-server's configured
+	 * gameserver.network.packet.processor.threads.min/max, both 4), startCheckerThread() above never
+	 * runs at all - this pool can NEVER grow past its fixed size no matter how deep the queue gets, and
+	 * the "Lagg detected!" warning in CheckerTask can never fire either, since that logic never runs.
+	 * All client packet handling for the whole server funnels through exactly this many threads.
+	 */
+	public final int getThreadCount() {
+		lock.lock();
+		try {
+			return threads.size();
 		}
 		finally {
 			lock.unlock();
@@ -241,6 +274,19 @@ public class PacketProcessor<T extends AConnection> {
 	private final class PacketProcessorTask implements Runnable {
 
 		/**
+		 * Diagnostic for "the server intermittently stops responding to NPC talk/interaction packets,
+		 * then catches up on its own after a while" - executor.execute(packet) here is the connection's
+		 * OWN worker thread running the packet's runImpl() directly (executor is an ExecuteWrapper -
+		 * synchronous, no further dispatch), so a single slow/blocking packet handler ties up one of only
+		 * getThreadCount() worker threads for its whole duration, and with minThreads==maxThreads
+		 * (network.properties) there is no auto-scaling to compensate. Logging which packet class was
+		 * slow, and for how long, is the most direct way to identify the actual culprit if this class of
+		 * bug is the cause. Requested live: "nothing actually acknowledges you... shop keepers do not
+		 * respond... this is largely a function of the update from java approximately 5 to 21."
+		 */
+		private static final long SLOW_PACKET_WARNING_THRESHOLD_MS = 2000;
+
+		/**
 		 * {@inheritDoc}
 		 */
 		@Override
@@ -261,7 +307,12 @@ public class PacketProcessor<T extends AConnection> {
 				finally {
 					lock.unlock();
 				}
+				long start = System.currentTimeMillis();
 				executor.execute(packet);
+				long elapsed = System.currentTimeMillis() - start;
+				if (elapsed > SLOW_PACKET_WARNING_THRESHOLD_MS)
+					log.warn("[packetlag] " + packet.getClass().getSimpleName() + " took " + elapsed
+						+ "ms to execute (queue=" + getQueueSize() + " threads=" + getThreadCount() + ")");
 			}
 		}
 	}
