@@ -30,12 +30,14 @@ import com.aionemu.gameserver.model.gameobjects.Summon;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.model.gameobjects.state.CreatureState;
 import com.aionemu.gameserver.model.skill.PlayerSkillEntry;
 import com.aionemu.gameserver.model.team2.group.PlayerGroup;
 import com.aionemu.gameserver.skillengine.condition.ChainCondition;
 import com.aionemu.gameserver.skillengine.condition.Condition;
 import com.aionemu.gameserver.skillengine.condition.Conditions;
 import com.aionemu.gameserver.skillengine.condition.MpCondition;
+import com.aionemu.gameserver.skillengine.effect.AbstractHealEffect;
 import com.aionemu.gameserver.skillengine.effect.BackDashEffect;
 import com.aionemu.gameserver.skillengine.effect.DashEffect;
 import com.aionemu.gameserver.skillengine.effect.EffectTemplate;
@@ -105,9 +107,8 @@ public class PlayerBotSkillSelector {
 		if (buff != null && cast(bot, buff.entry, buff.target, "BUFF"))
 			return true;
 
-		VisibleObject combatTarget = host.getTarget();
-		if (combatTarget instanceof Creature && !((Creature) combatTarget).getLifeStats().isAlreadyDead()
-			&& bot.isEnemy((Creature) combatTarget)) {
+		Creature combatTarget = resolveEngageTarget(bot, host);
+		if (combatTarget != null) {
 			// Continuing a combo the bot is already primed for takes priority over the normal
 			// highest-rank-first pick below - a chain's later links (SkillTemplate's <chain
 			// precategory=.../> startcondition) are frequently a LOWER lvl than unrelated independent
@@ -116,7 +117,12 @@ public class PlayerBotSkillSelector {
 			// through it. Confirmed live: "the character will always use the first in a chain, never the
 			// second, or third if it comes up."
 			PlayerSkillEntry chainContinuation = findChainContinuation(bot, skills);
-			if (chainContinuation != null && cast(bot, chainContinuation, (Creature) combatTarget, "CHAIN"))
+			if (chainContinuation != null && cast(bot, chainContinuation, combatTarget, "CHAIN"))
+				return true;
+
+			// Build/refresh threat before anything else this tick, same priority as continuing a combo -
+			// see tryTaunt()'s own note for why this is proactive rather than a reactive rescue.
+			if (tryTaunt(bot, skills, combatTarget))
 				return true;
 
 			// Try every off-cooldown candidate, best rank first, until one actually lands - not just the
@@ -147,7 +153,7 @@ public class PlayerBotSkillSelector {
 			for (PlayerSkillEntry attack : attacks) {
 				if (!reachesTarget(bot, combatTarget, attack.getSkillTemplate()))
 					continue;
-				if (cast(bot, attack, (Creature) combatTarget, "ATTACK"))
+				if (cast(bot, attack, combatTarget, "ATTACK"))
 					return true;
 			}
 
@@ -181,7 +187,7 @@ public class PlayerBotSkillSelector {
 			if (CompanionConfig.DEBUG_LOGGING)
 				log.info("[bot {}] no usable ATTACK/CHANT skill, falling back to attackTarget (dist to target={})",
 					bot.getObjectId(), MathUtil.getDistance(bot, combatTarget));
-			bot.getController().attackTarget((Creature) combatTarget, 0);
+			bot.getController().attackTarget(combatTarget, 0);
 			return true;
 		}
 
@@ -236,19 +242,35 @@ public class PlayerBotSkillSelector {
 	 * then asked for exactly this idle top-off on top of it.
 	 */
 	private static CastPlan planHeal(BotPlayer bot, PlayerSkillEntry[] skills, List<Player> group, Player host) {
-		Creature neediest = neediestHurtTarget(group, CompanionConfig.BOT_HEAL_HP_THRESHOLD);
-		if (neediest == null && !isHostInCombat(bot, host))
-			neediest = neediestHurtTarget(group, CompanionConfig.BOT_IDLE_HEAL_HP_THRESHOLD);
+		boolean hostInCombat = isHostInCombat(bot, host);
+		int urgentThreshold = CompanionConfig.BOT_HEAL_HP_THRESHOLD;
+		Creature neediest = neediestHurtTarget(group, urgentThreshold);
+		if (neediest == null && !hostInCombat) {
+			urgentThreshold = CompanionConfig.BOT_IDLE_HEAL_HP_THRESHOLD;
+			neediest = neediestHurtTarget(group, urgentThreshold);
+		}
 		if (neediest == null)
 			return null;
 
-		PlayerSkillEntry heal = findUsableHealSkill(bot, skills, isHostInCombat(bot, host));
+		// Whether to reach for a party-wide heal isn't decided by whichever skill happens to rank
+		// highest anymore (see findUsableHealSkill()) - it's decided here, by whether more than one
+		// ally actually needs it right now. A single hurt member is cheaper/faster to top up with a
+		// single-target heal than to burn an AoE's longer cast/cooldown on them.
+		PlayerSkillEntry heal = findUsableHealSkill(bot, skills, hostInCombat, neediest, hurtMemberCount(group, urgentThreshold) > 1);
 		if (heal == null)
 			return null;
 		// A party-wide heal auto-applies to every group/alliance member in range once cast with the
 		// bot itself as effector (see skillengine/properties/TargetRangeProperty.java's PARTY case) -
 		// no need to specifically target the neediest ally for those.
 		return new CastPlan(heal, isGroupWide(heal.getSkillTemplate()) ? bot : neediest);
+	}
+
+	private static int hurtMemberCount(List<Player> group, int hpThreshold) {
+		int count = 0;
+		for (Player member : group)
+			if (member.getLifeStats().getHpPercentage() <= hpThreshold)
+				count++;
+		return count;
 	}
 
 	private static Player neediestHurtMember(List<Player> group, int hpThreshold) {
@@ -333,11 +355,15 @@ public class PlayerBotSkillSelector {
 		List<Player> group = livingGroupMembers(bot, host);
 		PlayerSkillEntry[] skills = bot.getSkillList().getAllSkills();
 
-		Player hurt = neediestHurtMember(group, CompanionConfig.BOT_HEAL_HP_THRESHOLD);
-		if (hurt == null && !isHostInCombat(bot, host))
-			hurt = neediestHurtMember(group, CompanionConfig.BOT_IDLE_HEAL_HP_THRESHOLD);
+		int approachThreshold = CompanionConfig.BOT_HEAL_HP_THRESHOLD;
+		Player hurt = neediestHurtMember(group, approachThreshold);
+		if (hurt == null && !isHostInCombat(bot, host)) {
+			approachThreshold = CompanionConfig.BOT_IDLE_HEAL_HP_THRESHOLD;
+			hurt = neediestHurtMember(group, approachThreshold);
+		}
 		if (hurt != null && hurt != bot) {
-			PlayerSkillEntry heal = findUsableHealSkill(bot, skills, isHostInCombat(bot, host));
+			PlayerSkillEntry heal = findUsableHealSkill(bot, skills, isHostInCombat(bot, host), hurt,
+				hurtMemberCount(group, approachThreshold) > 1);
 			if (heal != null && !isInSkillRange(bot, hurt, heal.getSkillTemplate()))
 				return hurt;
 		}
@@ -736,6 +762,38 @@ public class PlayerBotSkillSelector {
 	}
 
 	/**
+	 * The Creature the whole group should currently be treating as "the enemy we're fighting", or null
+	 * if there isn't one right now - single source of truth for PlayerBotAI (movement, combat-stance
+	 * sync, summon management) and every "am I in combat"/attack-cascade check in this file. Used to
+	 * be three separate, textually-identical copies of the same host.getTarget() check (a latent drift
+	 * risk - PlayerBotAI.resolveEngageTarget(), this class's own isHostInCombat(), and the inline
+	 * combatTarget derivation in chooseAndCastSkill() below).
+	 *
+	 * Requires the HOST to actually have their weapon drawn (CreatureState.WEAPON_EQUIPPED), not just
+	 * have something targeted - having a live hostile target selected is also how a real player looks
+	 * an enemy over before committing to a fight (clicking to inspect isn't the same as pressing
+	 * attack). Without this, bots engaged the instant the host so much as clicked on something hostile.
+	 * Requested live: "can we change the logic behind attacking to be when the host has his weapon
+	 * drawn? This allows someone to actually look at an enemy before attacking."
+	 *
+	 * Also requires bot.isEnemy(target): the host's current target isn't necessarily hostile - a
+	 * friendly or neutral NPC (quest giver, vendor, another same-faction NPC) is a perfectly normal
+	 * thing to have targeted just by clicking on it. Without this check, bots tried to "engage" (run up
+	 * to and attack) whatever the host had selected regardless of hostility, futilely converging on
+	 * something they could never actually damage - confirmed live: "they will try attack an NPC on our
+	 * side, but as they are not attackable, nothing happens".
+	 */
+	public static Creature resolveEngageTarget(BotPlayer bot, Player host) {
+		if (!host.isInState(CreatureState.WEAPON_EQUIPPED))
+			return null;
+		VisibleObject target = host.getTarget();
+		if (target instanceof Creature && !((Creature) target).getLifeStats().isAlreadyDead()
+			&& bot.isEnemy((Creature) target))
+			return (Creature) target;
+		return null;
+	}
+
+	/**
 	 * Missing a hostility check originally meant simply having ANY live creature targeted (a vendor, a
 	 * quest giver, a harmless nearby mob just clicked on to look at) counted as "in combat" - blocking
 	 * the idle heal top-off and resurrect checks below even when nothing was actually happening.
@@ -743,9 +801,7 @@ public class PlayerBotSkillSelector {
 	 * out of combat.
 	 */
 	private static boolean isHostInCombat(BotPlayer bot, Player host) {
-		VisibleObject target = host.getTarget();
-		return target instanceof Creature && !((Creature) target).getLifeStats().isAlreadyDead()
-			&& bot.isEnemy((Creature) target);
+		return resolveEngageTarget(bot, host) != null;
 	}
 
 	private static Player findDeadGroupMember(BotPlayer bot, Player host) {
@@ -770,6 +826,40 @@ public class PlayerBotSkillSelector {
 			best = higherRank(best, entry);
 		}
 		return best;
+	}
+
+	private static PlayerSkillEntry findTauntSkill(BotPlayer bot, PlayerSkillEntry[] skills) {
+		PlayerSkillEntry best = null;
+		for (PlayerSkillEntry entry : skills) {
+			SkillTemplate template = entry.getSkillTemplate();
+			if (template == null || !template.hasTauntEffect())
+				continue;
+			if (!isActuallyUsable(bot, template))
+				continue;
+			best = higherRank(best, entry);
+		}
+		return best;
+	}
+
+	/**
+	 * Taunt is invisible to the normal ATTACK/HEAL/CHANT/BUFF rotation - real taunt skills are
+	 * declared SkillSubType.NONE or DEBUFF, neither of which anything else here ever scans (see
+	 * findTauntSkill(), detected by effect type instead of subtype). Deliberately proactive, not a
+	 * reactive "someone's about to die" rescue: in real play a tank spams taunt on cooldown to keep
+	 * threat ahead of high-DPS classes (a geared Sorcerer can out-hate a Templar, let alone a
+	 * Gladiator), not just when a squishy is already in trouble - by the time hate has visibly
+	 * slipped it's often too late to pull it back. Corrected after feedback: "in practice the skill
+	 * is a proactive skill, templars continually build hate to keep ahead of the likes of sorcs
+	 * ridiculous DPS." No extra AI-side throttling needed - the skill's own cooldown (SkillTemplate's
+	 * cooldown attribute is in deciseconds, not seconds - Skill.java/PlayerBotSkillSelector.java both
+	 * multiply by 100 for millis: Taunt I-IV's "120" is 12s, Successive Taunt II's "80" is 8s,
+	 * Threatening Taunt's "600" is 60s) is already the real-world pacing. Class-agnostic
+	 * by construction: any bot that happens to know a taunt skill uses it whenever available, same
+	 * as any real player holding threat would.
+	 */
+	private static boolean tryTaunt(BotPlayer bot, PlayerSkillEntry[] skills, Creature combatTarget) {
+		PlayerSkillEntry taunt = findTauntSkill(bot, skills);
+		return taunt != null && cast(bot, taunt, combatTarget, "TAUNT");
 	}
 
 	/**
@@ -861,18 +951,54 @@ public class PlayerBotSkillSelector {
 	}
 
 	/**
-	 * Same as findUsableSkill(..., SkillSubType.HEAL), but when requireCombatSafe is true also skips
-	 * anything like "Herb Treatment" (skill_id 1804/1805/1825 - the universal downtime self-heal every
-	 * class gets): a ~4s cast, immobile, with cancel_rate="100000" - a sentinel far outside the normal
-	 * 0-100 percentage range other skills use, meaning "cancelled unconditionally by the very next hit".
-	 * Attempting it while the host is in combat is worse than useless: guaranteed interrupted before it
-	 * finishes, for zero effect, while also burning its long (160s) cooldown. Detected generically via
-	 * the absurd cancel_rate rather than by skill name/ID, so this naturally covers any other similarly
-	 * "downtime-only" heal too. Still perfectly fine (and used) once the fight's actually over - see
-	 * planHeal()'s idle top-off pass. Requested live: "We probably do not want to do this in battle."
+	 * How low the target's HP has to be before findUsableHealSkill() treats them as a genuine
+	 * emergency (prioritize the fastest cast available over the biggest one) rather than a routine
+	 * top-off (prioritize the smallest/cheapest usable heal, saving the strong ones' cooldowns for
+	 * when they're actually needed). Deliberately its own constant, well below
+	 * CompanionConfig.BOT_HEAL_HP_THRESHOLD (90% by default) - that threshold means "worth healing at
+	 * all", this one means "worth reaching for raw speed over raw size".
 	 */
-	private static PlayerSkillEntry findUsableHealSkill(BotPlayer bot, PlayerSkillEntry[] skills, boolean requireCombatSafe) {
-		PlayerSkillEntry best = null;
+	private static final int HEAL_CRITICAL_HP_THRESHOLD = 40;
+
+	/**
+	 * Picks which heal skill to actually cast, instead of always reaching for whichever off-cooldown
+	 * heal happens to have the highest skill level regardless of situation - a Cleric's real kit is
+	 * an array of skills that trade cast time and cooldown for size (a ~1s "emergency" heal, a ~3s
+	 * "great" heal, a ~4s "huge" heal, and party-wide "mass heal" versions of some of these), and the
+	 * old always-pick-the-biggest logic ignored all of that shape. Now:
+	 * 1. If more than one ally needs healing right now (preferAoe, decided by planHeal() from a
+	 * fresh hurt-member count), prefer the strongest usable party-wide heal - one cast covers
+	 * everyone, so bigger is strictly better here, no overkill concept.
+	 * 2. Otherwise, if the target is in real danger (HEAL_CRITICAL_HP_THRESHOLD), prefer the
+	 * fastest-casting usable single-target heal - speed to landing matters more than raw size when
+	 * someone might not survive the cast of the "best" heal.
+	 * 3. Otherwise (a routine top-off), prefer the weakest usable single-target heal - avoids
+	 * burning a big heal's long cooldown (and saving it for when it's actually needed) on a target
+	 * who's only lightly hurt.
+	 * Falls back to whatever's usable at each step if the ideal category isn't available (e.g. no
+	 * single-target heal known yet but a party heal is, or vice versa), so a low-level Cleric with
+	 * only one heal skill still just uses it.
+	 *
+	 * Heal "size" is read directly off the skill's own heal effect (see healPotency()) rather than
+	 * guessed from skill level - reliable as a same-caster RELATIVE ranking (bigger value = stronger
+	 * heal within this bot's own kit), even though the real landed heal amount also scales by the
+	 * caster's own stats at cast time and isn't reproduced here.
+	 *
+	 * Still skips "Herb Treatment"-style downtime-only heals while requireCombatSafe is true (skill_id
+	 * 1804/1805/1825 - the universal downtime self-heal every class gets): a ~4s cast, immobile, with
+	 * cancel_rate="100000", a sentinel far outside the normal 0-100 range meaning "cancelled
+	 * unconditionally by the very next hit". Attempting it mid-fight is worse than useless: guaranteed
+	 * interrupted for zero effect, while burning its long cooldown. Detected generically via the
+	 * absurd cancel_rate rather than by skill name/ID. Still perfectly fine (and used) once the fight's
+	 * actually over - see planHeal()'s idle top-off pass. Requested live: "We probably do not want to
+	 * do this in battle."
+	 */
+	private static PlayerSkillEntry findUsableHealSkill(BotPlayer bot, PlayerSkillEntry[] skills, boolean requireCombatSafe,
+		Creature target, boolean preferAoe) {
+		PlayerSkillEntry bestAoe = null;
+		PlayerSkillEntry weakestSingle = null;
+		PlayerSkillEntry fastestSingle = null;
+
 		for (PlayerSkillEntry entry : skills) {
 			SkillTemplate template = entry.getSkillTemplate();
 			if (template == null || template.getSubType() != SkillSubType.HEAL)
@@ -881,9 +1007,55 @@ public class PlayerBotSkillSelector {
 				continue;
 			if (!isActuallyUsable(bot, template))
 				continue;
-			best = higherRank(best, entry);
+
+			if (isGroupWide(template)) {
+				bestAoe = higherPotency(bestAoe, entry);
+				continue;
+			}
+			weakestSingle = lowerPotency(weakestSingle, entry);
+			fastestSingle = fasterCast(fastestSingle, entry);
 		}
-		return best;
+
+		if (preferAoe && bestAoe != null)
+			return bestAoe;
+
+		if (target.getLifeStats().getHpPercentage() <= HEAL_CRITICAL_HP_THRESHOLD)
+			return fastestSingle != null ? fastestSingle : bestAoe;
+
+		return weakestSingle != null ? weakestSingle : bestAoe;
+	}
+
+	/** Relative "how strong is this heal" signal, read straight off the skill's own heal effect rather
+	 * than guessed from skill level - see findUsableHealSkill()'s note on why this is reliable enough
+	 * as a same-caster ranking despite not reproducing the real cast-time formula (caster stat scaling,
+	 * hopa/hopb SKILLLV curve). 0 for a HEAL-subtype skill with no recognizable heal effect (shouldn't
+	 * normally happen, but falls back to "smallest possible" rather than throwing). */
+	private static int healPotency(SkillTemplate template) {
+		Effects effects = template.getEffects();
+		if (effects == null)
+			return 0;
+		for (EffectTemplate effect : effects.getEffects())
+			if (effect instanceof AbstractHealEffect)
+				return effect.getValue();
+		return 0;
+	}
+
+	private static PlayerSkillEntry higherPotency(PlayerSkillEntry current, PlayerSkillEntry candidate) {
+		if (current == null)
+			return candidate;
+		return healPotency(candidate.getSkillTemplate()) > healPotency(current.getSkillTemplate()) ? candidate : current;
+	}
+
+	private static PlayerSkillEntry lowerPotency(PlayerSkillEntry current, PlayerSkillEntry candidate) {
+		if (current == null)
+			return candidate;
+		return healPotency(candidate.getSkillTemplate()) < healPotency(current.getSkillTemplate()) ? candidate : current;
+	}
+
+	private static PlayerSkillEntry fasterCast(PlayerSkillEntry current, PlayerSkillEntry candidate) {
+		if (current == null)
+			return candidate;
+		return candidate.getSkillTemplate().getDuration() < current.getSkillTemplate().getDuration() ? candidate : current;
 	}
 
 	private static boolean isCombatUnsafeHeal(SkillTemplate template) {

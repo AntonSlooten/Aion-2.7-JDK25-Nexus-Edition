@@ -29,7 +29,6 @@ import com.aionemu.gameserver.configs.main.CompanionConfig;
 import com.aionemu.gameserver.controllers.movement.BotMoveController;
 import com.aionemu.gameserver.model.EmotionType;
 import com.aionemu.gameserver.model.gameobjects.Creature;
-import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.state.CreatureState;
@@ -169,27 +168,6 @@ public class PlayerBotAI extends AITemplate {
 	}
 
 	/**
-	 * The Creature the bot should be fighting right now, i.e. the host's current live target - or null
-	 * if the host isn't in combat. Melee bots in particular need to physically close on THIS, not just
-	 * stay near the host: standing 1.5 units from a ranged/kiting host while the actual enemy is 15+
-	 * units away left melee bots unable to land a single attack.
-	 *
-	 * Also requires bot.isEnemy(target): the host's current target isn't necessarily hostile - a friendly
-	 * or neutral NPC (quest giver, vendor, another same-faction NPC) is a perfectly normal thing to have
-	 * targeted just by clicking on it. Without this check, bots tried to "engage" (run up to and attack)
-	 * whatever the host had selected regardless of hostility, futilely converging on something they could
-	 * never actually damage - confirmed live: "they will try attack an NPC on our side, but as they are
-	 * not attackable, nothing happens".
-	 */
-	private Creature resolveEngageTarget(BotPlayer bot, Player host) {
-		VisibleObject target = host.getTarget();
-		if (target instanceof Creature && !((Creature) target).getLifeStats().isAlreadyDead()
-			&& bot.isEnemy((Creature) target))
-			return (Creature) target;
-		return null;
-	}
-
-	/**
 	 * Drawing a weapon (CreatureState.WEAPON_EQUIPPED + attack-mode) is normally 100% client-driven:
 	 * a real client sends CM_EMOTION(ATTACKMODE) the instant the player presses attack
 	 * (network/aion/clientpackets/CM_EMOTION.java). A bot has no client to ever send that, so without
@@ -262,7 +240,7 @@ public class PlayerBotAI extends AITemplate {
 			syncFlight(bot, host);
 
 			BotMoveController moveController = (BotMoveController) bot.getMoveController();
-			Creature engageTarget = resolveEngageTarget(bot, host);
+			Creature engageTarget = PlayerBotSkillSelector.resolveEngageTarget(bot, host);
 			syncCombatStance(bot, engageTarget);
 
 			// No-ops instantly for any non-Spirit-Master bot (no owned SkillSubType.SUMMON skill matching

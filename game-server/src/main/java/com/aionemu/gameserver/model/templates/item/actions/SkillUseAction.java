@@ -31,6 +31,9 @@ import com.aionemu.gameserver.skillengine.SkillEngine;
 import com.aionemu.gameserver.skillengine.effect.EffectTemplate;
 import com.aionemu.gameserver.skillengine.effect.TransformEffect;
 import com.aionemu.gameserver.skillengine.model.Skill;
+import com.aionemu.gameserver.skillengine.model.SkillTemplate;
+import com.aionemu.gameserver.skillengine.properties.FirstTargetAttribute;
+import com.aionemu.gameserver.skillengine.properties.Properties;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
 /**
@@ -89,6 +92,39 @@ public class SkillUseAction extends AbstractItemAction {
 			skill.useSkill();
 			QuestEnv env = new QuestEnv(player.getTarget(), player, 0, 0);
 			QuestEngine.getInstance().onUseSkill(env, skillid);
+			shareWithCompanions(player, skill.getSkillTemplate());
+		}
+	}
+
+	/**
+	 * Extends a consumable's effect to every companion bot in the host's group - food, drinks, and
+	 * scrolls (speed buffs, stat food, etc.) are all things a real party would naturally each carry
+	 * their own copy of and use together, and bots have no inventory/client of their own to do that.
+	 * Reuses CreatureController.useSkill(skillId, skillLevel) - the same mechanism bots already use for
+	 * every other skill they cast (PlayerBotSkillSelector.cast()) - rather than reusing this specific
+	 * Skill instance, since that one is already bound to the host as effector.
+	 *
+	 * Excludes anything with hasInstantHealEffect() (health potions, mana potions, flight recharge
+	 * potions - see that method's own note on the data signature) and anything not self-targeted
+	 * (first_target=ME, the shape every real consumable buff/food/drink/scroll actually has) - both
+	 * explicitly requested: "this should not work with health/mana/flight pots."
+	 *
+	 * Skips a bot that's currently mid-cast rather than force it through: Skill.canUseSkill() has no
+	 * "already casting" guard at all (a known, separately-documented engine bug - see
+	 * PlayerBotAI.think()'s own isCasting() guard for the fix on the bot's own AI loop), so calling
+	 * useSkill() on a casting bot here would silently stomp whatever it was already casting. Missing
+	 * one application of a food/scroll buff because of bad timing is a minor miss; interrupting a
+	 * multi-second heal cast is not.
+	 */
+	private void shareWithCompanions(Player player, SkillTemplate template) {
+		if (template.hasInstantHealEffect())
+			return;
+		Properties properties = template.getProperties();
+		if (properties == null || properties.getFirstTarget() != FirstTargetAttribute.ME)
+			return;
+		for (Player bot : player.getBots()) {
+			if (!bot.isCasting())
+				bot.getController().useSkill(skillid, level);
 		}
 	}
 

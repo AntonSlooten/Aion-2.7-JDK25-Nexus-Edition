@@ -207,6 +207,40 @@ public class Effects {
 	}
 
 	/**
+	 * True for a skill that directly adds hate on its target (HostileUpEffect.applyEffect() ->
+	 * AggroList.addHate()) - the actual taunt mechanic, regardless of the skill's own declared
+	 * SkillSubType (every real taunt in the data is NONE or DEBUFF, never a subtype the bot rotation
+	 * otherwise scans). Deliberately doesn't include SwitchHostileEffect - that's the Spirit
+	 * Master's "transfer hate from my summon to me" mechanic, an unrelated use of the aggro list.
+	 */
+	public boolean isTaunt() {
+		for (EffectTemplate template : getEffects()) {
+			if (template instanceof HostileUpEffect)
+				return true;
+		}
+		return false;
+	}
+
+	/**
+	 * True for a skill that instantly restores HP/MP/FP/DP - every "Instant"-suffixed heal variant
+	 * (HealInstantEffect, MPHealInstantEffect, FPHealInstantEffect, DPHealInstantEffect, and their Proc
+	 * counterparts) shares AbstractHealEffect as a direct parent, distinct from the HoT-style HealEffect
+	 * (extends HealOverTimeEffect, a different lineage entirely). This is exactly the "health potion /
+	 * mana potion / flight recharge potion" shape confirmed against real item-skill data (Regular Health
+	 * Potion: prochealinstant, Flying Gauge Recharge Potion: procfphealinstant) - a real stat buff like
+	 * "Speed of the Wind" uses statup/weaponstatup instead, a completely different effect family, so
+	 * this cleanly separates the two without needing to guess from skill name or subtype (which are
+	 * inconsistent across real consumable data).
+	 */
+	public boolean isInstantHeal() {
+		for (EffectTemplate template : getEffects()) {
+			if (template instanceof AbstractHealEffect)
+				return true;
+		}
+		return false;
+	}
+
+	/**
 	 * True for a skill that removes debuffs from its (friendly) target - as opposed to DispelBuffEffect,
 	 * which strips buffs from an enemy and is a completely different, hostile use case.
 	 */

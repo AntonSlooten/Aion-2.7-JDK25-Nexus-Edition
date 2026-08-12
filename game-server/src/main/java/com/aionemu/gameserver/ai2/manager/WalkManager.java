@@ -42,12 +42,6 @@ public class WalkManager {
 	private static final int WALK_RANDOM_RANGE = 5;
 
 	/**
-	 * Fallback wander radius (units) for ordinary wildlife that has no hand-authored randomwalk value at
-	 * all - see startRandomWalking()'s use of this below.
-	 */
-	private static final int DEFAULT_WILDLIFE_WANDER_RANGE = 15;
-
-	/**
 	 * @param npcAI
 	 */
 	public static boolean startWalking(NpcAI2 npcAI) {
@@ -93,7 +87,7 @@ public class WalkManager {
 		if (owner.isAttackableNpc() && !owner.isBoss()
 			&& owner.getRace() != Race.ELYOS && owner.getRace() != Race.ASMODIANS
 			&& ("general".equals(aiName) || "aggressive".equals(aiName)))
-			return DEFAULT_WILDLIFE_WANDER_RANGE;
+			return AIConfig.WILDLIFE_WANDER_RANGE;
 		return 0;
 	}
 

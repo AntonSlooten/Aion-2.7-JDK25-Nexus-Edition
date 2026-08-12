@@ -385,6 +385,14 @@ public class SkillTemplate {
 		return getEffects() != null && getEffects().isCleanse();
 	}
 
+	public boolean hasInstantHealEffect() {
+		return getEffects() != null && getEffects().isInstantHeal();
+	}
+
+	public boolean hasTauntEffect() {
+		return getEffects() != null && getEffects().isTaunt();
+	}
+
 	public boolean hasItemHealFpEffect() {
 		return getEffects() != null && getEffects().isItemHealFp();
 	}

@@ -58,4 +58,12 @@ public class AIConfig {
 	 */
 	@Property(key = "gameserver.npcshouts.enable", defaultValue = "false")
 	public static boolean SHOUTS_ENABLE;
+
+	/**
+	 * Fallback wander radius (units) applied to ordinary open-world wildlife that has no hand-authored
+	 * per-spawn randomwalk value of its own - see WalkManager.effectiveRandomWalkRange(). Previously a
+	 * hardcoded constant; made configurable so it can be tuned without a rebuild.
+	 */
+	@Property(key = "gameserver.npcmovement.wildlife.range", defaultValue = "15")
+	public static int WILDLIFE_WANDER_RANGE;
 }

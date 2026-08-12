@@ -35,8 +35,14 @@ public class CompanionConfig {
 
 	/**
 	 * HP percent threshold below which a companion bot will prioritize healing over attacking.
+	 * Deliberately high (not just "critical") - the AI only re-evaluates every ~750ms
+	 * (gameserver.companion.aithinkinterval), so a low threshold like the old 50% default meant a
+	 * target could take enough burst damage between two ticks to go from full to dead before the
+	 * bot ever noticed it needed healing at all. Triggering well before real danger gives the heal
+	 * cast time to land first. Requested live: "the current threshold-based heal trigger feels too
+	 * late/risky against high-damage enemies."
 	 */
-	@Property(key = "gameserver.companion.healhpthreshold", defaultValue = "50")
+	@Property(key = "gameserver.companion.healhpthreshold", defaultValue = "90")
 	public static int BOT_HEAL_HP_THRESHOLD;
 
 	/**
