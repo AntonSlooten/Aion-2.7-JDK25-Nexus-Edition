@@ -28,6 +28,7 @@ import org.xml.sax.SAXException;
 import com.aionemu.gameserver.ai2.AI2Engine;
 import com.aionemu.gameserver.command.BaseCommand;
 import com.aionemu.gameserver.command.CommandService;
+import com.aionemu.gameserver.configs.Config;
 import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.dataholders.EventData;
 import com.aionemu.gameserver.dataholders.NpcDropData;
@@ -212,6 +213,21 @@ public class CmdReload extends BaseCommand {
 		else if (params[0].equals("gameshop")) {
 			InGameShopEn.getInstance().reload();
 			PacketSendUtility.sendMessage(admin, "Gameshop successfully reloaded!");
+		}
+		else if (params[0].equals("config")) {
+			// Re-reads every *.properties file under ./config/main from disk and re-applies the values
+			// onto the already-loaded config classes (DebugConfig, CompanionConfig, RateConfig, etc.) -
+			// lets a live server pick up an edited config value (e.g. flipping a debug-logging flag)
+			// without a full restart. Only picks up config classes that read their static field fresh on
+			// every use, which is every config in ./config/main.
+			try {
+				Config.reloadMain();
+				PacketSendUtility.sendMessage(admin, "Config (./config/main) reload Success!");
+			}
+			catch (Exception e) {
+				PacketSendUtility.sendMessage(admin, "Config reload failed!");
+				log.error("Config reload failed!", e);
+			}
 		}
 	else if (params[0].equals("ai2")){
 	

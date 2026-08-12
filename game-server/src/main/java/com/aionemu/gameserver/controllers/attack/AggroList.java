@@ -29,6 +29,7 @@ import com.aionemu.commons.callbacks.Callback;
 import com.aionemu.commons.callbacks.CallbackResult;
 import com.aionemu.commons.callbacks.metadata.ObjectCallback;
 import com.aionemu.gameserver.ai2.event.AIEventType;
+import com.aionemu.gameserver.configs.main.DebugConfig;
 import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.model.Race;
 import com.aionemu.gameserver.model.gameobjects.AionObject;
@@ -71,7 +72,7 @@ public class AggroList {
 			// creature.isEnemy(owner) OR a tribe-hostile relation; logging both inputs plus damage dealt
 			// to see which one is failing. Requested live: "it did not recognize the attacker, and
 			// regenned quickly."
-			if (owner instanceof Npc && creature != null)
+			if (DebugConfig.NPC_COMBAT_LOGGING && owner instanceof Npc && creature != null)
 				log.info("[aggro] npc={} objId={} templateId={} NOT AWARE of attacker={} dmg={} - isEnemy={} ownerTribe={} attackerTribe={} hostileTribes={}",
 					owner.getName(), owner.getObjectId(), ((Npc) owner).getNpcId(), creature.getName(), damage,
 					creature.isEnemy(owner), owner.getTribe(), creature.getTribe(),
@@ -242,8 +243,8 @@ public class AggroList {
 				// of just skipping a refresh when the region isn't considered active) is why a companion
 				// bot's presence never registers. Requested live, confirmed deterministic and persistent
 				// rather than a one-off timing miss.
-				if (owner instanceof com.aionemu.gameserver.model.gameobjects.Npc && !dead)
-					org.slf4j.LoggerFactory.getLogger(AggroList.class).info(
+				if (DebugConfig.NPC_COMBAT_LOGGING && owner instanceof com.aionemu.gameserver.model.gameobjects.Npc && !dead)
+					log.info(
 						"[knownlist] npc={} objId={} attacker={} known={} npcRegionActive={} attackerRegionActive={}",
 						owner.getName(), owner.getObjectId(), attacker.getName(), known,
 						owner.getActiveRegion() != null ? owner.getActiveRegion().isMapRegionActive() : "null-region",

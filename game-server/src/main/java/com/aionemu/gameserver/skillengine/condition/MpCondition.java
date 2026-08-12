@@ -46,4 +46,16 @@ public class MpCondition extends Condition {
 			valueWithDelta = (int) ((skill.getEffector().getLifeStats().getMaxMp() * valueWithDelta) / 100);
 		return skill.getEffector().getLifeStats().getCurrentMp() > valueWithDelta;
 	}
+
+	public int getValue() {
+		return value;
+	}
+
+	public int getDelta() {
+		return delta;
+	}
+
+	public boolean isRatio() {
+		return ratio;
+	}
 }

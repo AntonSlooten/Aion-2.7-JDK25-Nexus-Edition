@@ -22,6 +22,8 @@ import com.aionemu.commons.utils.concurrent.RunnableStatsManager;
 import com.aionemu.commons.utils.concurrent.RunnableStatsManager.SortBy;
 import com.aionemu.gameserver.configs.main.ShutdownConfig;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
+import com.aionemu.gameserver.network.aion.AionConnection;
+import com.aionemu.gameserver.network.aion.serverpackets.SM_QUIT_RESPONSE;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_SYSTEM_MESSAGE;
 import com.aionemu.gameserver.network.loginserver.LoginServer;
 import com.aionemu.gameserver.services.PeriodicSaveService;
@@ -136,6 +138,19 @@ public class ShutdownHook extends Thread {
 		while (onlinePlayers.hasNext()) {
 			Player activePlayer = onlinePlayers.next();
 			try {
+				// Gracefully close each client connection BEFORE startLeaveWorld() runs - that method
+				// nulls out player.getClientConnection() early (a deliberate, separately-documented fix
+				// for a different crash), so the connection has to be captured and closed here first or
+				// there'd be nothing left to close it on. Mirrors CmdKick's exact working mechanism
+				// (close(new SM_QUIT_RESPONSE(), false) - queues the packet, guarantees it's sent, then
+				// closes the socket) rather than the previous behavior of just abandoning the connection
+				// and relying on this JVM's later Runtime.halt() to sever it - which drops the TCP
+				// connection with no application-level signal at all, and apparently leaves the client
+				// unable to fall back to the login screen on its own. Requested live: "I can't 'log out'
+				// to the login screen. I have to close the game and restart from scratch."
+				AionConnection connection = activePlayer.getClientConnection();
+				if (connection != null)
+					connection.close(new SM_QUIT_RESPONSE(), false);
 				PlayerLeaveWorldService.startLeaveWorld(activePlayer);
 			}
 			catch (Exception e) {
@@ -143,6 +158,17 @@ public class ShutdownHook extends Thread {
 			}
 		}
 		log.info("All players are disconnected...");
+
+		// close() above only queues the packet for the network Dispatcher Thread - Runtime.halt() below
+		// doesn't wait for any other thread, so without this pause the queued SM_QUIT_RESPONSE packets
+		// could still be sitting unflushed when the JVM dies, leaving clients exactly as abruptly dropped
+		// as before this change.
+		try {
+			Thread.sleep(1000);
+		}
+		catch (InterruptedException e) {
+			// proceed with shutdown regardless
+		}
 
 		RunnableStatsManager.dumpClassStats(SortBy.AVG);
 		PeriodicSaveService.getInstance().onShutdown();

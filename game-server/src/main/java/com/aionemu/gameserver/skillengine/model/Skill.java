@@ -15,6 +15,7 @@ import com.aionemu.gameserver.ai2.NpcAI2;
 import com.aionemu.gameserver.ai2.handler.ShoutEventHandler;
 import com.aionemu.gameserver.ai2.poll.AIQuestion;
 import com.aionemu.gameserver.configs.main.CustomConfig;
+import com.aionemu.gameserver.configs.main.DebugConfig;
 import com.aionemu.gameserver.controllers.attack.AttackStatus;
 import com.aionemu.gameserver.configs.main.SecurityConfig;
 import com.aionemu.gameserver.controllers.observer.StartMovingListener;
@@ -160,7 +161,7 @@ public class Skill {
 		// Diagnostic for "bot's specific skills all fail, only the generic weapon-swing fallback works" -
 		// pinpointing exactly which gate inside canUseSkill() is rejecting every cast for this bot,
 		// instead of guessing further. Requested live re: a Ranger bot never firing any bow skill.
-		boolean botDiag = effector instanceof Player && ((Player) effector).isBot();
+		boolean botDiag = DebugConfig.SKILL_ENGINE_LOGGING && effector instanceof Player && ((Player) effector).isBot();
 
 		Properties properties = skillTemplate.getProperties();
 		if (properties != null && !properties.validate(this)) {

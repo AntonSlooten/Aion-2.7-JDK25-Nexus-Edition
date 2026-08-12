@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElements;
 import javax.xml.bind.annotation.XmlType;
 
+import com.aionemu.gameserver.configs.main.DebugConfig;
 import com.aionemu.gameserver.model.stats.calc.Stat2;
 import com.aionemu.gameserver.model.stats.calc.functions.IStatFunction;
 import com.aionemu.gameserver.skillengine.model.Effect;
@@ -87,7 +88,7 @@ public class Conditions {
 					// Diagnostic for "bot's skills all fail preCastCheck()" - Conditions.validate() only
 					// reports pass/fail, not WHICH of a skill's <startconditions> tripped. Logging the
 					// concrete Condition subclass is the last piece needed to identify the actual gate.
-					if (skill.getEffector() instanceof com.aionemu.gameserver.model.gameobjects.player.Player
+					if (DebugConfig.SKILL_ENGINE_LOGGING && skill.getEffector() instanceof com.aionemu.gameserver.model.gameobjects.player.Player
 						&& ((com.aionemu.gameserver.model.gameobjects.player.Player) skill.getEffector()).isBot())
 						org.slf4j.LoggerFactory.getLogger(Conditions.class).info(
 							"[skilldiag] bot={} skillId={} startcondition failed: {}", skill.getEffector().getName(),

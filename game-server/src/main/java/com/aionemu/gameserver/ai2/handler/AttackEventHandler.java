@@ -27,6 +27,7 @@ import com.aionemu.gameserver.ai2.manager.AttackManager;
 import com.aionemu.gameserver.ai2.manager.EmoteManager;
 import com.aionemu.gameserver.ai2.manager.WalkManager;
 import com.aionemu.gameserver.ai2.poll.AIQuestion;
+import com.aionemu.gameserver.configs.main.DebugConfig;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 
@@ -65,13 +66,15 @@ public class AttackEventHandler {
 			// TODO lock or better switch
 			if (npcAI.isInState(AIState.RETURNING)) {
 				// TODO add to aggrolist?
-				log.info("[aggro] npc={} objId={} onAttack() from {} bailed: AI state=RETURNING",
-					npcAI.getOwner().getName(), npcAI.getOwner().getObjectId(), creature.getName());
+				if (DebugConfig.NPC_COMBAT_LOGGING)
+					log.info("[aggro] npc={} objId={} onAttack() from {} bailed: AI state=RETURNING",
+						npcAI.getOwner().getName(), npcAI.getOwner().getObjectId(), creature.getName());
 				return;
 			}
 			if (!npcAI.canThink()) {
-				log.info("[aggro] npc={} objId={} onAttack() from {} bailed: canThink()=false (state={})",
-					npcAI.getOwner().getName(), npcAI.getOwner().getObjectId(), creature.getName(), npcAI.getState());
+				if (DebugConfig.NPC_COMBAT_LOGGING)
+					log.info("[aggro] npc={} objId={} onAttack() from {} bailed: canThink()=false (state={})",
+						npcAI.getOwner().getName(), npcAI.getOwner().getObjectId(), creature.getName(), npcAI.getState());
 				return;
 			}
 			if (npcAI.isInState(AIState.WALKING)) {
@@ -84,8 +87,9 @@ public class AttackEventHandler {
 				}
 				npcAI.setSubStateIfNot(AISubState.NONE);
 				npcAI.getOwner().setTarget(creature);
-				log.info("[aggro] npc={} objId={} onAttack() from {} -> FIGHT, target set, startAttacking()",
-					npcAI.getOwner().getName(), npcAI.getOwner().getObjectId(), creature.getName());
+				if (DebugConfig.NPC_COMBAT_LOGGING)
+					log.info("[aggro] npc={} objId={} onAttack() from {} -> FIGHT, target set, startAttacking()",
+						npcAI.getOwner().getName(), npcAI.getOwner().getObjectId(), creature.getName());
 				AttackManager.startAttacking(npcAI);
 				if (npcAI.poll(AIQuestion.CAN_SHOUT))
 					ShoutEventHandler.onAttackBegin(npcAI, (Creature) npcAI.getOwner().getTarget());
@@ -102,15 +106,17 @@ public class AttackEventHandler {
 			// suffering from the issue. Just will not target me" - its first hit had come from a bot.
 			else if (!npcAI.getOwner().isTargeting(creature.getObjectId())
 				&& npcAI.getOwner().getAggroList().isMostHated(creature)) {
-				log.info("[aggro] npc={} objId={} onAttack() from {} -> already FIGHT, retargeting (was targeting {})",
-					npcAI.getOwner().getName(), npcAI.getOwner().getObjectId(), creature.getName(),
-					npcAI.getOwner().getTarget() != null ? npcAI.getOwner().getTarget().getName() : "null");
+				if (DebugConfig.NPC_COMBAT_LOGGING)
+					log.info("[aggro] npc={} objId={} onAttack() from {} -> already FIGHT, retargeting (was targeting {})",
+						npcAI.getOwner().getName(), npcAI.getOwner().getObjectId(), creature.getName(),
+						npcAI.getOwner().getTarget() != null ? npcAI.getOwner().getTarget().getName() : "null");
 				npcAI.getOwner().setTarget(creature);
 			}
 			else {
-				log.info("[aggro] npc={} objId={} onAttack() from {} -> already FIGHT, no retarget (currently targeting {}, state={})",
-					npcAI.getOwner().getName(), npcAI.getOwner().getObjectId(), creature.getName(),
-					npcAI.getOwner().getTarget() != null ? npcAI.getOwner().getTarget().getName() : "null", npcAI.getState());
+				if (DebugConfig.NPC_COMBAT_LOGGING)
+					log.info("[aggro] npc={} objId={} onAttack() from {} -> already FIGHT, no retarget (currently targeting {}, state={})",
+						npcAI.getOwner().getName(), npcAI.getOwner().getObjectId(), creature.getName(),
+						npcAI.getOwner().getTarget() != null ? npcAI.getOwner().getTarget().getName() : "null", npcAI.getState());
 			}
 		}
 	}

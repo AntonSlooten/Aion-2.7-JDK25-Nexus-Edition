@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_RESURRECT;
+import com.aionemu.gameserver.services.player.PlayerReviveService;
 import com.aionemu.gameserver.skillengine.model.Effect;
 import com.aionemu.gameserver.utils.PacketSendUtility;
 
@@ -31,15 +32,23 @@ import com.aionemu.gameserver.utils.PacketSendUtility;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ResurrectEffect")
 public class ResurrectEffect extends EffectTemplate {
-	
+
 	@Override
 	public void applyEffect(Effect effect) {
 		Player effectedPlayer = (Player) effect.getEffected();
 		effectedPlayer.setPlayerResActivate(true);
-		
+
 		if(effect.getSkillId() == 1051)
 			effectedPlayer.setResWithHalfSoulTime(true);
-		
+
+		if (effectedPlayer.isBot()) {
+			// A companion bot has no client to click "accept" on the SM_RESURRECT prompt below, so the
+			// pending-resurrection flag would otherwise sit unaccepted forever. Auto-accept immediately.
+			// Requested live: "if a bot dies, my bots will try res them. Though nothing is accepted."
+			PlayerReviveService.skillRevive(effectedPlayer);
+			return;
+		}
+
 		PacketSendUtility.sendPacket(effectedPlayer, new SM_RESURRECT(effect.getEffector(), effect.getSkillId()));
 	}
 

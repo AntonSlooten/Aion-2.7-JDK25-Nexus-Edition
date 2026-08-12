@@ -16,6 +16,7 @@
  */
 package com.aionemu.gameserver.controllers.movement;
 
+import com.aionemu.gameserver.configs.main.CompanionConfig;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.stats.container.StatEnum;
@@ -53,6 +54,8 @@ public class BotMoveController extends PlayerMoveController {
 
 	private volatile VisibleObject followTarget;
 	private volatile float followStopDistance = FOLLOW_OFFSET;
+	private volatile float followOffsetX;
+	private volatile float followOffsetY;
 
 	public BotMoveController(BotPlayer owner) {
 		super(owner);
@@ -74,10 +77,37 @@ public class BotMoveController extends PlayerMoveController {
 	 * call so an active chase always tracks the latest target and distance.
 	 */
 	public void moveToTargetObject(VisibleObject target, float stopDistance) {
+		moveToTargetObject(target, stopDistance, 0f, 0f);
+	}
+
+	/**
+	 * Follow/approach a fixed X/Y offset from a target's live position rather than the target's own
+	 * point - e.g. a companion's assigned formation slot around the host, so multiple bots converge on
+	 * distinct points instead of all stacking on the exact same spot. The offset moves with the target
+	 * every tick; stopDistance is measured from the offset point, not the target's raw position.
+	 * Explicitly resets the offset to 0,0 when called via the 2-arg overload above, so a bot that was
+	 * previously following a formation slot doesn't carry a stale offset into an unrelated chase (e.g.
+	 * closing on a combat target).
+	 */
+	public void moveToTargetObject(VisibleObject target, float stopDistance, float offsetX, float offsetY) {
 		this.followTarget = target;
 		this.followStopDistance = stopDistance;
+		this.followOffsetX = offsetX;
+		this.followOffsetY = offsetY;
 		if (started.compareAndSet(false, true)) {
-			log.info("[bot {}] REGISTERED with MoveTaskManager", owner.getObjectId());
+			// [botmove] distance-at-registration: how far the target had drifted while this bot sat idle
+			// (deregistered, not re-approaching) since it last arrived. Large values here, paired with a
+			// [botmove] jump on the very next moveToDestination() tick, would confirm the reported "runs to
+			// the original place the mob stood... then teleports" bug: once in range, the bot stops
+			// re-registering with MoveTaskManager (see moveToDestination()'s arrival branch) and simply
+			// doesn't track a target that keeps moving without ever pushing the bot itself back out of
+			// range - e.g. a kiting/repositioning mob - so it can sit still for the whole fight. Requested
+			// live: "the companions will run to the original place the mob being attacked stood... when
+			// combat is finished, the players will immediately teleport to the death location."
+			if (CompanionConfig.DEBUG_LOGGING)
+				log.info("[botmove][bot {}] REGISTERED with MoveTaskManager, target={} distanceNow={}, idleSince={}ms ago",
+					owner.getObjectId(), target.getObjectId(), MathUtil.getDistance(owner, target),
+					System.currentTimeMillis() - lastMoveUpdate);
 			updateLastMove();
 			MoveTaskManager.getInstance().addCreature(owner);
 		}
@@ -90,7 +120,11 @@ public class BotMoveController extends PlayerMoveController {
 	 */
 	public boolean isAtDestination() {
 		VisibleObject target = followTarget;
-		return target == null || MathUtil.getDistance(owner, target) <= followStopDistance;
+		if (target == null)
+			return true;
+		float destX = target.getX() + followOffsetX;
+		float destY = target.getY() + followOffsetY;
+		return MathUtil.getDistance(owner.getX(), owner.getY(), owner.getZ(), destX, destY, target.getZ()) <= followStopDistance;
 	}
 
 	/**
@@ -118,7 +152,11 @@ public class BotMoveController extends PlayerMoveController {
 			return;
 		}
 
-		if (MathUtil.getDistance(owner, target) <= followStopDistance) {
+		float destX = target.getX() + followOffsetX;
+		float destY = target.getY() + followOffsetY;
+		float destZ = target.getZ();
+
+		if (MathUtil.getDistance(owner.getX(), owner.getY(), owner.getZ(), destX, destY, destZ) <= followStopDistance) {
 			// Caught up to the target: clear started so the next moveToTargetObject() call (once the
 			// host wanders off again) re-registers with MoveTaskManager instead of silently no-opping.
 			started.set(false);
@@ -126,10 +164,10 @@ public class BotMoveController extends PlayerMoveController {
 			return;
 		}
 
-		boolean directionChanged = target.getX() != targetDestX || target.getY() != targetDestY || target.getZ() != targetDestZ;
-		targetDestX = target.getX();
-		targetDestY = target.getY();
-		targetDestZ = target.getZ();
+		boolean directionChanged = destX != targetDestX || destY != targetDestY || destZ != targetDestZ;
+		targetDestX = destX;
+		targetDestY = destY;
+		targetDestZ = destZ;
 
 		float x = owner.getX();
 		float y = owner.getY();
@@ -145,6 +183,16 @@ public class BotMoveController extends PlayerMoveController {
 		}
 
 		if (futureDistPassed > dist) {
+			// [botmove] the elapsed-time-based step would have overshot the whole remaining distance in a
+			// single tick - clamped below so it doesn't overshoot, but the position update this tick still
+			// covers the full remaining gap in one go, which is exactly what a "teleport" looks like
+			// visually. A large elapsed value here (much more than MoveTaskManager's own ~100ms tick) means
+			// this bot had gone a long time without an actual movement step before this one - e.g. sitting
+			// "arrived" and deregistered for an entire fight (see the REGISTERED log above) - not a normal
+			// per-tick step.
+			if (CompanionConfig.DEBUG_LOGGING)
+				log.info("[botmove][bot {}] JUMP: elapsed={}ms would-be step={} clamped to remaining dist={}",
+					owner.getObjectId(), System.currentTimeMillis() - lastMoveUpdate, futureDistPassed, dist);
 			futureDistPassed = dist;
 		}
 
@@ -185,6 +233,8 @@ public class BotMoveController extends PlayerMoveController {
 		started.set(false);
 		followTarget = null;
 		followStopDistance = FOLLOW_OFFSET;
+		followOffsetX = 0f;
+		followOffsetY = 0f;
 		MoveTaskManager.getInstance().removeCreature(owner);
 		targetDestX = 0;
 		targetDestY = 0;

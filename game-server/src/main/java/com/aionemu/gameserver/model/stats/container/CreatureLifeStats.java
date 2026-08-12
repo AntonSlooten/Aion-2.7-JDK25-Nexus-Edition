@@ -23,6 +23,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.aionemu.gameserver.configs.main.DebugConfig;
 import com.aionemu.gameserver.model.gameobjects.Creature;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_ATTACK_STATUS;
@@ -203,7 +204,7 @@ public abstract class CreatureLifeStats<T extends Creature> {
 			// TYPE.NATURAL_HP (the passive regen task, if that's somehow active despite triggerRestoreTask()
 			// having no normal Npc call path). Requested live: "if a character cast a DOT attack, it
 			// continued to take damage, but its health rose rapidly to counter it."
-			if (getOwner() instanceof com.aionemu.gameserver.model.gameobjects.Npc)
+			if (DebugConfig.NPC_COMBAT_LOGGING && getOwner() instanceof com.aionemu.gameserver.model.gameobjects.Npc)
 				CreatureLifeStats.log.info("[heal] npc={} objId={} templateId={} +{} HP (type={} skillId={}) now {}/{}",
 					getOwner().getName(), getOwner().getObjectId(),
 					((com.aionemu.gameserver.model.gameobjects.Npc) getOwner()).getNpcId(), value, type, skillId,
@@ -272,7 +273,7 @@ public abstract class CreatureLifeStats<T extends Creature> {
 		increaseHp(TYPE.NATURAL_HP, amount);
 		if (getOwner() instanceof Npc) {
 			Npc npc = (Npc) getOwner();
-			if (!npc.getAggroList().getList().isEmpty()) {
+			if (DebugConfig.NPC_COMBAT_LOGGING && !npc.getAggroList().getList().isEmpty()) {
 				log.info("[regen] npc={} objId={} templateId={} restored {} HP ({} -> {} / max {}) while aggro'd on {} attacker(s)",
 					npc.getName(), npc.getObjectId(), npc.getNpcId(), amount, before, currentHp, getMaxHp(),
 					npc.getAggroList().getList().size());

@@ -16,11 +16,12 @@
  */
 package com.aionemu.gameserver.ai2.playerbot;
 
+import java.util.List;
+
 import com.aionemu.commons.network.util.ThreadPoolManager;
 import com.aionemu.gameserver.ai2.AIName;
 import com.aionemu.gameserver.ai2.AIState;
 import com.aionemu.gameserver.ai2.AITemplate;
-import com.aionemu.gameserver.ai2.handler.FollowEventHandler;
 import com.aionemu.gameserver.ai2.poll.AIAnswer;
 import com.aionemu.gameserver.ai2.poll.AIAnswers;
 import com.aionemu.gameserver.ai2.poll.AIQuestion;
@@ -133,15 +134,38 @@ public class PlayerBotAI extends AITemplate {
 		// startFly()'s triggerFpReduce() call - i.e. CreatureState.FLYING almost certainly WAS set on
 		// SOME Player object. Logging identity + currentFp alongside the state read to check whether
 		// resolveHost() (World.findPlayer(hostObjectId)) is even returning that same object.
-		log.info("[bot {}] syncFlight check: host={}@{} FLYING={} GLIDING={} isFlying={} currentFp={} | bot isInFlyingState={}",
-			bot.getObjectId(), host.getName(), System.identityHashCode(host), host.isInState(CreatureState.FLYING),
-			host.isInState(CreatureState.GLIDING), hostAirborne, host.getLifeStats().getCurrentFp(), bot.isInFlyingState());
+		if (CompanionConfig.DEBUG_LOGGING)
+			log.info("[bot {}] syncFlight check: host={}@{} FLYING={} GLIDING={} isFlying={} currentFp={} | bot isInFlyingState={}",
+				bot.getObjectId(), host.getName(), System.identityHashCode(host), host.isInState(CreatureState.FLYING),
+				host.isInState(CreatureState.GLIDING), hostAirborne, host.getLifeStats().getCurrentFp(), bot.isInFlyingState());
 		if (hostAirborne && !bot.isInFlyingState()) {
 			bot.getFlyController().startFly();
 		}
 		else if (!hostAirborne && bot.isInFlyingState()) {
 			bot.getFlyController().endFly();
 		}
+	}
+
+	/**
+	 * Formation spread radius (units) around the host that idle-following bots fan out into, instead of
+	 * all converging on the host's exact point. Requested live: "cause the Companions to spread out once
+	 * they reach their end destination. It is a real eyesore to have them stand right ontop of each
+	 * other and me."
+	 */
+	private static final float FORMATION_RADIUS = 1.3f;
+
+	/**
+	 * A stable angular slot around the host, evenly spaced by this bot's index within host.getBots() (an
+	 * insertion-ordered list, so a given bot keeps the same slot for the life of the session rather than
+	 * jittering between ticks). Not geo-aware - same straight-line limitation the rest of this move
+	 * controller already has - but good enough to stop bots stacking on top of each other and the host.
+	 */
+	private float[] formationOffset(BotPlayer bot, Player host) {
+		List<Player> bots = host.getBots();
+		int index = Math.max(bots.indexOf(bot), 0);
+		int total = Math.max(bots.size(), 1);
+		double angle = 2 * Math.PI * index / total;
+		return new float[] { (float) (Math.cos(angle) * FORMATION_RADIUS), (float) (Math.sin(angle) * FORMATION_RADIUS) };
 	}
 
 	/**
@@ -203,6 +227,23 @@ public class PlayerBotAI extends AITemplate {
 			if (bot.getLifeStats().isAlreadyDead())
 				return;
 
+			// A real client naturally does nothing else while a cast animation is playing - it can't
+			// queue a second action mid-cast. A bot has no such pause: think() re-runs the whole decision
+			// cascade every ~750ms regardless of whether a previous multi-second cast is still in
+			// progress, and Skill.canUseSkill() has no "already casting something" guard at all - it
+			// unconditionally calls effector.setCasting(this) the instant ANY new cast is attempted,
+			// silently stomping whatever was already casting. For a mixed melee/ranged kit (e.g. a
+			// Chanter's ranged "Smite"), the very next tick could pick a different action (often the
+			// basic-attack fallback once the in-progress skill itself looks unavailable mid-cast) and
+			// cancel a cast that was already most of the way through, wasting the time already spent.
+			// Confirmed live: "mid way through casting the casting stops and then begins a melee attack,
+			// wasting the casting time already spent." Skipping the whole tick while casting - not just
+			// the skill-selection part - also avoids movement (PlayerMovedCondition-style skills already
+			// cancel on move for the same real-client-parity reason) triggering the same kind of
+			// self-interruption.
+			if (bot.isCasting())
+				return;
+
 			Player host = resolveHost();
 			if (host == null) {
 				log.warn("[bot {}] think(): host {} not resolvable via World.findPlayer", getObjectId(), bot.getHostObjectId());
@@ -224,6 +265,11 @@ public class PlayerBotAI extends AITemplate {
 			Creature engageTarget = resolveEngageTarget(bot, host);
 			syncCombatStance(bot, engageTarget);
 
+			// No-ops instantly for any non-Spirit-Master bot (no owned SkillSubType.SUMMON skill matching
+			// a pact-spirit stack marker) - see PlayerBotSummonSelector's own javadoc for why this is kept
+			// separate from the class-agnostic chooseAndCastSkill() cascade below.
+			PlayerBotSummonSelector.manageSummon(bot, host, engageTarget);
+
 			if (engageTarget != null) {
 				// Close to the bot's own effective engage range - short for melee-only kits (so they
 				// actually get in swinging distance), the range of its best ranged skill for casters/
@@ -233,11 +279,12 @@ public class PlayerBotAI extends AITemplate {
 				// turn get close to the enemy."
 				float attackRange = PlayerBotSkillSelector.effectiveEngageRange(bot);
 				boolean inRange = MathUtil.isIn3dRange(bot, engageTarget, attackRange);
-				log.info("[bot {}] engage check: mainHandWeapon={}, attackRange={}, dist={}, inRange={}",
-					getObjectId(), bot.getEquipment().getMainHandWeapon(), attackRange,
-					MathUtil.getDistance(bot, engageTarget), inRange);
+				if (CompanionConfig.DEBUG_LOGGING)
+					log.info("[bot {}] engage check: mainHandWeapon={}, attackRange={}, dist={}, inRange={}",
+						getObjectId(), bot.getEquipment().getMainHandWeapon(), attackRange,
+						MathUtil.getDistance(bot, engageTarget), inRange);
 				if (!inRange) {
-					if (setStateIfNot(AIState.FOLLOWING))
+					if (setStateIfNot(AIState.FOLLOWING) && CompanionConfig.DEBUG_LOGGING)
 						log.info("[bot {}] think(): closing on combat target, state->FOLLOWING", getObjectId());
 					moveController.moveToTargetObject(engageTarget, attackRange);
 					return;
@@ -250,7 +297,7 @@ public class PlayerBotAI extends AITemplate {
 				// range forever. Confirmed live: "she doesn't heal anyone outside of battle".
 				Player supportTarget = PlayerBotSkillSelector.findSupportApproachTarget(bot, host);
 				if (supportTarget != null) {
-					if (setStateIfNot(AIState.FOLLOWING))
+					if (setStateIfNot(AIState.FOLLOWING) && CompanionConfig.DEBUG_LOGGING)
 						log.info("[bot {}] think(): approaching {} for heal/cleanse, state->FOLLOWING",
 							getObjectId(), supportTarget.getName());
 					moveController.moveToTargetObject(supportTarget);
@@ -265,14 +312,28 @@ public class PlayerBotAI extends AITemplate {
 			// them takes priority over immediately walking back to the host - otherwise a host who'd
 			// stayed behind while the bot closed on a wandered-off ally could yank the bot away again on
 			// the very tick it finally arrived, before it ever got to cast.
-			if (engageTarget == null && !acted && !FollowEventHandler.isInRange(this, host)) {
-				if (setStateIfNot(AIState.FOLLOWING))
-					log.info("[bot {}] think(): out of range of host, state->FOLLOWING", getObjectId());
-				moveController.moveToTargetObject(host);
-				return;
+			//
+			// Uses this bot's own formation slot rather than FollowEventHandler.isInRange(this, host)
+			// (raw distance-to-host, no offset) - that generic NPC-follow helper's fixed range wouldn't
+			// match a formation point sitting FORMATION_RADIUS away from the host, which would leave the
+			// bot re-registering with MoveTaskManager and never settling into FOLLOWING->IDLE every tick.
+			// Reuses BotMoveController.FOLLOW_OFFSET as the "close enough" threshold so this stays in sync
+			// with the move controller's own arrival check (see that class's note on why the two must
+			// match).
+			if (engageTarget == null && !acted) {
+				float[] offset = formationOffset(bot, host);
+				float destX = host.getX() + offset[0];
+				float destY = host.getY() + offset[1];
+				boolean atFormationSpot = MathUtil.getDistance(bot.getX(), bot.getY(), bot.getZ(), destX, destY, host.getZ()) <= BotMoveController.FOLLOW_OFFSET;
+				if (!atFormationSpot) {
+					if (setStateIfNot(AIState.FOLLOWING) && CompanionConfig.DEBUG_LOGGING)
+						log.info("[bot {}] think(): out of range of host, state->FOLLOWING", getObjectId());
+					moveController.moveToTargetObject(host, BotMoveController.FOLLOW_OFFSET, offset[0], offset[1]);
+					return;
+				}
 			}
 
-			if (setStateIfNot(acted ? AIState.FIGHT : AIState.IDLE))
+			if (setStateIfNot(acted ? AIState.FIGHT : AIState.IDLE) && CompanionConfig.DEBUG_LOGGING)
 				log.info("[bot {}] think(): in range, acted={}, state->{}", getObjectId(), acted, getState());
 		}
 		finally {

@@ -19,11 +19,14 @@ package com.aionemu.gameserver.ai2.playerbot;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.aionemu.gameserver.configs.main.CompanionConfig;
 import com.aionemu.gameserver.controllers.attack.AttackStatus;
 import com.aionemu.gameserver.model.gameobjects.Creature;
+import com.aionemu.gameserver.model.gameobjects.Summon;
 import com.aionemu.gameserver.model.gameobjects.VisibleObject;
 import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
@@ -32,6 +35,11 @@ import com.aionemu.gameserver.model.team2.group.PlayerGroup;
 import com.aionemu.gameserver.skillengine.condition.ChainCondition;
 import com.aionemu.gameserver.skillengine.condition.Condition;
 import com.aionemu.gameserver.skillengine.condition.Conditions;
+import com.aionemu.gameserver.skillengine.condition.MpCondition;
+import com.aionemu.gameserver.skillengine.effect.BackDashEffect;
+import com.aionemu.gameserver.skillengine.effect.DashEffect;
+import com.aionemu.gameserver.skillengine.effect.EffectTemplate;
+import com.aionemu.gameserver.skillengine.effect.Effects;
 import com.aionemu.gameserver.skillengine.model.Effect;
 import com.aionemu.gameserver.skillengine.periodicaction.HpUsePeriodicAction;
 import com.aionemu.gameserver.skillengine.periodicaction.MpUsePeriodicAction;
@@ -163,14 +171,16 @@ public class PlayerBotSkillSelector {
 			float weaponRange = bot.getGameStats().getAttackRange().getCurrent() / 1000f;
 			float engageRange = effectiveEngageRange(bot);
 			if (engageRange > weaponRange && !MathUtil.isIn3dRange(bot, combatTarget, weaponRange + 1f)) {
-				log.info("[bot {}] no usable ATTACK/CHANT skill and kit reaches past weapon range ({} > {}) - holding at range instead of closing to melee",
-					bot.getObjectId(), engageRange, weaponRange);
+				if (CompanionConfig.DEBUG_LOGGING)
+					log.info("[bot {}] no usable ATTACK/CHANT skill and kit reaches past weapon range ({} > {}) - holding at range instead of closing to melee",
+						bot.getObjectId(), engageRange, weaponRange);
 				return false;
 			}
 
 			bot.setTarget(combatTarget);
-			log.info("[bot {}] no usable ATTACK/CHANT skill, falling back to attackTarget (dist to target={})",
-				bot.getObjectId(), MathUtil.getDistance(bot, combatTarget));
+			if (CompanionConfig.DEBUG_LOGGING)
+				log.info("[bot {}] no usable ATTACK/CHANT skill, falling back to attackTarget (dist to target={})",
+					bot.getObjectId(), MathUtil.getDistance(bot, combatTarget));
 			bot.getController().attackTarget((Creature) combatTarget, 0);
 			return true;
 		}
@@ -226,9 +236,9 @@ public class PlayerBotSkillSelector {
 	 * then asked for exactly this idle top-off on top of it.
 	 */
 	private static CastPlan planHeal(BotPlayer bot, PlayerSkillEntry[] skills, List<Player> group, Player host) {
-		Player neediest = neediestHurtMember(group, CompanionConfig.BOT_HEAL_HP_THRESHOLD);
+		Creature neediest = neediestHurtTarget(group, CompanionConfig.BOT_HEAL_HP_THRESHOLD);
 		if (neediest == null && !isHostInCombat(bot, host))
-			neediest = neediestHurtMember(group, CompanionConfig.BOT_IDLE_HEAL_HP_THRESHOLD);
+			neediest = neediestHurtTarget(group, CompanionConfig.BOT_IDLE_HEAL_HP_THRESHOLD);
 		if (neediest == null)
 			return null;
 
@@ -250,6 +260,40 @@ public class PlayerBotSkillSelector {
 				neediest = member;
 		}
 		return neediest;
+	}
+
+	/**
+	 * Same as neediestHurtMember(), but also considers a live pact-spirit summon belonging to any bot in
+	 * the group (a Summon, not a Player, so invisible to the group-based check above and every other
+	 * heal/cleanse/res tier in this file). target_relation="FRIEND" heals can legitimately land on a
+	 * summon in real play; nothing here previously ever considered it a candidate at all. Confirmed live:
+	 * "the healer does not seem to buff the summon, though it is technically possible" (buff side fixed
+	 * alongside this - see planBuff()).
+	 *
+	 * First attempt at this fix checked host.getSummon() - wrong: host is always the one real human
+	 * player, but the summon belongs to whichever companion bot is actually the Spirit Master, a
+	 * different Player in the group entirely. Confirmed live: "The SM's bot still does not get buffed"
+	 * after that version shipped. findLiveGroupSummon() below searches the whole group instead.
+	 */
+	private static Creature neediestHurtTarget(List<Player> group, int hpThreshold) {
+		Creature neediest = neediestHurtMember(group, hpThreshold);
+		Summon summon = findLiveGroupSummon(group);
+		if (summon != null && summon.getLifeStats().getHpPercentage() <= hpThreshold
+			&& (neediest == null || summon.getLifeStats().getHpPercentage() < neediest.getLifeStats().getHpPercentage()))
+			neediest = summon;
+		return neediest;
+	}
+
+	/** Any live pact-spirit summon owned by a bot in the group - see neediestHurtTarget()'s note on why
+	 * this can't just be host.getSummon(). At most one companion is realistically a Spirit Master, so the
+	 * first match found is fine. */
+	private static Summon findLiveGroupSummon(List<Player> group) {
+		for (Player member : group) {
+			Summon summon = member.getSummon();
+			if (summon != null && !summon.getLifeStats().isAlreadyDead())
+				return summon;
+		}
+		return null;
 	}
 
 	/**
@@ -308,41 +352,146 @@ public class PlayerBotSkillSelector {
 	}
 
 	/**
-	 * The farthest the bot can meaningfully act from right now: its own weapon's basic attack range, or
-	 * further if any ATTACK/HEAL/CHANT skill in its kit reaches beyond that (SkillTemplate's own
-	 * first_target_range property - the same value {@link #isInSkillRange} validates casts against).
-	 * Checked across the bot's WHOLE kit, not just currently off-cooldown skills, so a caster/healer
-	 * bot holds its real casting distance even on a tick where its only ranged option happens to be
-	 * cooling down, rather than closing to melee and re-opening the gap next tick. Fully class-agnostic
-	 * (no PlayerClass check) - a bot with no ranged skills at all just gets its weapon's own range back
-	 * unchanged, matching this file's existing design of never hardcoding "this class behaves like X".
-	 * Used both by PlayerBotAI to decide how close it needs to walk to engage, and by the melee-fallback
-	 * check just above to tell "this bot's kit is genuinely melee-only" apart from "this bot's real
-	 * skills are just on cooldown right now". Requested live: "the cleric has a melee attack, but
-	 * probably wants to stay out of direct fighting... if the host is a melee character, the mages will
-	 * stay close."
+	 * The distance the bot chooses to fight from: its own weapon's basic attack range, or the DOMINANT
+	 * first_target_range among its ATTACK/HEAL/CHANT skills if that's further out - "dominant" meaning
+	 * whichever range value the most skills actually share, not simply the single widest one found
+	 * anywhere in the kit. The naive "take the max" version broke on exactly the outlier skills every
+	 * real kit seems to have: a melee Gladiator's one AoE (Seismic Wave, reaching 7 in an otherwise
+	 * all-range-1 kit) dragged his whole stance out to 7, permanently putting every genuinely melee skill
+	 * out of reach and leaving the AoE as the only thing that ever fired - confirmed live ("it is a
+	 * ranged bug... that is the only skill the glad casts now"). A live survey across every class's kit
+	 * (Gladiator, Templar, Assassin, Sorcerer, Spirit Master, Cleric, Chanter) found the same shape
+	 * everywhere: the large majority of a kit's skills share one characteristic range, with usually one
+	 * or two outliers pulling the other way (Spirit Master's kit is ~90% range 25 with one range-1 curse;
+	 * Cleric similarly 25 with one range-15 outlier). Voting for the dominant value reads every one of
+	 * those kits correctly as melee or ranged without hardcoding a single PlayerClass anywhere - the
+	 * outlier skills stay perfectly usable, just opportunistically (via reachesTarget()'s own per-skill
+	 * check), without deciding where the bot plants itself.
+	 *
+	 * Skills with no first_target_range at all (reads as 0 - e.g. a Ranger's bow skills, which apparently
+	 * rely on the weapon's own range rather than a per-skill override, confirmed by reading the raw XML)
+	 * are excluded from the vote entirely rather than counted as "wants range 0", which would otherwise
+	 * wrongly drag a bow class's whole kit down to melee. Their effective range instead falls out of
+	 * weaponRange itself, which for a bow is already a large, live, gear/buff-aware stat - Ranger range
+	 * can apparently extend past the usual 24 via transforms and similar, and since this reads
+	 * getAttackRange() fresh every call rather than a cached/static value, that's picked up automatically
+	 * with no special-casing needed. Requested live: "you can probably safely call out ranger and say
+	 * let's just plonk him far away" - turns out no explicit carve-out was actually needed for that.
+	 *
+	 * Checked across the bot's WHOLE kit, not just currently off-cooldown skills, so a caster/healer bot
+	 * holds its real casting distance even on a tick where its ranged options happen to be cooling down,
+	 * rather than closing to melee and re-opening the gap next tick. Used both by PlayerBotAI to decide
+	 * how close it needs to walk to engage, and by the melee-fallback check just above to tell "this
+	 * bot's kit is genuinely melee-only" apart from "this bot's real skills are just on cooldown right
+	 * now".
 	 */
 	public static float effectiveEngageRange(BotPlayer bot) {
 		float weaponRange = bot.getGameStats().getAttackRange().getCurrent() / 1000f;
-		float best = weaponRange;
+		Map<Integer, Integer> rangeVotes = new HashMap<Integer, Integer>();
 		for (PlayerSkillEntry entry : bot.getSkillList().getAllSkills()) {
 			SkillTemplate template = entry.getSkillTemplate();
 			SkillSubType subType = template.getSubType();
 			if (subType != SkillSubType.ATTACK && subType != SkillSubType.HEAL && subType != SkillSubType.CHANT)
 				continue;
-			Properties properties = template.getProperties();
-			if (properties == null)
+			if (!isAffordableAtFullMp(bot, template))
 				continue;
-			int range = properties.getFirstTargetRange();
-			if (range > best)
-				best = range;
+			if (isGapCloser(template))
+				continue;
+			Properties properties = template.getProperties();
+			int range = properties != null ? properties.getFirstTargetRange() : 0;
+			if (range <= 0)
+				continue;
+			Integer votes = rangeVotes.get(range);
+			rangeVotes.put(range, votes == null ? 1 : votes + 1);
 		}
-		return best;
+
+		int dominantRange = 0;
+		int dominantVotes = 0;
+		for (Map.Entry<Integer, Integer> vote : rangeVotes.entrySet()) {
+			// Ties favor the larger range - a caster kit split evenly between two ranged tiers should
+			// still hold its distance rather than arbitrarily settling on the shorter one.
+			if (vote.getValue() > dominantVotes || (vote.getValue() == dominantVotes && vote.getKey() > dominantRange)) {
+				dominantVotes = vote.getValue();
+				dominantRange = vote.getKey();
+			}
+		}
+
+		// NOT Math.max(weaponRange, dominantRange) - that only looked correct for casters by coincidence.
+		// weaponRange (the basic manual-attack reach) is short for EVERY class, melee or caster alike - a
+		// Sorcerer's own orb/book attack range is ~1, same ballpark as a melee weapon, it's the SKILL kit
+		// that actually differs (~1 for Gladiator, ~25 for Sorcerer). Math.max("~1", "~25") happens to
+		// pick the skill range for a caster, but for a melee kit whose skills are TIGHTER than its own
+		// weapon range (e.g. this Gladiator's dominant vote is 1, weaponRange 2.5) it picks the wrong,
+		// looser value instead. Taking the max meant the bot stopped closing distance at 2.5, "in range"
+		// by the engage check, while every genuinely melee skill needing 1 stayed permanently unreachable
+		// per reachesTarget() - confirmed live via [rotationdiag]: Weakening Severe Blow/Ferocious Strike/
+		// Explosion of Rage all showed "usable candidate" (not excluded) yet never once got cast, because
+		// the bot was never actually standing close enough for them. attackTarget() (the basic-swing
+		// fallback) doesn't need weaponRange represented here at all - Creature's own attack handling
+		// closes distance for it automatically regardless of what this method returns (see the
+		// melee-fallback check above this method's own note). So weaponRange is now purely a fallback for
+		// a kit with no skill-range data to vote with at all (e.g. Ranger, whose bow skills carry no
+		// first_target_range) - trust the dominant vote directly whenever one exists, even if it's
+		// shorter than the weapon.
+		return dominantVotes > 0 ? dominantRange : weaponRange;
+	}
+
+	/**
+	 * True for a skill whose effect is a dash/charge (DashEffect/BackDashEffect - e.g. Assassin's "Dash
+	 * Attack", which literally moves the caster to the target then strikes, motion="frontdash") rather
+	 * than a real attack-from-range. Its first_target_range means "how far away can I be when I START
+	 * closing the gap", not "how far away should I stay and fight from" - the opposite of what
+	 * effectiveEngageRange() otherwise assumes for every other ranged skill. Without this exclusion, a
+	 * pure-melee class that happens to own one gap-closer got misclassified as having real ranged reach:
+	 * it would hold position waiting to use the dash (long cooldown - 40s for "Dash Attack II") instead
+	 * of just walking to melee range like it should. Confirmed live: an Assassin bot standing still,
+	 * "kit reaches past weapon range (20.0 > 1.5) - holding at range" instead of closing in.
+	 */
+	private static boolean isGapCloser(SkillTemplate template) {
+		Effects effects = template.getEffects();
+		if (effects == null || effects.getEffects() == null)
+			return false;
+		for (EffectTemplate effect : effects.getEffects())
+			if (effect instanceof DashEffect || effect instanceof BackDashEffect)
+				return true;
+		return false;
+	}
+
+	/**
+	 * True unless the skill has an MpCondition startcondition requiring more MP than this bot could ever
+	 * have even at full pool - Abyss Rank reward "ultimate" skills (e.g. "Abyssal Verdict I", requiring
+	 * 59000 MP) are granted by PvP rank regardless of class/build, so ANY bot can end up owning one
+	 * alongside its real class kit. MpUseAction (the actual MP-deduction step) already exempts bots
+	 * entirely ("infinite mana" - see that class), but MpCondition (the separate startcondition gating
+	 * whether a cast can even begin) is NOT exempted and never will be satisfied by a bot that can never
+	 * realistically reach that MP total. Without this check, effectiveEngageRange() (which deliberately
+	 * scans the WHOLE kit regardless of current cooldown/resources, by design) counted such a skill's
+	 * range as real reach, making a melee bot think it had ranged options it could never actually use -
+	 * it would hold position waiting to cast something permanently unaffordable instead of closing to
+	 * melee. Confirmed live: a Gladiator/Assassin bot standing at a target doing nothing at all, engine
+	 * log showing exactly this skill failing every attempt ("[bot X] ATTACK skillId=11905 ... useSkill=
+	 * false") while effectiveEngageRange() still reported it "in range" of a 30-unit skill.
+	 */
+	private static boolean isAffordableAtFullMp(BotPlayer bot, SkillTemplate template) {
+		Conditions startconditions = template.getStartconditions();
+		if (startconditions == null)
+			return true;
+		for (Condition condition : startconditions.getConditions()) {
+			if (!(condition instanceof MpCondition))
+				continue;
+			MpCondition mpCondition = (MpCondition) condition;
+			int maxMp = bot.getLifeStats().getMaxMp();
+			int required = mpCondition.getValue() + mpCondition.getDelta() * template.getLvl();
+			if (mpCondition.isRatio())
+				required = (maxMp * required) / 100;
+			if (required >= maxMp)
+				return false;
+		}
+		return true;
 	}
 
 	private static boolean isInSkillRange(BotPlayer bot, Player target, SkillTemplate template) {
-		Properties properties = template.getProperties();
-		int range = properties != null ? properties.getFirstTargetRange() : 0;
+		int range = effectiveSkillRange(template);
 		return range <= 0 || MathUtil.isIn3dRange(bot, target, range);
 	}
 
@@ -352,9 +501,30 @@ public class PlayerBotSkillSelector {
 	 * Player, so isInSkillRange's signature doesn't fit there directly.
 	 */
 	private static boolean reachesTarget(BotPlayer bot, VisibleObject target, SkillTemplate template) {
-		Properties properties = template.getProperties();
-		int range = properties != null ? properties.getFirstTargetRange() : 0;
+		int range = effectiveSkillRange(template);
 		return range <= 0 || MathUtil.isIn3dRange(bot, target, range);
+	}
+
+	/**
+	 * The real effective range for landing a skill on an enemy - normally first_target_range, but for a
+	 * self-anchored AoE (first_target="ME", e.g. Gladiator's "Seismic Wave": a ground-slam hitting nearby
+	 * enemies, first_target_range="1" but target_distance="7") first_target_range only describes the
+	 * self-targeting step itself (always trivially satisfied - you're always in range of yourself), not
+	 * how far the AoE actually reaches. target_distance is the property that means that. Without this,
+	 * a self-anchored AoE attack that just got let through isSelfOnly()'s filter (see that method's own
+	 * note - same live bug report) was immediately excluded again here instead, always failing this
+	 * range check even at ordinary melee distance, silently skipped in the ATTACK loop without ever
+	 * attempting a cast. Confirmed live: "zero attacks are getting cast" even after the isSelfOnly() fix
+	 * - Seismic Wave never fired at the normal ~2.5-unit fighting distance because 2.5 > first_target_
+	 * range's 1, even though 2.5 is comfortably within target_distance's 7.
+	 */
+	private static int effectiveSkillRange(SkillTemplate template) {
+		Properties properties = template.getProperties();
+		if (properties == null)
+			return 0;
+		if (properties.getFirstTarget() == FirstTargetAttribute.ME && properties.getTargetDistance() > 0)
+			return properties.getTargetDistance();
+		return properties.getFirstTargetRange();
 	}
 
 	private static boolean hasDebuff(Player player) {
@@ -396,10 +566,24 @@ public class PlayerBotSkillSelector {
 			if (allyBuff != null)
 				return new CastPlan(allyBuff, member);
 		}
+
+		// A live pact-spirit summon belonging to any bot in the group - see neediestHurtTarget()'s note
+		// on why this has to search the whole group rather than checking one specific Player's
+		// getSummon() (an earlier version of this fix checked host.getSummon(), which is always the one
+		// real human player, not necessarily the Spirit Master bot - confirmed live: "The SM's bot still
+		// does not get buffed"). target_relation="FRIEND" buffs can legitimately land on a summon in real
+		// play. Confirmed live: "the healer does not seem to buff the summon, though it is technically
+		// possible".
+		Summon summon = findLiveGroupSummon(group);
+		if (summon != null) {
+			PlayerSkillEntry summonBuff = findMissingAllyBuff(bot, skills, summon);
+			if (summonBuff != null)
+				return new CastPlan(summonBuff, summon);
+		}
 		return null;
 	}
 
-	private static PlayerSkillEntry findMissingAllyBuff(BotPlayer bot, PlayerSkillEntry[] skills, Player ally) {
+	private static PlayerSkillEntry findMissingAllyBuff(BotPlayer bot, PlayerSkillEntry[] skills, Creature ally) {
 		PlayerSkillEntry best = null;
 		for (PlayerSkillEntry entry : skills) {
 			SkillTemplate template = entry.getSkillTemplate();
@@ -428,10 +612,20 @@ public class PlayerBotSkillSelector {
 	 * checking the ALLY's effect list - which naturally never has it - so it looked "missing" forever.
 	 * Confirmed live: a self-only toggle buff cast continuously at a grouped ally, never actually
 	 * affecting them. findMissingBuff() (the self-targeted path) already covers these correctly.
+	 *
+	 * Excludes target_relation="ENEMY" skills though - first_target="ME" alone doesn't mean "benefits
+	 * only the caster", it can also mean "centered ON the caster" for a self-anchored AoE attack (e.g.
+	 * Gladiator's "Seismic Wave", a ground-slam hitting nearby enemies: first_target="ME" but
+	 * target_relation="ENEMY", target_type="AREA"). Same class of bug as the earlier Spirit Master "Wall
+	 * of Protection" fix (see PlayerBotSummonSelector), just surfacing via target_relation here instead
+	 * of target_type - without this, rankedUsableSkills()'s ATTACK cascade wrongly excluded a real,
+	 * off-cooldown attack skill as if it were a defensive stance. Confirmed live via [rotationdiag]:
+	 * "284(Seismic Wave I): excluded, self-only" while sitting fully off cooldown.
 	 */
 	private static boolean isSelfOnly(SkillTemplate template) {
 		Properties properties = template.getProperties();
-		return properties != null && properties.getFirstTarget() == FirstTargetAttribute.ME;
+		return properties != null && properties.getFirstTarget() == FirstTargetAttribute.ME
+			&& properties.getTargetRelation() != TargetRelationAttribute.ENEMY;
 	}
 
 	/**
@@ -456,7 +650,26 @@ public class PlayerBotSkillSelector {
 	private static boolean isMaintainableSelfBuff(SkillTemplate template) {
 		boolean isBuffLike = template.getSubType() == SkillSubType.BUFF
 			|| (template.getSubType() == SkillSubType.CHANT && template.isToggle() && isSelfOnly(template));
-		return isBuffLike && canBeKeptPerpetuallyUp(template);
+		return isBuffLike && canBeKeptPerpetuallyUp(template) && !isBlacklistedStance(template);
+	}
+
+	/**
+	 * Stances that trade away the bot's own ability to fight for a defensive benefit a real player
+	 * chooses deliberately (e.g. actively tanking) - a bot has no judgment about when that tradeoff is
+	 * worth it, so auto-maintaining one is actively harmful, not just wasted. Warrior's "Shield Defense"
+	 * (skill_id 173/etc, all ranks share stack="SKILL_WA_SHIELDSTANCE") is the concrete case: it's a
+	 * TOGGLE that otherwise passes every other maintainability check, but stops the character actually
+	 * attacking while active. Requested live: "Shield defense is actually a toggle-able skill and causes
+	 * the character to not actually attack. We probably want to blacklist this skill in particular, as
+	 * it is a very non-bottable skill." Matched by stack (not skillId) so every rank is covered without
+	 * needing to be kept in sync with new ones - same pattern used throughout this file's buff-dedup
+	 * logic.
+	 */
+	private static final String STACK_SHIELD_DEFENSE = "SKILL_WA_SHIELDSTANCE";
+
+	private static boolean isBlacklistedStance(SkillTemplate template) {
+		String stack = template.getStack();
+		return stack != null && stack.equals(STACK_SHIELD_DEFENSE);
 	}
 
 	/**
@@ -614,7 +827,7 @@ public class PlayerBotSkillSelector {
 	 * "the buff looks to still be continuous"). isNoshowPresentBySkillId() is the matching lookup for
 	 * that map (EffectController.java).
 	 */
-	private static boolean isBuffAlreadyActive(Player player, SkillTemplate template) {
+	private static boolean isBuffAlreadyActive(Creature player, SkillTemplate template) {
 		if (template.isToggle() && player.getEffectController().isNoshowPresentBySkillId(template.getSkillId()))
 			return true;
 
@@ -688,12 +901,23 @@ public class PlayerBotSkillSelector {
 	 */
 	private static List<PlayerSkillEntry> rankedUsableSkills(BotPlayer bot, PlayerSkillEntry[] skills, SkillSubType subType) {
 		List<PlayerSkillEntry> matches = new ArrayList<PlayerSkillEntry>();
+		// [rotationdiag] dump of every same-subtype skill the bot actually owns and why each was excluded
+		// - directly found several real bugs this way (Abyss-rank skill contamination, a "usable
+		// candidate but never actually cast" case that turned out to be a range bug elsewhere). Gated
+		// behind DEBUG_LOGGING like everything else in this file - diag stays null and none of the
+		// per-skill string building below runs at all when disabled, not just the final log call.
+		// Requested live: "can we move all the debugging we have added to hide behind a --debug-bot
+		// flag, or something similar."
+		List<String> diag = CompanionConfig.DEBUG_LOGGING ? new ArrayList<String>() : null;
 		for (PlayerSkillEntry entry : skills) {
 			SkillTemplate template = entry.getSkillTemplate();
 			if (template == null || template.getSubType() != subType)
 				continue;
-			if (isSelfOnly(template))
+			if (isSelfOnly(template)) {
+				if (diag != null)
+					diag.add(template.getSkillId() + "(" + template.getName() + "): excluded, self-only");
 				continue;
+			}
 			// Chain-continuation skills (SkillTemplate's <chain precategory=.../> startcondition) are
 			// exclusively findChainContinuation()'s job, not this generic cascade's - trying one
 			// speculatively here, before the bot is actually primed for it, would fail on the
@@ -703,12 +927,26 @@ public class PlayerBotSkillSelector {
 			// was silently starving chain-following entirely: confirmed live, zero "CHAIN" casts ever
 			// landed despite the character owning the exact right combo skills.
 			ChainCondition chain = getChainCondition(template);
-			if (chain != null && chain.getPrecategory() != null)
+			if (chain != null && chain.getPrecategory() != null) {
+				if (diag != null)
+					diag.add(template.getSkillId() + "(" + template.getName() + "): excluded, chain-gated on "
+						+ chain.getPrecategory());
 				continue;
-			if (!isActuallyUsable(bot, template))
+			}
+			if (!isActuallyUsable(bot, template)) {
+				if (diag != null)
+					diag.add(template.getSkillId() + "(" + template.getName() + "): excluded, isActuallyUsable=false"
+						+ " [disabled=" + bot.isSkillDisabled(template) + " failureCooldown="
+						+ bot.isSkillOnFailureCooldown(template.getSkillId()) + " counterSkill="
+						+ template.getCounterSkill() + "]");
 				continue;
+			}
 			matches.add(entry);
+			if (diag != null)
+				diag.add(template.getSkillId() + "(" + template.getName() + "): usable candidate");
 		}
+		if (diag != null && !diag.isEmpty())
+			log.info("[rotationdiag][bot {}] {} candidates - {}", bot.getObjectId(), subType, diag);
 		Collections.sort(matches, new Comparator<PlayerSkillEntry>() {
 			@Override
 			public int compare(PlayerSkillEntry a, PlayerSkillEntry b) {
@@ -726,7 +964,9 @@ public class PlayerBotSkillSelector {
 	 * skill's required character level (SkillTemplate.getLvl()), which tracks rank directly: I=1, II=2,
 	 * III=3, etc.
 	 */
-	private static PlayerSkillEntry higherRank(PlayerSkillEntry current, PlayerSkillEntry candidate) {
+	/** Package-private: also reused by PlayerBotSummonSelector to rank a Spirit Master's owned tiers of
+	 * the same pact-spirit summon skill (Summon Earth Spirit I/II/III/...). */
+	static PlayerSkillEntry higherRank(PlayerSkillEntry current, PlayerSkillEntry candidate) {
 		if (current == null)
 			return candidate;
 		return candidate.getSkillTemplate().getLvl() > current.getSkillTemplate().getLvl() ? candidate : current;
@@ -785,7 +1025,9 @@ public class PlayerBotSkillSelector {
 	 * failing). Skip these unless the window happens to be open (e.g. the bot's own gear/stats just
 	 * produced a real dodge/parry/block against an incoming attack).
 	 */
-	private static boolean isActuallyUsable(BotPlayer bot, SkillTemplate template) {
+	/** Package-private: also reused by PlayerBotSummonSelector for the bot's own "Summon X Spirit" cast
+	 * (the pet's order-skills use a separate, Summon-typed usability check instead - see that class). */
+	static boolean isActuallyUsable(BotPlayer bot, SkillTemplate template) {
 		if (bot.isSkillDisabled(template))
 			return false;
 		if (bot.isSkillOnFailureCooldown(template.getSkillId()))
@@ -809,9 +1051,10 @@ public class PlayerBotSkillSelector {
 			// too, so back off it briefly and let the selector try something else meanwhile.
 			bot.markSkillFailed(entry.getSkillId());
 		}
-		log.info("[bot {}] {} skillId={} level={} target={} -> useSkill={}",
-			bot.getObjectId(), kind, entry.getSkillId(), entry.getSkillLevel(),
-			target == bot ? "self" : target.getObjectId(), success);
+		if (CompanionConfig.DEBUG_LOGGING)
+			log.info("[bot {}] {} skillId={} level={} target={} -> useSkill={}",
+				bot.getObjectId(), kind, entry.getSkillId(), entry.getSkillLevel(),
+				target == bot ? "self" : target.getObjectId(), success);
 		return success;
 	}
 }

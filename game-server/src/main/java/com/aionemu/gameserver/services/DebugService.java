@@ -21,6 +21,7 @@ import java.util.Iterator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.aionemu.gameserver.configs.main.DebugConfig;
 import com.aionemu.gameserver.model.gameobjects.player.BotPlayer;
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.team2.group.PlayerGroup;
@@ -97,12 +98,16 @@ public class DebugService {
 	}
 
 	private void snapshotPacketProcessorHealth() {
+		if (!DebugConfig.NETWORK_LOGGING)
+			return;
 		int queueSize = AionConnection.getPacketQueueSize();
 		int threadCount = AionConnection.getPacketProcessorThreadCount();
 		log.info("[PACKETHEALTH] queue=" + queueSize + " threads=" + threadCount);
 	}
 
 	private void snapshotWorldPlayers() {
+		if (!DebugConfig.NETWORK_LOGGING)
+			return;
 		Iterator<Player> playersIterator = World.getInstance().getPlayersIterator();
 		StringBuilder sb = new StringBuilder("[SNAPSHOT]");
 		int count = 0;
@@ -134,6 +139,14 @@ public class DebugService {
 		Iterator<Player> playersIterator = World.getInstance().getPlayersIterator();
 		while (playersIterator.hasNext()) {
 			Player player = playersIterator.next();
+
+			// Companion bots (BotPlayer) are a connectionless Player subclass by design - they never
+			// have a client connection, so the check below would otherwise warn on every bot, every
+			// cycle, forever. Confirmed live: "[DEBUG SERVICE] Player without connection: detected:
+			// ObjId 78614, Name Summon, Spawned true" - "Summon" here is a companion bot's character
+			// name, not an actual pet/summon object.
+			if (player instanceof BotPlayer)
+				continue;
 
 			/**
 			 * Check connection

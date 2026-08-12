@@ -105,4 +105,9 @@ public class RegularRates extends Rates {
 	public float getDpPlayerRate() {
 		return RateConfig.DP_PLAYER_RATE;
 	}
+
+	@Override
+	public int getGatherCountRate() {
+		return RateConfig.GATHER_COUNT;
+	}
 }

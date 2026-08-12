@@ -105,4 +105,9 @@ public class PremiumRates extends Rates {
 	public float getDpPlayerRate() {
 		return RateConfig.PREMIUM_DP_PLAYER_RATE;
 	}
+
+	@Override
+	public int getGatherCountRate() {
+		return RateConfig.PREMIUM_GATHER_COUNT;
+	}
 }

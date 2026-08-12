@@ -18,6 +18,7 @@ package com.aionemu.gameserver.skillengine.effect;
 
 import com.aionemu.gameserver.model.gameobjects.player.Player;
 import com.aionemu.gameserver.model.gameobjects.state.CreatureState;
+import com.aionemu.gameserver.services.player.PlayerReviveService;
 import com.aionemu.gameserver.skillengine.model.Effect;
 import com.aionemu.gameserver.network.aion.serverpackets.SM_RESURRECT;
 import com.aionemu.gameserver.utils.PacketSendUtility;
@@ -39,11 +40,21 @@ public class ResurrectPositionalEffect extends EffectTemplate {
 		Player effected = (Player) effect.getEffected();
 
 		effected.setPlayerResActivate(true);
-		PacketSendUtility.sendPacket(effected, new SM_RESURRECT(effect.getEffector(), effect.getSkillId()));
 		effected.setResPosState(true);
 		effected.setResPosX(effector.getX());
 		effected.setResPosY(effector.getY());
 		effected.setResPosZ(effector.getZ());
+
+		if (effected.isBot()) {
+			// A companion bot has no client to click "accept" on the SM_RESURRECT prompt below, so the
+			// pending-resurrection flag would otherwise sit unaccepted forever. Auto-accept immediately -
+			// resPosState/X/Y/Z are already set above, so skillRevive() teleports to the caster correctly.
+			// Requested live: "if a bot dies, my bots will try res them. Though nothing is accepted."
+			PlayerReviveService.skillRevive(effected);
+			return;
+		}
+
+		PacketSendUtility.sendPacket(effected, new SM_RESURRECT(effect.getEffector(), effect.getSkillId()));
 	}
 
 	@Override

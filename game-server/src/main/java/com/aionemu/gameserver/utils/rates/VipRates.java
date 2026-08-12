@@ -98,4 +98,9 @@ public class VipRates extends Rates {
 	public float getDpPlayerRate() {
 		return RateConfig.VIP_DP_PLAYER_RATE;
 	}
+
+	@Override
+	public int getGatherCountRate() {
+		return RateConfig.VIP_GATHER_COUNT;
+	}
 }

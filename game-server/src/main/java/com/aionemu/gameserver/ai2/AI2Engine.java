@@ -64,6 +64,7 @@ public class AI2Engine implements GameEngine {
 
 		// Statically compiled AIs that don't live under data/scripts (not script-loaded above).
 		registerAI(com.aionemu.gameserver.ai2.playerbot.PlayerBotAI.class);
+		registerAI(com.aionemu.gameserver.ai2.playerbot.PlayerBotSummonAI.class);
 
 		log.info("Loaded " + aiMap.size() + " ai handlers.");
 

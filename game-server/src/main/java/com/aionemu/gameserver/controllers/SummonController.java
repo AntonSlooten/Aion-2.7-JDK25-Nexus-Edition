@@ -228,29 +228,34 @@ public class SummonController extends CreatureController<Summon> {
 		}
 	}
 
-	public void useSkill(int skillId, Creature target) {
+	public boolean useSkill(int skillId, Creature target) {
 		Creature creature = getOwner();
 		boolean petHasSkill = DataManager.PET_SKILL_DATA.petHasSkill(getOwner().getObjectTemplate().getTemplateId(),
 			skillId);
 		if (!petHasSkill) {
 			// hackers!)
-			return;
+			return false;
 		}
 		Skill skill = SkillEngine.getInstance().getSkill(creature, skillId, 1, target);
-		if (skill != null) {
-			// If skill succeeds, handle automatic release if expected
-			if ( (skill.useSkill()) && (skillId == releaseAfterSkill) )
-			{
-				ThreadPoolManager.getInstance().schedule(new Runnable() {
+		if (skill == null)
+			return false;
 
-					@Override
-					public void run() {
-						release(UnsummonType.UNSPECIFIED);
-					}
-				}, 1000);
-			}
-			setReleaseAfterSkill(-1);
+		// Return value added so callers (PlayerBotSummonSelector) can tell a rejected order-skill (range,
+		// cooldown, LoS, etc.) apart from a landed one and fall through to the next candidate instead of
+		// silently no-opping - the original caller (CM_SUMMON_CASTSPELL, a real client's single explicit
+		// command) never needed this since there's nothing sensible to fall through to.
+		boolean success = skill.useSkill();
+		if (success && skillId == releaseAfterSkill) {
+			ThreadPoolManager.getInstance().schedule(new Runnable() {
+
+				@Override
+				public void run() {
+					release(UnsummonType.UNSPECIFIED);
+				}
+			}, 1000);
 		}
+		setReleaseAfterSkill(-1);
+		return success;
 	}
 
 	public static enum UnsummonType {

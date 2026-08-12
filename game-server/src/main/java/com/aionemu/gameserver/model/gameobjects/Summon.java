@@ -20,6 +20,7 @@ import com.aionemu.gameserver.controllers.CreatureController;
 import com.aionemu.gameserver.controllers.SummonController;
 import com.aionemu.gameserver.controllers.attack.AggroList;
 import com.aionemu.gameserver.controllers.attack.PlayerAggroList;
+import com.aionemu.gameserver.controllers.movement.BotSummonMoveController;
 import com.aionemu.gameserver.controllers.movement.SummonMoveController;
 import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.model.Race;
@@ -83,6 +84,17 @@ public class Summon extends Creature {
 			level);
 		setGameStats(new SummonGameStats(this, statsTemplate));
 		setLifeStats(new SummonLifeStats(this));
+	}
+
+	/**
+	 * Swaps in a tick-driven move controller for a bot-owned summon in place of the default
+	 * {@link SummonMoveController}, which only ever moves in response to a real client's
+	 * CM_SUMMON_MOVE packet - a bot has no client to ever send that, so its pet would otherwise sit at
+	 * its spawn point forever. See {@link BotSummonMoveController}'s own javadoc for the full mechanism.
+	 * Called once, right after construction, only for summons whose master is a bot.
+	 */
+	public void useBotMoveController() {
+		this.moveController = new BotSummonMoveController(this);
 	}
 
 	@Override

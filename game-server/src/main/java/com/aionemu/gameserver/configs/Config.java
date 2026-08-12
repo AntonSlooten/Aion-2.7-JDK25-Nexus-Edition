@@ -66,112 +66,12 @@ public class Config {
 
 			ConfigurableProcessor.process(AdminConfig.class, adminProps);
 			log.info("Loading: " + administration + "/admin.properties");
-			
+
 			ConfigurableProcessor.process(DeveloperConfig.class, adminProps);
 			log.info("Loading: " + administration + "/developer.properties");
 
 			// Main
-			Util.printSection("Main");
-			String main = "./config/main";
-
-			Properties[] mainProps = PropertiesUtils.loadAllFromDirectory(main);
-			PropertiesUtils.overrideProperties(mainProps, myProps);
-
-			ConfigurableProcessor.process(AIConfig.class, mainProps);
-			log.info("Loading: " + main + "/ai.properties");
-
-			ConfigurableProcessor.process(CommonsConfig.class, mainProps);
-			log.info("Loading: " + main + "/commons.properties");
-
-			ConfigurableProcessor.process(CacheConfig.class, mainProps);
-			log.info("Loading: " + main + "/cache.properties");
-
-			ConfigurableProcessor.process(CompanionConfig.class, mainProps);
-			log.info("Loading: " + main + "/companion.properties");
-
-			ConfigurableProcessor.process(CraftConfig.class, mainProps);
-			log.info("Loading: " + main + "/craft.properties");
-
-			ConfigurableProcessor.process(CustomConfig.class, mainProps);
-			log.info("Loading: " + main + "/custom.properties");
-
-			ConfigurableProcessor.process(DredgionConfig.class, mainProps);
-			log.info("Loading: " + main + "/dredgion.properties");
-
-			ConfigurableProcessor.process(DropConfig.class, mainProps);
-			log.info("Loading: " + main + "/drop.properties");
-
-			ConfigurableProcessor.process(EnchantsConfig.class, mainProps);
-			log.info("Loading: " + main + "/enchants.properties");
-
-			ConfigurableProcessor.process(FallDamageConfig.class, mainProps);
-			log.info("Loading: " + main + "/falldamage.properties");
-
-			ConfigurableProcessor.process(GSConfig.class, mainProps);
-			log.info("Loading: " + main + "/gameserver.properties");
-
-			ConfigurableProcessor.process(GeoDataConfig.class, mainProps);
-			log.info("Loading: " + main + "/geodata.properties");
-
-			ConfigurableProcessor.process(GroupConfig.class, mainProps);
-			log.info("Loading: " + main + "/group.properties");
-
-			ConfigurableProcessor.process(HTMLConfig.class, mainProps);
-			log.info("Loading: " + main + "/html.properties");
-
-			ConfigurableProcessor.process(InGameShopConfig.class, mainProps);
-			log.info("Loading: " + main + "/ingameshop.properties");
-
-			ConfigurableProcessor.process(LegionConfig.class, mainProps);
-			log.info("Loading: " + main + "/legion.properties");
-
-			ConfigurableProcessor.process(LoggingConfig.class, mainProps);
-			log.info("Loading: " + main + "/logging.properties");
-
-			ConfigurableProcessor.process(MembershipConfig.class, mainProps);
-			log.info("Loading: " + main + "/membership.properties");
-
-			ConfigurableProcessor.process(PeriodicSaveConfig.class, mainProps);
-			log.info("Loading: " + main + "/periodicsave.properties");
-
-			ConfigurableProcessor.process(PricesConfig.class, mainProps);
-			log.info("Loading: " + main + "/prices.properties");
-
-			ConfigurableProcessor.process(RankingConfig.class, mainProps);
-			log.info("Loading: " + main + "/ranking.properties");
-
-			ConfigurableProcessor.process(RateConfig.class, mainProps);
-			log.info("Loading: " + main + "/rates.properties");
-
-			ConfigurableProcessor.process(ShutdownConfig.class, mainProps);
-			log.info("Loading: " + main + "/shutdown.properties");
-
-			ConfigurableProcessor.process(SiegeConfig.class, mainProps);
-			log.info("Loading: " + main + "/siege.properties");
-
-			ConfigurableProcessor.process(ThreadConfig.class, mainProps);
-			log.info("Loading: " + main + "/thread.properties");
-
-			ConfigurableProcessor.process(WorldConfig.class, mainProps);
-			log.info("Loading: " + main + "/world.properties");
-
-			ConfigurableProcessor.process(PlayerTransferConfig.class, mainProps);
-			log.info("Loading: " + main + "/playertransfer.properties");
-
-			ConfigurableProcessor.process(WeddingsConfig.class, mainProps);
-			log.info("Loading: " + main + "/weddings.properties");
-
-			ConfigurableProcessor.process(PunishmentConfig.class, mainProps);
-			log.info("Loading: " + main + "/punishment.properties");
-			
-			ConfigurableProcessor.process(PvPConfig.class, mainProps);
-			log.info("Loading: " + main + "/PvP.properties");
-			
-			ConfigurableProcessor.process(EventsConfig.class, mainProps);
-			log.info("Loading: " + main + "/events.properties");
-                        
-                       // ConfigurableProcessor.process(GlobalityConfig.class, mainProps);
-			//log.info("Loading: " + main + "/globality.properties");
+			loadMain(myProps);
 
 			// Network
 			Util.printSection("Network");
@@ -184,17 +84,17 @@ public class Config {
 			ConfigurableProcessor.process(DatabaseConfig.class, networkProps);
 			log.info("Loading: " + network + "/network.properties");
 			ConfigurableProcessor.process(NetworkConfig.class, networkProps);
-			
-			
+
+
 			Util.printSection("Custom");
 			String custom = "./config/custom";
-			
+
 			Properties[] customProps = PropertiesUtils.loadAllFromDirectory(custom);
 			PropertiesUtils.overrideProperties(customProps, myProps);
-			
+
 			log.info("Loading: " + custom + "/customDrop.properties");
 			ConfigurableProcessor.process(CustomDrop.class, customProps);
-			
+
 			log.info("Loading: " + custom + "/recursiveAdd.properties");
 			ConfigurableProcessor.process(RecursiveAddConf.class, customProps);
 			log.info("Loading: " + custom + "/customfun.properties");
@@ -209,5 +109,133 @@ public class Config {
 		}
 
 		IPConfig.load();
+	}
+
+	/**
+	 * Re-reads every *.properties file in ./config/main from disk and re-applies the values onto the
+	 * already-loaded config classes' static fields (via the same {@link ConfigurableProcessor} used at
+	 * startup - safe to call repeatedly, it just re-sets fields). Lets a live server pick up a config
+	 * edit (e.g. flipping a {@link com.aionemu.gameserver.configs.main.DebugConfig} flag) without a
+	 * restart. Only covers ./config/main - administration/network/custom configs are rarely touched
+	 * live and aren't wired up here. Note this only affects config classes that read their static field
+	 * fresh on every use (the pattern this whole ./config/main directory follows); anything that instead
+	 * caches a config value into a derived object once at startup won't pick up a live change this way.
+	 */
+	public static void reloadMain() throws Exception {
+		Properties myProps = null;
+		try {
+			myProps = PropertiesUtils.load("./config/mygs.properties");
+		}
+		catch (Exception e) {
+			// no override file - fine, same as load()'s own handling
+		}
+		loadMain(myProps);
+	}
+
+	private static void loadMain(Properties myProps) throws Exception {
+		Util.printSection("Main");
+		String main = "./config/main";
+
+		Properties[] mainProps = PropertiesUtils.loadAllFromDirectory(main);
+		PropertiesUtils.overrideProperties(mainProps, myProps);
+
+		ConfigurableProcessor.process(AIConfig.class, mainProps);
+		log.info("Loading: " + main + "/ai.properties");
+
+		ConfigurableProcessor.process(CommonsConfig.class, mainProps);
+		log.info("Loading: " + main + "/commons.properties");
+
+		ConfigurableProcessor.process(CacheConfig.class, mainProps);
+		log.info("Loading: " + main + "/cache.properties");
+
+		ConfigurableProcessor.process(CompanionConfig.class, mainProps);
+		log.info("Loading: " + main + "/companion.properties");
+
+		ConfigurableProcessor.process(CraftConfig.class, mainProps);
+		log.info("Loading: " + main + "/craft.properties");
+
+		ConfigurableProcessor.process(CustomConfig.class, mainProps);
+		log.info("Loading: " + main + "/custom.properties");
+
+		ConfigurableProcessor.process(DebugConfig.class, mainProps);
+		log.info("Loading: " + main + "/debug.properties");
+
+		ConfigurableProcessor.process(DredgionConfig.class, mainProps);
+		log.info("Loading: " + main + "/dredgion.properties");
+
+		ConfigurableProcessor.process(DropConfig.class, mainProps);
+		log.info("Loading: " + main + "/drop.properties");
+
+		ConfigurableProcessor.process(EnchantsConfig.class, mainProps);
+		log.info("Loading: " + main + "/enchants.properties");
+
+		ConfigurableProcessor.process(FallDamageConfig.class, mainProps);
+		log.info("Loading: " + main + "/falldamage.properties");
+
+		ConfigurableProcessor.process(GSConfig.class, mainProps);
+		log.info("Loading: " + main + "/gameserver.properties");
+
+		ConfigurableProcessor.process(GeoDataConfig.class, mainProps);
+		log.info("Loading: " + main + "/geodata.properties");
+
+		ConfigurableProcessor.process(GroupConfig.class, mainProps);
+		log.info("Loading: " + main + "/group.properties");
+
+		ConfigurableProcessor.process(HTMLConfig.class, mainProps);
+		log.info("Loading: " + main + "/html.properties");
+
+		ConfigurableProcessor.process(InGameShopConfig.class, mainProps);
+		log.info("Loading: " + main + "/ingameshop.properties");
+
+		ConfigurableProcessor.process(LegionConfig.class, mainProps);
+		log.info("Loading: " + main + "/legion.properties");
+
+		ConfigurableProcessor.process(LoggingConfig.class, mainProps);
+		log.info("Loading: " + main + "/logging.properties");
+
+		ConfigurableProcessor.process(MembershipConfig.class, mainProps);
+		log.info("Loading: " + main + "/membership.properties");
+
+		ConfigurableProcessor.process(PeriodicSaveConfig.class, mainProps);
+		log.info("Loading: " + main + "/periodicsave.properties");
+
+		ConfigurableProcessor.process(PricesConfig.class, mainProps);
+		log.info("Loading: " + main + "/prices.properties");
+
+		ConfigurableProcessor.process(RankingConfig.class, mainProps);
+		log.info("Loading: " + main + "/ranking.properties");
+
+		ConfigurableProcessor.process(RateConfig.class, mainProps);
+		log.info("Loading: " + main + "/rates.properties");
+
+		ConfigurableProcessor.process(ShutdownConfig.class, mainProps);
+		log.info("Loading: " + main + "/shutdown.properties");
+
+		ConfigurableProcessor.process(SiegeConfig.class, mainProps);
+		log.info("Loading: " + main + "/siege.properties");
+
+		ConfigurableProcessor.process(ThreadConfig.class, mainProps);
+		log.info("Loading: " + main + "/thread.properties");
+
+		ConfigurableProcessor.process(WorldConfig.class, mainProps);
+		log.info("Loading: " + main + "/world.properties");
+
+		ConfigurableProcessor.process(PlayerTransferConfig.class, mainProps);
+		log.info("Loading: " + main + "/playertransfer.properties");
+
+		ConfigurableProcessor.process(WeddingsConfig.class, mainProps);
+		log.info("Loading: " + main + "/weddings.properties");
+
+		ConfigurableProcessor.process(PunishmentConfig.class, mainProps);
+		log.info("Loading: " + main + "/punishment.properties");
+		
+		ConfigurableProcessor.process(PvPConfig.class, mainProps);
+		log.info("Loading: " + main + "/PvP.properties");
+		
+		ConfigurableProcessor.process(EventsConfig.class, mainProps);
+		log.info("Loading: " + main + "/events.properties");
+
+		// ConfigurableProcessor.process(GlobalityConfig.class, mainProps);
+		//log.info("Loading: " + main + "/globality.properties");
 	}
 }

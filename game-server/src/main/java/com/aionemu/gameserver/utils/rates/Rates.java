@@ -51,6 +51,8 @@ public abstract class Rates {
 
 	public abstract float getDpPlayerRate();
 
+	public abstract int getGatherCountRate();
+
 	/**
 	 * @param membership
 	 * @return Rates

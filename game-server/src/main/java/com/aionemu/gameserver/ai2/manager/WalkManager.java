@@ -26,6 +26,7 @@ import com.aionemu.gameserver.configs.main.AIConfig;
 import com.aionemu.gameserver.configs.main.GeoDataConfig;
 import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.geoEngine.math.Vector3f;
+import com.aionemu.gameserver.model.Race;
 import com.aionemu.gameserver.model.gameobjects.Npc;
 import com.aionemu.gameserver.model.templates.walker.RouteStep;
 import com.aionemu.gameserver.model.templates.walker.WalkerTemplate;
@@ -39,6 +40,12 @@ import com.aionemu.gameserver.world.geo.GeoService;
 public class WalkManager {
 
 	private static final int WALK_RANDOM_RANGE = 5;
+
+	/**
+	 * Fallback wander radius (units) for ordinary wildlife that has no hand-authored randomwalk value at
+	 * all - see startRandomWalking()'s use of this below.
+	 */
+	private static final int DEFAULT_WILDLIFE_WANDER_RANGE = 15;
 
 	/**
 	 * @param npcAI
@@ -57,6 +64,40 @@ public class WalkManager {
 	}
 
 	/**
+	 * The hand-authored per-spawn randomwalk radius, if any, otherwise the ordinary-wildlife default
+	 * fallback if this npc qualifies. This whole random-wander mechanism (geo-checked point picking via
+	 * chooseNextRandomPoint(), spawn-distance clamping, randomized wait) already existed and is globally
+	 * enabled (gameserver.npcmovement.enable = true) but is otherwise entirely opt-in per spawn via a
+	 * randomwalk value that's essentially never set across the existing spawn data - which is why almost
+	 * everything just stands still. Rather than hand-editing spawn XML across the whole world, ordinary
+	 * open-world wildlife is opted in here instead: attackable, AI name "general" or "aggressive"
+	 * (AggressiveNpcAI2 extends GeneralNpcAI2 and only overrides the on-sight-aggro handlers, so it's the
+	 * same ordinary-wildlife behavior, just attacking unprompted - confirmed via "poison arachna",
+	 * BEAST/ATTACKABLE/ai=aggressive, which was wrongly excluded when this only checked "general"), any
+	 * race EXCEPT the two playable-character races (ELYOS/ASMODIANS - hostile-faction humanoid NPCs, not
+	 * wildlife, same category as the townsfolk this is deliberately not touching yet), and not a boss
+	 * (Npc.isBoss(): HERO/LEGENDARY rating) - named/unique/raid-boss mobs are far more likely to have
+	 * deliberate fixed positioning or their own walker script already, so random-wandering them risked
+	 * more than it helped. Originally scoped to just BEAST; widened after surveying every race actually
+	 * present on ATTACKABLE+general/aggressive mobs (21 races) and finding everything else in that list
+	 * reads as ordinary monster wildlife too - "yeah that's probably safest" was the chosen approach over
+	 * hand-picking races one at a time. Still excludes truly scripted/decorative/named NPCs via AI name.
+	 * Narrow and easy to dial back later. Shared by startRandomWalking() (the gate check) and
+	 * chooseNextRandomPoint() (the actual range used) so they can't disagree with each other.
+	 */
+	private static int effectiveRandomWalkRange(NpcAI2 npcAI, Npc owner) {
+		int randomWalkNr = owner.getSpawn().getRandomWalk();
+		if (randomWalkNr != 0)
+			return randomWalkNr;
+		String aiName = npcAI.getName();
+		if (owner.isAttackableNpc() && !owner.isBoss()
+			&& owner.getRace() != Race.ELYOS && owner.getRace() != Race.ASMODIANS
+			&& ("general".equals(aiName) || "aggressive".equals(aiName)))
+			return DEFAULT_WILDLIFE_WANDER_RANGE;
+		return 0;
+	}
+
+	/**
 	 * @param npcAI
 	 * @param owner
 	 */
@@ -64,8 +105,7 @@ public class WalkManager {
 		if (!AIConfig.ACTIVE_NPC_MOVEMENT) {
 			return false;
 		}
-		int randomWalkNr = owner.getSpawn().getRandomWalk();
-		if (randomWalkNr == 0) {
+		if (effectiveRandomWalkRange(npcAI, owner) == 0) {
 			return false;
 		}
 		if (npcAI.setSubStateIfNot(AISubState.WALK_RANDOM)) {
@@ -237,8 +277,7 @@ public class WalkManager {
 	private static void chooseNextRandomPoint(final NpcAI2 npcAI) {
 		final Npc owner = npcAI.getOwner();
 		owner.getMoveController().abortMove();
-		int randomWalkNr = owner.getSpawn().getRandomWalk();
-		final int walkRange = Math.max(randomWalkNr, WALK_RANDOM_RANGE);
+		final int walkRange = Math.max(effectiveRandomWalkRange(npcAI, owner), WALK_RANDOM_RANGE);
 
 		final float distToSpawn = (float) owner.getDistanceToSpawnLocation();
 

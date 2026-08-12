@@ -244,12 +244,6 @@ public class CustomConfig {
 	public static int REWARD3;
 
 	/**
-	 * Show dialog id and quest id
-	 */
-	@Property(key = "gameserver.dialog.showid", defaultValue = "true")
-	public static boolean ENABLE_SHOW_DIALOGID;
-
-	/**
 	 * Custom RiftLevels for Heiron and Beluslan
 	 */
 	@Property(key = "gameserver.rift.heiron_fm", defaultValue = "50")

@@ -25,6 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aionemu.commons.database.dao.DAOManager;
+import com.aionemu.gameserver.ai2.AI2Engine;
+import com.aionemu.gameserver.ai2.AiNames;
 import com.aionemu.gameserver.configs.main.SiegeConfig;
 import com.aionemu.gameserver.controllers.GatherableController;
 import com.aionemu.gameserver.controllers.NpcController;
@@ -412,6 +414,16 @@ public class VisibleObjectSpawner {
 		byte level = (byte) SkillLearnService.getSkillMinLevel(skillId, creator.getCommonData().getLevel(), skillLevel);
 
 		Summon summon = new Summon(IDFactory.getInstance().nextId(), new SummonController(), spawn, npcTemplate, level);
+		// A bot has no client to ever send CM_SUMMON_MOVE (the only thing that normally moves a summon -
+		// see BotSummonMoveController's javadoc), so its pet needs a tick-driven move controller instead
+		// of the default client-driven one, or it just sits at its spawn point forever. Confirmed live:
+		// "the summon also does not follow anyone". That controller is driven by MoveTaskManager, which
+		// requires a working AI2 (see PlayerBotSummonAI's javadoc) - no Summon is ever assigned one
+		// otherwise, since a real player's pet has no AI decision loop of its own.
+		if (creator.isBot()) {
+			summon.useBotMoveController();
+			AI2Engine.getInstance().setupAI(AiNames.SUMMON_BOT.getName(), summon);
+		}
 		summon.setKnownlist(new CreatureAwareKnownList(summon));
 		summon.setEffectController(new EffectController(summon));
 		summon.setMaster(creator);

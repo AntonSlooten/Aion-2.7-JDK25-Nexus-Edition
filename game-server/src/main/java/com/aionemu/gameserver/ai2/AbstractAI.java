@@ -30,6 +30,7 @@ import com.aionemu.gameserver.ai2.poll.AIQuestion;
 import com.aionemu.gameserver.ai2.scenario.AI2Scenario;
 import com.aionemu.gameserver.ai2.scenario.AI2Scenarios;
 import com.aionemu.gameserver.configs.main.AIConfig;
+import com.aionemu.gameserver.configs.main.DebugConfig;
 import com.aionemu.gameserver.dataholders.DataManager;
 import com.aionemu.gameserver.model.EmotionType;
 import com.aionemu.gameserver.model.gameobjects.Creature;
@@ -170,10 +171,10 @@ public abstract class AbstractAI implements AI2 {
 		// right after AttackEventHandler.onAttack() puts it there. Requested live, following confirmation
 		// this reproduces deterministically (not a timing race): "if the issue presents itself it will
 		// continue to present itself until the creature is dead."
-		if (owner instanceof com.aionemu.gameserver.model.gameobjects.Npc) {
+		if (DebugConfig.NPC_COMBAT_LOGGING && owner instanceof com.aionemu.gameserver.model.gameobjects.Npc) {
 			StackTraceElement[] trace = Thread.currentThread().getStackTrace();
 			String caller = trace.length > 3 ? trace[3].getClassName() + "." + trace[3].getMethodName() : "?";
-			org.slf4j.LoggerFactory.getLogger(AbstractAI.class).info(
+			log.info(
 				"[aistate] npc={} objId={} state {} -> {} (target={}) from {}",
 				owner.getName(), owner.getObjectId(), currentState, newState,
 				owner.getTarget() != null ? owner.getTarget().getName() : "null", caller);
@@ -223,9 +224,10 @@ public abstract class AbstractAI implements AI2 {
 			// regenerating normally on whatever HP it has left, which reads as "recognized nothing, then
 			// healed up fast" from the damage dealt in the meantime. Requested live: "it did not
 			// recognize the attacker, and regenned quickly."
-			log.info("[aggro] npc={} objId={} templateId={} ignored {} from attacker={} - AI state={} (not IDLE/WALKING)",
-				owner.getName(), owner.getObjectId(), ((Npc) owner).getNpcId(), event,
-				creature != null ? creature.getName() : "null", currentState);
+			if (DebugConfig.NPC_COMBAT_LOGGING)
+				log.info("[aggro] npc={} objId={} templateId={} ignored {} from attacker={} - AI state={} (not IDLE/WALKING)",
+					owner.getName(), owner.getObjectId(), ((Npc) owner).getNpcId(), event,
+					creature != null ? creature.getName() : "null", currentState);
 		}
 	}
 
@@ -423,7 +425,7 @@ public abstract class AbstractAI implements AI2 {
 					// hit entirely, before handleAttack()/AttackEventHandler.onAttack() ever runs, no
 					// matter how much damage landed. Requested live: "it did not recognize the attacker,
 					// and regenned quickly."
-					if (owner instanceof Npc)
+					if (DebugConfig.NPC_COMBAT_LOGGING && owner instanceof Npc)
 						log.info("[aggro] npc={} objId={} templateId={} ignored ATTACK from attacker={} - tribe {} vs {} is friendly",
 							owner.getName(), owner.getObjectId(), ((Npc) owner).getNpcId(), creature.getName(),
 							getOwner().getTribe(), creature.getTribe());

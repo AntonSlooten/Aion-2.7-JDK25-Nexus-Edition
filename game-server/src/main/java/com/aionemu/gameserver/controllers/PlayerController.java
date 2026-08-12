@@ -261,7 +261,11 @@ public class PlayerController extends CreatureController<Player> {
 		
 		this.doReward();
 
-		if (master instanceof Npc || master == player) {
+		// Companion bots have no way to avoid dying (no player reflexes behind the AI, no gear/consumable
+		// management), so the normal death XP penalty just bleeds the host's own alt characters for
+		// mistakes the AI made, not the player. Exempted same as FP/MP/arrows - upkeep the bot has no
+		// agency over. Requested live: "can we please also remove the EXP loss penalty from a bot dying?"
+		if ((master instanceof Npc || master == player) && !player.isBot()) {
 			if (player.getLevel() > 4)
 				player.getCommonData().calculateExpLoss();
 		}

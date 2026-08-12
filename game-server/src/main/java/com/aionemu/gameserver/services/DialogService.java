@@ -88,11 +88,6 @@ public class DialogService {
 		if (QuestEngine.getInstance().onDialog(env))
 			return;
 
-		if (player.getAccessLevel() >= 2 && CustomConfig.ENABLE_SHOW_DIALOGID) {
-			PacketSendUtility.sendMessage(player, "dialogId: " + dialogId);
-			PacketSendUtility.sendMessage(player, "questId: " + questId);
-		}
-
 		int targetObjectId = npc.getObjectId();
 		int titleId = npc.getObjectTemplate().getTitleId();
 

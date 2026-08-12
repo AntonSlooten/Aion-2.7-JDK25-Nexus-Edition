@@ -53,4 +53,15 @@ public class CompanionConfig {
 	 */
 	@Property(key = "gameserver.companion.aithinkinterval", defaultValue = "750")
 	public static int AI_THINK_INTERVAL;
+
+	/**
+	 * Gates the verbose per-tick companion-bot AI diagnostic logging (engage-range checks, every skill
+	 * cast attempt and why, movement registration, rotation-candidate dumps, etc.) accumulated across
+	 * many rounds of live debugging - multiple log lines per bot per ~750ms tick, far too noisy to leave
+	 * on for normal play. Off by default; flip to true in companion.properties only while actively
+	 * debugging a bot AI issue. Requested live: "can we move all the debugging we have added to hide
+	 * behind a --debug-bot flag, or something similar."
+	 */
+	@Property(key = "gameserver.companion.debuglogging", defaultValue = "false")
+	public static boolean DEBUG_LOGGING;
 }

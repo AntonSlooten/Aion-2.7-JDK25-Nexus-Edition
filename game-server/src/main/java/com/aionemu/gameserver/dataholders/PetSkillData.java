@@ -74,4 +74,13 @@ public class PetSkillData {
 	public boolean petHasSkill(int petNpcId, int skillId) {
 		return petSkillsMap.get(petNpcId).contains(skillId);
 	}
+
+	/**
+	 * Every order-skill a given pet template knows, e.g. all of a Spirit Master's summoned pact spirit's
+	 * attack/buff/debuff abilities - used to autonomously pick among them rather than only validating one
+	 * specific skillId a real client already chose (petHasSkill()'s original use case).
+	 */
+	public TIntArrayList getPetSkills(int petNpcId) {
+		return petSkillsMap.get(petNpcId);
+	}
 }

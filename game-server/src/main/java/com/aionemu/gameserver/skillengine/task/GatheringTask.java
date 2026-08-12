@@ -16,7 +16,6 @@
  */
 package com.aionemu.gameserver.skillengine.task;
 
-import com.aionemu.gameserver.configs.main.RateConfig;
 import com.aionemu.gameserver.model.DescriptionId;
 import com.aionemu.gameserver.model.gameobjects.Gatherable;
 import com.aionemu.gameserver.model.gameobjects.Item;
@@ -100,7 +99,7 @@ public class GatheringTask extends AbstractCraftTask {
 		PacketSendUtility.broadcastPacket(requestor, new SM_GATHER_STATUS(requestor.getObjectId(), responder.getObjectId(), 2), true);
 		PacketSendUtility.sendPacket(requestor, SM_SYSTEM_MESSAGE.STR_EXTRACT_GATHER_SUCCESS_1_BASIC(new DescriptionId(material.getNameid())));
 		requestor.getInventory().decreaseByItemId(template.getRequiredItemId(), 1);
-		ItemService.addItem(requestor, material.getItemid(), RateConfig.GATHER_COUNT, ITEM_ADD_PREDICATE);
+		ItemService.addItem(requestor, material.getItemid(), requestor.getRates().getGatherCountRate(), ITEM_ADD_PREDICATE);
 		if (requestor.isInInstance()) {
 			requestor.getPosition().getWorldMapInstance().getInstanceHandler().onGather(requestor, (Gatherable) responder);
 		}
